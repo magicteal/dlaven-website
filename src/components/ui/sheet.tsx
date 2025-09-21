@@ -51,6 +51,8 @@ function SheetContent({ className, side = "right", children, ...props }: React.C
         )}
         {...props}
       >
+        {/* Accessible title for screen readers */}
+        <Dialog.Title className="sr-only">Panel</Dialog.Title>
         {children}
       </Dialog.Content>
     </SheetPortal>
