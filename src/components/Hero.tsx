@@ -11,7 +11,7 @@ export default function Hero() {
       <div className="relative h-[70vh] min-h-[520px] w-full grid grid-cols-1 md:grid-cols-2">
         <div className="relative h-full w-full">
           <Image
-            src="/hero/left.jpg"
+            src="/images/leftVisual.png"
             alt="Left visual"
             fill
             className="object-cover"
@@ -22,7 +22,7 @@ export default function Hero() {
         </div>
         <div className="relative hidden md:block h-full w-full">
           <Image
-            src="/hero/right.jpg"
+            src="/images/rightVisual.png"
             alt="Right visual"
             fill
             className="object-cover"
