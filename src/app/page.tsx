@@ -1,12 +1,14 @@
 import Hero from "@/components/Hero";
-import Footer from "@/components/Footer";
+import CategoryGrid from "@/components/CategoryGrid";
+// import FeaturedContent from "@/components/FeaturedContent";
 
 export default function Home() {
   return (
-    <main>
-      {/* Navbar is rendered in layout.tsx */}
+    // The Footer component is removed from here
+    <>
       <Hero />
-      <Footer />
-    </main>
+      <CategoryGrid />
+      {/* <FeaturedContent /> */}
+    </>
   );
 }
