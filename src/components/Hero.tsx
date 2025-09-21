@@ -6,28 +6,28 @@ import BrandText from "@/components/BrandText";
 // Organism: Hero
 export default function Hero() {
   return (
-    <section className="relative w-full">
+  <section className="relative w-full pt-16 md:pt-20">
       {/* Background split - replace with your actual hero images if desired */}
-      <div className="relative h-[70vh] min-h-[520px] w-full grid grid-cols-1 md:grid-cols-2">
+  <div className="relative h-96 md:h-screen w-full grid grid-cols-2 pointer-events-none">
         <div className="relative h-full w-full">
           <Image
             src="/images/leftVisual.png"
             alt="Left visual"
             fill
-            className="object-cover"
-            sizes="(min-width: 768px) 50vw, 100vw"
+            className="object-cover object-top"
+            sizes="50vw"
             priority
           />
           <div className="absolute inset-0 bg-black/40" />
         </div>
-        <div className="relative hidden md:block h-full w-full">
+        <div className="relative h-full w-full">
           <Image
             src="/images/rightVisual.png"
             alt="Right visual"
             fill
-            className="object-cover"
+            className="object-cover object-top"
             sizes="50vw"
-            priority
+            
           />
           <div className="absolute inset-0 bg-black/40" />
         </div>
@@ -35,7 +35,7 @@ export default function Hero() {
 
       {/* Centered Brand Text */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-        <BrandText className="w-[72vw] max-w-[1000px] drop-shadow-[0_2px_20px_rgba(0,0,0,0.4)]" />
+        <BrandText className="w-[82vw] md:w-[72vw] max-w-[1000px] drop-shadow-[0_2px_20px_rgba(0,0,0,0.4)]" />
       </div>
     </section>
   );

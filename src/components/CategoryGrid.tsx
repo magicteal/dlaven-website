@@ -1,36 +1,22 @@
 import Link from "next/link";
 import Image from "next/image";
-
-const categories = [
-  {
-    name: "Heritage Jewelry",
-    href: "/heritage-jewelry",
-    imageSrc: "/images/heritage.png",
-    imageAlt: "A piece of intricate D'LAVÉN heritage jewelry.",
-  },
-  {
-    name: "Fragrances",
-    href: "/fragrances",
-    imageSrc: "/images/frangrence.png",
-    imageAlt: "A luxurious bottle of D'LAVÉN fragrance.",
-  },
-  {
-    name: "Men's Ready-To-Wear",
-    href: "/men/ready-to-wear",
-    imageSrc: "/images/mensReady.png",
-    imageAlt: "A model wearing D'LAVÉN men's ready-to-wear fashion.",
-  },
-];
+import Container from "@/components/Container";
+import { categories as dataCategories } from "@/data/categories";
 
 // --- Single Category Item Component ---
 function CategoryItem({
   name,
-  href,
+  slug,
   imageSrc,
   imageAlt,
-}: (typeof categories)[0]) {
+}: {
+  name: string;
+  slug: string;
+  imageSrc: string;
+  imageAlt: string;
+}) {
   return (
-    <Link href={href} className="group block text-center">
+    <Link href={`/categories/${slug}`} className="group block text-center">
       <div className="overflow-hidden aspect-[4/5] bg-gray-100">
         <Image
           src={imageSrc}
@@ -48,19 +34,23 @@ function CategoryItem({
 }
 
 // --- Main Category Grid Component ---
-export default function CategoryGrid() {
+export default function CategoryGrid({ title = "Explore The Latest Styles" }: { title?: string }) {
   return (
-    <section className="bg-white py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-        <h2 className="text-2xl font-bold tracking-widest uppercase text-black">
-          Explore The Latest Styles
-        </h2>
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-12">
-          {categories.map((category) => (
-            <CategoryItem key={category.name} {...category} />
+    <section className="bg-white py-16 sm:py-24">
+      <Container className="text-center">
+        <h2 className="text-2xl font-bold tracking-widest uppercase text-black">{title}</h2>
+        <div className="mt-8 sm:mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-x-8 sm:gap-y-12">
+          {dataCategories.map((category) => (
+            <CategoryItem
+              key={category.slug}
+              name={category.name}
+              slug={category.slug}
+              imageSrc={category.imageSrc}
+              imageAlt={category.imageAlt}
+            />
           ))}
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

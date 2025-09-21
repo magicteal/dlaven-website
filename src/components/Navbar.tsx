@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import MenuDrawer from "@/components/MenuDrawer";
 import { ShoppingBag, User, Search, Menu, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Container from "@/components/Container";
 
 // --- Atoms ---
 function IconButton({
@@ -53,27 +54,29 @@ function ContactUs() {
 
 function RightControls() {
   return (
-    <div className="flex items-center gap-3">
+    <>
       <IconButton aria-label="Cart">
         <ShoppingBag className="h-5 w-5" />
       </IconButton>
-      <IconButton aria-label="Account">
+      <IconButton aria-label="Account" className="hidden sm:inline-flex">
         <User className="h-5 w-5" />
       </IconButton>
-      <IconButton aria-label="Search">
+      <IconButton aria-label="Search" className="hidden sm:inline-flex">
         <Search className="h-5 w-5" />
       </IconButton>
       <MenuDrawer
         trigger={
-          <div className="flex items-center gap-2 cursor-pointer select-none">
-            <IconButton aria-label="Menu">
-              <Menu className="h-5 w-5" />
-            </IconButton>
-            <button className="text-sm">MENU</button>
-          </div>
+          <Button
+            variant="ghost"
+            className="rounded-none h-9 px-2 sm:px-3 flex items-center gap-2 select-none"
+            aria-label="Open menu"
+          >
+            <Menu className="h-5 w-5" />
+            <span className="hidden sm:inline text-sm whitespace-nowrap">MENU</span>
+          </Button>
         }
       />
-    </div>
+    </>
   );
 }
 
@@ -82,21 +85,27 @@ export default function Navbar() {
   return (
     // This is the key change: fixed, top-0, z-50, w-full, and background styles
     <header className="fixed top-0 left-0 right-0 z-50 w-full bg-white/90 backdrop-blur-md shadow-sm">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid h-20 grid-cols-3 items-center">
-          <div className="justify-self-start">
+      <Container>
+        <nav aria-label="Primary">
+        <div className="flex items-center justify-between h-14 sm:h-16 md:h-20 md:grid md:grid-cols-3">
+          <div className="justify-self-start hidden md:block">
             <ContactUs />
           </div>
 
-          <div className="justify-self-center">
-            <Brand />
+          <div className="md:justify-self-center">
+            <div className="md:scale-100 scale-95">
+              <Brand />
+            </div>
           </div>
 
           <div className="justify-self-end">
-            <RightControls />
+            <div className="flex items-center gap-1 sm:gap-2">
+              <RightControls />
+            </div>
           </div>
         </div>
-      </div>
+        </nav>
+      </Container>
     </header>
   );
 }
