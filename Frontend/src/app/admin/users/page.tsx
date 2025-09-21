@@ -4,7 +4,24 @@ import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { useRouter } from "next/navigation";
 
-type User = { id: string; _id?: string; email: string; name?: string; role?: "user" | "admin" };
+type UserRaw = { _id?: string; id?: string; email: string; name?: string; role?: "user" | "admin" };
+type User = { id: string; email: string; name?: string; role?: "user" | "admin" };
+
+function normalize(u: UserRaw): User {
+  return { id: String(u._id || u.id || ""), email: u.email, name: u.name, role: u.role };
+}
+
+function uniqById(list: User[]): User[] {
+  const seen = new Set<string>();
+  const out: User[] = [];
+  for (const u of list) {
+    if (!u.id) continue;
+    if (seen.has(u.id)) continue;
+    seen.add(u.id);
+    out.push(u);
+  }
+  return out;
+}
 
 export default function AdminUsersPage() {
   const { user, loading } = useAuth();
@@ -22,8 +39,8 @@ export default function AdminUsersPage() {
   useEffect(() => {
     async function load() {
       try {
-        const res = await apiAdmin.listUsers();
-        setUsers(res.users);
+  const res = await apiAdmin.listUsers();
+  setUsers(uniqById(res.users.map(normalize)));
       } catch (e: unknown) {
         setError(e instanceof Error ? e.message : "Failed to load users");
       }
@@ -32,11 +49,13 @@ export default function AdminUsersPage() {
   }, [isAdmin]);
 
   async function onToggleRole(u: User) {
-    setBusyId(u.id || u._id || null);
+    const uid = u.id;
+    setBusyId(uid || null);
     try {
       const nextRole = u.role === "admin" ? "user" : "admin";
-      const res = await apiAdmin.updateUser(u.id || u._id!, { role: nextRole });
-      setUsers((prev) => prev.map((x) => (x.id === u.id || x._id === u._id ? res.user : x)));
+      const res = await apiAdmin.updateUser(uid, { role: nextRole });
+      const updated = normalize(res.user);
+      setUsers((prev) => uniqById(prev.map((x) => (x.id === uid ? updated : x))));
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Failed to update user");
     } finally {
@@ -46,10 +65,11 @@ export default function AdminUsersPage() {
 
   async function onDelete(u: User) {
     if (!confirm(`Delete user ${u.email}?`)) return;
-    setBusyId(u.id || u._id || null);
+    const uid = u.id;
+    setBusyId(uid || null);
     try {
-      await apiAdmin.deleteUser(u.id || u._id!);
-      setUsers((prev) => prev.filter((x) => (x.id || x._id) !== (u.id || u._id)));
+      await apiAdmin.deleteUser(uid);
+      setUsers((prev) => prev.filter((x) => x.id !== uid));
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Failed to delete user");
     } finally {
@@ -73,7 +93,7 @@ export default function AdminUsersPage() {
           </thead>
           <tbody>
             {users.map((u) => (
-              <tr key={u.id || u._id} className="border-b border-black/5">
+              <tr key={u.id} className="border-b border-black/5">
                 <td className="py-2 pr-4">{u.email}</td>
                 <td className="py-2 pr-4">{u.name || "—"}</td>
                 <td className="py-2 pr-4">
@@ -85,14 +105,14 @@ export default function AdminUsersPage() {
                   <button
                     className="px-3 py-1 border border-black text-xs hover:bg-black hover:text-white disabled:opacity-60"
                     onClick={() => onToggleRole(u)}
-                    disabled={busyId === (u.id || u._id)}
+                    disabled={busyId === u.id}
                   >
                     Make {u.role === "admin" ? "User" : "Admin"}
                   </button>
                   <button
                     className="px-3 py-1 border border-red-600 text-red-600 text-xs hover:bg-red-600 hover:text-white disabled:opacity-60"
                     onClick={() => onDelete(u)}
-                    disabled={busyId === (u.id || u._id)}
+                    disabled={busyId === u.id}
                   >
                     Delete
                   </button>
