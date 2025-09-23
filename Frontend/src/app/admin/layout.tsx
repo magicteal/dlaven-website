@@ -9,6 +9,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="text-xs uppercase tracking-wider text-black/70">Admin</div>
         <a href="/admin/profile" className="text-sm hover:underline">Profile</a>
         <a href="/admin/users" className="text-sm hover:underline">Users</a>
+  <a href="/admin/products" className="text-sm hover:underline">Products</a>
+  <a href="/admin/categories" className="text-sm hover:underline">Categories</a>
         <a href="/admin/settings" className="text-sm hover:underline">Settings</a>
         {/* Add more admin sections here */}
       </aside>

@@ -5,7 +5,10 @@ import Container from "@/components/Container";
 import ProductCard from "@/components/ProductCard";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import type { Product } from "@/data/products";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useCart } from "@/components/providers/CartProvider";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 interface Props {
   product: Product;
@@ -13,8 +16,20 @@ interface Props {
 }
 
 export default function ProductDetailClient({ product, related }: Props) {
+  const { add, loading: cartLoading } = useCart();
   const gallery = useMemo(() => product.images, [product]);
   const [selectedImage, setSelectedImage] = useState<string>(gallery[0]);
+  const [quantity, setQuantity] = useState<number>(1);
+  const [selectedSize, setSelectedSize] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    // default to first size if available
+    if (product.sizeOptions && product.sizeOptions.length > 0) {
+      setSelectedSize(product.sizeOptions[0]);
+    } else {
+      setSelectedSize(undefined);
+    }
+  }, [product.slug, product.sizeOptions]);
 
   return (
     <main>
@@ -78,8 +93,30 @@ export default function ProductDetailClient({ product, related }: Props) {
 
               {/* Action row */}
               <div className="mt-8 flex items-center gap-3">
-                <button className="px-6 py-3 bg-black text-white text-sm uppercase tracking-wider">Add to Cart</button>
-                <button className="px-6 py-3 border border-black text-black text-sm uppercase tracking-wider">Buy Now</button>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm">Qty</span>
+                  <Input
+                    type="number"
+                    min={1}
+                    className="w-20 text-black"
+                    value={quantity}
+                    onChange={(e) => {
+                      const val = parseInt(e.target.value || "1", 10);
+                      setQuantity(isNaN(val) || val < 1 ? 1 : val);
+                    }}
+                  />
+                </div>
+                <Button
+                  className="rounded-none px-6 py-3 text-sm uppercase tracking-wider"
+                  variant="outline"
+                  onClick={async () => {
+                    try { await add(product.slug, quantity, selectedSize); } catch {}
+                  }}
+                  disabled={cartLoading}
+                >
+                  Add to Cart
+                </Button>
+                <Button variant="outline" className="rounded-none px-6 py-3 text-sm uppercase tracking-wider">Buy Now</Button>
               </div>
 
               {/* Size options for jewelry/clothing if available */}
@@ -87,11 +124,19 @@ export default function ProductDetailClient({ product, related }: Props) {
                 <div className="mt-8">
                   <h3 className="text-sm font-semibold tracking-wider uppercase text-black/80">Select Size</h3>
                   <div className="mt-3 flex flex-wrap gap-2">
-                    {product.sizeOptions.map((s) => (
-                      <button key={s} className="px-3 py-2 border border-black text-sm uppercase tracking-wide hover:bg-black hover:text-white">
-                        {s}
-                      </button>
-                    ))}
+                    {product.sizeOptions.map((s) => {
+                      const active = s === selectedSize;
+                      return (
+                        <Button
+                          key={s}
+                          variant={active ? "default" : "outline"}
+                          className="rounded-none px-3 py-2 text-sm uppercase tracking-wide"
+                          onClick={() => setSelectedSize(s)}
+                        >
+                          {s}
+                        </Button>
+                      );
+                    })}
                   </div>
                 </div>
               ) : null}

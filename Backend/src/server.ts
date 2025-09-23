@@ -5,6 +5,10 @@ import dotenv from "dotenv";
 import { connectDB } from "./utils/db";
 import authRoutes from "./routes/auth";
 import adminRoutes from "./routes/admin";
+import productsRoutes from "./routes/products";
+import categoriesRoutes from "./routes/categories";
+import uploadsRoutes from "./routes/uploads";
+import cartRoutes from "./routes/cart";
 
 dotenv.config();
 
@@ -32,6 +36,10 @@ app.use(cookieParser());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/products", productsRoutes);
+app.use("/api/categories", categoriesRoutes);
+app.use("/api/uploads", uploadsRoutes);
+app.use("/api/cart", cartRoutes);
 
 app.get("/api/health", (_req: Request, res: Response) => {
   res.json({ ok: true, service: "dlaven-backend" });

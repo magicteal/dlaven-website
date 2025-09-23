@@ -1,15 +1,31 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getCategoryBySlug } from "@/data/categories";
 import Container from "@/components/Container";
 import ProductCard from "@/components/ProductCard";
-import { products } from "@/data/products";
+import { API_BASE } from "@/lib/api";
 
-export default function CategoryDetailPage({ params }: { params: { slug: string } }) {
-  const category = getCategoryBySlug(params.slug);
+async function fetchCategory(slug: string) {
+  const res = await fetch(`${API_BASE}/api/categories/${slug}`, { cache: "no-store" });
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error("Failed to load category");
+  const data = await res.json();
+  return data.item as { slug: string; name: string; imageSrc: string; imageAlt: string; heroImage?: string; badge?: string };
+}
+
+async function fetchCategoryProducts(slug: string) {
+  const res = await fetch(`${API_BASE}/api/products?category=${encodeURIComponent(slug)}`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to load products");
+  const data = await res.json();
+  return (data.items || []) as Array<{ slug: string; name: string; price: number; currency: string; images: string[]; rating?: number; reviewsCount?: number; inStock?: boolean }>;
+}
+
+export default async function CategoryDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const category = await fetchCategory(slug);
   if (!category) return notFound();
 
   const bg = category.heroImage || category.imageSrc;
+  const items = await fetchCategoryProducts(category.slug);
 
   return (
     <main>
@@ -45,15 +61,11 @@ export default function CategoryDetailPage({ params }: { params: { slug: string 
         <Container>
           <div className="flex items-baseline justify-between">
             <h2 className="text-xl font-bold tracking-widest uppercase text-black">Products</h2>
-            <span className="text-xs text-black/60">{
-              products.filter((p) => p.categorySlug === category.slug).length
-            } items</span>
+            <span className="text-xs text-black/60">{items.length} items</span>
           </div>
 
           <div className="mt-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-            {products
-              .filter((p) => p.categorySlug === category.slug)
-              .map((p) => (
+            {items.map((p) => (
                 <ProductCard
                   key={p.slug}
                   slug={p.slug}
@@ -68,7 +80,7 @@ export default function CategoryDetailPage({ params }: { params: { slug: string 
               ))}
           </div>
 
-          {products.filter((p) => p.categorySlug === category.slug).length === 0 ? (
+          {items.length === 0 ? (
             <p className="mt-8 text-sm text-neutral-700">No products found in this category.</p>
           ) : null}
         </Container>
