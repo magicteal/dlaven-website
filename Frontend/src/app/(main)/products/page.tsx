@@ -1,8 +1,25 @@
 import Container from "@/components/Container";
 import ProductCard from "@/components/ProductCard";
-import { products } from "@/data/products";
+import { API_BASE } from "@/lib/api";
 
-export default function ProductsPage() {
+async function fetchProducts() {
+  const res = await fetch(`${API_BASE}/api/products`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to load products");
+  const data = await res.json();
+  return data.items as Array<{
+    slug: string;
+    name: string;
+    price: number;
+    currency: string;
+    images: string[];
+    rating?: number;
+    reviewsCount?: number;
+    inStock?: boolean;
+  }>;
+}
+
+export default async function ProductsPage() {
+  const products = await fetchProducts();
   return (
     <main className="py-12 sm:py-20">
       <Container>

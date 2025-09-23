@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import Container from "@/components/Container";
-import { categories as dataCategories } from "@/data/categories";
+import { API_BASE } from "@/lib/api";
 
 // --- Single Category Item Component ---
 function CategoryItem({
@@ -34,7 +34,10 @@ function CategoryItem({
 }
 
 // --- Main Category Grid Component ---
-export default function CategoryGrid({ title = "Explore The Latest Styles" }: { title?: string }) {
+export default async function CategoryGrid({ title = "Explore The Latest Styles" }: { title?: string }) {
+  const res = await fetch(`${API_BASE}/api/categories`, { cache: "no-store" });
+  const data = await res.json();
+  const dataCategories = (data.items || []) as Array<{ slug: string; name: string; imageSrc: string; imageAlt: string }>; 
   return (
     <section className="bg-white py-16 sm:py-24">
       <Container className="text-center">

@@ -97,4 +97,26 @@ export const api = {
       body: JSON.stringify(data),
     });
   },
+  // Cart APIs
+  getCart() {
+    return request<{ cart: { items: Array<{ productSlug: string; name: string; price: number; currency: string; image: string; quantity: number; size?: string }> } }>("/api/cart");
+  },
+  addToCart(data: { productSlug: string; quantity?: number; size?: string }) {
+    return request<{ cart: { items: Array<{ productSlug: string; name: string; price: number; currency: string; image: string; quantity: number; size?: string }> } }>("/api/cart/items", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  },
+  updateCartItem(productSlug: string, quantity: number, size?: string) {
+    return request<{ cart: { items: Array<{ productSlug: string; name: string; price: number; currency: string; image: string; quantity: number; size?: string }> } }>(`/api/cart/items/${encodeURIComponent(productSlug)}`, {
+      method: "PATCH",
+      body: JSON.stringify({ quantity, size }),
+    });
+  },
+  removeCartItem(productSlug: string, size?: string) {
+    return request<{ cart: { items: Array<{ productSlug: string; name: string; price: number; currency: string; image: string; quantity: number; size?: string }> } }>(`/api/cart/items/${encodeURIComponent(productSlug)}`, {
+      method: "DELETE",
+      body: size ? JSON.stringify({ size }) : undefined,
+    });
+  },
 };

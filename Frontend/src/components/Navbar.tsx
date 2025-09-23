@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import Container from "@/components/Container";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { useRouter } from "next/navigation";
+import { useCart } from "@/components/providers/CartProvider";
 
 // --- Atoms ---
 function IconButton({
@@ -69,6 +70,7 @@ function ContactUs() {
 function RightControls() {
   const { user, logout, loading } = useAuth();
   const router = useRouter();
+  const { count } = useCart();
 
   const initials = React.useMemo(() => {
     const n = user?.name?.trim();
@@ -84,9 +86,18 @@ function RightControls() {
   }, [user]);
   return (
     <>
-      <IconButton aria-label="Cart">
+      <button
+        aria-label="Cart"
+        className="relative inline-flex items-center justify-center h-9 w-9 rounded-none hover:bg-accent"
+        onClick={() => router.push("/cart")}
+      >
         <ShoppingBag className="h-5 w-5" />
-      </IconButton>
+        {count > 0 && (
+          <span className="absolute -top-1 -right-1 bg-black text-white text-[10px] leading-none px-1.5 py-1 rounded-full">
+            {count}
+          </span>
+        )}
+      </button>
       {user && (
         <>
           <Link href={user.role === "admin" ? "/admin" : "/auth/me"} className="hidden sm:inline-flex items-center gap-2 px-2 text-sm text-black/80 hover:text-black">
