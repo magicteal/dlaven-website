@@ -8,6 +8,7 @@ import adminRoutes from "./routes/admin";
 import productsRoutes from "./routes/products";
 import categoriesRoutes from "./routes/categories";
 import uploadsRoutes from "./routes/uploads";
+import ordersRoutes from "./routes/orders";
 import cartRoutes from "./routes/cart";
 
 dotenv.config();
@@ -39,6 +40,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/products", productsRoutes);
 app.use("/api/categories", categoriesRoutes);
 app.use("/api/uploads", uploadsRoutes);
+app.use("/api/orders", ordersRoutes);
 app.use("/api/cart", cartRoutes);
 
 app.get("/api/health", (_req: Request, res: Response) => {

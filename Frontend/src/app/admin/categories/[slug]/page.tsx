@@ -4,6 +4,7 @@ import { useAuth } from "@/components/providers/AuthProvider";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 type Category = { slug: string; name: string; imageSrc?: string; imageAlt?: string; heroImage?: string; badge?: string; description?: string };
 
@@ -150,7 +151,7 @@ export default function AdminEditCategoryPage({ params }: { params: { slug: stri
           <Textarea label="Description (optional)" value={form.description || ""} onChange={(v) => setForm((p) => ({ ...p, description: v }))} />
           <div className="flex gap-2">
             <button type="submit" className="px-4 py-2 border border-black hover:bg-black hover:text-white disabled:opacity-60" disabled={saving}>{saving ? "Saving…" : "Save Changes"}</button>
-            <a href="/admin/categories" className="px-4 py-2 border border-black/30">Cancel</a>
+            <Link href="/admin/categories" className="px-4 py-2 border border-black/30">Cancel</Link>
           </div>
         </form>
       )}

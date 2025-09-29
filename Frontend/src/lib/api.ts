@@ -74,7 +74,9 @@ export const api = {
     });
   },
   me() {
-    return request<{ user: { id: string; email: string; name?: string; role?: "user" | "admin" } }>("/api/auth/me");
+    return request<{ user: { id: string; email: string; name?: string; role?: "user" | "admin"; address?: {
+      fullName?: string; phone?: string; line1?: string; line2?: string; city?: string; state?: string; postalCode?: string; country?: string;
+    } } }>("/api/auth/me");
   },
   logout() {
     return request<{ ok: boolean }>("/api/auth/logout", { method: "POST" });
@@ -92,10 +94,41 @@ export const api = {
     });
   },
   updateProfile(data: { name?: string }) {
-    return request<{ user: { id: string; email: string; name?: string; role?: "user" | "admin" } }>("/api/auth/profile", {
+    return request<{ user: { id: string; email: string; name?: string; role?: "user" | "admin"; address?: { fullName?: string; phone?: string; line1?: string; line2?: string; city?: string; state?: string; postalCode?: string; country?: string } } }>("/api/auth/profile", {
       method: "PATCH",
       body: JSON.stringify(data),
     });
+  },
+  getAddress() {
+    return request<{ address: null | { fullName?: string; phone?: string; line1?: string; line2?: string; city?: string; state?: string; postalCode?: string; country?: string } }>("/api/auth/address");
+  },
+  updateAddress(data: { fullName?: string; phone?: string; line1?: string; line2?: string; city?: string; state?: string; postalCode?: string; country?: string }) {
+    return request<{ address: null | { fullName?: string; phone?: string; line1?: string; line2?: string; city?: string; state?: string; postalCode?: string; country?: string } }>("/api/auth/address", {
+      method: "PATCH",
+      body: JSON.stringify(data),
+    });
+  },
+  // Addresses CRUD (multi-address support)
+  listAddresses() {
+    return request<{ addresses: Array<{ id: string; label?: string; fullName?: string; phone?: string; line1?: string; line2?: string; city?: string; state?: string; postalCode?: string; country?: string; isDefault?: boolean }> }>("/api/auth/addresses");
+  },
+  createAddress(data: { label?: string; fullName?: string; phone?: string; line1?: string; line2?: string; city?: string; state?: string; postalCode?: string; country?: string; isDefault?: boolean }) {
+    return request<{ address: { id: string; label?: string; fullName?: string; phone?: string; line1?: string; line2?: string; city?: string; state?: string; postalCode?: string; country?: string; isDefault?: boolean } }>("/api/auth/addresses", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  },
+  updateAddressById(id: string, data: { label?: string; fullName?: string; phone?: string; line1?: string; line2?: string; city?: string; state?: string; postalCode?: string; country?: string }) {
+    return request<{ address: { id: string; label?: string; fullName?: string; phone?: string; line1?: string; line2?: string; city?: string; state?: string; postalCode?: string; country?: string; isDefault?: boolean } }>(`/api/auth/addresses/${encodeURIComponent(id)}`, {
+      method: "PATCH",
+      body: JSON.stringify(data),
+    });
+  },
+  deleteAddressById(id: string) {
+    return request<{ ok: boolean }>(`/api/auth/addresses/${encodeURIComponent(id)}`, { method: "DELETE" });
+  },
+  setDefaultAddress(id: string) {
+    return request<{ ok: boolean }>(`/api/auth/addresses/${encodeURIComponent(id)}/default`, { method: "PATCH" });
   },
   // Cart APIs
   getCart() {
@@ -119,4 +152,34 @@ export const api = {
       body: size ? JSON.stringify({ size }) : undefined,
     });
   },
+  // Orders & Payments
+  createOrder() {
+    return request<{ order: OrderDTO; razorpayOrder: RazorpayOrderDTO; key: string }>("/api/orders/create", { method: "POST" });
+  },
+  verifyPayment(data: { orderId: string; paymentId: string; signature: string }) {
+    return request<{ order: OrderDTO }>("/api/orders/verify", { method: "POST", body: JSON.stringify(data) });
+  },
+  myOrders() {
+    return request<{ items: OrderDTO[] }>("/api/orders/mine");
+  },
+  getOrderById(id: string) {
+    return request<{ item: OrderDTO }>(`/api/orders/${encodeURIComponent(id)}`);
+  },
+  // Admin orders
+  adminListOrders() {
+    return request<{ items: OrderDTO[] }>("/api/orders/admin");
+  },
+  adminGetOrder(id: string) {
+    return request<{ item: OrderDTO }>(`/api/orders/admin/${encodeURIComponent(id)}`);
+  },
+  adminUpdateOrderStatus(id: string, status: string) {
+    return request<{ item: OrderDTO }>(`/api/orders/admin/${encodeURIComponent(id)}/status`, { method: "PATCH", body: JSON.stringify({ status }) });
+  },
 };
+
+// Types
+export type OrderStatus = "created" | "paid" | "failed" | "refunded" | "cancelled";
+export type OrderItemDTO = { productSlug: string; name: string; price: number; currency: string; image: string; quantity: number; size?: string };
+export type OrderAddressDTO = { label?: string; fullName?: string; phone?: string; line1?: string; line2?: string; city?: string; state?: string; postalCode?: string; country?: string };
+export type OrderDTO = { id?: string; _id?: string; userId: string; items: OrderItemDTO[]; address: OrderAddressDTO; subtotal: number; currency: string; status: OrderStatus; razorpay?: { orderId?: string; paymentId?: string; signature?: string }; createdAt?: string };
+export type RazorpayOrderDTO = { id: string; amount: number; currency: string };

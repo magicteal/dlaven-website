@@ -7,9 +7,11 @@ import { useCart } from "@/components/providers/CartProvider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Minus, Plus, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function CartPage() {
   const { cart, update, remove, subtotal, count } = useCart();
+  const router = useRouter();
 
   return (
     <main className="pt-20 pb-16">
@@ -110,7 +112,7 @@ export default function CartPage() {
                   <span>Subtotal</span>
                   <span>{new Intl.NumberFormat(undefined, { style: "currency", currency: cart.items[0].currency, maximumFractionDigits: 0 }).format(subtotal)}</span>
                 </div>
-                <Button className="w-full mt-4 rounded-none">Checkout</Button>
+                <Button className="w-full mt-4 rounded-none" onClick={() => router.push("/checkout/address")}>Checkout</Button>
               </div>
             </div>
           </div>
