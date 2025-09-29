@@ -4,6 +4,7 @@ import { useAuth } from "@/components/providers/AuthProvider";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function AdminNewProductPage() {
   const { user, loading } = useAuth();
@@ -173,7 +174,7 @@ export default function AdminNewProductPage() {
         </div>
         <div className="flex gap-2">
           <button type="submit" className="px-4 py-2 border border-black hover:bg-black hover:text-white disabled:opacity-60" disabled={saving}>{saving ? "Creating…" : "Create"}</button>
-          <a href="/admin/products" className="px-4 py-2 border border-black/30">Cancel</a>
+          <Link href="/admin/products" className="px-4 py-2 border border-black/30">Cancel</Link>
         </div>
       </form>
     </div>

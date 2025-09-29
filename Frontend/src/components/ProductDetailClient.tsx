@@ -16,7 +16,7 @@ interface Props {
 }
 
 export default function ProductDetailClient({ product, related }: Props) {
-  const { add, loading: cartLoading } = useCart();
+  const { add, loading: cartLoading, cart } = useCart();
   const gallery = useMemo(() => product.images, [product]);
   const [selectedImage, setSelectedImage] = useState<string>(gallery[0]);
   const [quantity, setQuantity] = useState<number>(1);
@@ -30,6 +30,13 @@ export default function ProductDetailClient({ product, related }: Props) {
       setSelectedSize(undefined);
     }
   }, [product.slug, product.sizeOptions]);
+
+  const alreadyInCart = useMemo(() => {
+    if (!cart) return false;
+    return cart.items.some(
+      (i) => i.productSlug === product.slug && ((i.size ?? null) === (selectedSize ?? null))
+    );
+  }, [cart, product.slug, selectedSize]);
 
   return (
     <main>
@@ -112,9 +119,9 @@ export default function ProductDetailClient({ product, related }: Props) {
                   onClick={async () => {
                     try { await add(product.slug, quantity, selectedSize); } catch {}
                   }}
-                  disabled={cartLoading}
+                  disabled={cartLoading || alreadyInCart || !product.inStock}
                 >
-                  Add to Cart
+                  {alreadyInCart ? "Added" : "Add to Cart"}
                 </Button>
                 <Button variant="outline" className="rounded-none px-6 py-3 text-sm uppercase tracking-wider">Buy Now</Button>
               </div>

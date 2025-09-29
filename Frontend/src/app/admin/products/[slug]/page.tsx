@@ -3,6 +3,7 @@
 import { useAuth } from "@/components/providers/AuthProvider";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 
 type Product = {
   slug: string;
@@ -171,7 +172,7 @@ export default function AdminEditProductPage({ params }: { params: { slug: strin
           </div>
           <div className="flex gap-2">
             <button type="submit" className="px-4 py-2 border border-black hover:bg-black hover:text-white disabled:opacity-60" disabled={saving}>{saving ? "Saving…" : "Save Changes"}</button>
-            <a href="/admin/products" className="px-4 py-2 border border-black/30">Cancel</a>
+            <Link href="/admin/products" className="px-4 py-2 border border-black/30">Cancel</Link>
           </div>
         </form>
       )}

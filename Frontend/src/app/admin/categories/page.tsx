@@ -3,6 +3,7 @@
 import { useAuth } from "@/components/providers/AuthProvider";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 
 type Category = { slug: string; name: string };
 
@@ -47,7 +48,7 @@ export default function AdminCategoriesPage() {
     <div>
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold">Categories</h1>
-        <a href="/admin/categories/new" className="px-3 py-1 border border-black text-sm hover:bg-black hover:text-white">New Category</a>
+  <Link href="/admin/categories/new" className="px-3 py-1 border border-black text-sm hover:bg-black hover:text-white">New Category</Link>
       </div>
       {error ? <p className="mt-2 text-sm text-red-600">{error}</p> : null}
       <div className="mt-4 overflow-x-auto">
@@ -65,7 +66,7 @@ export default function AdminCategoriesPage() {
                 <td className="py-2 pr-4 font-mono text-xs">{c.slug}</td>
                 <td className="py-2 pr-4">{c.name}</td>
                 <td className="py-2 pr-4 flex gap-2">
-                  <a className="px-3 py-1 border border-black text-xs hover:bg-black hover:text-white" href={`/admin/categories/${c.slug}`}>Edit</a>
+                  <Link className="px-3 py-1 border border-black text-xs hover:bg-black hover:text-white" href={`/admin/categories/${c.slug}`}>Edit</Link>
                   <button className="px-3 py-1 border border-red-600 text-red-600 text-xs hover:bg-red-600 hover:text-white disabled:opacity-60" onClick={() => onDelete(c.slug)} disabled={busy === c.slug}>Delete</button>
                 </td>
               </tr>

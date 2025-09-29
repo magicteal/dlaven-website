@@ -56,7 +56,19 @@ export async function me(req: Request, res: Response) {
     if (!auth) return res.status(401).json({ error: "Unauthorized" });
     const user = await User.findById(auth.sub).exec();
     if (!user) return res.status(404).json({ error: "Not found" });
-    return res.json({ user: { id: user.id, email: user.email, name: user.name, role: user.role } });
+    // Prefer default address from addresses[]; fallback to legacy address field
+    const defaultAddress = (user.addresses || []).find((a: any) => a.isDefault) || (user.addresses && user.addresses[0]) || null;
+    const addr = defaultAddress ? {
+      fullName: defaultAddress.fullName,
+      phone: defaultAddress.phone,
+      line1: defaultAddress.line1,
+      line2: defaultAddress.line2,
+      city: defaultAddress.city,
+      state: defaultAddress.state,
+      postalCode: defaultAddress.postalCode,
+      country: defaultAddress.country,
+    } : (user.address || null);
+    return res.json({ user: { id: user.id, email: user.email, name: user.name, role: user.role, address: addr } });
   } catch (err) {
     return res.status(500).json({ error: "Failed" });
   }
@@ -134,8 +146,211 @@ export async function updateProfile(req: Request, res: Response) {
     if (!user) return res.status(404).json({ error: "Not found" });
     if (typeof name === "string") user.name = name;
     await user.save();
-    return res.json({ user: { id: user.id, email: user.email, name: user.name, role: user.role } });
+    // Return with computed default address for consistency
+    const defaultAddress = (user.addresses || []).find((a: any) => a.isDefault) || (user.addresses && user.addresses[0]) || null;
+    const addr = defaultAddress ? {
+      fullName: defaultAddress.fullName,
+      phone: defaultAddress.phone,
+      line1: defaultAddress.line1,
+      line2: defaultAddress.line2,
+      city: defaultAddress.city,
+      state: defaultAddress.state,
+      postalCode: defaultAddress.postalCode,
+      country: defaultAddress.country,
+    } : (user.address || null);
+    return res.json({ user: { id: user.id, email: user.email, name: user.name, role: user.role, address: addr } });
   } catch (err) {
     return res.status(500).json({ error: "Failed to update profile" });
   }
+}
+
+export async function getAddress(req: Request, res: Response) {
+  try {
+    const auth = (req as any).user as { sub: string } | undefined;
+    if (!auth) return res.status(401).json({ error: "Unauthorized" });
+    const user = await User.findById(auth.sub).exec();
+    if (!user) return res.status(404).json({ error: "Not found" });
+    // Return default address; fallback to legacy single address
+    const defaultAddress = (user.addresses || []).find((a: any) => a.isDefault) || (user.addresses && user.addresses[0]) || null;
+    if (defaultAddress) {
+      return res.json({ address: {
+        fullName: defaultAddress.fullName,
+        phone: defaultAddress.phone,
+        line1: defaultAddress.line1,
+        line2: defaultAddress.line2,
+        city: defaultAddress.city,
+        state: defaultAddress.state,
+        postalCode: defaultAddress.postalCode,
+        country: defaultAddress.country,
+      } });
+    }
+    return res.json({ address: user.address || null });
+  } catch (err) {
+    return res.status(500).json({ error: "Failed to get address" });
+  }
+}
+
+export async function updateAddress(req: Request, res: Response) {
+  try {
+    const auth = (req as any).user as { sub: string } | undefined;
+    if (!auth) return res.status(401).json({ error: "Unauthorized" });
+    const body = (req.body || {}) as Partial<{
+      fullName: string;
+      phone: string;
+      line1: string;
+      line2: string;
+      city: string;
+      state: string;
+      postalCode: string;
+      country: string;
+    }>;
+    const user = await User.findById(auth.sub).exec();
+    if (!user) return res.status(404).json({ error: "Not found" });
+    // If addresses[] exists, upsert default address there; else write legacy field
+    if (Array.isArray(user.addresses)) {
+      // Find default or first
+      const idx = user.addresses.findIndex((a: any) => a.isDefault);
+      if (idx >= 0) {
+        Object.assign(user.addresses[idx], body);
+      } else if (user.addresses.length > 0) {
+        Object.assign(user.addresses[0], body);
+        // mark it default
+        (user.addresses[0] as any).isDefault = true;
+      } else {
+        (user.addresses as any).push({ ...body, isDefault: true });
+      }
+      await user.save();
+      const def = (user.addresses || []).find((a: any) => a.isDefault) || (user.addresses && user.addresses[0]) || null;
+      return res.json({ address: def ? {
+        fullName: def.fullName,
+        phone: def.phone,
+        line1: def.line1,
+        line2: def.line2,
+        city: def.city,
+        state: def.state,
+        postalCode: def.postalCode,
+        country: def.country,
+      } : null });
+    }
+    // Legacy fallback
+    user.address = { ...user.address, ...body };
+    await user.save();
+    return res.json({ address: user.address || null });
+  } catch (err) {
+    return res.status(500).json({ error: "Failed to update address" });
+  }
+}
+
+// New: addresses CRUD
+export async function listAddresses(req: Request, res: Response) {
+  const auth = (req as any).user as { sub: string } | undefined;
+  if (!auth) return res.status(401).json({ error: "Unauthorized" });
+  const user = await User.findById(auth.sub).exec();
+  if (!user) return res.status(404).json({ error: "Not found" });
+  const addresses = (user.addresses || []).map((a: any) => ({
+    id: a._id,
+    label: a.label,
+    fullName: a.fullName,
+    phone: a.phone,
+    line1: a.line1,
+    line2: a.line2,
+    city: a.city,
+    state: a.state,
+    postalCode: a.postalCode,
+    country: a.country,
+    isDefault: !!a.isDefault,
+  }));
+  return res.json({ addresses });
+}
+
+export async function createAddress(req: Request, res: Response) {
+  const auth = (req as any).user as { sub: string } | undefined;
+  if (!auth) return res.status(401).json({ error: "Unauthorized" });
+  const body = (req.body || {}) as Partial<{ label: string; fullName: string; phone: string; line1: string; line2: string; city: string; state: string; postalCode: string; country: string; isDefault?: boolean }>;
+  const user = await User.findById(auth.sub).exec();
+  if (!user) return res.status(404).json({ error: "Not found" });
+  const makeDefault = body.isDefault || !(user.addresses && user.addresses.length);
+  if (makeDefault && Array.isArray(user.addresses)) {
+    user.addresses.forEach((a: any) => (a.isDefault = false));
+  }
+  (user.addresses as any) = user.addresses || [];
+  (user.addresses as any).push({
+    label: body.label,
+    fullName: body.fullName,
+    phone: body.phone,
+    line1: body.line1,
+    line2: body.line2,
+    city: body.city,
+    state: body.state,
+    postalCode: body.postalCode,
+    country: body.country,
+    isDefault: !!makeDefault,
+  });
+  await user.save();
+  const created = user.addresses[user.addresses.length - 1] as any;
+  return res.status(201).json({ address: {
+    id: created._id,
+    label: created.label,
+    fullName: created.fullName,
+    phone: created.phone,
+    line1: created.line1,
+    line2: created.line2,
+    city: created.city,
+    state: created.state,
+    postalCode: created.postalCode,
+    country: created.country,
+    isDefault: !!created.isDefault,
+  } });
+}
+
+export async function updateAddressById(req: Request, res: Response) {
+  const auth = (req as any).user as { sub: string } | undefined;
+  if (!auth) return res.status(401).json({ error: "Unauthorized" });
+  const { id } = req.params as { id: string };
+  const body = (req.body || {}) as Partial<{ label: string; fullName: string; phone: string; line1: string; line2: string; city: string; state: string; postalCode: string; country: string }>;
+  const user = await User.findById(auth.sub).exec();
+  if (!user) return res.status(404).json({ error: "Not found" });
+  const addr = (user.addresses || []).find((a: any) => String(a._id) === id);
+  if (!addr) return res.status(404).json({ error: "Address not found" });
+  Object.assign(addr, body);
+  await user.save();
+  return res.json({ address: { id: addr._id, label: addr.label, fullName: addr.fullName, phone: addr.phone, line1: addr.line1, line2: addr.line2, city: addr.city, state: addr.state, postalCode: addr.postalCode, country: addr.country, isDefault: !!addr.isDefault } });
+}
+
+export async function deleteAddressById(req: Request, res: Response) {
+  const auth = (req as any).user as { sub: string } | undefined;
+  if (!auth) return res.status(401).json({ error: "Unauthorized" });
+  const { id } = req.params as { id: string };
+  const user = await User.findById(auth.sub).exec();
+  if (!user) return res.status(404).json({ error: "Not found" });
+  const before = (user.addresses || []).length;
+  user.addresses = (user.addresses || []).filter((a: any) => String(a._id) !== id) as any;
+  const after = (user.addresses || []).length;
+  if (after === before) return res.status(404).json({ error: "Address not found" });
+  // Ensure one default remains
+  if (!(user.addresses || []).some((a: any) => a.isDefault) && (user.addresses || []).length > 0) {
+    (user.addresses as any)[0].isDefault = true;
+  }
+  await user.save();
+  return res.json({ ok: true });
+}
+
+export async function setDefaultAddress(req: Request, res: Response) {
+  const auth = (req as any).user as { sub: string } | undefined;
+  if (!auth) return res.status(401).json({ error: "Unauthorized" });
+  const { id } = req.params as { id: string };
+  const user = await User.findById(auth.sub).exec();
+  if (!user) return res.status(404).json({ error: "Not found" });
+  let found = false;
+  (user.addresses || []).forEach((a: any) => {
+    if (String(a._id) === id) {
+      a.isDefault = true;
+      found = true;
+    } else {
+      a.isDefault = false;
+    }
+  });
+  if (!found) return res.status(404).json({ error: "Address not found" });
+  await user.save();
+  return res.json({ ok: true });
 }

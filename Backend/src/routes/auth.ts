@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, me, register, logout, forgotPassword, resetPassword, updateProfile } from "../controllers/authController";
+import { login, me, register, logout, forgotPassword, resetPassword, updateProfile, getAddress, updateAddress, listAddresses, createAddress, updateAddressById, deleteAddressById, setDefaultAddress } from "../controllers/authController";
 import { requireAuth, requireAdmin } from "../middleware/auth";
 import { User } from "../models/User";
 
@@ -12,6 +12,15 @@ router.get("/me", requireAuth, me);
 router.patch("/profile", requireAuth, updateProfile);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
+router.get("/address", requireAuth, getAddress);
+router.patch("/address", requireAuth, updateAddress);
+
+// Addresses CRUD
+router.get("/addresses", requireAuth, listAddresses);
+router.post("/addresses", requireAuth, createAddress);
+router.patch("/addresses/:id", requireAuth, updateAddressById);
+router.delete("/addresses/:id", requireAuth, deleteAddressById);
+router.patch("/addresses/:id/default", requireAuth, setDefaultAddress);
 
 // Admin-only user management
 router.get("/users", requireAuth, requireAdmin, async (_req, res) => {

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 type Product = {
   slug: string;
@@ -55,7 +56,7 @@ export default function AdminProductsPage() {
     <div>
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold">Products</h1>
-        <a className="px-3 py-1 border border-black text-sm hover:bg-black hover:text-white" href="/admin/products/new">New Product</a>
+        <Link className="px-3 py-1 border border-black text-sm hover:bg-black hover:text-white" href="/admin/products/new">New Product</Link>
       </div>
       {error ? <p className="mt-2 text-sm text-red-600">{error}</p> : null}
       <div className="mt-4 overflow-x-auto">
