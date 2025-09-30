@@ -1,4 +1,4 @@
-export const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:4000";
+export const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const url = `${API_BASE}${path}`;
@@ -178,7 +178,7 @@ export const api = {
 };
 
 // Types
-export type OrderStatus = "created" | "paid" | "failed" | "refunded" | "cancelled";
+export type OrderStatus = "created" | "paid" | "failed" | "refunded" | "cancelled" | "shipped" | "delivered";
 export type OrderItemDTO = { productSlug: string; name: string; price: number; currency: string; image: string; quantity: number; size?: string };
 export type OrderAddressDTO = { label?: string; fullName?: string; phone?: string; line1?: string; line2?: string; city?: string; state?: string; postalCode?: string; country?: string };
 export type OrderDTO = { id?: string; _id?: string; userId: string; items: OrderItemDTO[]; address: OrderAddressDTO; subtotal: number; currency: string; status: OrderStatus; razorpay?: { orderId?: string; paymentId?: string; signature?: string }; createdAt?: string };

@@ -27,18 +27,25 @@ async function loadRazorpayScript(): Promise<void> {
 
 export default function CheckoutPayPage() {
   const { user, loading } = useAuth();
-  const { cart, subtotal } = useCart();
+  const { cart, subtotal, refresh } = useCart();
   const router = useRouter();
   const isLoggedIn = useMemo(() => !!user, [user]);
   const [paying, setPaying] = useState(false);
 
   useEffect(() => {
-    if (!loading && !isLoggedIn) router.replace("/auth/login");
+    if (!loading && !isLoggedIn) router.replace("/login");
   }, [loading, isLoggedIn, router]);
 
   async function onPayNow() {
     try {
       setPaying(true);
+      // 0) Ensure cart is fresh
+      await refresh();
+      if (!cart || !cart.items || cart.items.length === 0) {
+        alert("Your cart is empty. Please add items before paying.");
+        router.replace("/cart");
+        return;
+      }
       // 1) Create order on backend
       const { order, razorpayOrder, key } = await api.createOrder();
       // 2) Load checkout script
@@ -58,12 +65,15 @@ export default function CheckoutPayPage() {
         theme: { color: "#000000" },
         handler: async (response: { razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string }) => {
           try {
-            await api.verifyPayment({
+            const verified = await api.verifyPayment({
               orderId: response.razorpay_order_id,
               paymentId: response.razorpay_payment_id,
               signature: response.razorpay_signature,
             });
-            router.replace("/");
+            // Refresh cart so UI clears immediately
+            await refresh();
+            const oid = verified.order._id || verified.order.id;
+            router.replace(`/checkout/success/${encodeURIComponent(String(oid))}`);
           } catch (e: unknown) {
             const msg = e instanceof Error ? e.message : "Payment verification failed";
             alert(msg);
@@ -74,7 +84,16 @@ export default function CheckoutPayPage() {
       rzp.open();
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : "Unable to start payment";
-      alert(msg);
+      // Provide a more guided recovery path
+      if (/Unauthorized/i.test(msg)) {
+        alert("Please sign in again to continue to payment.");
+        router.replace("/login");
+      } else if (/Cart is empty/i.test(msg)) {
+        alert("Your cart appears empty. Please add items and try again.");
+        router.replace("/cart");
+      } else {
+        alert(msg);
+      }
     } finally {
       // If modal opened, paying will reset on close; keep as true during modal.
     }

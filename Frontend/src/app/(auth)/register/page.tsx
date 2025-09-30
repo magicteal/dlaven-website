@@ -22,8 +22,7 @@ export default function RegisterPage() {
     try {
       const res = await api.register({ email, password, name });
       setSuccess(`Registered as ${res.user.email}`);
-      // Go to login page after successful registration
-      router.push("/auth/login");
+      router.push("/login");
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Registration failed";
       setError(msg);

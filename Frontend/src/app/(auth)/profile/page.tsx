@@ -14,7 +14,6 @@ export default function ProfilePage() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  // Addresses state
   type Address = { id?: string; label?: string; fullName?: string; phone?: string; line1?: string; line2?: string; city?: string; state?: string; postalCode?: string; country?: string; isDefault?: boolean };
   const [addresses, setAddresses] = useState<Address[] | null>(null);
   const [addOpen, setAddOpen] = useState(false);
@@ -23,7 +22,7 @@ export default function ProfilePage() {
   const [editAddr, setEditAddr] = useState<Address>({});
 
   useEffect(() => {
-    if (!loading && !user) router.replace("/auth/login");
+    if (!loading && !user) router.replace("/login");
     if (user) {
       setName(user.name || "");
       setEmail(user.email);
@@ -170,7 +169,7 @@ export default function ProfilePage() {
                 {!addOpen ? (
                   <button className="px-4 py-2 border border-black text-sm uppercase tracking-wider hover:bg-black hover:text-white" onClick={() => setAddOpen(true)}>Add New Address</button>
                 ) : (
-                  <form className="max-w-xl grid grid-cols-1 gap-3" onSubmit={async (e) => {
+                  <form className="max-w-xl grid grid-cols-1 gap-3" onSubmit={async (e: React.FormEvent<HTMLFormElement>) => {
                     e.preventDefault();
                     await api.createAddress({ ...newAddr, isDefault: !!(addresses && addresses.length === 0) });
                     const res = await api.listAddresses();

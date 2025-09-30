@@ -100,7 +100,7 @@ function RightControls() {
       </button>
       {user && (
         <>
-          <Link href={user.role === "admin" ? "/admin" : "/auth/me"} className="hidden sm:inline-flex items-center gap-2 px-2 text-sm text-black/80 hover:text-black">
+          <Link href={user.role === "admin" ? "/admin" : "/me"} className="hidden sm:inline-flex items-center gap-2 px-2 text-sm text-black/80 hover:text-black">
             <Avatar label={initials} title={user.name || user.email} />
           </Link>
           <Button
@@ -161,8 +161,8 @@ export default function Navbar() {
               {/* Show Login/Register only when logged out */}
               {!user && !loading && (
                 <>
-                  <Link href="/auth/login" className="hidden sm:inline text-xs uppercase tracking-wider text-black/70 hover:text-black">Login</Link>
-                  <Link href="/auth/register" className="hidden sm:inline text-xs uppercase tracking-wider text-black/70 hover:text-black">Register</Link>
+                  <Link href="/login" className="hidden sm:inline text-xs uppercase tracking-wider text-black/70 hover:text-black">Login</Link>
+                  <Link href="/register" className="hidden sm:inline text-xs uppercase tracking-wider text-black/70 hover:text-black">Register</Link>
                 </>
               )}
               

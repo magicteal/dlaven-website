@@ -22,7 +22,7 @@ export interface IOrderAddress {
   country?: string;
 }
 
-export type OrderStatus = "created" | "paid" | "failed" | "refunded" | "cancelled";
+export type OrderStatus = "created" | "paid" | "failed" | "refunded" | "cancelled" | "shipped" | "delivered";
 
 export interface IOrder {
   userId: Types.ObjectId;
@@ -66,7 +66,7 @@ const OrderSchema = new Schema<IOrder>({
   address: { type: AddressSchema, required: true },
   subtotal: { type: Number, required: true },
   currency: { type: String, required: true },
-  status: { type: String, enum: ["created", "paid", "failed", "refunded", "cancelled"], default: "created", index: true },
+  status: { type: String, enum: ["created", "paid", "failed", "refunded", "cancelled", "shipped", "delivered"], default: "created", index: true },
   razorpay: {
     orderId: { type: String },
     paymentId: { type: String },
