@@ -23,7 +23,6 @@ export default function LoginPage() {
     try {
       const res = await api.login({ email, password });
       setSuccess(`Welcome back, ${res.user.email}`);
-      // Update global auth state then go home
       await refresh();
       router.push("/");
     } catch (err: unknown) {
@@ -62,7 +61,7 @@ export default function LoginPage() {
           {error ? <p className="text-sm text-red-600">{error}</p> : null}
           {success ? <p className="text-sm text-emerald-600">{success}</p> : null}
           <div className="flex items-center justify-between">
-            <a href="/auth/forgot-password" className="text-xs text-black/70 hover:text-black">Forgot password?</a>
+            <a href="/forgot-password" className="text-xs text-black/70 hover:text-black">Forgot password?</a>
           </div>
           <button
             type="submit"

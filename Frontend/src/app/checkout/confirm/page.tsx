@@ -19,7 +19,7 @@ export default function CheckoutConfirmPage() {
   const isLoggedIn = useMemo(() => !!user, [user]);
 
   useEffect(() => {
-    if (!loading && !isLoggedIn) router.replace("/auth/login");
+    if (!loading && !isLoggedIn) router.replace("/login");
   }, [loading, isLoggedIn, router]);
 
   useEffect(() => {

@@ -25,8 +25,7 @@ export default function ResetPasswordPage() {
     try {
       await api.resetPassword({ token, password });
       setSuccess("Password updated.");
-      // Redirect to profile after a short delay
-      setTimeout(() => router.replace("/auth/me"), 600);
+      setTimeout(() => router.replace("/me"), 600);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Failed";
       setError(msg);
@@ -48,7 +47,6 @@ export default function ResetPasswordPage() {
       <Container>
         <h1 className="text-2xl font-bold tracking-widest uppercase text-black">Reset Password</h1>
         <form onSubmit={onSubmit} className="mt-6 max-w-md space-y-4">
-          {/* Token is read from the URL; no need to display it */}
           <div>
             <label className="block text-xs uppercase tracking-wider text-black/70">New Password</label>
             <input

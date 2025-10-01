@@ -38,7 +38,7 @@ export default function AdminProfilePage() {
 
   useEffect(() => {
     if (!loading) {
-      if (!user) router.replace("/auth/login");
+  if (!user) router.replace("/login");
       else if (!isAdmin) router.replace("/");
       else {
         setName(user.name || "");

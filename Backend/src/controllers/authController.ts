@@ -89,7 +89,7 @@ export async function forgotPassword(req: Request, res: Response) {
     user.passwordResetExpires = expires;
     await user.save();
     const frontendBase = process.env.FRONTEND_ORIGIN || "http://localhost:3000";
-    const resetUrl = `${frontendBase}/auth/reset-password?token=${encodeURIComponent(token)}`;
+  const resetUrl = `${frontendBase}/reset-password?token=${encodeURIComponent(token)}`;
     try {
       await sendEmail({
         to: user.email,
