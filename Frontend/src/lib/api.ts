@@ -1,4 +1,5 @@
-export const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
+export const API_BASE =
+  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const url = `${API_BASE}${path}`;
@@ -15,7 +16,12 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     }
   })();
 
-  console.log("[api] →", options.method || "GET", url, safeBody ? { body: safeBody } : "");
+  console.log(
+    "[api] →",
+    options.method || "GET",
+    url,
+    safeBody ? { body: safeBody } : ""
+  );
   let res: Response;
   try {
     res = await fetch(url, {
@@ -29,7 +35,9 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     });
   } catch (networkErr) {
     console.error("[api] ✗ Network error", { url, err: networkErr });
-    throw new Error("Network error: Failed to reach API. Check server and CORS.");
+    throw new Error(
+      "Network error: Failed to reach API. Check server and CORS."
+    );
   }
 
   const elapsed = Date.now() - start;
@@ -48,9 +56,17 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
       if (typeof d.error === "string") message = d.error;
     }
     const expected401 = res.status === 401 && path === "/api/auth/me";
-    const logPayload = { url, elapsedMs: elapsed, body: (data as unknown) ?? text };
+    const logPayload = {
+      url,
+      elapsedMs: elapsed,
+      body: (data as unknown) ?? text,
+    };
     if (expected401) {
-      console.warn("[api] 401 (expected when logged out)", res.statusText, logPayload);
+      console.warn(
+        "[api] 401 (expected when logged out)",
+        res.statusText,
+        logPayload
+      );
     } else {
       console.error("[api] ✗", res.status, res.statusText, logPayload);
     }
@@ -62,30 +78,62 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
 
 export const api = {
   register(data: { email: string; password: string; name?: string }) {
-    return request<{ user: { id: string; email: string; name?: string; role?: "user" | "admin" } }>("/api/auth/register", {
+    return request<{
+      user: {
+        id: string;
+        email: string;
+        name?: string;
+        role?: "user" | "admin";
+      };
+    }>("/api/auth/register", {
       method: "POST",
       body: JSON.stringify(data),
     });
   },
   login(data: { email: string; password: string }) {
-    return request<{ user: { id: string; email: string; name?: string; role?: "user" | "admin" } }>("/api/auth/login", {
+    return request<{
+      user: {
+        id: string;
+        email: string;
+        name?: string;
+        role?: "user" | "admin";
+      };
+    }>("/api/auth/login", {
       method: "POST",
       body: JSON.stringify(data),
     });
   },
   me() {
-    return request<{ user: { id: string; email: string; name?: string; role?: "user" | "admin"; address?: {
-      fullName?: string; phone?: string; line1?: string; line2?: string; city?: string; state?: string; postalCode?: string; country?: string;
-    } } }>("/api/auth/me");
+    return request<{
+      user: {
+        id: string;
+        email: string;
+        name?: string;
+        role?: "user" | "admin";
+        address?: {
+          fullName?: string;
+          phone?: string;
+          line1?: string;
+          line2?: string;
+          city?: string;
+          state?: string;
+          postalCode?: string;
+          country?: string;
+        };
+      };
+    }>("/api/auth/me");
   },
   logout() {
     return request<{ ok: boolean }>("/api/auth/logout", { method: "POST" });
   },
   forgotPassword(data: { email: string }) {
-    return request<{ ok: boolean; resetToken?: string; expiresAt?: string }>("/api/auth/forgot-password", {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
+    return request<{ ok: boolean; resetToken?: string; expiresAt?: string }>(
+      "/api/auth/forgot-password",
+      {
+        method: "POST",
+        body: JSON.stringify(data),
+      }
+    );
   },
   resetPassword(data: { token: string; password: string }) {
     return request<{ ok: boolean }>("/api/auth/reset-password", {
@@ -94,70 +142,249 @@ export const api = {
     });
   },
   updateProfile(data: { name?: string }) {
-    return request<{ user: { id: string; email: string; name?: string; role?: "user" | "admin"; address?: { fullName?: string; phone?: string; line1?: string; line2?: string; city?: string; state?: string; postalCode?: string; country?: string } } }>("/api/auth/profile", {
+    return request<{
+      user: {
+        id: string;
+        email: string;
+        name?: string;
+        role?: "user" | "admin";
+        address?: {
+          fullName?: string;
+          phone?: string;
+          line1?: string;
+          line2?: string;
+          city?: string;
+          state?: string;
+          postalCode?: string;
+          country?: string;
+        };
+      };
+    }>("/api/auth/profile", {
       method: "PATCH",
       body: JSON.stringify(data),
     });
   },
   getAddress() {
-    return request<{ address: null | { fullName?: string; phone?: string; line1?: string; line2?: string; city?: string; state?: string; postalCode?: string; country?: string } }>("/api/auth/address");
+    return request<{
+      address: null | {
+        fullName?: string;
+        phone?: string;
+        line1?: string;
+        line2?: string;
+        city?: string;
+        state?: string;
+        postalCode?: string;
+        country?: string;
+      };
+    }>("/api/auth/address");
   },
-  updateAddress(data: { fullName?: string; phone?: string; line1?: string; line2?: string; city?: string; state?: string; postalCode?: string; country?: string }) {
-    return request<{ address: null | { fullName?: string; phone?: string; line1?: string; line2?: string; city?: string; state?: string; postalCode?: string; country?: string } }>("/api/auth/address", {
+  updateAddress(data: {
+    fullName?: string;
+    phone?: string;
+    line1?: string;
+    line2?: string;
+    city?: string;
+    state?: string;
+    postalCode?: string;
+    country?: string;
+  }) {
+    return request<{
+      address: null | {
+        fullName?: string;
+        phone?: string;
+        line1?: string;
+        line2?: string;
+        city?: string;
+        state?: string;
+        postalCode?: string;
+        country?: string;
+      };
+    }>("/api/auth/address", {
       method: "PATCH",
       body: JSON.stringify(data),
     });
   },
   // Addresses CRUD (multi-address support)
   listAddresses() {
-    return request<{ addresses: Array<{ id: string; label?: string; fullName?: string; phone?: string; line1?: string; line2?: string; city?: string; state?: string; postalCode?: string; country?: string; isDefault?: boolean }> }>("/api/auth/addresses");
+    return request<{
+      addresses: Array<{
+        id: string;
+        label?: string;
+        fullName?: string;
+        phone?: string;
+        line1?: string;
+        line2?: string;
+        city?: string;
+        state?: string;
+        postalCode?: string;
+        country?: string;
+        isDefault?: boolean;
+      }>;
+    }>("/api/auth/addresses");
   },
-  createAddress(data: { label?: string; fullName?: string; phone?: string; line1?: string; line2?: string; city?: string; state?: string; postalCode?: string; country?: string; isDefault?: boolean }) {
-    return request<{ address: { id: string; label?: string; fullName?: string; phone?: string; line1?: string; line2?: string; city?: string; state?: string; postalCode?: string; country?: string; isDefault?: boolean } }>("/api/auth/addresses", {
+  createAddress(data: {
+    label?: string;
+    fullName?: string;
+    phone?: string;
+    line1?: string;
+    line2?: string;
+    city?: string;
+    state?: string;
+    postalCode?: string;
+    country?: string;
+    isDefault?: boolean;
+  }) {
+    return request<{
+      address: {
+        id: string;
+        label?: string;
+        fullName?: string;
+        phone?: string;
+        line1?: string;
+        line2?: string;
+        city?: string;
+        state?: string;
+        postalCode?: string;
+        country?: string;
+        isDefault?: boolean;
+      };
+    }>("/api/auth/addresses", {
       method: "POST",
       body: JSON.stringify(data),
     });
   },
-  updateAddressById(id: string, data: { label?: string; fullName?: string; phone?: string; line1?: string; line2?: string; city?: string; state?: string; postalCode?: string; country?: string }) {
-    return request<{ address: { id: string; label?: string; fullName?: string; phone?: string; line1?: string; line2?: string; city?: string; state?: string; postalCode?: string; country?: string; isDefault?: boolean } }>(`/api/auth/addresses/${encodeURIComponent(id)}`, {
+  updateAddressById(
+    id: string,
+    data: {
+      label?: string;
+      fullName?: string;
+      phone?: string;
+      line1?: string;
+      line2?: string;
+      city?: string;
+      state?: string;
+      postalCode?: string;
+      country?: string;
+    }
+  ) {
+    return request<{
+      address: {
+        id: string;
+        label?: string;
+        fullName?: string;
+        phone?: string;
+        line1?: string;
+        line2?: string;
+        city?: string;
+        state?: string;
+        postalCode?: string;
+        country?: string;
+        isDefault?: boolean;
+      };
+    }>(`/api/auth/addresses/${encodeURIComponent(id)}`, {
       method: "PATCH",
       body: JSON.stringify(data),
     });
   },
   deleteAddressById(id: string) {
-    return request<{ ok: boolean }>(`/api/auth/addresses/${encodeURIComponent(id)}`, { method: "DELETE" });
+    return request<{ ok: boolean }>(
+      `/api/auth/addresses/${encodeURIComponent(id)}`,
+      { method: "DELETE" }
+    );
   },
   setDefaultAddress(id: string) {
-    return request<{ ok: boolean }>(`/api/auth/addresses/${encodeURIComponent(id)}/default`, { method: "PATCH" });
+    return request<{ ok: boolean }>(
+      `/api/auth/addresses/${encodeURIComponent(id)}/default`,
+      { method: "PATCH" }
+    );
   },
   // Cart APIs
   getCart() {
-    return request<{ cart: { items: Array<{ productSlug: string; name: string; price: number; currency: string; image: string; quantity: number; size?: string }> } }>("/api/cart");
+    return request<{
+      cart: {
+        items: Array<{
+          productSlug: string;
+          name: string;
+          price: number;
+          currency: string;
+          image: string;
+          quantity: number;
+          size?: string;
+        }>;
+      };
+    }>("/api/cart");
   },
   addToCart(data: { productSlug: string; quantity?: number; size?: string }) {
-    return request<{ cart: { items: Array<{ productSlug: string; name: string; price: number; currency: string; image: string; quantity: number; size?: string }> } }>("/api/cart/items", {
+    return request<{
+      cart: {
+        items: Array<{
+          productSlug: string;
+          name: string;
+          price: number;
+          currency: string;
+          image: string;
+          quantity: number;
+          size?: string;
+        }>;
+      };
+    }>("/api/cart/items", {
       method: "POST",
       body: JSON.stringify(data),
     });
   },
   updateCartItem(productSlug: string, quantity: number, size?: string) {
-    return request<{ cart: { items: Array<{ productSlug: string; name: string; price: number; currency: string; image: string; quantity: number; size?: string }> } }>(`/api/cart/items/${encodeURIComponent(productSlug)}`, {
+    return request<{
+      cart: {
+        items: Array<{
+          productSlug: string;
+          name: string;
+          price: number;
+          currency: string;
+          image: string;
+          quantity: number;
+          size?: string;
+        }>;
+      };
+    }>(`/api/cart/items/${encodeURIComponent(productSlug)}`, {
       method: "PATCH",
       body: JSON.stringify({ quantity, size }),
     });
   },
   removeCartItem(productSlug: string, size?: string) {
-    return request<{ cart: { items: Array<{ productSlug: string; name: string; price: number; currency: string; image: string; quantity: number; size?: string }> } }>(`/api/cart/items/${encodeURIComponent(productSlug)}`, {
+    return request<{
+      cart: {
+        items: Array<{
+          productSlug: string;
+          name: string;
+          price: number;
+          currency: string;
+          image: string;
+          quantity: number;
+          size?: string;
+        }>;
+      };
+    }>(`/api/cart/items/${encodeURIComponent(productSlug)}`, {
       method: "DELETE",
       body: size ? JSON.stringify({ size }) : undefined,
     });
   },
   // Orders & Payments
   createOrder() {
-    return request<{ order: OrderDTO; razorpayOrder: RazorpayOrderDTO; key: string }>("/api/orders/create", { method: "POST" });
+    return request<{
+      order: OrderDTO;
+      razorpayOrder: RazorpayOrderDTO;
+      key: string;
+    }>("/api/orders/create", { method: "POST" });
   },
-  verifyPayment(data: { orderId: string; paymentId: string; signature: string }) {
-    return request<{ order: OrderDTO }>("/api/orders/verify", { method: "POST", body: JSON.stringify(data) });
+  verifyPayment(data: {
+    orderId: string;
+    paymentId: string;
+    signature: string;
+  }) {
+    return request<{ order: OrderDTO }>("/api/orders/verify", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
   },
   myOrders() {
     return request<{ items: OrderDTO[] }>("/api/orders/mine");
@@ -170,16 +397,64 @@ export const api = {
     return request<{ items: OrderDTO[] }>("/api/orders/admin");
   },
   adminGetOrder(id: string) {
-    return request<{ item: OrderDTO }>(`/api/orders/admin/${encodeURIComponent(id)}`);
+    return request<{ item: OrderDTO }>(
+      `/api/orders/admin/${encodeURIComponent(id)}`
+    );
   },
   adminUpdateOrderStatus(id: string, status: string) {
-    return request<{ item: OrderDTO }>(`/api/orders/admin/${encodeURIComponent(id)}/status`, { method: "PATCH", body: JSON.stringify({ status }) });
+    return request<{ item: OrderDTO }>(
+      `/api/orders/admin/${encodeURIComponent(id)}/status`,
+      { method: "PATCH", body: JSON.stringify({ status }) }
+    );
+  },
+  // Admin: Codes
+  adminGenerateCodes(count: number) {
+    return request<{ items: string[] }>("/api/codes/generate", {
+      method: "POST",
+      body: JSON.stringify({ count }),
+    });
   },
 };
 
 // Types
-export type OrderStatus = "created" | "paid" | "failed" | "refunded" | "cancelled" | "shipped" | "delivered";
-export type OrderItemDTO = { productSlug: string; name: string; price: number; currency: string; image: string; quantity: number; size?: string };
-export type OrderAddressDTO = { label?: string; fullName?: string; phone?: string; line1?: string; line2?: string; city?: string; state?: string; postalCode?: string; country?: string };
-export type OrderDTO = { id?: string; _id?: string; userId: string; items: OrderItemDTO[]; address: OrderAddressDTO; subtotal: number; currency: string; status: OrderStatus; razorpay?: { orderId?: string; paymentId?: string; signature?: string }; createdAt?: string };
+export type OrderStatus =
+  | "created"
+  | "paid"
+  | "failed"
+  | "refunded"
+  | "cancelled"
+  | "shipped"
+  | "delivered";
+export type OrderItemDTO = {
+  productSlug: string;
+  name: string;
+  price: number;
+  currency: string;
+  image: string;
+  quantity: number;
+  size?: string;
+};
+export type OrderAddressDTO = {
+  label?: string;
+  fullName?: string;
+  phone?: string;
+  line1?: string;
+  line2?: string;
+  city?: string;
+  state?: string;
+  postalCode?: string;
+  country?: string;
+};
+export type OrderDTO = {
+  id?: string;
+  _id?: string;
+  userId: string;
+  items: OrderItemDTO[];
+  address: OrderAddressDTO;
+  subtotal: number;
+  currency: string;
+  status: OrderStatus;
+  razorpay?: { orderId?: string; paymentId?: string; signature?: string };
+  createdAt?: string;
+};
 export type RazorpayOrderDTO = { id: string; amount: number; currency: string };

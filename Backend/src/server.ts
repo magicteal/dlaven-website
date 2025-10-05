@@ -9,6 +9,7 @@ import productsRoutes from "./routes/products";
 import categoriesRoutes from "./routes/categories";
 import uploadsRoutes from "./routes/uploads";
 import ordersRoutes from "./routes/orders";
+import codesRoutes from "./routes/codes";
 import cartRoutes from "./routes/cart";
 
 dotenv.config();
@@ -16,7 +17,8 @@ dotenv.config();
 const app = express();
 
 // CORS (allow frontend origins; comma-separated list)
-const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || "http://localhost:3000,http://127.0.0.1:3000";
+const FRONTEND_ORIGIN =
+  process.env.FRONTEND_ORIGIN || "http://localhost:3000,http://127.0.0.1:3000";
 const ALLOWED_ORIGINS = FRONTEND_ORIGIN.split(",").map((s) => s.trim());
 app.use(
   cors({
@@ -42,6 +44,7 @@ app.use("/api/categories", categoriesRoutes);
 app.use("/api/uploads", uploadsRoutes);
 app.use("/api/orders", ordersRoutes);
 app.use("/api/cart", cartRoutes);
+app.use("/api/codes", codesRoutes);
 
 app.get("/api/health", (_req: Request, res: Response) => {
   res.json({ ok: true, service: "dlaven-backend" });
