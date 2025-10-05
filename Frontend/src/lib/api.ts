@@ -409,14 +409,27 @@ export const api = {
   },
   // Admin: Codes
   adminGenerateCodes(count: number) {
-    return request<{ items: string[] }>("/api/codes/generate", {
+    return request<{ items: string[]; batch: number }>("/api/codes/generate", {
       method: "POST",
       body: JSON.stringify({ count }),
+    });
+  },
+  adminGetCodeBatchHistory() {
+    return request<{ items: BatchHistoryItem[] }>("/api/codes/history");
+  },
+  adminDeleteCodeBatch(batchNumber: number) {
+    return request<{ ok: boolean }>(`/api/codes/batch/${batchNumber}`, {
+      method: "DELETE",
     });
   },
 };
 
 // Types
+export type BatchHistoryItem = {
+  batch: number;
+  count: number;
+  createdAt: string;
+};
 export type OrderStatus =
   | "created"
   | "paid"
