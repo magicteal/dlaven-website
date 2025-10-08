@@ -1,8 +1,10 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
 
 export interface ICode extends Document {
-  code: string; // numeric string; keep as string to preserve leading zeros. Prefix handled in presentation.
-  usedBy?: Types.ObjectId | null; // reference to User who used it (nullable)
+  code: string;
+  batch: number;
+  isDeleted: boolean; // <-- Nayi field add ki
+  usedBy?: Types.ObjectId | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -15,8 +17,16 @@ const CodeSchema = new Schema<ICode>(
       unique: true,
       index: true,
       trim: true,
-      // Store only numeric characters so leading zeros are preserved.
-      match: [/^\d+$/, "Code must contain only digits"],
+    },
+    batch: {
+      type: Number,
+      required: true,
+      index: true,
+    },
+    isDeleted: { // <-- Nayi field ka schema
+      type: Boolean,
+      default: false,
+      index: true,
     },
     usedBy: {
       type: Schema.Types.ObjectId,
