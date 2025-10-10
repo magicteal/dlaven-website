@@ -3,8 +3,30 @@ import Head from "next/head";
 import Container from "@/components/Container";
 import Image from "next/image";
 import Link from "next/link";
+import { ShieldCheck, Crown, Scissors } from "lucide-react";
 
 export default function ServicesPage() {
+  const ourCollections = [
+    {
+      name: "DL Limited",
+      description:
+        "Discover exclusive, limited-edition pieces released in select quantities.",
+      icon: <ShieldCheck className="h-8 w-8 text-black" />,
+    },
+    {
+      name: "DL Prive",
+      description:
+        "Access our members-only collection for a premium and personalized styling experience.",
+      icon: <Crown className="h-8 w-8 text-black" />,
+    },
+    {
+      name: "DL Barry",
+      description:
+        "Experience bespoke tailoring with our made-to-measure service for a perfect fit.",
+      icon: <Scissors className="h-8 w-8 text-black" />,
+    },
+  ];
+
   return (
     <>
       <Head>
@@ -132,47 +154,39 @@ export default function ServicesPage() {
         </section>
 
         {/* =========================
-            4. Complimentary Services Section (Image + Copy)
+            4. Our Collections Section (NEW)
            ========================= */}
-        <section className="bg-white text-black">
-          <div className="grid grid-cols-1 md:grid-cols-2">
-            {/* Left image */}
-            <div className="relative h-80 md:h-[520px] w-full">
-              <Image
-                src="/images/dl-service-complimentary.jpg"
-                alt="Complimentary personalization service"
-                fill
-                className="object-cover object-center"
-                sizes="(max-width: 768px) 100vw, 50vw"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
+        <section className="py-16 sm:py-24 bg-gray-100 text-gray-900">
+          <Container>
+            <div className="max-w-3xl mx-auto text-center">
+              <h2 className="text-3xl font-bold tracking-widest uppercase">
+                Our Collections
+              </h2>
+              <p className="mt-6 text-sm text-gray-700 max-w-2xl mx-auto">
+                Explore our exclusive tiers of luxury, each crafted to provide a
+                unique and unforgettable D'LAVÉN experience.
+              </p>
             </div>
 
-            {/* Right copy */}
-            <div className="flex items-center justify-center p-8 md:p-16">
-              <div className="max-w-md text-center md:text-left">
-                <h3 className="text-2xl font-bold tracking-widest uppercase">
-                  Complimentary Services
-                </h3>
-                <p className="mt-4 text-sm text-black/70">
-                  To enhance your experience, D'LAVÉN is pleased to offer
-                  complimentary personalization and shipping on all orders. Make
-                  your selection truly unique with our expert engraving and
-                  monogramming services.
-                </p>
-
-                <div className="mt-8">
-                  <Link
-                    href="/contact"
-                    className="inline-block px-8 py-3 border border-black text-xs uppercase tracking-wider hover:bg-black hover:text-white transition-colors duration-300"
-                  >
-                    Contact an Advisor
-                  </Link>
+            <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-10">
+              {ourCollections.map((service) => (
+                <div
+                  key={service.name}
+                  className="text-center p-8 border border-gray-300 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow duration-300"
+                >
+                  <div className="flex items-center justify-center h-16 w-16 rounded-full bg-gray-200 mx-auto">
+                    {service.icon}
+                  </div>
+                  <h3 className="mt-6 text-xl font-bold tracking-wider uppercase">
+                    {service.name}
+                  </h3>
+                  <p className="mt-4 text-sm text-gray-600">
+                    {service.description}
+                  </p>
                 </div>
-              </div>
+              ))}
             </div>
-          </div>
+          </Container>
         </section>
       </main>
     </>

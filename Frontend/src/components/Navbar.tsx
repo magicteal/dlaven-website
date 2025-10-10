@@ -1,10 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import MenuDrawer from "@/components/MenuDrawer";
+import SearchOverlay from "@/components/SearchOverlay"; // Import the overlay
 import { ShoppingBag, Search, Menu, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Container from "@/components/Container";
@@ -67,7 +68,7 @@ function ContactUs() {
   );
 }
 
-function RightControls() {
+function RightControls({ onSearchClick }: { onSearchClick: () => void }) {
   const { user, logout, loading } = useAuth();
   const router = useRouter();
   const { count } = useCart();
@@ -84,6 +85,7 @@ function RightControls() {
     const local = email.split("@")[0] || "";
     return (local.slice(0, 2) || "U").toUpperCase();
   }, [user]);
+
   return (
     <>
       <button
@@ -100,7 +102,10 @@ function RightControls() {
       </button>
       {user && (
         <>
-          <Link href={user.role === "admin" ? "/admin" : "/me"} className="hidden sm:inline-flex items-center gap-2 px-2 text-sm text-black/80 hover:text-black">
+          <Link
+            href={user.role === "admin" ? "/admin" : "/me"}
+            className="hidden sm:inline-flex items-center gap-2 px-2 text-sm text-black/80 hover:text-black"
+          >
             <Avatar label={initials} title={user.name || user.email} />
           </Link>
           <Button
@@ -108,7 +113,9 @@ function RightControls() {
             className="rounded-none h-9 px-2 sm:px-3 text-sm"
             aria-label="Logout"
             onClick={async () => {
-              try { await logout(); } catch {}
+              try {
+                await logout();
+              } catch {}
               router.push("/");
             }}
             disabled={loading}
@@ -117,7 +124,11 @@ function RightControls() {
           </Button>
         </>
       )}
-      <IconButton aria-label="Search" className="hidden sm:inline-flex">
+      <IconButton
+        aria-label="Search"
+        className="hidden sm:inline-flex"
+        onClick={onSearchClick}
+      >
         <Search className="h-5 w-5" />
       </IconButton>
       <MenuDrawer
@@ -128,7 +139,9 @@ function RightControls() {
             aria-label="Open menu"
           >
             <Menu className="h-5 w-5" />
-            <span className="hidden sm:inline text-sm whitespace-nowrap">MENU</span>
+            <span className="hidden sm:inline text-sm whitespace-nowrap">
+              MENU
+            </span>
           </Button>
         }
       />
@@ -139,39 +152,55 @@ function RightControls() {
 // --- Organism: Navbar ---
 export default function Navbar() {
   const { user, loading } = useAuth();
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
   return (
-    // This is the key change: fixed, top-0, z-50, w-full, and background styles
-    <header className="fixed top-0 left-0 right-0 z-50 w-full bg-white/90 backdrop-blur-md shadow-sm">
-      <Container>
-        <nav aria-label="Primary">
-        <div className="flex items-center justify-between h-14 sm:h-16 md:h-20 md:grid md:grid-cols-3">
-          <div className="justify-self-start hidden md:block">
-            <ContactUs />
-          </div>
+    <>
+      <header className="fixed top-0 left-0 right-0 z-50 w-full bg-white/90 backdrop-blur-md shadow-sm">
+        <Container>
+          <nav aria-label="Primary">
+            <div className="flex items-center justify-between h-14 sm:h-16 md:h-20 md:grid md:grid-cols-3">
+              <div className="justify-self-start hidden md:block">
+                <ContactUs />
+              </div>
 
-          <div className="md:justify-self-center">
-            <div className="md:scale-100 scale-95">
-              <Brand />
-            </div>
-          </div>
+              <div className="md:justify-self-center">
+                <div className="md:scale-100 scale-95">
+                  <Brand />
+                </div>
+              </div>
 
-          <div className="justify-self-end">
-            <div className="flex items-center gap-1 sm:gap-2">
-              
-              {/* Show Login/Register only when logged out */}
-              {!user && !loading && (
-                <>
-                  <Link href="/login" className="hidden sm:inline text-xs uppercase tracking-wider text-black/70 hover:text-black">Login</Link>
-                  <Link href="/register" className="hidden sm:inline text-xs uppercase tracking-wider text-black/70 hover:text-black">Register</Link>
-                </>
-              )}
-              
-              <RightControls />
+              <div className="justify-self-end">
+                <div className="flex items-center gap-1 sm:gap-2">
+                  {!user && !loading && (
+                    <>
+                      <Link
+                        href="/login"
+                        className="hidden sm:inline text-xs uppercase tracking-wider text-black/70 hover:text-black"
+                      >
+                        Login
+                      </Link>
+                      <Link
+                        href="/register"
+                        className="hidden sm:inline text-xs uppercase tracking-wider text-black/70 hover:text-black"
+                      >
+                        Register
+                      </Link>
+                    </>
+                  )}
+                  <RightControls onSearchClick={() => setIsSearchOpen(true)} />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        </nav>
-      </Container>
-    </header>
+          </nav>
+        </Container>
+      </header>
+
+      {/* Search Overlay Component */}
+      <SearchOverlay
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+      />
+    </>
   );
 }
