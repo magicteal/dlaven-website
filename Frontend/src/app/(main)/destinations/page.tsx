@@ -1,10 +1,9 @@
 import Container from "@/components/Container";
 import Image from "next/image";
 import Link from "next/link";
+import AnimatedCities from "@/components/AnimatedCities"; // Naya component import karein
 
 export default function DestinationsPage() {
-  const cities = ["Mumbai", "Delhi", "Varanasi"];
-
   return (
     <main>
       {/* Hero Section */}
@@ -64,20 +63,19 @@ export default function DestinationsPage() {
             </div>
           </div>
 
-          {/* Cities List */}
-          <div className="max-w-4xl mx-auto text-center mt-16">
-            <div className="grid grid-cols-3 gap-x-4 gap-y-6 text-black/80">
-              {cities.map((city) => (
-                <div key={city} className="text-lg tracking-widest uppercase">
-                  {city}
-                </div>
-              ))}
+          {/* Cities List using the new animated component */}
+          <div className="max-w-4xl mx-auto text-center mt-20">
+            <h2 className="text-2xl font-semibold tracking-wider uppercase text-black">
+              Iconic Locations
+            </h2>
+            <div className="mt-8">
+              <AnimatedCities />
             </div>
           </div>
         </Container>
       </div>
 
-      {/* New 3-Image Section */}
+      {/* 3-Image Section */}
       <Container>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-96">
           <div className="relative h-full w-full">
