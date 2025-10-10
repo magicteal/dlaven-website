@@ -174,40 +174,6 @@ export default function ServicesPage() {
             </div>
           </div>
         </section>
-
-        {/* =========================
-            5. Footer CTA (small)
-           ========================= */}
-        <section className="py-12 bg-neutral-900 text-white">
-          <Container>
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-              <div>
-                <p className="uppercase tracking-wider text-sm">
-                  Present of D'LAVÉN
-                </p>
-                <p className="mt-2 text-xs opacity-80">
-                  Experience Unrivaled Luxury and Care
-                </p>
-              </div>
-
-              <div className="flex items-center gap-4">
-                <Link
-                  href="/products"
-                  className="px-6 py-2 border border-white text-xs uppercase tracking-wider hover:bg-white hover:text-black transition-colors duration-300"
-                >
-                  Explore Collections
-                </Link>
-
-                <Link
-                  href="/contact"
-                  className="px-4 py-2 text-xs uppercase tracking-wider underline"
-                >
-                  Contact
-                </Link>
-              </div>
-            </div>
-          </Container>
-        </section>
       </main>
     </>
   );
