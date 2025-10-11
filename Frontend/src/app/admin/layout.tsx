@@ -32,6 +32,9 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         <Link href="/admin/codes" className="text-sm hover:underline">
           Codes
         </Link>
+        <Link href="/admin/dlaven-limited" className="text-sm hover:underline">
+          DLaven Limited
+        </Link>
         {/* Add more admin sections here */}
       </aside>
       <main className="p-4 sm:p-6">{children}</main>

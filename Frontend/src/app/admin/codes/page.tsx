@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 
 export default function AdminCodesPage() {
   const [count, setCount] = useState<number>(10);
+  const [codeCollection, setCodeCollection] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [generated, setGenerated] = useState<{
@@ -38,7 +39,10 @@ export default function AdminCodesPage() {
     }
     setLoading(true);
     try {
-      const res = await api.adminGenerateCodes(count);
+      const res = await api.adminGenerateCodes(
+        count,
+        codeCollection.trim() || undefined
+      );
       setGenerated(res);
       fetchHistory();
     } catch (err: unknown) {
@@ -92,6 +96,16 @@ export default function AdminCodesPage() {
             placeholder="e.g., 100"
           />
         </label>
+        <label className="flex flex-col gap-1">
+          <span className="text-sm text-black/70">Collection (optional)</span>
+          <Input
+            type="text"
+            className="text-black"
+            value={codeCollection}
+            onChange={(e) => setCodeCollection(e.target.value)}
+            placeholder="e.g., dlaven-limited"
+          />
+        </label>
         <div>
           <Button type="submit" disabled={loading}>
             {loading ? "Generating…" : "Generate"}
@@ -137,6 +151,7 @@ export default function AdminCodesPage() {
             <thead>
               <tr className="text-left border-b border-black/10">
                 <th className="py-2 pr-4">Batch #</th>
+                <th className="py-2 pr-4">Collection</th>
                 <th className="py-2 pr-4">Codes</th>
                 <th className="py-2 pr-4">Date Created</th>
                 <th className="py-2 pr-4 text-right">Actions</th>
@@ -145,13 +160,13 @@ export default function AdminCodesPage() {
             <tbody>
               {history === null ? (
                 <tr>
-                  <td colSpan={4} className="py-4 text-black/60">
+                  <td colSpan={5} className="py-4 text-black/60">
                     Loading history...
                   </td>
                 </tr>
               ) : history.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="py-4 text-black/60">
+                  <td colSpan={5} className="py-4 text-black/60">
                     No batches generated yet.
                   </td>
                 </tr>
@@ -159,6 +174,9 @@ export default function AdminCodesPage() {
                 history.map((h) => (
                   <tr key={h.batch} className="border-b border-black/5">
                     <td className="py-2 pr-4 font-medium">{h.batch}</td>
+                    <td className="py-2 pr-4 font-mono text-xs">
+                      {h.codeCollection || "—"}
+                    </td>
                     <td className="py-2 pr-4">{h.count}</td>
                     <td className="py-2 pr-4 text-black/70">
                       {new Date(h.createdAt).toLocaleDateString()}

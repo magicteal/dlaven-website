@@ -77,6 +77,18 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
 }
 
 export const api = {
+  listProducts(params?: { category?: string; collection?: string }) {
+    const search = new URLSearchParams();
+    if (params?.category) search.set("category", params.category);
+    if (params?.collection) search.set("collection", params.collection);
+    return request<{ items: unknown[] }>(`/api/products?${search.toString()}`);
+  },
+  verifyLimitedCode(code: string) {
+      return request<{ ok: boolean }>("/api/codes/verify-limited", {
+          method: "POST",
+          body: JSON.stringify({ code }),
+      });
+  },
   register(data: { email: string; password: string; name?: string }) {
     return request<{
       user: {
@@ -408,10 +420,10 @@ export const api = {
     );
   },
   // Admin: Codes
-  adminGenerateCodes(count: number) {
+  adminGenerateCodes(count: number, codeCollection?: string) {
     return request<{ items: string[]; batch: number }>("/api/codes/generate", {
       method: "POST",
-      body: JSON.stringify({ count }),
+      body: JSON.stringify({ count, codeCollection }),
     });
   },
   adminGetCodeBatchHistory() {
@@ -429,6 +441,7 @@ export type BatchHistoryItem = {
   batch: number;
   count: number;
   createdAt: string;
+  codeCollection?: string | null;
 };
 export type OrderStatus =
   | "created"

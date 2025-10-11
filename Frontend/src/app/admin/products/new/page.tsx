@@ -24,8 +24,11 @@ export default function AdminNewProductPage() {
     sizeOptions: "",
     details: "",
     materialCare: "",
+    isLimited: false, // New state for Dlaven Limited
   });
-  const [categories, setCategories] = useState<Array<{ slug: string; name: string }>>([]);
+  const [categories, setCategories] = useState<
+    Array<{ slug: string; name: string }>
+  >([]);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -38,7 +41,9 @@ export default function AdminNewProductPage() {
   useEffect(() => {
     async function loadCategories() {
       try {
-        const data = await requestAdmin<{ items: Array<{ slug: string; name: string }> }>("/api/categories");
+        const data = await requestAdmin<{
+          items: Array<{ slug: string; name: string }>;
+        }>("/api/categories");
         setCategories(data.items);
       } catch {}
     }
@@ -65,9 +70,12 @@ export default function AdminNewProductPage() {
     setError(null);
     setUploading(true);
     try {
-  const url = await uploadViaBackend(file);
+      const url = await uploadViaBackend(file);
       setForm((p) => {
-        const urls = p.images.split(",").map((s) => s.trim()).filter(Boolean);
+        const urls = p.images
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean);
         urls.push(url);
         return { ...p, images: urls.join(",") };
       });
@@ -90,16 +98,35 @@ export default function AdminNewProductPage() {
         description: form.description.trim(),
         price: Number(form.price) || 0,
         currency: form.currency.trim() || "USD",
-        images: form.images.split(",").map((s) => s.trim()).filter(Boolean),
+        images: form.images
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean),
         categorySlug: form.categorySlug.trim(),
         inStock: !!form.inStock,
         rating: form.rating ? Number(form.rating) : undefined,
         reviewsCount: form.reviewsCount ? Number(form.reviewsCount) : undefined,
-        sizeOptions: form.sizeOptions.split(",").map((s) => s.trim()).filter(Boolean) || undefined,
-        details: form.details.split("\n").map((s) => s.trim()).filter(Boolean) || undefined,
-        materialCare: form.materialCare.split("\n").map((s) => s.trim()).filter(Boolean) || undefined,
+        sizeOptions:
+          form.sizeOptions
+            .split(",")
+            .map((s) => s.trim())
+            .filter(Boolean) || undefined,
+        details:
+          form.details
+            .split("\n")
+            .map((s) => s.trim())
+            .filter(Boolean) || undefined,
+        materialCare:
+          form.materialCare
+            .split("\n")
+            .map((s) => s.trim())
+            .filter(Boolean) || undefined,
+        isLimited: form.isLimited, // Include isLimited in the payload
       };
-      await requestAdmin("/api/products", { method: "POST", body: JSON.stringify(body) });
+      await requestAdmin("/api/products", {
+        method: "POST",
+        body: JSON.stringify(body),
+      });
       router.replace("/admin/products");
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Failed to create product");
@@ -113,12 +140,32 @@ export default function AdminNewProductPage() {
       <h1 className="text-xl font-semibold">New Product</h1>
       {error ? <p className="mt-2 text-sm text-red-600">{error}</p> : null}
       <form onSubmit={onSave} className="mt-6 grid grid-cols-1 gap-4">
-        <Input label="Slug" value={form.slug} onChange={(v) => setForm((p) => ({ ...p, slug: v }))} />
-        <Input label="Name" value={form.name} onChange={(v) => setForm((p) => ({ ...p, name: v }))} />
-        <Textarea label="Description" value={form.description} onChange={(v) => setForm((p) => ({ ...p, description: v }))} />
+        <Input
+          label="Slug"
+          value={form.slug}
+          onChange={(v) => setForm((p) => ({ ...p, slug: v }))}
+        />
+        <Input
+          label="Name"
+          value={form.name}
+          onChange={(v) => setForm((p) => ({ ...p, name: v }))}
+        />
+        <Textarea
+          label="Description"
+          value={form.description}
+          onChange={(v) => setForm((p) => ({ ...p, description: v }))}
+        />
         <div className="grid grid-cols-2 gap-3">
-          <Input label="Price" value={form.price} onChange={(v) => setForm((p) => ({ ...p, price: v }))} />
-          <Input label="Currency" value={form.currency} onChange={(v) => setForm((p) => ({ ...p, currency: v }))} />
+          <Input
+            label="Price"
+            value={form.price}
+            onChange={(v) => setForm((p) => ({ ...p, price: v }))}
+          />
+          <Input
+            label="Currency"
+            value={form.currency}
+            onChange={(v) => setForm((p) => ({ ...p, currency: v }))}
+          />
         </div>
         <div>
           <label className="block text-sm font-medium">Images</label>
@@ -127,10 +174,18 @@ export default function AdminNewProductPage() {
               className="w-full border border-black/20 px-3 py-2 text-sm"
               placeholder="Paste image URLs (comma-separated) or use Upload"
               value={form.images}
-              onChange={(e) => setForm((p) => ({ ...p, images: e.target.value }))}
+              onChange={(e) =>
+                setForm((p) => ({ ...p, images: e.target.value }))
+              }
             />
             <div className="flex items-center gap-2">
-              <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={onFileSelect} />
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={onFileSelect}
+              />
               <button
                 type="button"
                 className="px-3 py-2 border border-black text-sm hover:bg-black hover:text-white disabled:opacity-60"
@@ -143,63 +198,162 @@ export default function AdminNewProductPage() {
             {form.images ? (
               <div className="flex flex-wrap gap-2 mt-1">
                 {form.images.split(",").map((u, i) => (
-                  <div key={i} className="relative w-16 h-16 border border-black/10 overflow-hidden">
-                    <Image src={u} alt={`img-${i}`} fill sizes="64px" className="object-cover" />
+                  <div
+                    key={i}
+                    className="relative w-16 h-16 border border-black/10 overflow-hidden"
+                  >
+                    <Image
+                      src={u}
+                      alt={`img-${i}`}
+                      fill
+                      sizes="64px"
+                      className="object-cover"
+                    />
                   </div>
                 ))}
               </div>
             ) : null}
-            <p className="text-xs text-black/60">Uploads via backend Cloudinary route (admin-only).</p>
+            <p className="text-xs text-black/60">
+              Uploads via backend Cloudinary route (admin-only).
+            </p>
           </div>
         </div>
         <div>
           <label className="block text-sm font-medium">Category</label>
-          <select className="mt-1 w-full border border-black/20 px-3 py-2 text-sm" value={form.categorySlug} onChange={(e) => setForm((p) => ({ ...p, categorySlug: e.target.value }))}>
+          <select
+            className="mt-1 w-full border border-black/20 px-3 py-2 text-sm"
+            value={form.categorySlug}
+            onChange={(e) =>
+              setForm((p) => ({ ...p, categorySlug: e.target.value }))
+            }
+          >
             <option value="">Select category</option>
             {categories.map((c) => (
-              <option key={c.slug} value={c.slug}>{c.name} ({c.slug})</option>
+              <option key={c.slug} value={c.slug}>
+                {c.name} ({c.slug})
+              </option>
             ))}
           </select>
         </div>
         <div className="grid grid-cols-2 gap-3">
-          <Input label="Rating (optional)" value={form.rating} onChange={(v) => setForm((p) => ({ ...p, rating: v }))} />
-          <Input label="Reviews Count (optional)" value={form.reviewsCount} onChange={(v) => setForm((p) => ({ ...p, reviewsCount: v }))} />
+          <Input
+            label="Rating (optional)"
+            value={form.rating}
+            onChange={(v) => setForm((p) => ({ ...p, rating: v }))}
+          />
+          <Input
+            label="Reviews Count (optional)"
+            value={form.reviewsCount}
+            onChange={(v) => setForm((p) => ({ ...p, reviewsCount: v }))}
+          />
         </div>
-        <Input label="Size Options (comma-separated)" value={form.sizeOptions} onChange={(v) => setForm((p) => ({ ...p, sizeOptions: v }))} />
-        <Textarea label="Details (one per line)" value={form.details} onChange={(v) => setForm((p) => ({ ...p, details: v }))} />
-        <Textarea label="Material & Care (one per line)" value={form.materialCare} onChange={(v) => setForm((p) => ({ ...p, materialCare: v }))} />
+        <Input
+          label="Size Options (comma-separated)"
+          value={form.sizeOptions}
+          onChange={(v) => setForm((p) => ({ ...p, sizeOptions: v }))}
+        />
+        <Textarea
+          label="Details (one per line)"
+          value={form.details}
+          onChange={(v) => setForm((p) => ({ ...p, details: v }))}
+        />
+        <Textarea
+          label="Material & Care (one per line)"
+          value={form.materialCare}
+          onChange={(v) => setForm((p) => ({ ...p, materialCare: v }))}
+        />
         <div className="flex items-center gap-2">
-          <input id="instock" type="checkbox" checked={form.inStock} onChange={(e) => setForm((p) => ({ ...p, inStock: e.target.checked }))} />
-          <label htmlFor="instock" className="text-sm">In stock</label>
+          <input
+            id="instock"
+            type="checkbox"
+            checked={form.inStock}
+            onChange={(e) =>
+              setForm((p) => ({ ...p, inStock: e.target.checked }))
+            }
+          />
+          <label htmlFor="instock" className="text-sm">
+            In stock
+          </label>
+        </div>
+        <div className="flex items-center gap-2">
+          <input
+            id="isLimited"
+            type="checkbox"
+            checked={form.isLimited}
+            onChange={(e) =>
+              setForm((p) => ({ ...p, isLimited: e.target.checked }))
+            }
+          />
+          <label htmlFor="isLimited" className="text-sm">
+            Is a Dlaven Limited product
+          </label>
         </div>
         <div className="flex gap-2">
-          <button type="submit" className="px-4 py-2 border border-black hover:bg-black hover:text-white disabled:opacity-60" disabled={saving}>{saving ? "Creating…" : "Create"}</button>
-          <Link href="/admin/products" className="px-4 py-2 border border-black/30">Cancel</Link>
+          <button
+            type="submit"
+            className="px-4 py-2 border border-black hover:bg-black hover:text-white disabled:opacity-60"
+            disabled={saving}
+          >
+            {saving ? "Creating…" : "Create"}
+          </button>
+          <Link
+            href="/admin/products"
+            className="px-4 py-2 border border-black/30"
+          >
+            Cancel
+          </Link>
         </div>
       </form>
     </div>
   );
 }
 
-function Input({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+function Input({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+}) {
   return (
     <div>
       <label className="block text-sm font-medium">{label}</label>
-      <input className="mt-1 w-full border border-black/20 px-3 py-2 text-sm" value={value} onChange={(e) => onChange(e.target.value)} />
+      <input
+        className="mt-1 w-full border border-black/20 px-3 py-2 text-sm"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      />
     </div>
   );
 }
 
-function Textarea({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+function Textarea({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+}) {
   return (
     <div>
       <label className="block text-sm font-medium">{label}</label>
-      <textarea className="mt-1 w-full border border-black/20 px-3 py-2 text-sm min-h-24" value={value} onChange={(e) => onChange(e.target.value)} />
+      <textarea
+        className="mt-1 w-full border border-black/20 px-3 py-2 text-sm min-h-24"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      />
     </div>
   );
 }
 
-async function requestAdmin<T>(path: string, options: RequestInit = {}): Promise<T> {
+async function requestAdmin<T>(
+  path: string,
+  options: RequestInit = {}
+): Promise<T> {
   const { API_BASE } = await import("@/lib/api");
   const res = await fetch(`${API_BASE}${path}`, {
     ...options,
@@ -217,4 +371,3 @@ async function requestAdmin<T>(path: string, options: RequestInit = {}): Promise
   }
   return res.json();
 }
-

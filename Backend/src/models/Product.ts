@@ -1,4 +1,5 @@
 import { Schema, model, Types } from "mongoose";
+import { listProducts, getProductBySlug, createProduct, updateProductBySlug, deleteProductBySlug } from "../controllers/productsController";
 
 export interface IProduct {
   slug: string;
@@ -14,6 +15,7 @@ export interface IProduct {
   sizeOptions?: string[];
   details?: string[];
   materialCare?: string[];
+  isLimited?: boolean; // New field for Dlaven Limited products
 }
 
 const ProductSchema = new Schema<IProduct>(
@@ -31,6 +33,7 @@ const ProductSchema = new Schema<IProduct>(
     sizeOptions: { type: [String], default: undefined },
     details: { type: [String], default: undefined },
     materialCare: { type: [String], default: undefined },
+    isLimited: { type: Boolean, default: false, index: true }, // New field added to schema
   },
   { timestamps: true }
 );

@@ -12,7 +12,7 @@ function randomAlphabet(): string {
 
 export async function generateCodes(req: Request, res: Response) {
   try {
-    const { count } = (req.body || {}) as { count?: number };
+    const { count, codeCollection } = (req.body || {}) as { count?: number, codeCollection?: string };
     const C = typeof count === "number" && Number.isInteger(count) ? count : 0;
 
     if (C <= 0)
@@ -61,6 +61,7 @@ export async function generateCodes(req: Request, res: Response) {
       code,
       batch: newBatchNumber,
       isDeleted: false,
+      codeCollection: codeCollection || null,
     }));
     await Code.insertMany(docs, { ordered: false });
 
@@ -70,6 +71,33 @@ export async function generateCodes(req: Request, res: Response) {
     res.status(500).json({ error: "Failed to generate codes" });
   }
 }
+
+export async function verifyLimitedCode(req: Request, res: Response) {
+    try {
+        const { code } = req.body as { code?: string };
+        if (!code) {
+            return res.status(400).json({ error: "Code is required" });
+        }
+        const codeDoc = await Code.findOne({
+            code: code,
+            codeCollection: "dlaven-limited",
+            usedBy: null, // Check if it's not used
+            isDeleted: { $ne: true }
+        }).lean();
+
+        if (!codeDoc) {
+            return res.status(404).json({ error: "Invalid or already used code.", ok: false });
+        }
+
+        // We don't mark it as used here. That might happen upon purchase.
+        // For now, just verifying it exists and is available is enough to grant access.
+        return res.json({ ok: true });
+    } catch (err) {
+        console.error("[codes] verify limited code error", err);
+        res.status(500).json({ error: "Failed to verify code" });
+    }
+}
+
 
 export async function getBatchHistory(req: Request, res: Response) {
   try {
@@ -81,7 +109,8 @@ export async function getBatchHistory(req: Request, res: Response) {
         $group: {
           _id: '$batch',
           count: { $sum: 1 },
-          createdAt: { $first: '$createdAt' }
+          createdAt: { $first: '$createdAt' },
+          codeCollection: { $first: '$codeCollection' }
         }
       },
       { $sort: { _id: -1 } },
@@ -90,7 +119,8 @@ export async function getBatchHistory(req: Request, res: Response) {
           _id: 0,
           batch: '$_id',
           count: 1,
-          createdAt: 1
+          createdAt: 1,
+          codeCollection: 1
         }
       }
     ]);

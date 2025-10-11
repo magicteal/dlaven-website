@@ -3,8 +3,9 @@ import mongoose, { Schema, Document, Types } from "mongoose";
 export interface ICode extends Document {
   code: string;
   batch: number;
-  isDeleted: boolean; // <-- Nayi field add ki
+  isDeleted: boolean; 
   usedBy?: Types.ObjectId | null;
+  codeCollection?: string | null; // Renamed from 'collection' to avoid conflict
   createdAt: Date;
   updatedAt: Date;
 }
@@ -23,7 +24,7 @@ const CodeSchema = new Schema<ICode>(
       required: true,
       index: true,
     },
-    isDeleted: { // <-- Nayi field ka schema
+    isDeleted: {
       type: Boolean,
       default: false,
       index: true,
@@ -34,6 +35,7 @@ const CodeSchema = new Schema<ICode>(
       default: null,
       index: true,
     },
+    codeCollection: { type: String, index: true, default: null }, // Renamed from 'collection'
   },
   { timestamps: true }
 );
