@@ -6,13 +6,15 @@ import { Button } from "@/components/ui/button";
 
 export default function AdminCodesPage() {
   const [count, setCount] = useState<number>(10);
-  const [codeCollection, setCodeCollection] = useState<string>("");
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [generated, setGenerated] = useState<{
     items: string[];
     batch: number;
   } | null>(null);
+  const [importText, setImportText] = useState<string>("");
+  const [importing, setImporting] = useState<boolean>(false);
   const [history, setHistory] = useState<BatchHistoryItem[] | null>(null);
   const [busyBatch, setBusyBatch] = useState<number | null>(null);
 
@@ -39,10 +41,8 @@ export default function AdminCodesPage() {
     }
     setLoading(true);
     try {
-      const res = await api.adminGenerateCodes(
-        count,
-        codeCollection.trim() || undefined
-      );
+      // We always generate codes for the DL Prive collection; collection is fixed
+      const res = await api.adminGenerateCodes(count);
       setGenerated(res);
       fetchHistory();
     } catch (err: unknown) {
@@ -96,22 +96,58 @@ export default function AdminCodesPage() {
             placeholder="e.g., 100"
           />
         </label>
-        <label className="flex flex-col gap-1">
-          <span className="text-sm text-black/70">Collection (optional)</span>
-          <Input
-            type="text"
-            className="text-black"
-            value={codeCollection}
-            onChange={(e) => setCodeCollection(e.target.value)}
-            placeholder="e.g., dlaven-limited"
-          />
-        </label>
+        <p className="text-sm text-black/60">
+          Generated codes will use the system's fixed prefix and are tracked by
+          batch. No collection selection is required.
+        </p>
         <div>
           <Button type="submit" disabled={loading}>
             {loading ? "Generating…" : "Generate"}
           </Button>
         </div>
       </form>
+      <div className="mt-6 w-full max-w-sm">
+        <h3 className="text-sm font-medium mb-2">Import pre-made codes</h3>
+        <p className="text-xs text-black/60 mb-2">
+          Paste one code per line. Imported codes will be added to the system
+          and tracked for usage.
+        </p>
+        <textarea
+          value={importText}
+          onChange={(e) => setImportText(e.target.value)}
+          className="w-full p-2 border rounded text-sm"
+          rows={6}
+          placeholder="ABC123...\nDEF456..."
+        />
+        <div className="mt-2 flex gap-2">
+          <Button
+            disabled={importing}
+            onClick={async () => {
+              setError(null);
+              setImporting(true);
+              try {
+                const lines = importText
+                  .split(/\r?\n/)
+                  .map((l) => l.trim())
+                  .filter(Boolean);
+                if (lines.length === 0) throw new Error("No codes to import");
+                const res = await api.adminImportCodes(lines);
+                setGenerated(res);
+                setImportText("");
+                fetchHistory();
+              } catch (err) {
+                setError(
+                  err instanceof Error ? err.message : "Failed to import codes"
+                );
+              } finally {
+                setImporting(false);
+              }
+            }}
+          >
+            {importing ? "Importing…" : "Import codes"}
+          </Button>
+        </div>
+      </div>
       {error && (
         <div className="mt-4 text-sm text-red-600" role="alert">
           {error}
@@ -151,7 +187,6 @@ export default function AdminCodesPage() {
             <thead>
               <tr className="text-left border-b border-black/10">
                 <th className="py-2 pr-4">Batch #</th>
-                <th className="py-2 pr-4">Collection</th>
                 <th className="py-2 pr-4">Codes</th>
                 <th className="py-2 pr-4">Date Created</th>
                 <th className="py-2 pr-4 text-right">Actions</th>
@@ -174,9 +209,6 @@ export default function AdminCodesPage() {
                 history.map((h) => (
                   <tr key={h.batch} className="border-b border-black/5">
                     <td className="py-2 pr-4 font-medium">{h.batch}</td>
-                    <td className="py-2 pr-4 font-mono text-xs">
-                      {h.codeCollection || "—"}
-                    </td>
                     <td className="py-2 pr-4">{h.count}</td>
                     <td className="py-2 pr-4 text-black/70">
                       {new Date(h.createdAt).toLocaleDateString()}

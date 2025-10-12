@@ -23,8 +23,8 @@ export default function AdminDlavenPrivePage() {
     <div className="max-w-4xl">
       <h1 className="text-xl font-semibold">D&#39;LAVÉN Prive Management</h1>
       <p className="mt-2 text-sm text-black/60">
-        Curate the Prive collection and manage code access. Customers must
-        purchase from D&#39;LAVÉN Limited to receive a code that unlocks Prive.
+        Curate the Privé products and manage access codes. Codes are used to
+        unlock access to the Privé area for customers.
       </p>
 
       <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -37,9 +37,12 @@ export default function AdminDlavenPrivePage() {
             <code className="ml-1 bg-gray-100 px-1 rounded">prive</code>) so
             they appear on the Prive page once unlocked by code.
           </p>
-          <div className="mt-4">
+          <div className="mt-4 flex gap-2">
             <Link href="/admin/products" passHref>
               <Button variant="outline">Manage Products</Button>
+            </Link>
+            <Link href="/admin/products/new?kind=prive" passHref>
+              <Button variant="default">New Privé Product</Button>
             </Link>
           </div>
           <p className="mt-4 text-xs text-black/60">
@@ -51,21 +54,17 @@ export default function AdminDlavenPrivePage() {
         <div className="border border-black/10 p-6 rounded-lg">
           <h2 className="font-semibold text-lg">Access Codes</h2>
           <p className="mt-2 text-sm text-black/70">
-            Codes are generated under the collection name{" "}
-            <code className="bg-gray-100 px-1 rounded">dlaven-limited</code> and
-            given to Limited customers. Those codes unlock Prive.
+            Generate and manage access codes here. Imported or generated codes
+            will be used to grant access to Privé products.
           </p>
-          <div className="mt-4 flex gap-3">
+          <div className="mt-4">
             <Link href="/admin/codes" passHref>
               <Button variant="outline">Manage Codes</Button>
             </Link>
-            <Link href="/admin/dlaven-limited" passHref>
-              <Button variant="outline">Limited Overview</Button>
-            </Link>
           </div>
           <p className="mt-4 text-xs text-black/60">
-            On the codes page, set <code>dlaven-limited</code> as the collection
-            when generating.
+            Use the Codes page to generate or import codes. The system tracks
+            only codes and their usage.
           </p>
         </div>
       </div>

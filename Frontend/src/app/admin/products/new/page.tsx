@@ -1,8 +1,9 @@
 "use client";
 
 import { useAuth } from "@/components/providers/AuthProvider";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { categories as HARD_CATEGORIES } from "@/data/categories";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -25,10 +26,13 @@ export default function AdminNewProductPage() {
     details: "",
     materialCare: "",
     isLimited: false, // New state for Dlaven Limited
+    section: "",
+    tag: "",
   });
-  const [categories, setCategories] = useState<
-    Array<{ slug: string; name: string }>
-  >([]);
+  const searchParams = useSearchParams();
+  const [categories] = useState<Array<{ slug: string; name: string }>>(
+    HARD_CATEGORIES.map((c) => ({ slug: c.slug, name: c.name }))
+  );
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -39,16 +43,25 @@ export default function AdminNewProductPage() {
   }, [loading, user, isAdmin, router]);
 
   useEffect(() => {
-    async function loadCategories() {
-      try {
-        const data = await requestAdmin<{
-          items: Array<{ slug: string; name: string }>;
-        }>("/api/categories");
-        setCategories(data.items);
-      } catch {}
-    }
-    if (isAdmin) loadCategories();
+    // categories are hard-coded; no remote load
   }, [isAdmin]);
+
+  useEffect(() => {
+    // Prefill based on ?kind=limited or ?kind=prive
+    const kind = searchParams?.get?.("kind");
+    if (kind === "limited") {
+      setForm((p) => ({
+        ...p,
+        isLimited: true,
+        section: "dlaven-limited",
+        tag: "dl-limited",
+      }));
+    } else if (kind === "prive") {
+      setForm((p) => ({ ...p, section: "prive", tag: "dl-prive" }));
+    } else if (kind === "dl-barry") {
+      setForm((p) => ({ ...p, section: "dl-barry", tag: "dl-barry" }));
+    }
+  }, [searchParams]);
 
   async function uploadViaBackend(file: File): Promise<string> {
     const { API_BASE } = await import("@/lib/api");
@@ -103,6 +116,7 @@ export default function AdminNewProductPage() {
           .map((s) => s.trim())
           .filter(Boolean),
         categorySlug: form.categorySlug.trim(),
+        section: form.section || undefined,
         inStock: !!form.inStock,
         rating: form.rating ? Number(form.rating) : undefined,
         reviewsCount: form.reviewsCount ? Number(form.reviewsCount) : undefined,
@@ -122,6 +136,7 @@ export default function AdminNewProductPage() {
             .map((s) => s.trim())
             .filter(Boolean) || undefined,
         isLimited: form.isLimited, // Include isLimited in the payload
+        tags: form.tag ? [form.tag] : undefined,
       };
       await requestAdmin("/api/products", {
         method: "POST",
@@ -287,6 +302,30 @@ export default function AdminNewProductPage() {
           <label htmlFor="isLimited" className="text-sm">
             Is a Dlaven Limited product
           </label>
+        </div>
+        <div>
+          <label className="block text-sm font-medium">Tag</label>
+          <div className="mt-2 flex flex-col gap-2">
+            {[
+              { key: "normal-product", label: "Normal Product" },
+              { key: "dl-limited", label: "DL Limited" },
+              { key: "dl-prive", label: "DL Privé" },
+              { key: "dl-barry", label: "DL Barry" },
+            ].map((t) => (
+              <label key={t.key} className="inline-flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="tag"
+                  value={t.key}
+                  checked={form.tag === t.key}
+                  onChange={(e) =>
+                    setForm((p) => ({ ...p, tag: e.target.value }))
+                  }
+                />
+                <span className="text-sm">{t.label}</span>
+              </label>
+            ))}
+          </div>
         </div>
         <div className="flex gap-2">
           <button

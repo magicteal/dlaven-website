@@ -4,6 +4,7 @@ import { useAuth } from "@/components/providers/AuthProvider";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { categories as HARD_CATEGORIES } from "@/data/categories";
 
 type Product = {
   slug: string;
@@ -45,14 +46,15 @@ export default function AdminEditProductPage({
     details: "",
     materialCare: "",
     isLimited: false, // New state for Dlaven Limited
+    tag: "",
   });
   const [loadingItem, setLoadingItem] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
-  const [categories, setCategories] = useState<
-    Array<{ slug: string; name: string }>
-  >([]);
+  const [categories] = useState<Array<{ slug: string; name: string }>>(
+    HARD_CATEGORIES.map((c) => ({ slug: c.slug, name: c.name }))
+  );
 
   useEffect(() => {
     if (!loading && (!user || !isAdmin)) router.replace("/");
@@ -80,6 +82,10 @@ export default function AdminEditProductPage({
           details: p.details ? p.details.join("\n") : "",
           materialCare: p.materialCare ? p.materialCare.join("\n") : "",
           isLimited: !!p.isLimited, // Set isLimited state
+          tag:
+            Array.isArray((p as any).tags) && (p as any).tags.length
+              ? (p as any).tags[0]
+              : "",
         });
       } catch (e: unknown) {
         setError(e instanceof Error ? e.message : "Failed to load product");
@@ -91,15 +97,7 @@ export default function AdminEditProductPage({
   }, [isAdmin, params.slug]);
 
   useEffect(() => {
-    async function loadCategories() {
-      try {
-        const data = await requestAdmin<{
-          items: Array<{ slug: string; name: string }>;
-        }>("/api/categories");
-        setCategories(data.items);
-      } catch {}
-    }
-    if (isAdmin) loadCategories();
+    // categories are hard-coded; nothing to load
   }, [isAdmin]);
 
   async function onSave(e: React.FormEvent) {
@@ -136,6 +134,7 @@ export default function AdminEditProductPage({
             .map((s) => s.trim())
             .filter(Boolean) || undefined,
         isLimited: form.isLimited, // Include isLimited in payload
+        tags: form.tag ? [form.tag] : undefined,
       };
       await requestAdmin(`/api/products/${params.slug}`, {
         method: "PATCH",
@@ -277,6 +276,30 @@ export default function AdminEditProductPage({
             <label htmlFor="isLimited" className="text-sm">
               Is a Dlaven Limited product
             </label>
+          </div>
+          <div>
+            <label className="block text-sm font-medium">Tag</label>
+            <div className="mt-2 flex flex-col gap-2">
+              {[
+                { key: "normal-product", label: "Normal Product" },
+                { key: "dl-limited", label: "DL Limited" },
+                { key: "dl-prive", label: "DL Privé" },
+                { key: "dl-barry", label: "DL Barry" },
+              ].map((t) => (
+                <label key={t.key} className="inline-flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="tag"
+                    value={t.key}
+                    checked={form.tag === t.key}
+                    onChange={(e) =>
+                      setForm((p) => ({ ...p, tag: e.target.value }))
+                    }
+                  />
+                  <span className="text-sm">{t.label}</span>
+                </label>
+              ))}
+            </div>
           </div>
           <div className="flex gap-2">
             <button

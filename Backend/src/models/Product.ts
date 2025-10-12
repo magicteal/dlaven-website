@@ -16,6 +16,8 @@ export interface IProduct {
   details?: string[];
   materialCare?: string[];
   isLimited?: boolean; // New field for Dlaven Limited products
+  section?: string; // 'prive' | 'dlaven-limited' | 'dl-barry' (optional)
+  tags?: string[]; // e.g. ['normal-product','dl-limited','dl-prive','dl-barry']
 }
 
 const ProductSchema = new Schema<IProduct>(
@@ -34,6 +36,8 @@ const ProductSchema = new Schema<IProduct>(
     details: { type: [String], default: undefined },
     materialCare: { type: [String], default: undefined },
     isLimited: { type: Boolean, default: false, index: true }, // New field added to schema
+  section: { type: String, default: null, index: true },
+    tags: { type: [String], default: undefined, index: true },
   },
   { timestamps: true }
 );

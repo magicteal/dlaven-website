@@ -89,6 +89,12 @@ export const api = {
           body: JSON.stringify({ code }),
       });
   },
+  verifyPriveCode(code: string) {
+      return request<{ ok: boolean }>("/api/codes/verify-prive", {
+          method: "POST",
+          body: JSON.stringify({ code }),
+      });
+  },
   register(data: { email: string; password: string; name?: string }) {
     return request<{
       user: {
@@ -420,14 +426,20 @@ export const api = {
     );
   },
   // Admin: Codes
-  adminGenerateCodes(count: number, codeCollection?: string) {
+  adminGenerateCodes(count: number) {
     return request<{ items: string[]; batch: number }>("/api/codes/generate", {
       method: "POST",
-      body: JSON.stringify({ count, codeCollection }),
+      body: JSON.stringify({ count }),
     });
   },
   adminGetCodeBatchHistory() {
     return request<{ items: BatchHistoryItem[] }>("/api/codes/history");
+  },
+  adminImportCodes(codes: string[]) {
+    return request<{ items: string[]; batch: number }>("/api/codes/import", {
+      method: "POST",
+      body: JSON.stringify({ codes }),
+    });
   },
   adminDeleteCodeBatch(batchNumber: number) {
     return request<{ ok: boolean }>(`/api/codes/batch/${batchNumber}`, {
@@ -441,7 +453,6 @@ export type BatchHistoryItem = {
   batch: number;
   count: number;
   createdAt: string;
-  codeCollection?: string | null;
 };
 export type OrderStatus =
   | "created"

@@ -7,10 +7,35 @@ import { Product } from "../models/Product";
  */
 export async function listProducts(req: Request, res: Response) {
   try {
-    const { category, q, limit = "50", skip = "0" } = req.query as any;
+    const { category, q, limit = "50", skip = "0", section, tag } = req.query as any;
+
+    // Allowed site categories (hard-coded)
+    const allowedCategories = [
+      "fragrances",
+      "mens-ready-to-wear",
+      "heritage-jewelry",
+    ];
+
+    const allowedSections = ["prive", "dlaven-limited", "dl-barry"];
 
     const filter: any = {};
     if (category) filter.categorySlug = String(category);
+    if (section) {
+      if (!allowedSections.includes(String(section))) {
+        return res.status(400).json({ error: `Invalid section` });
+      }
+      filter.section = String(section);
+      // Ensure only allowed categories are returned for sections
+      filter.categorySlug = { $in: allowedCategories };
+    }
+    if (tag) {
+      // Only allow the known tags
+      const allowedTags = ["normal-product", "dl-limited", "dl-prive", "dl-barry"];
+      if (!allowedTags.includes(String(tag))) {
+        return res.status(400).json({ error: `Invalid tag` });
+      }
+      filter.tags = String(tag);
+    }
     if (q) filter.$text = { $search: String(q) };
 
     const items = await Product.find(filter)
@@ -60,10 +85,27 @@ export async function createProduct(req: Request, res: Response) {
       materialCare?: string[];
       isLimited?: boolean;
       inStock?: boolean;
+      section?: string;
+      tags?: string[];
     }>;
+
+    const allowedCategories = [
+      "fragrances",
+      "mens-ready-to-wear",
+      "heritage-jewelry",
+    ];
 
     if (!body?.slug || !body?.name || typeof body.price !== "number" || !body?.categorySlug) {
       return res.status(400).json({ error: "Missing required product fields" });
+    }
+
+    if (!allowedCategories.includes(body.categorySlug)) {
+      return res.status(400).json({ error: `categorySlug must be one of: ${allowedCategories.join(", ")}` });
+    }
+
+    const allowedSections = ["prive", "dlaven-limited", "dl-barry"];
+    if (body.section && !allowedSections.includes(body.section)) {
+      return res.status(400).json({ error: `section must be one of: ${allowedSections.join(", ")}` });
     }
 
     const existing = await Product.findOne({ slug: body.slug }).lean();
@@ -81,6 +123,8 @@ export async function createProduct(req: Request, res: Response) {
       details: body.details ?? undefined,
       materialCare: body.materialCare ?? undefined,
       isLimited: !!body.isLimited,
+      section: body.section ?? null,
+      tags: body.tags ?? undefined,
       inStock: body.inStock !== undefined ? !!body.inStock : true,
     });
 

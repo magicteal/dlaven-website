@@ -34,9 +34,12 @@ export default function AdminDlavenLimitedPage() {
             Mark products as part of the "Dlaven Limited" collection to make
             them appear on the exclusive page.
           </p>
-          <div className="mt-4">
+          <div className="mt-4 flex gap-2">
             <Link href="/admin/products" passHref>
               <Button variant="outline">Manage Products</Button>
+            </Link>
+            <Link href="/admin/products/new?kind=limited" passHref>
+              <Button variant="default">New Limited Product</Button>
             </Link>
           </div>
           <p className="mt-4 text-xs text-black/60">

@@ -5,7 +5,6 @@ export interface ICode extends Document {
   batch: number;
   isDeleted: boolean; 
   usedBy?: Types.ObjectId | null;
-  codeCollection?: string | null; // Renamed from 'collection' to avoid conflict
   createdAt: Date;
   updatedAt: Date;
 }
@@ -35,7 +34,7 @@ const CodeSchema = new Schema<ICode>(
       default: null,
       index: true,
     },
-    codeCollection: { type: String, index: true, default: null }, // Renamed from 'collection'
+    // codeCollection removed: DLaven tracks only codes; collection concept has been removed
   },
   { timestamps: true }
 );

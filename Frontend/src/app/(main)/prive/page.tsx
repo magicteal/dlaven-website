@@ -61,8 +61,7 @@ export default function DlavenPrivePage() {
     setVerifyError(null);
     setVerifying(true);
     try {
-      // For Prive, we accept Dlaven Limited purchase codes to grant access
-      const res = await api.verifyLimitedCode(code.trim());
+      const res = await api.verifyPriveCode(code.trim());
       if (res?.ok) {
         setUnlocked(true);
         try {
@@ -100,7 +99,7 @@ export default function DlavenPrivePage() {
             D&#39;LAVÉN PRIVE
           </h1>
           <p className="mt-4 max-w-2xl mx-auto text-sm sm:text-base text-white/90">
-            Ultra-exclusive pieces available only with a valid Dlaven Limited
+            Ultra-exclusive pieces available only with a valid D'LAVÉN Privé
             access code.
           </p>
         </div>
@@ -113,8 +112,8 @@ export default function DlavenPrivePage() {
               Enter Access Code
             </h2>
             <p className="mt-2 text-center text-sm text-black/70">
-              Purchased from D&#39;LAVÉN Limited? Use the code you received to
-              access Prive.
+              Enter your exclusive D&#39;LAVÉN Privé code to access our most
+              exclusive collection.
             </p>
             <form onSubmit={onVerify} className="mt-6 flex gap-2">
               <Input
@@ -134,8 +133,9 @@ export default function DlavenPrivePage() {
               </p>
             ) : null}
             <p className="mt-6 text-xs text-center text-black/60">
-              Note: One code per eligible Dlaven Limited purchase. Codes may be
-              single-use and are verified against our records.
+              Note: D'LAVÉN Privé codes are single-use and tied to your account.
+              Each code can only be used once and access is verified against our
+              records.
             </p>
           </div>
         ) : (

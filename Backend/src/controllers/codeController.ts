@@ -4,6 +4,11 @@ import PDFDocument from "pdfkit";
 import fs from "fs";
 import path from "path";
 
+// Extend Request when we expect auth info on req.user
+interface AuthRequest extends Request {
+  user?: { sub?: string } | null;
+}
+
 // Helper to generate a random alphabet character
 function randomAlphabet(): string {
   const alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -12,7 +17,7 @@ function randomAlphabet(): string {
 
 export async function generateCodes(req: Request, res: Response) {
   try {
-    const { count, codeCollection } = (req.body || {}) as { count?: number, codeCollection?: string };
+  const { count } = (req.body || {}) as { count?: number };
     const C = typeof count === "number" && Number.isInteger(count) ? count : 0;
 
     if (C <= 0)
@@ -21,9 +26,10 @@ export async function generateCodes(req: Request, res: Response) {
         .json({ error: "'count' must be a positive integer" });
 
     const year = new Date().getFullYear().toString().slice(-2);
+    // Always use the DL Prive prefix and collection
     const prefix = `DLPV${year}`;
 
-    // Find the last code generated for the current year to determine the starting number
+    // Find the last code generated for the current year
     const lastCodeInYear = await Code.findOne({ code: { $regex: `^${prefix}` } })
       .sort({ code: -1 })
       .lean()
@@ -61,7 +67,6 @@ export async function generateCodes(req: Request, res: Response) {
       code,
       batch: newBatchNumber,
       isDeleted: false,
-      codeCollection: codeCollection || null,
     }));
     await Code.insertMany(docs, { ordered: false });
 
@@ -72,18 +77,88 @@ export async function generateCodes(req: Request, res: Response) {
   }
 }
 
+export async function importCodes(req: Request, res: Response) {
+  try {
+    // Accept body { codes: string[] } OR, if missing, read the repo JSON file for batch 1
+    let { codes } = (req.body || {}) as { codes?: string[] };
+
+    if (!Array.isArray(codes) || codes.length === 0) {
+      // Try loading Backend/data/codes-batch-1.json from disk
+      const filePath = path.join(__dirname, '..', '..', 'data', 'codes-batch-1.json');
+      if (!fs.existsSync(filePath)) {
+        return res.status(400).json({ error: "'codes' must be provided in body or Backend/data/codes-batch-1.json must exist" });
+      }
+      const raw = fs.readFileSync(filePath, 'utf8');
+      try {
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) {
+          return res.status(400).json({ error: 'codes JSON must be an array of strings' });
+        }
+        codes = parsed;
+      } catch (err) {
+        return res.status(400).json({ error: 'Failed to parse codes JSON file' });
+      }
+    }
+
+    // Normalize codes: uppercase and trim
+    const normalized = codes
+      .map((c) => (typeof c === 'string' ? c.trim().toUpperCase() : ''))
+      .filter(Boolean);
+
+    if (normalized.length === 0) {
+      return res.status(400).json({ error: 'No valid codes provided' });
+    }
+
+    // Ensure no duplicates in payload
+    const unique = Array.from(new Set(normalized));
+
+    // Check which codes already exist in DB
+    const existing = await Code.find({ code: { $in: unique } }).lean().exec();
+    const existingSet = new Set(existing.map((d) => d.code));
+
+    // Batch number for these imported codes is explicitly 1
+    const importBatchNumber = 1;
+
+    // Prepare docs for insertion for those that do not exist
+    const toInsert = unique.filter((c) => !existingSet.has(c)).map((code) => ({
+      code,
+      batch: importBatchNumber,
+      isDeleted: false,
+    }));
+
+    let insertedCount = 0;
+    if (toInsert.length > 0) {
+      const result = await Code.insertMany(toInsert, { ordered: false });
+      // Mongoose insertMany may return an array of docs or an object with insertedCount depending on driver/version
+      if (Array.isArray(result)) {
+        insertedCount = result.length;
+      } else if ((result as any).insertedCount != null) {
+        insertedCount = (result as any).insertedCount;
+      } else {
+        insertedCount = toInsert.length;
+      }
+    }
+
+    const skipped = unique.filter((c) => existingSet.has(c));
+
+    res.json({ inserted: insertedCount, skipped, batch: importBatchNumber });
+  } catch (err) {
+    console.error('[codes] import error', err);
+    res.status(500).json({ error: 'Failed to import codes' });
+  }
+}
+
 export async function verifyLimitedCode(req: Request, res: Response) {
     try {
         const { code } = req.body as { code?: string };
         if (!code) {
             return res.status(400).json({ error: "Code is required" });
         }
-        const codeDoc = await Code.findOne({
-            code: code,
-            codeCollection: "dlaven-limited",
-            usedBy: null, // Check if it's not used
-            isDeleted: { $ne: true }
-        }).lean();
+    const codeDoc = await Code.findOne({
+      code: code,
+      usedBy: null, // Check if it's not used
+      isDeleted: { $ne: true }
+    }).lean();
 
         if (!codeDoc) {
             return res.status(404).json({ error: "Invalid or already used code.", ok: false });
@@ -94,6 +169,39 @@ export async function verifyLimitedCode(req: Request, res: Response) {
         return res.json({ ok: true });
     } catch (err) {
         console.error("[codes] verify limited code error", err);
+        res.status(500).json({ error: "Failed to verify code" });
+    }
+}
+
+export async function verifyPriveCode(req: Request, res: Response) {
+    try {
+        const { code } = req.body as { code?: string };
+        if (!code) {
+            return res.status(400).json({ error: "Code is required" });
+        }
+    const codeDoc = await Code.findOne({
+      code: code,
+      usedBy: null, // Check if it's not used yet
+      isDeleted: { $ne: true }
+    }).lean();
+
+        if (!codeDoc) {
+            return res.status(404).json({ error: "Invalid or already used code.", ok: false });
+        }
+
+            // Mark the code as used by this user if they're logged in
+            const authReq = req as AuthRequest;
+            if (authReq.user?.sub) {
+              await Code.updateOne(
+                { _id: (codeDoc as any)._id },
+                { $set: { usedBy: authReq.user.sub } }
+              );
+            }
+        
+
+        return res.json({ ok: true });
+    } catch (err) {
+        console.error("[codes] verify prive code error", err);
         res.status(500).json({ error: "Failed to verify code" });
     }
 }
@@ -109,8 +217,7 @@ export async function getBatchHistory(req: Request, res: Response) {
         $group: {
           _id: '$batch',
           count: { $sum: 1 },
-          createdAt: { $first: '$createdAt' },
-          codeCollection: { $first: '$codeCollection' }
+          createdAt: { $first: '$createdAt' }
         }
       },
       { $sort: { _id: -1 } },
@@ -119,8 +226,7 @@ export async function getBatchHistory(req: Request, res: Response) {
           _id: 0,
           batch: '$_id',
           count: 1,
-          createdAt: 1,
-          codeCollection: 1
+          createdAt: 1
         }
       }
     ]);

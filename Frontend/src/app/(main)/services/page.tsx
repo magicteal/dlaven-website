@@ -169,22 +169,30 @@ export default function ServicesPage() {
             </div>
 
             <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-10">
-              {ourCollections.map((service) => (
-                <div
-                  key={service.name}
-                  className="text-center p-8 border border-gray-300 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow duration-300"
-                >
-                  <div className="flex items-center justify-center h-16 w-16 rounded-full bg-gray-200 mx-auto">
-                    {service.icon}
-                  </div>
-                  <h3 className="mt-6 text-xl font-bold tracking-wider uppercase">
-                    {service.name}
-                  </h3>
-                  <p className="mt-4 text-sm text-gray-600">
-                    {service.description}
-                  </p>
-                </div>
-              ))}
+              {ourCollections.map((service) => {
+                const href =
+                  service.name === "DL Limited"
+                    ? "/dlaven-limited"
+                    : service.name === "DL Prive"
+                    ? "/prive"
+                    : "/dl-barry";
+
+                return (
+                  <Link key={service.name} href={href} className="block">
+                    <div className="text-center p-8 border border-gray-300 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow duration-300">
+                      <div className="flex items-center justify-center h-16 w-16 rounded-full bg-gray-200 mx-auto">
+                        {service.icon}
+                      </div>
+                      <h3 className="mt-6 text-xl font-bold tracking-wider uppercase">
+                        {service.name}
+                      </h3>
+                      <p className="mt-4 text-sm text-gray-600">
+                        {service.description}
+                      </p>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           </Container>
         </section>

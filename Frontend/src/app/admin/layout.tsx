@@ -20,9 +20,6 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         <Link href="/admin/products" className="text-sm hover:underline">
           Products
         </Link>
-        <Link href="/admin/categories" className="text-sm hover:underline">
-          Categories
-        </Link>
         <Link href="/admin/orders" className="text-sm hover:underline">
           Orders
         </Link>
@@ -34,6 +31,12 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         </Link>
         <Link href="/admin/dlaven-limited" className="text-sm hover:underline">
           DLaven Limited
+        </Link>
+        <Link href="/admin/prive" className="text-sm hover:underline">
+          DLaven Privé
+        </Link>
+        <Link href="/admin/dl-barry" className="text-sm hover:underline">
+          DL Barry
         </Link>
         {/* Add more admin sections here */}
       </aside>
