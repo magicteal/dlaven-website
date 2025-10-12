@@ -23,6 +23,22 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
 export function requireAdmin(req: Request, res: Response, next: NextFunction) {
   const user = (req as any).user as AuthPayload | undefined;
   if (!user) return res.status(401).json({ error: "Unauthorized" });
-  if (user.role !== "admin") return res.status(403).json({ error: "Forbidden" });
+  if (user.role !== "admin")
+    return res.status(403).json({ error: "Forbidden" });
   return next();
+}
+
+// Optional auth: if a token cookie exists, decode it and set req.user; do not fail when missing/invalid.
+export function optionalAuth(req: Request, _res: Response, next: NextFunction) {
+  try {
+    const token = req.cookies?.token as string | undefined;
+    if (!token) return next();
+    const secret = process.env.JWT_SECRET || "dev-secret";
+    const payload = jwt.verify(token, secret) as AuthPayload;
+    (req as any).user = payload;
+  } catch {
+    // ignore token errors for optional auth
+  } finally {
+    next();
+  }
 }

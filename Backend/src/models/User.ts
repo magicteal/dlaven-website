@@ -18,6 +18,10 @@ export interface IUser extends Document {
   };
   passwordResetToken?: string | null;
   passwordResetExpires?: Date | null;
+  // Tracking Privé usage and Barry entitlements
+  privePurchasesCount?: number;
+  barryEntitlementsAvailable?: number;
+  lastPriveCodeVerifiedAt?: Date | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -57,7 +61,12 @@ const UserSchema = new Schema<IUser>(
     email: { type: String, required: true, unique: true, index: true },
     passwordHash: { type: String, required: true },
     name: { type: String },
-    role: { type: String, enum: ["user", "admin"], default: "user", index: true },
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
+      index: true,
+    },
     addresses: { type: [AddressSchema], default: [] },
     address: {
       fullName: { type: String },
@@ -71,8 +80,13 @@ const UserSchema = new Schema<IUser>(
     },
     passwordResetToken: { type: String, default: null },
     passwordResetExpires: { type: Date, default: null },
+    // New fields for Privé/Barry logic
+    privePurchasesCount: { type: Number, default: 0 },
+    barryEntitlementsAvailable: { type: Number, default: 0 },
+    lastPriveCodeVerifiedAt: { type: Date, default: null },
   },
   { timestamps: true }
 );
 
-export const User = mongoose.models.User || mongoose.model<IUser>("User", UserSchema);
+export const User =
+  mongoose.models.User || mongoose.model<IUser>("User", UserSchema);

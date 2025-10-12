@@ -1,8 +1,71 @@
+"use client";
+
 import Container from "@/components/Container";
 import Image from "next/image";
 import Link from "next/link";
+import { useAuth } from "@/components/providers/AuthProvider";
+import { useEffect, useState } from "react";
+import { api } from "@/lib/api";
+import ProductCard from "@/components/ProductCard";
+
+type Product = {
+  slug: string;
+  name: string;
+  price: number;
+  currency: string;
+  images: string[];
+  inStock?: boolean;
+};
 
 export default function DlBarryPage() {
+  const { user } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [entitlements, setEntitlements] = useState<{
+    privePurchasesCount: number;
+    barryEntitlementsAvailable: number;
+  } | null>(null);
+  const [err, setErr] = useState<string | null>(null);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loadingProducts, setLoadingProducts] = useState(false);
+
+  useEffect(() => {
+    if (!user) return;
+    let cancelled = false;
+    (async () => {
+      setLoading(true);
+      setErr(null);
+      try {
+        const res = await api.getMyEntitlements();
+        if (!cancelled) setEntitlements(res.item);
+      } catch (e: unknown) {
+        if (!cancelled)
+          setErr(e instanceof Error ? e.message : "Failed to load status");
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [user]);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      setLoadingProducts(true);
+      try {
+        const res = await api.listProducts({ tag: "dl-barry" });
+        if (!cancelled) setProducts((res.items as unknown as Product[]) ?? []);
+      } catch {
+        // ignore
+      } finally {
+        if (!cancelled) setLoadingProducts(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <main>
       <section className="relative w-full flex items-center justify-center text-center text-white h-[40vh] min-h-[280px]">
@@ -36,6 +99,33 @@ export default function DlBarryPage() {
             Please get in touch with our Client Advisors to schedule an
             appointment.
           </p>
+          <div className="mt-6 text-sm text-black/80">
+            {user ? (
+              <div>
+                {loading ? (
+                  <span>Checking your DL Barry access…</span>
+                ) : err ? (
+                  <span className="text-red-600">{err}</span>
+                ) : (
+                  <div className="space-y-1">
+                    <div>
+                      Barry entitlements available:{" "}
+                      <strong>
+                        {entitlements?.barryEntitlementsAvailable ?? 0}
+                      </strong>
+                    </div>
+                    <div>
+                      Privé purchases counted:{" "}
+                      <strong>{entitlements?.privePurchasesCount ?? 0}</strong>{" "}
+                      (earn 1 Barry access every 11)
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <span>Sign in to view your DL Barry access.</span>
+            )}
+          </div>
           <div className="mt-6">
             <Link
               href="/contact"
@@ -44,6 +134,31 @@ export default function DlBarryPage() {
               Contact an Advisor
             </Link>
           </div>
+        </div>
+        <div className="mt-12">
+          {loadingProducts ? (
+            <p className="text-center text-neutral-700">
+              Loading DL Barry products…
+            </p>
+          ) : products.length > 0 ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+              {products.map((p) => (
+                <ProductCard
+                  key={p.slug}
+                  slug={p.slug}
+                  name={p.name}
+                  price={p.price}
+                  currency={p.currency}
+                  image={(p.images && p.images[0]) || "/images/placeholder.png"}
+                  inStock={p.inStock}
+                />
+              ))}
+            </div>
+          ) : (
+            <p className="text-center text-neutral-700">
+              No DL Barry products are currently available.
+            </p>
+          )}
         </div>
       </Container>
     </main>

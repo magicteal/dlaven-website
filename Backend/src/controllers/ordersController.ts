@@ -4,6 +4,7 @@ import { Order } from "../models/Order";
 import { User } from "../models/User";
 import { getRazorpay, verifyRazorpaySignature } from "../utils/razorpay";
 import { sendEmail } from "../utils/email";
+import { Product } from "../models/Product";
 
 export async function createOrder(req: Request, res: Response) {
   try {
@@ -14,14 +15,20 @@ export async function createOrder(req: Request, res: Response) {
     const user = await User.findById(userId).lean();
     if (!user) return res.status(404).json({ error: "User not found" });
     const addresses: any[] = (user as any).addresses || [];
-    const defaultAddr = addresses.find((a) => a?.isDefault) || addresses[0] || (user as any).address || {};
-    if (!defaultAddr || !defaultAddr.line1) return res.status(400).json({ error: "No default address set" });
+    const defaultAddr =
+      addresses.find((a) => a?.isDefault) ||
+      addresses[0] ||
+      (user as any).address ||
+      {};
+    if (!defaultAddr || !defaultAddr.line1)
+      return res.status(400).json({ error: "No default address set" });
 
     // Load cart for authenticated user; if empty, attempt guest cart migration
     let userCartDoc = await Cart.findOne({ userId }).exec();
     let items = userCartDoc?.items || [];
     if (!items.length) {
-      const guestId = (req.cookies?.["cartId"] as string | undefined) || undefined;
+      const guestId =
+        (req.cookies?.["cartId"] as string | undefined) || undefined;
       if (guestId) {
         const guestCart = await Cart.findOne({ guestId }).exec();
         if (guestCart && guestCart.items && guestCart.items.length) {
@@ -36,7 +43,14 @@ export async function createOrder(req: Request, res: Response) {
           // Clear guest cart
           await Cart.deleteOne({ _id: guestCart._id });
           // Best-effort clear cookie
-          try { res.clearCookie("cartId", { httpOnly: true, sameSite: "lax", secure: false, path: "/" }); } catch {}
+          try {
+            res.clearCookie("cartId", {
+              httpOnly: true,
+              sameSite: "lax",
+              secure: false,
+              path: "/",
+            });
+          } catch {}
         }
       }
     }
@@ -45,16 +59,50 @@ export async function createOrder(req: Request, res: Response) {
       return res.status(400).json({ error: "Cart is empty" });
     }
 
-  const currency = items[0].currency || "INR";
-  const subtotal = items.reduce((sum, it) => sum + it.price * it.quantity, 0);
+    // Enforce Barry entitlement: if any cart item is a Barry product, ensure user has entitlement
+    // Fetch product tags in bulk for cart items
+    const productSlugs = Array.from(new Set(items.map((i) => i.productSlug)));
+    const products = await Product.find({ slug: { $in: productSlugs } })
+      .select({ slug: 1, tags: 1 })
+      .lean();
+    const tagMap = new Map<string, string[]>();
+    for (const p of products) tagMap.set(p.slug, (p as any).tags || []);
+    const barryQty = items.reduce(
+      (sum, it) =>
+        sum +
+        ((tagMap.get(it.productSlug) || []).includes("dl-barry")
+          ? it.quantity
+          : 0),
+      0
+    );
+    if (barryQty > 0) {
+      const entUser = await User.findById(userId)
+        .select({ barryEntitlementsAvailable: 1 })
+        .lean();
+      const available = (entUser as any)?.barryEntitlementsAvailable || 0;
+      if (available < barryQty) {
+        return res
+          .status(403)
+          .json({
+            error: `Barry purchase not allowed. You have ${available} entitlement(s) but are trying to buy ${barryQty}.`,
+          });
+      }
+    }
 
-  // Create Razorpay order (amount in paise)
-  const rp = getRazorpay();
-  // Razorpay requires receipt length <= 40 chars
-  const shortSub = String(userId).slice(-8);
-  const shortTs = Date.now().toString().slice(-6);
-  const receipt = `r_${shortSub}_${shortTs}`; // e.g. r_abcdef12_345678 (<= 40)
-  const rpOrder = await rp.orders.create({ amount: Math.round(subtotal * 100), currency, receipt });
+    const currency = items[0].currency || "INR";
+    const subtotal = items.reduce((sum, it) => sum + it.price * it.quantity, 0);
+
+    // Create Razorpay order (amount in paise)
+    const rp = getRazorpay();
+    // Razorpay requires receipt length <= 40 chars
+    const shortSub = String(userId).slice(-8);
+    const shortTs = Date.now().toString().slice(-6);
+    const receipt = `r_${shortSub}_${shortTs}`; // e.g. r_abcdef12_345678 (<= 40)
+    const rpOrder = await rp.orders.create({
+      amount: Math.round(subtotal * 100),
+      currency,
+      receipt,
+    });
 
     // Persist order with status created
     const order = await Order.create({
@@ -67,26 +115,39 @@ export async function createOrder(req: Request, res: Response) {
       razorpay: { orderId: rpOrder.id },
     });
 
-    return res.status(201).json({ order, razorpayOrder: rpOrder, key: process.env.RAZORPAY_API_KEY });
+    return res
+      .status(201)
+      .json({
+        order,
+        razorpayOrder: rpOrder,
+        key: process.env.RAZORPAY_API_KEY,
+      });
   } catch (e: any) {
     console.error("[orders:create] error", e);
-    const msg = (e?.error?.description as string | undefined)
-      || (e?.message as string | undefined)
-      || "Failed to create order";
+    const msg =
+      (e?.error?.description as string | undefined) ||
+      (e?.message as string | undefined) ||
+      "Failed to create order";
     return res.status(400).json({ error: msg });
   }
 }
 
 export async function verifyPayment(req: Request, res: Response) {
   try {
-  const userId = (req as any).user?.sub;
+    const userId = (req as any).user?.sub;
     if (!userId) return res.status(401).json({ error: "Unauthorized" });
-    const { orderId, paymentId, signature } = req.body as { orderId?: string; paymentId?: string; signature?: string };
-    if (!orderId || !paymentId || !signature) return res.status(400).json({ error: "Missing payment parameters" });
+    const { orderId, paymentId, signature } = req.body as {
+      orderId?: string;
+      paymentId?: string;
+      signature?: string;
+    };
+    if (!orderId || !paymentId || !signature)
+      return res.status(400).json({ error: "Missing payment parameters" });
 
     // Verify signature
     const ok = verifyRazorpaySignature({ orderId, paymentId, signature });
-    if (!ok) return res.status(400).json({ error: "Invalid payment signature" });
+    if (!ok)
+      return res.status(400).json({ error: "Invalid payment signature" });
 
     const order = await Order.findOneAndUpdate(
       { userId, "razorpay.orderId": orderId },
@@ -98,6 +159,71 @@ export async function verifyPayment(req: Request, res: Response) {
     // Optionally clear cart on success
     await Cart.updateOne({ userId }, { $set: { items: [] } });
 
+    // Post-payment business logic: award or consume entitlements
+    try {
+      // Load involved products' tags
+      const slugs = Array.from(new Set(order.items.map((i) => i.productSlug)));
+      const prods = await Product.find({ slug: { $in: slugs } })
+        .select({ slug: 1, tags: 1 })
+        .lean();
+      const ptag = new Map<string, string[]>();
+      for (const p of prods) ptag.set(p.slug, (p as any).tags || []);
+      const hasPrive = order.items.some((it) =>
+        (ptag.get(it.productSlug) || []).includes("dl-prive")
+      );
+      const barryQty = order.items.reduce(
+        (sum, it) =>
+          sum +
+          ((ptag.get(it.productSlug) || []).includes("dl-barry")
+            ? it.quantity
+            : 0),
+        0
+      );
+
+      // If order includes Barry items, decrement entitlement by 1
+      if (barryQty > 0) {
+        await User.updateOne(
+          { _id: userId, barryEntitlementsAvailable: { $gte: barryQty } },
+          { $inc: { barryEntitlementsAvailable: -barryQty } }
+        );
+      }
+
+      // If order includes Prive items and a valid code was used by this user recently, increment count
+      if (hasPrive) {
+        // Only award if user recently verified a Privé code (within last 24h)
+        const u = await User.findById(userId)
+          .select({ lastPriveCodeVerifiedAt: 1, privePurchasesCount: 1 })
+          .lean();
+        const lastAt = (u as any)?.lastPriveCodeVerifiedAt
+          ? new Date((u as any).lastPriveCodeVerifiedAt)
+          : null;
+        const now = new Date();
+        const within24h = lastAt
+          ? now.getTime() - lastAt.getTime() <= 24 * 60 * 60 * 1000
+          : false;
+        if (within24h) {
+          const updated = await User.findByIdAndUpdate(
+            userId,
+            { $inc: { privePurchasesCount: 1 } },
+            { new: true }
+          ).lean();
+          const count = (updated as any)?.privePurchasesCount || 0;
+          // Award one Barry entitlement for every 11 prive purchases
+          if (count > 0 && count % 11 === 0) {
+            await User.updateOne(
+              { _id: userId },
+              { $inc: { barryEntitlementsAvailable: 1 } }
+            );
+          }
+        }
+      }
+    } catch (bizErr) {
+      console.warn(
+        "[orders:verify] post-payment business logic failed",
+        bizErr
+      );
+    }
+
     // Send payment confirmation email (best-effort)
     try {
       const u = await User.findById(userId).lean();
@@ -106,8 +232,16 @@ export async function verifyPayment(req: Request, res: Response) {
         await sendEmail({
           to,
           subject: `Order paid: ${String(order._id)}`,
-          text: `Thank you! Your order ${String(order._id)} has been paid successfully. Total: ${order.currency} ${order.subtotal}.`,
-          html: `<p>Thank you! Your order <strong>${String(order._id)}</strong> has been paid successfully.</p><p>Total: <strong>${order.currency} ${order.subtotal}</strong></p>`,
+          text: `Thank you! Your order ${String(
+            order._id
+          )} has been paid successfully. Total: ${order.currency} ${
+            order.subtotal
+          }.`,
+          html: `<p>Thank you! Your order <strong>${String(
+            order._id
+          )}</strong> has been paid successfully.</p><p>Total: <strong>${
+            order.currency
+          } ${order.subtotal}</strong></p>`,
         });
       }
     } catch (e) {
@@ -117,24 +251,28 @@ export async function verifyPayment(req: Request, res: Response) {
     return res.json({ order });
   } catch (e: any) {
     console.error("[orders:verify] error", e);
-    return res.status(400).json({ error: e?.message || "Failed to verify payment" });
+    return res
+      .status(400)
+      .json({ error: e?.message || "Failed to verify payment" });
   }
 }
 
 export async function myOrders(req: Request, res: Response) {
   try {
-  const userId = (req as any).user?.sub;
+    const userId = (req as any).user?.sub;
     if (!userId) return res.status(401).json({ error: "Unauthorized" });
     const orders = await Order.find({ userId }).sort({ createdAt: -1 }).lean();
     return res.json({ items: orders });
   } catch (e: any) {
-    return res.status(400).json({ error: e?.message || "Failed to list orders" });
+    return res
+      .status(400)
+      .json({ error: e?.message || "Failed to list orders" });
   }
 }
 
 export async function getOrderById(req: Request, res: Response) {
   try {
-  const userId = (req as any).user?.sub;
+    const userId = (req as any).user?.sub;
     if (!userId) return res.status(401).json({ error: "Unauthorized" });
     const { id } = req.params;
     const order = await Order.findOne({ _id: id, userId }).lean();
@@ -151,7 +289,9 @@ export async function adminListOrders(_req: Request, res: Response) {
     const orders = await Order.find({}).sort({ createdAt: -1 }).lean();
     return res.json({ items: orders });
   } catch (e: any) {
-    return res.status(400).json({ error: e?.message || "Failed to list orders" });
+    return res
+      .status(400)
+      .json({ error: e?.message || "Failed to list orders" });
   }
 }
 
@@ -193,8 +333,12 @@ export async function adminUpdateStatus(req: Request, res: Response) {
         await sendEmail({
           to,
           subject,
-          text: `Update for order ${String(order._id)}: status changed to ${statusText}.`,
-          html: `<p>Update for order <strong>${String(order._id)}</strong>:</p><p>Status changed to <strong>${statusText}</strong>.</p>`,
+          text: `Update for order ${String(
+            order._id
+          )}: status changed to ${statusText}.`,
+          html: `<p>Update for order <strong>${String(
+            order._id
+          )}</strong>:</p><p>Status changed to <strong>${statusText}</strong>.</p>`,
         });
       }
     } catch (e) {
@@ -202,6 +346,8 @@ export async function adminUpdateStatus(req: Request, res: Response) {
     }
     return res.json({ item: order });
   } catch (e: any) {
-    return res.status(400).json({ error: e?.message || "Failed to update status" });
+    return res
+      .status(400)
+      .json({ error: e?.message || "Failed to update status" });
   }
 }

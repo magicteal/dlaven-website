@@ -419,6 +419,11 @@ export const api = {
   getOrderById(id: string) {
     return request<{ item: OrderDTO }>(`/api/orders/${encodeURIComponent(id)}`);
   },
+  getMyEntitlements() {
+    return request<{
+      item: { privePurchasesCount: number; barryEntitlementsAvailable: number };
+    }>(`/api/orders/me/entitlements`);
+  },
   // Admin orders
   adminListOrders() {
     return request<{ items: OrderDTO[] }>("/api/orders/admin");
