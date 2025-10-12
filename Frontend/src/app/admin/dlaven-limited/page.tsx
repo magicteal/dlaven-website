@@ -21,7 +21,7 @@ export default function AdminDlavenLimitedPage() {
 
   return (
     <div className="max-w-4xl">
-      <h1 className="text-xl font-semibold">D'LAVÉN Limited Management</h1>
+      <h1 className="text-xl font-semibold">D&#39;LAVÉN Limited Management</h1>
       <p className="mt-2 text-sm text-black/60">
         Manage exclusive products and the codes to access them.
       </p>
@@ -31,8 +31,8 @@ export default function AdminDlavenLimitedPage() {
         <div className="border border-black/10 p-6 rounded-lg">
           <h2 className="font-semibold text-lg">Limited Products</h2>
           <p className="mt-2 text-sm text-black/70">
-            Mark products as part of the "Dlaven Limited" collection to make
-            them appear on the exclusive page.
+            Mark products as part of the &quot;Dlaven Limited&quot; collection
+            to make them appear on the exclusive page.
           </p>
           <div className="mt-4 flex gap-2">
             <Link href="/admin/products" passHref>
@@ -43,8 +43,8 @@ export default function AdminDlavenLimitedPage() {
             </Link>
           </div>
           <p className="mt-4 text-xs text-black/60">
-            Go to the products page, edit a product, and check the "Is a Dlaven
-            Limited product" box.
+            Go to the products page, edit a product, and check the &quot;Is a
+            Dlaven Limited product&quot; box.
           </p>
         </div>
 
@@ -52,8 +52,8 @@ export default function AdminDlavenLimitedPage() {
         <div className="border border-black/10 p-6 rounded-lg">
           <h2 className="font-semibold text-lg">Access Codes</h2>
           <p className="mt-2 text-sm text-black/70">
-            Generate new batches of codes specifically for the "Dlaven Limited"
-            collection.
+            Generate new batches of codes specifically for the &quot;Dlaven
+            Limited&quot; collection.
           </p>
           <div className="mt-4">
             <Link href="/admin/codes" passHref>
@@ -63,7 +63,7 @@ export default function AdminDlavenLimitedPage() {
           <p className="mt-4 text-xs text-black/60">
             On the codes page, enter{" "}
             <code className="bg-gray-100 p-1 rounded">dlaven-limited</code> in
-            the "Collection" field before generating.
+            the &quot;Collection&quot; field before generating.
           </p>
         </div>
       </div>

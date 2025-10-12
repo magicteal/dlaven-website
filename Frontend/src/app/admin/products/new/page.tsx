@@ -25,8 +25,6 @@ export default function AdminNewProductPage() {
     sizeOptions: "",
     details: "",
     materialCare: "",
-    isLimited: false, // New state for Dlaven Limited
-    section: "",
     tag: "",
   });
   const searchParams = useSearchParams();
@@ -49,18 +47,9 @@ export default function AdminNewProductPage() {
   useEffect(() => {
     // Prefill based on ?kind=limited or ?kind=prive
     const kind = searchParams?.get?.("kind");
-    if (kind === "limited") {
-      setForm((p) => ({
-        ...p,
-        isLimited: true,
-        section: "dlaven-limited",
-        tag: "dl-limited",
-      }));
-    } else if (kind === "prive") {
-      setForm((p) => ({ ...p, section: "prive", tag: "dl-prive" }));
-    } else if (kind === "dl-barry") {
-      setForm((p) => ({ ...p, section: "dl-barry", tag: "dl-barry" }));
-    }
+    if (kind === "limited") setForm((p) => ({ ...p, tag: "dl-limited" }));
+    else if (kind === "prive") setForm((p) => ({ ...p, tag: "dl-prive" }));
+    else if (kind === "dl-barry") setForm((p) => ({ ...p, tag: "dl-barry" }));
   }, [searchParams]);
 
   async function uploadViaBackend(file: File): Promise<string> {
@@ -116,7 +105,7 @@ export default function AdminNewProductPage() {
           .map((s) => s.trim())
           .filter(Boolean),
         categorySlug: form.categorySlug.trim(),
-        section: form.section || undefined,
+        // section removed
         inStock: !!form.inStock,
         rating: form.rating ? Number(form.rating) : undefined,
         reviewsCount: form.reviewsCount ? Number(form.reviewsCount) : undefined,
@@ -135,7 +124,6 @@ export default function AdminNewProductPage() {
             .split("\n")
             .map((s) => s.trim())
             .filter(Boolean) || undefined,
-        isLimited: form.isLimited, // Include isLimited in the payload
         tags: form.tag ? [form.tag] : undefined,
       };
       await requestAdmin("/api/products", {
@@ -288,19 +276,6 @@ export default function AdminNewProductPage() {
           />
           <label htmlFor="instock" className="text-sm">
             In stock
-          </label>
-        </div>
-        <div className="flex items-center gap-2">
-          <input
-            id="isLimited"
-            type="checkbox"
-            checked={form.isLimited}
-            onChange={(e) =>
-              setForm((p) => ({ ...p, isLimited: e.target.checked }))
-            }
-          />
-          <label htmlFor="isLimited" className="text-sm">
-            Is a Dlaven Limited product
           </label>
         </div>
         <div>

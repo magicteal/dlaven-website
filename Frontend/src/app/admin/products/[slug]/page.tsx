@@ -20,7 +20,7 @@ type Product = {
   sizeOptions?: string[];
   details?: string[];
   materialCare?: string[];
-  isLimited?: boolean; // New field for Dlaven Limited products
+  tags?: string[];
 };
 
 export default function AdminEditProductPage({
@@ -46,7 +46,6 @@ export default function AdminEditProductPage({
     sizeOptions: "",
     details: "",
     materialCare: "",
-    isLimited: false, // New state for Dlaven Limited
     tag: "",
   });
   const [loadingItem, setLoadingItem] = useState(true);
@@ -82,11 +81,7 @@ export default function AdminEditProductPage({
           sizeOptions: p.sizeOptions ? p.sizeOptions.join(",") : "",
           details: p.details ? p.details.join("\n") : "",
           materialCare: p.materialCare ? p.materialCare.join("\n") : "",
-          isLimited: !!p.isLimited, // Set isLimited state
-          tag:
-            Array.isArray((p as any).tags) && (p as any).tags.length
-              ? (p as any).tags[0]
-              : "",
+          tag: Array.isArray(p.tags) && p.tags.length ? p.tags[0] : "",
         });
       } catch (e: unknown) {
         setError(e instanceof Error ? e.message : "Failed to load product");
@@ -134,7 +129,6 @@ export default function AdminEditProductPage({
             .split("\n")
             .map((s) => s.trim())
             .filter(Boolean) || undefined,
-        isLimited: form.isLimited, // Include isLimited in payload
         tags: form.tag ? [form.tag] : undefined,
       };
       await requestAdmin(`/api/products/${slug}`, {
@@ -263,19 +257,6 @@ export default function AdminEditProductPage({
             />
             <label htmlFor="instock" className="text-sm">
               In stock
-            </label>
-          </div>
-          <div className="flex items-center gap-2">
-            <input
-              id="isLimited"
-              type="checkbox"
-              checked={form.isLimited}
-              onChange={(e) =>
-                setForm((p) => ({ ...p, isLimited: e.target.checked }))
-              }
-            />
-            <label htmlFor="isLimited" className="text-sm">
-              Is a Dlaven Limited product
             </label>
           </div>
           <div>

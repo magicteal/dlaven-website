@@ -77,23 +77,32 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
 }
 
 export const api = {
-  listProducts(params?: { category?: string; collection?: string }) {
+  listProducts(params?: {
+    category?: string;
+    tag?: "normal-product" | "dl-limited" | "dl-prive" | "dl-barry";
+    q?: string;
+    limit?: number;
+    skip?: number;
+  }) {
     const search = new URLSearchParams();
     if (params?.category) search.set("category", params.category);
-    if (params?.collection) search.set("collection", params.collection);
+    if (params?.tag) search.set("tag", params.tag);
+    if (params?.q) search.set("q", params.q);
+    if (params?.limit !== undefined) search.set("limit", String(params.limit));
+    if (params?.skip !== undefined) search.set("skip", String(params.skip));
     return request<{ items: unknown[] }>(`/api/products?${search.toString()}`);
   },
   verifyLimitedCode(code: string) {
-      return request<{ ok: boolean }>("/api/codes/verify-limited", {
-          method: "POST",
-          body: JSON.stringify({ code }),
-      });
+    return request<{ ok: boolean }>("/api/codes/verify-limited", {
+      method: "POST",
+      body: JSON.stringify({ code }),
+    });
   },
   verifyPriveCode(code: string) {
-      return request<{ ok: boolean }>("/api/codes/verify-prive", {
-          method: "POST",
-          body: JSON.stringify({ code }),
-      });
+    return request<{ ok: boolean }>("/api/codes/verify-prive", {
+      method: "POST",
+      body: JSON.stringify({ code }),
+    });
   },
   register(data: { email: string; password: string; name?: string }) {
     return request<{

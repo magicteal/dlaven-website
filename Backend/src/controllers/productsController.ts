@@ -7,7 +7,7 @@ import { Product } from "../models/Product";
  */
 export async function listProducts(req: Request, res: Response) {
   try {
-    const { category, q, limit = "50", skip = "0", section, tag } = req.query as any;
+    const { category, q, limit = "50", skip = "0", tag } = req.query as any;
 
     // Allowed site categories (hard-coded)
     const allowedCategories = [
@@ -16,25 +16,21 @@ export async function listProducts(req: Request, res: Response) {
       "heritage-jewelry",
     ];
 
-    const allowedSections = ["prive", "dlaven-limited", "dl-barry"];
-
     const filter: any = {};
     if (category) filter.categorySlug = String(category);
-    if (section) {
-      if (!allowedSections.includes(String(section))) {
-        return res.status(400).json({ error: `Invalid section` });
-      }
-      filter.section = String(section);
-      // Ensure only allowed categories are returned for sections
-      filter.categorySlug = { $in: allowedCategories };
-    }
     if (tag) {
-      // Only allow the known tags
-      const allowedTags = ["normal-product", "dl-limited", "dl-prive", "dl-barry"];
+      const allowedTags = [
+        "normal-product",
+        "dl-limited",
+        "dl-prive",
+        "dl-barry",
+      ];
       if (!allowedTags.includes(String(tag))) {
         return res.status(400).json({ error: `Invalid tag` });
       }
       filter.tags = String(tag);
+      // For these special collections we constrain to allowed categories
+      filter.categorySlug = { $in: allowedCategories };
     }
     if (q) filter.$text = { $search: String(q) };
 
@@ -83,9 +79,7 @@ export async function createProduct(req: Request, res: Response) {
       sizeOptions?: string[];
       details?: string[];
       materialCare?: string[];
-      isLimited?: boolean;
       inStock?: boolean;
-      section?: string;
       tags?: string[];
     }>;
 
@@ -95,21 +89,28 @@ export async function createProduct(req: Request, res: Response) {
       "heritage-jewelry",
     ];
 
-    if (!body?.slug || !body?.name || typeof body.price !== "number" || !body?.categorySlug) {
+    if (
+      !body?.slug ||
+      !body?.name ||
+      typeof body.price !== "number" ||
+      !body?.categorySlug
+    ) {
       return res.status(400).json({ error: "Missing required product fields" });
     }
 
     if (!allowedCategories.includes(body.categorySlug)) {
-      return res.status(400).json({ error: `categorySlug must be one of: ${allowedCategories.join(", ")}` });
+      return res.status(400).json({
+        error: `categorySlug must be one of: ${allowedCategories.join(", ")}`,
+      });
     }
 
-    const allowedSections = ["prive", "dlaven-limited", "dl-barry"];
-    if (body.section && !allowedSections.includes(body.section)) {
-      return res.status(400).json({ error: `section must be one of: ${allowedSections.join(", ")}` });
-    }
+    // Prefer tags for classification; no section/type enforcement
 
     const existing = await Product.findOne({ slug: body.slug }).lean();
-    if (existing) return res.status(409).json({ error: "Product with this slug already exists" });
+    if (existing)
+      return res
+        .status(409)
+        .json({ error: "Product with this slug already exists" });
 
     const created = await Product.create({
       slug: body.slug,
@@ -122,8 +123,6 @@ export async function createProduct(req: Request, res: Response) {
       sizeOptions: body.sizeOptions ?? undefined,
       details: body.details ?? undefined,
       materialCare: body.materialCare ?? undefined,
-      isLimited: !!body.isLimited,
-      section: body.section ?? null,
       tags: body.tags ?? undefined,
       inStock: body.inStock !== undefined ? !!body.inStock : true,
     });
@@ -142,7 +141,9 @@ export async function updateProductBySlug(req: Request, res: Response) {
   try {
     const slug = req.params.slug as string;
     const updates = req.body as any;
-    const updated = await Product.findOneAndUpdate({ slug }, updates, { new: true }).lean();
+    const updated = await Product.findOneAndUpdate({ slug }, updates, {
+      new: true,
+    }).lean();
     if (!updated) return res.status(404).json({ error: "Not found" });
     return res.json({ item: updated });
   } catch (err) {

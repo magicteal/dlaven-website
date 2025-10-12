@@ -43,7 +43,7 @@ export default function DlavenPrivePage() {
       setLoadingProducts(true);
       setError(null);
       try {
-        const res = await api.listProducts({ category: "prive" });
+        const res = await api.listProducts({ tag: "dl-prive" });
         setProducts((res.items ?? []) as Product[]);
       } catch (e: unknown) {
         setError(
@@ -99,7 +99,7 @@ export default function DlavenPrivePage() {
             D&#39;LAVÉN PRIVE
           </h1>
           <p className="mt-4 max-w-2xl mx-auto text-sm sm:text-base text-white/90">
-            Ultra-exclusive pieces available only with a valid D'LAVÉN Privé
+            Ultra-exclusive pieces available only with a valid D&#39;LAVÉN Privé
             access code.
           </p>
         </div>
@@ -133,9 +133,9 @@ export default function DlavenPrivePage() {
               </p>
             ) : null}
             <p className="mt-6 text-xs text-center text-black/60">
-              Note: D'LAVÉN Privé codes are single-use and tied to your account.
-              Each code can only be used once and access is verified against our
-              records.
+              Note: D&#39;LAVÉN Privé codes are single-use and tied to your
+              account. Each code can only be used once and access is verified
+              against our records.
             </p>
           </div>
         ) : (

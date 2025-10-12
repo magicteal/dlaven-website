@@ -15,9 +15,7 @@ export default function DlavenLimitedPage() {
   useEffect(() => {
     async function fetchLimitedProducts() {
       try {
-        const productResponse = await api.listProducts({
-          collection: "dlaven-limited",
-        });
+        const productResponse = await api.listProducts({ tag: "dl-limited" });
         setProducts(productResponse.items as Product[]);
       } catch (err: unknown) {
         setError(err instanceof Error ? err.message : "An error occurred.");
@@ -46,7 +44,7 @@ export default function DlavenLimitedPage() {
         </div>
         <div className="relative z-10 p-4">
           <h1 className="text-4xl sm:text-5xl font-bold tracking-widest uppercase">
-            D'LAVÉN LIMITED
+            D&#39;LAVÉN LIMITED
           </h1>
           <p className="mt-4 max-w-2xl mx-auto text-sm sm:text-base text-white/90">
             An exclusive collection for our most valued clientele.
