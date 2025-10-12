@@ -2,7 +2,7 @@
 
 import { useAuth } from "@/components/providers/AuthProvider";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { use, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { categories as HARD_CATEGORIES } from "@/data/categories";
 
@@ -26,13 +26,14 @@ type Product = {
 export default function AdminEditProductPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
+  const { slug } = use(params);
   const { user, loading } = useAuth();
   const router = useRouter();
   const isAdmin = useMemo(() => user?.role === "admin", [user]);
   const [form, setForm] = useState({
-    slug: params.slug,
+    slug: slug,
     name: "",
     description: "",
     price: "",
@@ -64,7 +65,7 @@ export default function AdminEditProductPage({
     async function load() {
       try {
         const data = await requestAdmin<{ item: Product }>(
-          `/api/products/${params.slug}`
+          `/api/products/${slug}`
         );
         const p = data.item;
         setForm({
@@ -94,7 +95,7 @@ export default function AdminEditProductPage({
       }
     }
     if (isAdmin) load();
-  }, [isAdmin, params.slug]);
+  }, [isAdmin, slug]);
 
   useEffect(() => {
     // categories are hard-coded; nothing to load
@@ -136,7 +137,7 @@ export default function AdminEditProductPage({
         isLimited: form.isLimited, // Include isLimited in payload
         tags: form.tag ? [form.tag] : undefined,
       };
-      await requestAdmin(`/api/products/${params.slug}`, {
+      await requestAdmin(`/api/products/${slug}`, {
         method: "PATCH",
         body: JSON.stringify(body),
       });
@@ -149,11 +150,11 @@ export default function AdminEditProductPage({
   }
 
   async function onDelete() {
-    if (!confirm(`Delete product ${params.slug}?`)) return;
+    if (!confirm(`Delete product ${slug}?`)) return;
     setDeleting(true);
     setError(null);
     try {
-      await requestAdmin(`/api/products/${params.slug}`, { method: "DELETE" });
+      await requestAdmin(`/api/products/${slug}`, { method: "DELETE" });
       router.replace("/admin/products");
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Failed to delete product");
