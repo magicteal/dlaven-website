@@ -1,9 +1,12 @@
+"use client";
 import Container from "@/components/Container";
 import Image from "next/image";
-import Link from "next/link";
 import AnimatedCities from "@/components/AnimatedCities"; // Naya component import karein
+import { useState } from "react";
+// import GlobeModal from "@/components/GlobeModal";
 
 export default function DestinationsPage() {
+  const [open, setOpen] = useState(false);
   return (
     <main>
       {/* Hero Section */}
@@ -119,15 +122,18 @@ export default function DestinationsPage() {
               Locate your nearest D'LAVÉN store to experience our world in
               person.
             </p>
-            <Link
-              href="/store-locator"
+            <button
+             
               className="mt-6 inline-block px-8 py-3 border border-black text-xs uppercase tracking-wider hover:bg-black hover:text-white"
             >
               Store Locator
-            </Link>
+            </button>
           </div>
         </Container>
       </div>
+
+      {/* Globe Modal */}
+      {/* <GlobeModal open={open} onClose={() => setOpen(false)} /> */}
     </main>
   );
 }

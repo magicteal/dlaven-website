@@ -33,10 +33,27 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
       },
       credentials: "include",
     });
-  } catch (networkErr) {
-    console.error("[api] ✗ Network error", { url, err: networkErr });
+  } catch (networkErr: unknown) {
+    // Improve the network error logging so it's not an empty object in the console.
+    const errObj: Record<string, unknown> = {};
+    if (networkErr && typeof networkErr === "object") {
+      const anyErr = networkErr as any;
+      errObj.name = anyErr.name;
+      errObj.message = anyErr.message;
+      errObj.stack = anyErr.stack;
+    } else if (typeof networkErr === "string") {
+      errObj.message = networkErr;
+    }
+    // navigator may be undefined in some runtime contexts, guard it.
+    const online = typeof navigator !== "undefined" ? (navigator as any).onLine : "unknown";
+    console.error("[api] ✗ Network error while fetching API", {
+      url,
+      online,
+      err: errObj,
+    });
+
     throw new Error(
-      "Network error: Failed to reach API. Check server and CORS."
+      `Network error: Failed to reach API at ${url}. Check server, CORS and your network connection.`
     );
   }
 

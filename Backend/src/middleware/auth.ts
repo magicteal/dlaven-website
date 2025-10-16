@@ -38,7 +38,7 @@ export function optionalAuth(req: Request, _res: Response, next: NextFunction) {
     (req as any).user = payload;
   } catch {
     // ignore token errors for optional auth
-  } finally {
-    next();
   }
+  // Call next once after processing optional auth
+  return next();
 }

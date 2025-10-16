@@ -81,7 +81,7 @@ export default function MenuDrawer({ trigger }: { trigger: React.ReactNode }) {
               <Link href="/gifts" className="block hover:underline">
                 Gifts
               </Link>
-              <Link href="/store-locator" className="block hover:underline">
+              <Link href="/destinations" className="block hover:underline">
                 Store Locator
               </Link>
             </div>
