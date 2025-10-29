@@ -27,9 +27,9 @@ async function fetchProductsForCategory(slug: string) {
 export default async function CategoryPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const { slug } = params;
+  const { slug } = await params;
   const category = getCategoryBySlug(slug);
   if (!category) return notFound();
 
