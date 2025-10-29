@@ -40,23 +40,23 @@ export default function AboutUsPage() {
         {/* About D'LAVÉN Section */}
         <div className="max-w-3xl mx-auto text-center mt-16">
           <h1 className="text-3xl font-bold tracking-widest uppercase text-black">
-            ABOUT D'LAVÉN
+            ABOUT D&apos;LAVÉN
           </h1>
           <div className="mt-6 text-sm text-black/70 space-y-4">
             <p>
               Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s.
+              industry. Lorem Ipsum has been the industry&apos;s standard dummy
+              text ever since the 1500s.
             </p>
             <p>
               Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s.
+              industry. Lorem Ipsum has been the industry&apos;s standard dummy
+              text ever since the 1500s.
             </p>
             <p>
               Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s.
+              industry. Lorem Ipsum has been the industry&apos;s standard dummy
+              text ever since the 1500s.
             </p>
           </div>
         </div>
@@ -67,7 +67,7 @@ export default function AboutUsPage() {
             MAY WE HELP YOU?
           </h2>
           <p className="mt-3 text-sm text-black/70">
-            Find out everything you need to know about the D'LAVÉN
+            Find out everything you need to know about the D&apos;LAVÉN
           </p>
           <Link
             href="/contact"

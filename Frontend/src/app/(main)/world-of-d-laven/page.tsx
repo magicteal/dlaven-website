@@ -7,7 +7,7 @@ export default function WorldOfDlavenPage() {
   return (
     <>
       <Head>
-        <title>World of D'LAVÉN — D'LAVÉN</title>
+        <title>World of D&apos;LAVÉN — D&apos;LAVÉN</title>
         <meta
           name="description"
           content="Explore the world of D'LAVÉN — heritage, craft and the present of luxury."
@@ -35,11 +35,12 @@ export default function WorldOfDlavenPage() {
             </p>
 
             <h1 className="mt-6 text-4xl sm:text-5xl md:text-6xl font-bold tracking-widest uppercase leading-tight">
-              WORLD OF D'LAVÉN
+              WORLD OF D&apos;LAVÉN
             </h1>
 
             <p className="mt-8 text-sm uppercase tracking-wider text-white/90">
-              An immersion into craft, provenance and the present of D'LAVÉN.
+              An immersion into craft, provenance and the present of
+              D&apos;LAVÉN.
             </p>
 
             <div className="mt-10 flex items-center justify-center gap-4">
@@ -72,8 +73,8 @@ export default function WorldOfDlavenPage() {
                 SEALED IN HERITAGE SENT WITH LUXURY
               </h2>
               <p className="mt-6 text-sm text-black/70">
-                A filmic glimpse into the rituals and care that define D'LAVÉN —
-                coming soon.
+                A filmic glimpse into the rituals and care that define
+                D&apos;LAVÉN — coming soon.
               </p>
             </div>
 
@@ -113,7 +114,7 @@ export default function WorldOfDlavenPage() {
                     <div className="h-full w-full bg-[url('/images/placeholder1.jpg')] bg-center bg-cover transition-transform duration-300 group-hover:scale-105" />
                   </div>
                   <div className="mt-3 text-center text-sm uppercase tracking-wider">
-                    Future of D'LAVÉN
+                    Future of D&apos;LAVÉN
                   </div>
                 </Link>
 

@@ -7,7 +7,7 @@ export default function PackagingPage() {
   return (
     <>
       <Head>
-        <title>Packaging — World of D'LAVÉN</title>
+        <title>Packaging — World of D&apos;LAVÉN</title>
       </Head>
 
       <main className="min-h-screen bg-white text-black">

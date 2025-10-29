@@ -9,7 +9,7 @@ export default function WorldOfSection() {
         {/* small centered label */}
         <div className="text-center">
           <p className="text-[10px] uppercase tracking-widest text-black/70">
-            WORLD OF D' LAVÉN
+            WORLD OF D&apos; LAVÉN
           </p>
         </div>
 
@@ -32,11 +32,11 @@ export default function WorldOfSection() {
           <div className="col-span-12 md:col-span-4 flex justify-center">
             <div className="max-w-[420px] text-center md:text-left">
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-widest uppercase leading-tight">
-                FROM INDIA'S SOUL TO THE
+                FROM INDIA&apos;S SOUL TO THE
                 <br /> WORLD STAGE
               </h2>
               <p className="mt-4 text-sm text-black/70">
-                D'LAVÉN destinations where heritage meets modern luxury. A
+                D&apos;LAVÉN destinations where heritage meets modern luxury. A
                 journey from digital beginnings to timeless addresses. Our
                 boutiques will soon open doors in iconic cities, bringing
                 heritage craftsmanship and modern luxury under one roof.

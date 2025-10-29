@@ -37,7 +37,7 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     // Improve the network error logging so it's not an empty object in the console.
     const errObj: Record<string, unknown> = {};
     if (networkErr && typeof networkErr === "object") {
-      const anyErr = networkErr as any;
+      const anyErr = networkErr as Record<string, unknown>;
       errObj.name = anyErr.name;
       errObj.message = anyErr.message;
       errObj.stack = anyErr.stack;
@@ -45,7 +45,10 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
       errObj.message = networkErr;
     }
     // navigator may be undefined in some runtime contexts, guard it.
-    const online = typeof navigator !== "undefined" ? (navigator as any).onLine : "unknown";
+    const online =
+      typeof navigator !== "undefined"
+        ? (navigator as { onLine?: boolean }).onLine
+        : "unknown";
     console.error("[api] ✗ Network error while fetching API", {
       url,
       online,

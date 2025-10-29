@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 import * as THREE from "three";
@@ -17,12 +17,6 @@ function latLngToVector3(lat: number, lng: number, radius = 1) {
 }
 
 function Globe({ markers }: { markers: Marker[] }) {
-  const texture = useMemo(() => {
-    // Simple grayscale texture placeholder using data URL; replace with a proper B/W earth map if desired.
-    // For now, we'll use a basic color and lines to keep it lightweight.
-    return null as any;
-  }, []);
-
   return (
     <group>
       {/* Sphere for globe body in grayscale */}

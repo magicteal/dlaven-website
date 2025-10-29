@@ -2,11 +2,9 @@
 import Container from "@/components/Container";
 import Image from "next/image";
 import AnimatedCities from "@/components/AnimatedCities"; // Naya component import karein
-import { useState } from "react";
 // import GlobeModal from "@/components/GlobeModal";
 
 export default function DestinationsPage() {
-  const [open, setOpen] = useState(false);
   return (
     <main>
       {/* Hero Section */}
@@ -36,7 +34,7 @@ export default function DestinationsPage() {
         <div className="absolute inset-0 h-[60vh] min-h-[400px] bg-black/40" />
         <div className="relative z-10 p-4 h-[60vh] min-h-[400px] flex flex-col items-center justify-center">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-widest uppercase">
-            D'LAVÉN DESTINATIONS
+            D&apos;LAVÉN DESTINATIONS
           </h1>
           <p className="mt-4 max-w-2xl mx-auto text-sm sm:text-base text-white/90">
             Explore our exclusive boutiques and curated experiences around the
@@ -54,8 +52,8 @@ export default function DestinationsPage() {
             </h2>
             <div className="mt-6 text-sm text-black/70 space-y-4">
               <p>
-                Each D'LAVÉN destination is more than just a store; it is an
-                immersion into a world of unparalleled craftsmanship and
+                Each D&apos;LAVÉN destination is more than just a store; it is
+                an immersion into a world of unparalleled craftsmanship and
                 timeless elegance. Discover our architectural marvels and the
                 stories they tell.
               </p>
@@ -119,13 +117,10 @@ export default function DestinationsPage() {
               Find a Boutique
             </h3>
             <p className="mt-3 text-sm text-black/70">
-              Locate your nearest D'LAVÉN store to experience our world in
+              Locate your nearest D&apos;LAVÉN store to experience our world in
               person.
             </p>
-            <button
-             
-              className="mt-6 inline-block px-8 py-3 border border-black text-xs uppercase tracking-wider hover:bg-black hover:text-white"
-            >
+            <button className="mt-6 inline-block px-8 py-3 border border-black text-xs uppercase tracking-wider hover:bg-black hover:text-white">
               Store Locator
             </button>
           </div>

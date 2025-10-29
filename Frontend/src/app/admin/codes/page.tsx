@@ -97,8 +97,8 @@ export default function AdminCodesPage() {
           />
         </label>
         <p className="text-sm text-black/60">
-          Generated codes will use the system's fixed prefix and are tracked by
-          batch. No collection selection is required.
+          Generated codes will use the system&apos;s fixed prefix and are
+          tracked by batch. No collection selection is required.
         </p>
         <div>
           <Button type="submit" disabled={loading}>

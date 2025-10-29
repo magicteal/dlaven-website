@@ -12,7 +12,9 @@ export default function SealedInHeritagePage() {
   return (
     <>
       <Head>
-        <title>SEALED IN HERITAGE & SENT WITH LUXURY — World of D'LAVÉN</title>
+        <title>
+          SEALED IN HERITAGE & SENT WITH LUXURY — World of D&apos;LAVÉN
+        </title>
       </Head>
 
       <main className="min-h-screen bg-white text-black">
@@ -53,7 +55,8 @@ export default function SealedInHeritagePage() {
 
             <p className="mt-8 text-sm text-black/70 max-w-3xl mx-auto">
               Our packaging is a ritual — each layer protects the creation and
-              tells its story. Experience D'LAVÉN from the moment it arrives.
+              tells its story. Experience D&apos;LAVÉN from the moment it
+              arrives.
             </p>
 
             <div className="mt-10">
@@ -66,7 +69,7 @@ export default function SealedInHeritagePage() {
                 </Link>
               ) : (
                 <p className="text-sm text-black/60">
-                  You're signed in. Thank you.
+                  You&apos;re signed in. Thank you.
                 </p>
               )}
             </div>

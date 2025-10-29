@@ -76,7 +76,7 @@ export default function MenuDrawer({ trigger }: { trigger: React.ReactNode }) {
             {/* Secondary Links */}
             <div className="mt-8 space-y-4">
               <Link href="/world-of-d-laven" className="block hover:underline">
-                World of D'LAVÉN
+                World of D&apos;LAVÉN
               </Link>
               <Link href="/gifts" className="block hover:underline">
                 Gifts

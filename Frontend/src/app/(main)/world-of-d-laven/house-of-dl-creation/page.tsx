@@ -7,7 +7,7 @@ export default function HouseOfDlCreationPage() {
   return (
     <>
       <Head>
-        <title>House of DL Creation — World of D'LAVÉN</title>
+        <title>House of DL Creation — World of D&apos;LAVÉN</title>
       </Head>
 
       <main className="min-h-screen bg-white text-black">

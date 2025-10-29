@@ -30,7 +30,7 @@ export default function ServicesPage() {
   return (
     <>
       <Head>
-        <title>DL Services — D'LAVÉN</title>
+        <title>DL Services — D&apos;LAVÉN</title>
         <meta
           name="description"
           content="D'LAVÉN — Experience Unrivaled Luxury and Care. Sealed in heritage, sent with luxury."
@@ -90,7 +90,7 @@ export default function ServicesPage() {
             </div>
 
             <p className="mt-12 text-sm uppercase tracking-wider opacity-90">
-              The Present of D'LAVÉN
+              The Present of D&apos;LAVÉN
             </p>
           </div>
 
@@ -111,7 +111,7 @@ export default function ServicesPage() {
               </h2>
 
               <p className="mt-6 text-sm text-black/70">
-                A D'LAVÉN gift is a timeless gesture. Each creation is
+                A D&apos;LAVÉN gift is a timeless gesture. Each creation is
                 impeccably presented in our signature packaging, a promise of an
                 unforgettable experience. Our Client Advisors are available to
                 help you choose the perfect gift for any occasion.
@@ -164,7 +164,7 @@ export default function ServicesPage() {
               </h2>
               <p className="mt-6 text-sm text-gray-700 max-w-2xl mx-auto">
                 Explore our exclusive tiers of luxury, each crafted to provide a
-                unique and unforgettable D'LAVÉN experience.
+                unique and unforgettable D&apos;LAVÉN experience.
               </p>
             </div>
 

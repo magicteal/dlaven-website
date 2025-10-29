@@ -7,14 +7,14 @@ export default function FutureOfDlavenPage() {
   return (
     <>
       <Head>
-        <title>Future of D'LAVÉN — World of D'LAVÉN</title>
+        <title>Future of D&apos;LAVÉN — World of D&apos;LAVÉN</title>
       </Head>
 
       <main className="min-h-screen bg-white text-black">
         <Container>
           <div className="py-16">
             <h1 className="text-3xl sm:text-4xl font-bold uppercase text-center">
-              Future of D'LAVÉN
+              Future of D&apos;LAVÉN
             </h1>
 
             {/* Two images side by side */}
@@ -39,8 +39,8 @@ export default function FutureOfDlavenPage() {
 
             <div className="mt-8 max-w-3xl mx-auto text-center text-sm text-black/70">
               <p>
-                A forward look at D'LAVÉN — how we are combining heritage and
-                innovation to shape the future of craftsmanship, service and
+                A forward look at D&apos;LAVÉN — how we are combining heritage
+                and innovation to shape the future of craftsmanship, service and
                 design.
               </p>
             </div>

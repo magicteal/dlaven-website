@@ -3,11 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-export default function AdminEditCategoryPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
+export default function AdminEditCategoryPage() {
   const router = useRouter();
   useEffect(() => {
     // Redirect to the fixed categories page
