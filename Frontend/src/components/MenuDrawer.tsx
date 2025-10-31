@@ -10,17 +10,58 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 import { useAuth } from "@/components/providers/AuthProvider";
+import { useRouter } from "next/navigation";
+
+function DrawerLink({
+  href,
+  children,
+  className,
+  onNavigate,
+}: {
+  href: string;
+  children: React.ReactNode;
+  className?: string;
+  onNavigate: (href: string) => void;
+}) {
+  return (
+    <Link
+      href={href}
+      onClick={(e) => {
+        e.preventDefault();
+        onNavigate(href);
+      }}
+      className={className}
+    >
+      {children}
+    </Link>
+  );
+}
 
 export default function MenuDrawer({ trigger }: { trigger: React.ReactNode }) {
   const { user } = useAuth();
+  const router = useRouter();
+  const [open, setOpen] = React.useState(false);
+
+  // Close with animation then navigate
+  const navigateWithClose = React.useCallback(
+    (href: string) => {
+      setOpen(false);
+      // match animationDuration in SheetContent (400ms)
+      setTimeout(() => router.push(href), 380);
+    },
+    [router]
+  );
 
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>{trigger}</SheetTrigger>
       {/* Removed padding from SheetContent to handle scroll layout better */}
       <SheetContent
         side="right"
-        className="w-[360px] sm:w-[400px] flex flex-col p-0"
+        className="w-[360px] sm:w-[400px] flex flex-col p-0
+        data-[state=open]:animate-in data-[state=open]:slide-in-from-right data-[state=open]:fade-in-0
+        data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right data-[state=closed]:fade-out-0"
+        style={{ animationDuration: "400ms" }}
       >
         {/* Header with Close Button */}
         <div className="flex items-center justify-end p-4 border-b border-black/10">
@@ -41,49 +82,88 @@ export default function MenuDrawer({ trigger }: { trigger: React.ReactNode }) {
           <nav className="flex flex-col h-full text-left text-base p-6">
             {/* Main Links */}
             <div className="space-y-4">
-              <Link href="/" className="block hover:underline">
-                Home
-              </Link>
-              <Link href="/men" className="block hover:underline">
+              <DrawerLink
+                href="/mens-ready-to-wear"
+                onNavigate={navigateWithClose}
+                className="block font-semibold no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+              >
                 Men
-              </Link>
-              <Link
-                href="/heritage-jewellery"
-                className="block hover:underline"
+              </DrawerLink>
+              <DrawerLink
+                href="/heritage-jewelry"
+                onNavigate={navigateWithClose}
+                className="block font-semibold no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
               >
                 Heritage Jewellery
-              </Link>
-              <Link href="/fragrances" className="block hover:underline">
+              </DrawerLink>
+              <DrawerLink
+                href="/fragrances"
+                onNavigate={navigateWithClose}
+                className="block font-semibold no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+              >
                 Fragrances
-              </Link>
-              <Link href="/services" className="block hover:underline">
+              </DrawerLink>
+              <DrawerLink
+                href="/services"
+                onNavigate={navigateWithClose}
+                className="block font-semibold no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+              >
                 DL Services
-              </Link>
-              <Link href="/destinations" className="block hover:underline">
+              </DrawerLink>
+              <DrawerLink
+                href="/destinations"
+                onNavigate={navigateWithClose}
+                className="block font-semibold no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+              >
                 DL Destinations
-              </Link>
-              <Link href="/products" className="block hover:underline">
+              </DrawerLink>
+              <DrawerLink
+                href="/products"
+                onNavigate={navigateWithClose}
+                className="block font-semibold no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+              >
                 Shop
-              </Link>
-              <Link href="/about" className="block hover:underline">
+              </DrawerLink>
+              <DrawerLink
+                href="/about"
+                onNavigate={navigateWithClose}
+                className="block font-semibold no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+              >
                 About Us
-              </Link>
-              <Link href="/contact" className="block hover:underline">
+              </DrawerLink>
+              <DrawerLink
+                href="/contact"
+                onNavigate={navigateWithClose}
+                className="block font-semibold no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+              >
                 Contact Us
-              </Link>
+              </DrawerLink>
             </div>
 
             {/* Secondary Links */}
             <div className="mt-8 space-y-4">
-              <Link href="/world-of-d-laven" className="block hover:underline">
+              <DrawerLink
+                href="/world-of-d-laven"
+                onNavigate={navigateWithClose}
+                className="block font-semibold no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+              >
                 World of D&apos;LAVÉN
-              </Link>
-              <Link href="/gifts" className="block hover:underline">
+              </DrawerLink>
+              {/* Gifts route not implemented; point to Shop to avoid 404 */}
+              <DrawerLink
+                href="/products"
+                onNavigate={navigateWithClose}
+                className="block font-semibold no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+              >
                 Gifts
-              </Link>
-              <Link href="/destinations" className="block hover:underline">
+              </DrawerLink>
+              <DrawerLink
+                href="/destinations"
+                onNavigate={navigateWithClose}
+                className="block font-semibold no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+              >
                 Store Locator
-              </Link>
+              </DrawerLink>
             </div>
 
             {/* Spacer to push bottom content down */}
@@ -92,23 +172,29 @@ export default function MenuDrawer({ trigger }: { trigger: React.ReactNode }) {
             {/* Bottom Links */}
             <div className="space-y-4 border-t border-black/10 pt-6 mt-8 text-sm">
               {user ? (
-                <Link href="/me" className="block underline hover:no-underline">
+                <DrawerLink
+                  href="/me"
+                  onNavigate={navigateWithClose}
+                  className="block underline hover:no-underline"
+                >
                   My Orders
-                </Link>
+                </DrawerLink>
               ) : (
-                <Link
+                <DrawerLink
                   href="/login"
+                  onNavigate={navigateWithClose}
                   className="block underline hover:no-underline"
                 >
                   Sign In
-                </Link>
+                </DrawerLink>
               )}
-              <Link
+              <DrawerLink
                 href="/contact"
+                onNavigate={navigateWithClose}
                 className="block underline hover:no-underline"
               >
                 Contact Us
-              </Link>
+              </DrawerLink>
               <a
                 href="tel:+18774822430"
                 className="block hover:underline"

@@ -4,32 +4,80 @@
 @custom-variant dark (&:is(.dark *));
 
 @font-face {
-  font-family: 'Montserrat';
-  src: url('/fonts/Montserrat-Regular.ttf') format('truetype');
+  font-family: "Montserrat";
+  src: url("/fonts/Montserrat-Regular.ttf") format("truetype");
 }
 
 @layer base {
   :root {
-    --font-sans: 'Montserrat', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --font-sans: "Montserrat", ui-sans-serif, system-ui, -apple-system,
+      "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
+      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+      "Noto Color Emoji";
   }
 
-  html, body {
+  html,
+  body {
     font-family: var(--font-sans);
   }
 }
 
 /* Simple animation utility fallbacks (Tailwind v4 provides these by default, but include minimal defs if needed) */
-@keyframes in-from-right { from { transform: translateX(100%); } to { transform: translateX(0); } }
-@keyframes out-to-right { from { transform: translateX(0); } to { transform: translateX(100%); } }
-@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
-@keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes in-from-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes out-to-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
 
-.animate-in { animation-duration: 200ms; animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); animation-fill-mode: both; }
-.animate-out { animation-duration: 200ms; animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); animation-fill-mode: both; }
-.slide-in-from-right { animation-name: in-from-right; }
-.slide-out-to-right { animation-name: out-to-right; }
-.fade-in-0 { animation-name: fade-in; }
-.fade-out-0 { animation-name: fade-out; }
+.animate-in {
+  animation-duration: 200ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-fill-mode: both;
+}
+.animate-out {
+  animation-duration: 200ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-fill-mode: both;
+}
+.slide-in-from-right {
+  animation-name: in-from-right;
+}
+.slide-out-to-right {
+  animation-name: out-to-right;
+}
+.fade-in-0 {
+  animation-name: fade-in;
+}
+.fade-out-0 {
+  animation-name: fade-out;
+}
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -144,5 +192,22 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Scroll reveal: zoom-out to zoom-in effect */
+.zoom-reveal {
+  transform: scale(0.94);
+  opacity: 0;
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1), opacity 700ms ease;
+  will-change: transform, opacity;
+}
+.is-visible .zoom-reveal {
+  transform: scale(1);
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .zoom-reveal {
+    transition: none;
   }
 }
