@@ -80,89 +80,63 @@ export default function MenuDrawer({ trigger }: { trigger: React.ReactNode }) {
         {/* Scrollable Navigation Area */}
         <div className="flex-1 overflow-y-auto">
           <nav className="flex flex-col h-full text-left text-base p-6">
-            {/* Main Links */}
+            {/* Main Links (updated per design) */}
             <div className="space-y-4">
+              <DrawerLink
+                href="/products"
+                onNavigate={navigateWithClose}
+                className="block font-normal no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+              >
+                New In
+              </DrawerLink>
               <DrawerLink
                 href="/mens-ready-to-wear"
                 onNavigate={navigateWithClose}
-                className="block font-semibold no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+                className="block font-normal no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
               >
                 Men
               </DrawerLink>
               <DrawerLink
                 href="/heritage-jewelry"
                 onNavigate={navigateWithClose}
-                className="block font-semibold no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+                className="block font-normal no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
               >
-                Heritage Jewellery
+                Heritage Jewelery
               </DrawerLink>
               <DrawerLink
                 href="/fragrances"
                 onNavigate={navigateWithClose}
-                className="block font-semibold no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+                className="block font-normal no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
               >
-                Fragrances
+                Fragrance
+              </DrawerLink>
+              <DrawerLink
+                href="/prive"
+                onNavigate={navigateWithClose}
+                className="block font-normal no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+              >
+                PERSONALIZATION SERVICES
               </DrawerLink>
               <DrawerLink
                 href="/services"
                 onNavigate={navigateWithClose}
-                className="block font-semibold no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+                className="block font-normal no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
               >
-                DL Services
+                DL SERVICES
               </DrawerLink>
-              <DrawerLink
-                href="/destinations"
-                onNavigate={navigateWithClose}
-                className="block font-semibold no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
-              >
-                DL Destinations
-              </DrawerLink>
-              <DrawerLink
-                href="/products"
-                onNavigate={navigateWithClose}
-                className="block font-semibold no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
-              >
-                Shop
-              </DrawerLink>
-              <DrawerLink
-                href="/about"
-                onNavigate={navigateWithClose}
-                className="block font-semibold no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
-              >
-                About Us
-              </DrawerLink>
-              <DrawerLink
-                href="/contact"
-                onNavigate={navigateWithClose}
-                className="block font-semibold no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
-              >
-                Contact Us
-              </DrawerLink>
-            </div>
-
-            {/* Secondary Links */}
-            <div className="mt-8 space-y-4">
               <DrawerLink
                 href="/world-of-d-laven"
                 onNavigate={navigateWithClose}
-                className="block font-semibold no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+                className="block font-normal no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
               >
-                World of D&apos;LAVÉN
-              </DrawerLink>
-              {/* Gifts route not implemented; point to Shop to avoid 404 */}
-              <DrawerLink
-                href="/products"
-                onNavigate={navigateWithClose}
-                className="block font-semibold no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
-              >
-                Gifts
+                WORLD OF D ’ L AVÉN
               </DrawerLink>
               <DrawerLink
                 href="/destinations"
                 onNavigate={navigateWithClose}
-                className="block font-semibold no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+                className="block font-normal no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
               >
-                Store Locator
+                DL DESTINATIONS
               </DrawerLink>
             </div>
 
