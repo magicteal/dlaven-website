@@ -3,7 +3,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-    title: "D’ LAVÉN — Home",
+    title: "D’ LAVÉN - Home",
 };
 
 export default function MainLayout({

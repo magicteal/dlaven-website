@@ -6,7 +6,13 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import MenuDrawer from "@/components/MenuDrawer";
 import SearchOverlay from "@/components/SearchOverlay"; // Import the overlay
-import { ShoppingBag, Search, Menu, Plus } from "lucide-react";
+import {
+  ShoppingBag,
+  Search,
+  Menu,
+  Plus,
+  User as UserIcon,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import Container from "@/components/Container";
 import { useAuth } from "@/components/providers/AuthProvider";
@@ -31,17 +37,7 @@ function IconButton({
   );
 }
 
-function Avatar({ label, title }: { label: string; title?: string }) {
-  return (
-    <div
-      className="h-8 w-8 rounded-full bg-black text-white flex items-center justify-center text-xs font-medium uppercase"
-      aria-label={title || "Account"}
-      title={title}
-    >
-      {label}
-    </div>
-  );
-}
+// (Avatar removed — we use the human icon for the dropdown trigger)
 
 function Brand() {
   return (
@@ -63,7 +59,7 @@ function ContactUs() {
   return (
     <Link href="/contact" className="flex items-center gap-2 text-sm">
       <Plus className="h-4 w-4" />
-      <span>Contact Us</span>
+      <span className="uppercase">Contact Us</span>
     </Link>
   );
 }
@@ -73,21 +69,14 @@ function RightControls({ onSearchClick }: { onSearchClick: () => void }) {
   const router = useRouter();
   const { count } = useCart();
 
-  const initials = React.useMemo(() => {
-    const n = user?.name?.trim();
-    if (n) {
-      const parts = n.split(/\s+/).filter(Boolean);
-      const first = parts[0]?.[0] || "";
-      const second = parts[1]?.[0] || "";
-      return (first + second).toUpperCase() || first.toUpperCase();
-    }
-    const email = user?.email || "";
-    const local = email.split("@")[0] || "";
-    return (local.slice(0, 2) || "U").toUpperCase();
-  }, [user]);
+  // initials removed — not needed when using the human icon trigger
 
   return (
     <>
+      {/* Account menu: show human icon + dropdown for both logged-out and logged-in users.
+          When logged in the menu will hide the "Access" item and provide Logout. */}
+      {!loading && <AccountMenu user={user ?? undefined} logout={logout} />}
+
       <button
         aria-label="Cart"
         className="relative inline-flex items-center justify-center h-9 w-9 rounded-none hover:bg-accent"
@@ -100,30 +89,7 @@ function RightControls({ onSearchClick }: { onSearchClick: () => void }) {
           </span>
         )}
       </button>
-      {user && (
-        <>
-          <Link
-            href={user.role === "admin" ? "/admin" : "/me"}
-            className="hidden sm:inline-flex items-center gap-2 px-2 text-sm text-black/80 hover:text-black"
-          >
-            <Avatar label={initials} title={user.name || user.email} />
-          </Link>
-          <Button
-            variant="ghost"
-            className="rounded-none h-9 px-2 sm:px-3 text-sm"
-            aria-label="Logout"
-            onClick={async () => {
-              try {
-                await logout();
-              } catch {}
-              router.push("/");
-            }}
-            disabled={loading}
-          >
-            Logout
-          </Button>
-        </>
-      )}
+      {/* Avatar and logout moved into dropdown for logged-in users. */}
       <IconButton
         aria-label="Search"
         className="hidden sm:inline-flex"
@@ -151,7 +117,6 @@ function RightControls({ onSearchClick }: { onSearchClick: () => void }) {
 
 // --- Organism: Navbar ---
 export default function Navbar() {
-  const { user, loading } = useAuth();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   return (
@@ -172,22 +137,7 @@ export default function Navbar() {
 
               <div className="justify-self-end">
                 <div className="flex items-center gap-1 sm:gap-2">
-                  {!user && !loading && (
-                    <>
-                      <Link
-                        href="/login"
-                        className="hidden sm:inline text-xs uppercase tracking-wider text-black/70 hover:text-black"
-                      >
-                        Login
-                      </Link>
-                      <Link
-                        href="/register"
-                        className="hidden sm:inline text-xs uppercase tracking-wider text-black/70 hover:text-black"
-                      >
-                        Register
-                      </Link>
-                    </>
-                  )}
+                  {/* Login/Register replaced by AccountMenu above */}
                   <RightControls onSearchClick={() => setIsSearchOpen(true)} />
                 </div>
               </div>
@@ -202,5 +152,139 @@ export default function Navbar() {
         onClose={() => setIsSearchOpen(false)}
       />
     </>
+  );
+}
+
+// --- Account Menu (for logged-out users) ---
+function AccountMenu({
+  user,
+  logout,
+}: {
+  user?: { name?: string; email?: string; role?: string };
+  logout?: () => Promise<void>;
+}) {
+  const router = useRouter();
+  const [open, setOpen] = React.useState(false);
+  const menuRef = React.useRef<HTMLDivElement | null>(null);
+
+  React.useEffect(() => {
+    function onDocClick(e: MouseEvent) {
+      if (!menuRef.current) return;
+      if (!menuRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", onDocClick);
+    return () => document.removeEventListener("mousedown", onDocClick);
+  }, []);
+
+  const go = (href: string) => {
+    setOpen(false);
+    router.push(href);
+  };
+
+  return (
+    <div className="relative" ref={menuRef}>
+      <button
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-label="Account menu"
+        className="inline-flex items-center justify-center h-9 w-9 rounded-none hover:bg-accent"
+        onClick={() => setOpen((v) => !v)}
+      >
+        <UserIcon className="h-5 w-5" />
+      </button>
+      {open && (
+        <div
+          role="menu"
+          className="absolute right-0 top-full mt-3 w-64 bg-white shadow-lg border border-black/10 z-[60] origin-top-right dropdown-enter"
+        >
+          <ul className="py-3 text-sm capitalize px-2 space-y-1">
+            {/* Top: My Account (visible when logged in) */}
+            {user && (
+              <li>
+                <button
+                  className="w-full text-left px-4 py-3 text-base font-normal no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+                  onClick={() => go("/me")}
+                >
+                  My Account
+                </button>
+              </li>
+            )}
+
+            {/* Show Access only for logged-out users */}
+            {!user && (
+              <li>
+                <button
+                  className="w-full text-left px-4 py-3 text-base font-normal no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+                  onClick={() => go("/login")}
+                >
+                  Access
+                </button>
+              </li>
+            )}
+
+            <li>
+              <button
+                className="w-full text-left px-4 py-3 text-base font-normal no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+                onClick={() => go("/me")}
+              >
+                Purchases
+              </button>
+            </li>
+            <li>
+              <button
+                className="w-full text-left px-4 py-3 text-base font-normal no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+                onClick={() => go("/destinations")}
+              >
+                Destinations
+              </button>
+            </li>
+            <li>
+              <button
+                className="w-full text-left px-4 py-3 text-base font-normal no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+                onClick={() => go("/profile")}
+              >
+                Account Setting
+              </button>
+            </li>
+            <li>
+              <button
+                className="w-full text-left px-4 py-3 text-base font-normal no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+                onClick={() => go("/prive")}
+              >
+                DL Privé
+              </button>
+            </li>
+            <li>
+              <button
+                className="w-full text-left px-4 py-3 text-base font-normal no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+                onClick={() => go("/me#saved")}
+              >
+                Saved Items
+              </button>
+            </li>
+
+            {/* If user is logged-in, show Logout inside the dropdown */}
+            {user && (
+              <li>
+                <button
+                  className="w-full text-left px-4 py-3 text-base font-normal no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+                  onClick={async () => {
+                    setOpen(false);
+                    try {
+                      await logout?.();
+                    } catch {}
+                    router.push("/");
+                  }}
+                >
+                  Logout
+                </button>
+              </li>
+            )}
+          </ul>
+        </div>
+      )}
+    </div>
   );
 }

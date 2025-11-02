@@ -48,21 +48,28 @@ export default function Loader({ onComplete }: { onComplete?: () => void }) {
           ease: "circ.inOut",
         },
         "-=0.3"
-      );
+      )
+      // hide logo and layers immediately before the onComplete callback so nothing lingers
+      .set(logoRef.current, { autoAlpha: 0 })
+      .set(blackLayerRef.current, { display: "none" })
+      .set(greyLayerRef.current, { display: "none" });
   }, [onComplete]);
 
   return (
     <div className="relative w-full h-full">
-      <div ref={blackLayerRef} className="w-full h-screen bg-[#161616]">
+      <div
+        ref={blackLayerRef}
+        className="w-full h-screen bg-white relative overflow-hidden"
+      >
         <div className="absolute inset-0 flex items-center justify-center">
           <div ref={logoRef} className="will-change-transform inline-block">
             <Image
-              src="/logos/logoBlack.png"
+              src="/logos/logoBlack.svg"
               alt="D’ LAVÉN logo"
-              width={220}
-              height={220}
+              width={480}
+              height={480}
               priority
-              className="w-[28vw] max-w-[220px] h-auto"
+              className="w-[42vw] max-w-[480px] h-auto"
             />
           </div>
         </div>

@@ -3,30 +3,58 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Global app font: Perandory */
+/* Global app font: Mirage (Personal Use) */
 @font-face {
-  font-family: "Perandory";
-  src: url("/fonts/perandory/Perandory-Regular.otf") format("opentype");
+  font-family: "Mirage";
+  src: url("/fonts/mirage/MADE Mirage Thin PERSONAL USE.otf") format("opentype");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Mirage";
+  src: url("/fonts/mirage/MADE Mirage Regular PERSONAL USE.otf")
+    format("opentype");
   font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Mirage";
+  src: url("/fonts/mirage/MADE Mirage Medium PERSONAL USE.otf")
+    format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Mirage";
+  src: url("/fonts/mirage/MADE Mirage Bold PERSONAL USE.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Mirage";
+  src: url("/fonts/mirage/MADE Mirage Black PERSONAL USE.otf")
+    format("opentype");
+  font-weight: 900;
   font-style: normal;
   font-display: swap;
 }
 
 @layer base {
   :root {
-    /* Make Perandory the default sans font for Tailwind's font-sans and body */
-    --font-sans: "Perandory", ui-sans-serif, system-ui, -apple-system,
-      "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
-      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-      "Noto Color Emoji";
-    /* Global letter spacing for the whole app; tweak as desired */
-    --letter-spacing: 0.2em;
+    /* Make Mirage the default font for the whole app */
+    --font-sans: "Mirage", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+      Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
+      "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   }
 
   html,
   body {
     font-family: var(--font-sans);
-    letter-spacing: var(--letter-spacing);
+    /* letter-spacing removed */
   }
 }
 
@@ -213,6 +241,23 @@
 .is-visible .zoom-reveal {
   transform: scale(1);
   opacity: 1;
+}
+
+/* Dropdown enter animation for small popovers */
+@keyframes dropdown-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.dropdown-enter {
+  transform-origin: top right;
+  /* slowed down so the dropdown is clearly visible */
+  animation: dropdown-in 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 @media (prefers-reduced-motion: reduce) {
   .zoom-reveal {

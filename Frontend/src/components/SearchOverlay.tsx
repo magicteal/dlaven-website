@@ -96,18 +96,18 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
             </div>
           </form>
 
-          <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-8 text-sm">
+          <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
             <div>
-              <p className="font-semibold uppercase tracking-wider">
-                Trending Searches
+              <p className="font-semibold uppercase tracking-wider text-black">
+                IN DEMAD
               </p>
-              <ul className="mt-4 space-y-3">
+              <ul className="mt-6 space-y-4">
                 {trendingSearches.map((item) => (
-                  <li key={item}>
+                  <li key={item} className="uppercase">
                     <Link
                       href={`/products?q=${encodeURIComponent(item)}`}
                       onClick={onClose}
-                      className="hover:underline"
+                      className="block"
                     >
                       {item}
                     </Link>
@@ -115,17 +115,20 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                 ))}
               </ul>
             </div>
+
             <div>
-              <p className="font-semibold uppercase tracking-wider">New In</p>
-              <ul className="mt-4 space-y-3">
+              <p className="font-semibold uppercase tracking-wider text-black">
+                NEW IN
+              </p>
+              <ul className="mt-6 space-y-4">
                 {newInLinks.map((item) => (
-                  <li key={item}>
+                  <li key={item} className="uppercase">
                     <Link
                       href={`/products?category=${encodeURIComponent(
                         item.toLowerCase()
                       )}`}
                       onClick={onClose}
-                      className="hover:underline"
+                      className="block"
                     >
                       {item}
                     </Link>
@@ -133,18 +136,15 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                 ))}
               </ul>
             </div>
-            <div className="col-span-2">
-              <p className="font-semibold uppercase tracking-wider">
-                Suggestions
+
+            <div className="border-l-2 border-black/10 pl-8">
+              <p className="font-semibold uppercase tracking-wider text-black">
+                SUGGESTIONS
               </p>
-              <ul className="mt-4 space-y-3">
+              <ul className="mt-6 space-y-4">
                 {suggestionLinks.map((item) => (
-                  <li key={item}>
-                    <Link
-                      href="#"
-                      onClick={onClose}
-                      className="hover:underline"
-                    >
+                  <li key={item} className="uppercase">
+                    <Link href="#" onClick={onClose} className="block">
                       {item}
                     </Link>
                   </li>
