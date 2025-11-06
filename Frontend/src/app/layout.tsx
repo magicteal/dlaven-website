@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { AuthProvider } from "@/components/providers/AuthProvider";
 import { CartProvider } from "@/components/providers/CartProvider";
+import BarbaProvider from "@/components/BarbaProvider";
 import { Toaster } from "@/components/ui/sonner";
 import PageLoader from "@/components/PageLoader";
 
@@ -21,7 +22,9 @@ export default function RootLayout({
         <AuthProvider>
           {/* Initial page load animation overlay */}
           <PageLoader />
-          <CartProvider>{children}</CartProvider>
+          <BarbaProvider>
+            <CartProvider>{children}</CartProvider>
+          </BarbaProvider>
           <Toaster />
         </AuthProvider>
       </body>

@@ -3,52 +3,22 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Global app font: Mirage (Personal Use) */
+/* Global app font: Montserrat */
 @font-face {
-  font-family: "Mirage";
-  src: url("/fonts/mirage/MADE Mirage Thin PERSONAL USE.otf") format("opentype");
-  font-weight: 100;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Mirage";
-  src: url("/fonts/mirage/MADE Mirage Regular PERSONAL USE.otf")
-    format("opentype");
+  font-family: "Montserrat";
+  src: url("/fonts/Montserrat-Regular.ttf") format("truetype");
   font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Mirage";
-  src: url("/fonts/mirage/MADE Mirage Medium PERSONAL USE.otf")
-    format("opentype");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Mirage";
-  src: url("/fonts/mirage/MADE Mirage Bold PERSONAL USE.otf") format("opentype");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Mirage";
-  src: url("/fonts/mirage/MADE Mirage Black PERSONAL USE.otf")
-    format("opentype");
-  font-weight: 900;
   font-style: normal;
   font-display: swap;
 }
 
 @layer base {
   :root {
-    /* Make Mirage the default font for the whole app */
-    --font-sans: "Mirage", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
-      Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
-      "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    /* Make Montserrat the default font for the whole app */
+    --font-sans: "Montserrat", ui-sans-serif, system-ui, -apple-system,
+      "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
+      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+      "Noto Color Emoji";
   }
 
   html,

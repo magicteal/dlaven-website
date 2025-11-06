@@ -71,19 +71,19 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
           </button>
         </div>
 
-        <div className="mt-8 max-w-4xl mx-auto">
+        <div className="mt-8 max-w-6xl mx-auto">
           <form onSubmit={handleSearchSubmit}>
             <label htmlFor="search-input" className="sr-only">
               What are you looking for?
             </label>
-            <div className="relative border-b border-black">
+            <div className="relative border-b-2 border-black">
               <input
                 id="search-input"
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="What are you looking for?"
-                className="w-full bg-transparent py-3 text-lg placeholder:text-gray-500 focus:outline-none"
+                className="w-full bg-transparent py-4 text-xl md:text-2xl placeholder:text-gray-700 focus:outline-none"
                 autoFocus
               />
               <button
@@ -91,14 +91,14 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                 aria-label="Submit search"
                 className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-600 hover:text-black"
               >
-                <Search className="h-5 w-5" />
+                <Search className="h-6 w-6" />
               </button>
             </div>
           </form>
 
-          <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
+          <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-10 text-base md:text-lg">
             <div>
-              <p className="font-semibold uppercase tracking-wider text-black">
+              <p className="font-semibold uppercase tracking-wider text-black text-base md:text-lg">
                 IN DEMAD
               </p>
               <ul className="mt-6 space-y-4">
@@ -117,7 +117,7 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
             </div>
 
             <div>
-              <p className="font-semibold uppercase tracking-wider text-black">
+              <p className="font-semibold uppercase tracking-wider text-black text-base md:text-lg">
                 NEW IN
               </p>
               <ul className="mt-6 space-y-4">
@@ -137,8 +137,8 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
               </ul>
             </div>
 
-            <div className="border-l-2 border-black/10 pl-8">
-              <p className="font-semibold uppercase tracking-wider text-black">
+            <div className="border-l-2 border-black/20 pl-8">
+              <p className="font-semibold uppercase tracking-wider text-black text-base md:text-lg">
                 SUGGESTIONS
               </p>
               <ul className="mt-6 space-y-4">

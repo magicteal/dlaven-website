@@ -21,7 +21,7 @@ export default function PersonalizationModal({
       };
     }
     return;
-  }, [isOpen]);
+  }, [isOpen])
 
   // Refs for animation targets
   const backdropRef = useRef<HTMLDivElement | null>(null);

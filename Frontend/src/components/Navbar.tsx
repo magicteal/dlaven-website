@@ -9,8 +9,7 @@ import SearchOverlay from "@/components/SearchOverlay"; // Import the overlay
 import {
   ShoppingBag,
   Search,
-  Menu,
-  Plus,
+  Menu as MenuIcon,
   User as UserIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -55,12 +54,21 @@ function Brand() {
 }
 
 // --- Molecules ---
-function ContactUs() {
+function LeftMenuTrigger() {
   return (
-    <Link href="/contact" className="flex items-center gap-2 text-sm">
-      <Plus className="h-4 w-4" />
-      <span className="uppercase">Contact Us</span>
-    </Link>
+    <MenuDrawer
+      side="left"
+      trigger={
+        <button
+          type="button"
+          aria-label="Open menu"
+          className="flex items-center gap-2 text-sm"
+        >
+          <MenuIcon className="h-4 w-4" />
+          <span className="uppercase">Menu</span>
+        </button>
+      }
+    />
   );
 }
 
@@ -97,20 +105,6 @@ function RightControls({ onSearchClick }: { onSearchClick: () => void }) {
       >
         <Search className="h-5 w-5" />
       </IconButton>
-      <MenuDrawer
-        trigger={
-          <Button
-            variant="ghost"
-            className="rounded-none h-9 px-2 sm:px-3 flex items-center gap-2 select-none"
-            aria-label="Open menu"
-          >
-            <Menu className="h-5 w-5" />
-            <span className="hidden sm:inline text-sm whitespace-nowrap">
-              MENU
-            </span>
-          </Button>
-        }
-      />
     </>
   );
 }
@@ -126,7 +120,7 @@ export default function Navbar() {
           <nav aria-label="Primary">
             <div className="flex items-center justify-between h-14 sm:h-16 md:h-20 md:grid md:grid-cols-3">
               <div className="justify-self-start hidden md:block">
-                <ContactUs />
+                <LeftMenuTrigger />
               </div>
 
               <div className="md:justify-self-center">
