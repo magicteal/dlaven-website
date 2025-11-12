@@ -1,14 +1,12 @@
-"use client";
-
 import Image from "next/image";
 
 export default function BrandText({ className = "" }: { className?: string }) {
   return (
     <Image
-      src="/logos/logoText.png"
+      src="/logos/logoText.svg"
       alt="D’ LAVÉN"
-      width={1200}
-      height={240}
+      width={360}
+      height={86}
       priority
       className={className}
     />

@@ -3,29 +3,44 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Global app font: Montserrat */
+/* Import Lovato font family variants for use locally in components.
+   We don't apply them to <body> so components can opt-in individually. */
 @font-face {
-  font-family: "Montserrat";
-  src: url("/fonts/Montserrat-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
+  font-family: "Lovato-Light";
+  src: url("/fonts/lovato/fonnts.com-Lovato-Light.otf") format("truetype");
+  
+}
+
+@font-face {
+  font-family: "Lovato-Regular";
+  src: url("/fonts/lovato/fonnts.com-Lovato-Regular.otf") format("truetype");
+}
+
+@font-face {
+  font-family: "Lovato-Demi";
+  src: url("/fonts/lovato/fonnts.com-Lovato-Demi.otf") format("truetype");
+}
+
+@font-face {
+  font-family: "Lovato-Bold";
+  src: url("/fonts/lovato/fonnts.com-Lovato-Bold.otf") format("truetype");
+}
+
+@font-face {
+  font-family: "Lovato-Black";
+  src: url("/fonts/lovato/fonnts.com-Lovato-Black.otf") format("truetype");
 }
 
 @layer base {
   :root {
-    /* Make Montserrat the default font for the whole app */
-    --font-sans: "Montserrat", ui-sans-serif, system-ui, -apple-system,
+
+    --font-sans: "Lovato-Regular", ui-sans-serif, system-ui, -apple-system,
       "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
       "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
       "Noto Color Emoji";
   }
 
-  html,
-  body {
-    font-family: var(--font-sans);
-    /* letter-spacing removed */
-  }
+  /* Do not set a global font-family here — components will opt in. */
 }
 
 /* Simple animation utility fallbacks (Tailwind v4 provides these by default, but include minimal defs if needed) */

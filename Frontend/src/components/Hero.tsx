@@ -31,11 +31,27 @@ export default function Hero() {
           />
           <div className="absolute inset-0 bg-black/40" />
         </div>
-      </div>
+    </div>
 
-      {/* Centered Brand Text */}
-      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-        <BrandText className="w-[82vw] md:w-[72vw] max-w-[1000px] drop-shadow-[0_2px_20px_rgba(0,0,0,0.4)]" />
+    {/* Full-hero black film (50% opacity) - sits above images but below the BrandText/button */}
+    <div className="absolute inset-0 bg-black/50 pointer-events-none" />
+
+  {/* Centered Brand Text + CTA Button */}
+  <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-6 translate-y-12">
+        <BrandText className="w-[82vw] md:w-[40vw]  drop-shadow-[0_2px_20px_rgba(0,0,0,0.4)]" />
+
+        {/* CTA button - pointer-events-auto so it can be clicked despite parent being pointer-events-none */}
+        <button
+          type="button"
+          aria-label="Explore collections"
+          onClick={() => {
+            const el = document.getElementById("main");
+            if (el) el.scrollIntoView({ behavior: "smooth" });
+          }}
+          className="pointer-events-auto inline-flex items-center justify-center bg-black text-white px-6 py-2 rounded-none text-sm md:text-base font-medium shadow-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-white/30"
+        >
+          Explore
+        </button>
       </div>
     </section>
   );

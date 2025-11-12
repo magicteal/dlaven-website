@@ -107,7 +107,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom brand band */}
-      <div className="border-t border-white/10">
+      <div className="border-t border-white/10 pt-10">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative py-28 sm:py-32 md:py-40 overflow-hidden">
           {/* Overlay aligned to BrandText width: number above 'D', email above 'N' */}
           <div className="absolute left-1/2 -translate-x-1/2 top-3 sm:top-4 md:top-2 z-10">
@@ -126,7 +126,7 @@ export default function Footer() {
             </div>
           </div>
           <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center select-none">
-            <BrandText className="w-[92vw] max-w-[560px] sm:w-[88vw] sm:max-w-[640px] md:w-[72vw] md:max-w-[980px] lg:max-w-[1120px] opacity-80" />
+            <BrandText className="w-[92vw]  sm:w-[88vw] sm:max-w-[640px] md:w-[50vw]  lg:max-w-[1120px] opacity-80" />
           </div>
         </div>
       </div>

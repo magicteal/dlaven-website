@@ -108,28 +108,7 @@ function PanelView({
               onNavigate={onNavigate}
               className="block font-normal uppercase no-underline hover:no-underline"
             >
-              Latest Arrivals
-            </DrawerLink>
-            <DrawerLink
-              href="/mens-ready-to-wear"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase no-underline hover:no-underline"
-            >
-              Men — New
-            </DrawerLink>
-            <DrawerLink
-              href="/heritage-jewelry"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase no-underline hover:no-underline"
-            >
-              Heritage Jewelry — New
-            </DrawerLink>
-            <DrawerLink
-              href="/fragrances"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase no-underline hover:no-underline"
-            >
-              Fragrances — New
+              View All
             </DrawerLink>
           </div>
         </div>
