@@ -62,10 +62,10 @@ function LeftMenuTrigger() {
         <button
           type="button"
           aria-label="Open menu"
-          className="flex items-center gap-2 text-sm"
+          className="inline-flex h-10 w-10 items-center justify-center hover:bg-accent"
         >
-          <MenuIcon className="h-4 w-4" />
-          <span className="uppercase">Menu</span>
+          <MenuIcon className="h-5 w-5" />
+          <span className="uppercase hidden md:ml-2 md:inline">Menu</span>
         </button>
       }
     />
@@ -100,7 +100,7 @@ function RightControls({ onSearchClick }: { onSearchClick: () => void }) {
       {/* Avatar and logout moved into dropdown for logged-in users. */}
       <IconButton
         aria-label="Search"
-        className="hidden sm:inline-flex"
+        className="inline-flex"
         onClick={onSearchClick}
       >
         <Search className="h-5 w-5" />
@@ -118,13 +118,13 @@ export default function Navbar() {
       <header className="fixed top-0 left-0 right-0 z-50 w-full bg-white/90 backdrop-blur-md shadow-sm font-['Lovato-Regular']">
         <Container>
           <nav aria-label="Primary">
-            <div className="flex items-center justify-between h-14 sm:h-16 md:h-20 md:grid md:grid-cols-3">
-              <div className="justify-self-start hidden md:block">
+            <div className="grid grid-cols-3 items-center h-14 sm:h-16 md:h-20">
+              <div className="justify-self-start">
                 <LeftMenuTrigger />
               </div>
 
-              <div className="md:justify-self-center">
-                <div className="md:scale-100 scale-95">
+              <div className="justify-self-center">
+                <div className="scale-95 md:scale-100">
                   <Brand />
                 </div>
               </div>

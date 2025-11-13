@@ -13,34 +13,53 @@ interface SearchOverlayProps {
 
 const trendingSearches = ["Heritage Chain", "T Shirts", "Shirts"];
 const newInLinks = ["Heritage Chain", "Men"];
-const suggestionLinks = ["DL PRIVÉ SELECTIon", "Personalization", "BOUTIQUE Locator"];
+const suggestionLinks = [
+  "DL PRIVÉ SELECTIon",
+  "Personalization",
+  "BOUTIQUE Locator",
+];
 
 export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState("");
   const router = useRouter();
+  // Keep an internal mounted flag so we can fully unrender when closed,
+  // preventing any clipped content from appearing on mobile browsers.
+  const [mounted, setMounted] = useState(false);
 
   // GSAP Animation Logic
   useEffect(() => {
     if (isOpen) {
+      setMounted(true);
       document.body.style.overflow = "hidden"; // Disable scrolling
+      // Ensure starting position is fully offscreen
+      if (overlayRef.current) {
+        gsap.set(overlayRef.current, { y: "-100%" });
+      }
       gsap.to(overlayRef.current, {
         y: "0%",
-        duration: 0.6,
-        ease: "power3.inOut",
+        duration: 0.45,
+        ease: "power3.out",
       });
     } else {
-      gsap.to(overlayRef.current, {
-        y: "-100%",
-        duration: 0.6,
-        ease: "power3.inOut",
-        onComplete: () => {
-          document.body.style.overflow = "auto"; // Re-enable scrolling after animation
-        },
-      });
+      // Animate out, then fully unmount so nothing leaks visually
+      if (overlayRef.current) {
+        gsap.to(overlayRef.current, {
+          y: "-100%",
+          duration: 0.35,
+          ease: "power3.in",
+          onComplete: () => {
+            setMounted(false);
+            document.body.style.overflow = "auto";
+          },
+        });
+      } else {
+        setMounted(false);
+        document.body.style.overflow = "auto";
+      }
     }
 
-    // Cleanup function to ensure scroll is re-enabled if component unmounts
+    // Cleanup to restore scroll on unmount
     return () => {
       document.body.style.overflow = "auto";
     };
@@ -54,11 +73,14 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
     }
   };
 
+  if (!mounted) return null;
+
   return (
     <div
       ref={overlayRef}
-      className="fixed top-0 left-0 z-[100] h-screen w-full bg-white/95 backdrop-blur-md"
-      style={{ transform: "translateY(-100%)" }} // Initial position off-screen
+      aria-hidden={!isOpen}
+      className="fixed top-0 left-0 z-[100] h-[100dvh] w-full bg-white/95 backdrop-blur-md"
+      style={{ transform: "translateY(-100%)" }}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-end h-14 sm:h-16 md:h-20">
