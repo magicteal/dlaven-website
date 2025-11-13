@@ -5,6 +5,7 @@ import Container from "@/components/Container";
 import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/components/providers/AuthProvider";
+import StyledText from "@/components/StyledText";
 
 export default function SealedInHeritagePage() {
   const { user, loading } = useAuth();
@@ -54,9 +55,9 @@ export default function SealedInHeritagePage() {
             </div>
 
             <p className="mt-8 text-sm text-black/70 max-w-3xl mx-auto">
-              Our packaging is a ritual — each layer protects the creation and
-              tells its story. Experience D&apos;LAVÉN from the moment it
-              arrives.
+              <StyledText>
+                {"Our packaging is a ritual — each layer protects the creation and tells its story. Experience D'LAVÉN from the moment it arrives."}
+              </StyledText>
             </p>
 
             <div className="mt-10">

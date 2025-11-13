@@ -2,6 +2,7 @@ import Head from "next/head";
 import Container from "@/components/Container";
 import Link from "next/link";
 import Image from "next/image";
+import Apostrophe from "@/components/Apostrophe";
 
 export default function WorldOfDlavenPage() {
   return (
@@ -34,9 +35,9 @@ export default function WorldOfDlavenPage() {
               EXPERIENCE UNRIVALED HERITAGE
             </p>
 
-            <h1 className="mt-6 text-4xl sm:text-5xl md:text-6xl font-bold tracking-widest uppercase leading-tight">
-              WORLD OF D&apos;LAVÉN
-            </h1>
+              <h1 className="mt-6 text-4xl sm:text-5xl md:text-6xl font-bold tracking-widest uppercase leading-tight">
+                WORLD OF D<Apostrophe />LAVÉN
+              </h1>
 
             <p className="mt-8 text-sm uppercase tracking-wider text-white/90">
               An immersion into craft, provenance and the present of
@@ -72,10 +73,10 @@ export default function WorldOfDlavenPage() {
               <h2 className="text-3xl font-bold tracking-widest uppercase">
                 SEALED IN HERITAGE SENT WITH LUXURY
               </h2>
-              <p className="mt-6 text-sm text-black/70">
-                A filmic glimpse into the rituals and care that define
-                D&apos;LAVÉN — coming soon.
-              </p>
+                <p className="mt-6 text-sm text-black/70">
+                  A filmic glimpse into the rituals and care that define
+                  D<Apostrophe />LAVÉN — coming soon.
+                </p>
             </div>
 
             <div className="mt-12 max-w-4xl mx-auto">
@@ -114,7 +115,7 @@ export default function WorldOfDlavenPage() {
                     <div className="h-full w-full bg-[url('/images/placeholder1.jpg')] bg-center bg-cover transition-transform duration-300 group-hover:scale-105" />
                   </div>
                   <div className="mt-3 text-center text-sm uppercase tracking-wider">
-                    Future of D&apos;LAVÉN
+                      Future of D<Apostrophe />LAVÉN
                   </div>
                 </Link>
 

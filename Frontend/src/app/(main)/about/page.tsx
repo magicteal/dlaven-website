@@ -2,6 +2,7 @@ import Container from "@/components/Container";
 import Image from "next/image";
 import Link from "next/link";
 import RevealOnScroll from "@/components/RevealOnScroll";
+import Apostrophe from "@/components/Apostrophe";
 
 export default function AboutUsPage() {
   return (
@@ -57,7 +58,7 @@ export default function AboutUsPage() {
         <div className="max-w-3xl mx-auto text-center mt-20 md:mt-24 py-6 md:py-8">
           <RevealOnScroll>
             <h1 className="zoom-reveal text-3xl font-bold tracking-widest uppercase text-black">
-              ABOUT D&apos;LAVÉN
+              ABOUT D<Apostrophe />LAVÉN
             </h1>
           </RevealOnScroll>
           <div className="mt-8 text-sm text-black/70 space-y-5">
@@ -97,7 +98,7 @@ export default function AboutUsPage() {
               className="zoom-reveal mt-4 text-sm text-black/70"
               style={{ transitionDelay: "90ms" }}
             >
-              Find out everything you need to know about the D&apos;LAVÉN
+              Find out everything you need to know about the D<Apostrophe />LAVÉN
             </p>
           </RevealOnScroll>
           <RevealOnScroll>

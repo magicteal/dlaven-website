@@ -31,7 +31,7 @@ export const categories: Category[] = [
   },
   {
     slug: "mens-ready-to-wear",
-    name: "Men's Ready-To-Wear",
+    name: "Mens Ready To Wear",
     imageSrc: "/images/mensReady.png",
     imageAlt: "A model wearing D'LAVÉN men's ready-to-wear fashion.",
     heroImage: "/images/mensReady.png",

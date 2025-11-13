@@ -12,6 +12,8 @@ import {
 import { useAuth } from "@/components/providers/AuthProvider";
 import PersonalizationModal from "@/components/PersonalizationModal";
 import { useRouter } from "next/navigation";
+import Apostrophe from "@/components/Apostrophe";
+import Dash from "@/components/Dash";
 
 function DrawerLink({
   href,
@@ -156,7 +158,7 @@ function PanelView({
               panelId="men-ready"
               className="block font-normal uppercase no-underline hover:no-underline"
             >
-              READY-TO-WEAR
+              READY<Dash />TO<Dash />WEAR
             </DrawerLink>
 
             <DrawerLink
@@ -242,14 +244,14 @@ function PanelView({
           </button>
         </div>
         <div className="p-6 pt-4 space-y-4">
-          <h2 className="text-2xl">Ready-to-wear</h2>
+          <h2 className="text-2xl">Ready<Dash />to<Dash />wear</h2>
           <div className="space-y-3">
             <DrawerLink
               href="/mens-ready-to-wear/t-shirts-polo"
               onNavigate={onNavigate}
               className="block font-normal uppercase no-underline hover:no-underline"
             >
-              T-SHIRTS & POLO
+              T<Dash />SHIRTS & POLO
             </DrawerLink>
 
             <DrawerLink
@@ -334,11 +336,27 @@ function PanelView({
           <h2 className="text-2xl">DL Services</h2>
           <div className="space-y-3">
             <DrawerLink
-              href="/services"
+              href="/world-of-d-laven/sealed-in-heritage"
               onNavigate={onNavigate}
               className="block font-normal uppercase no-underline hover:no-underline"
             >
-              Explore Services
+              SEALED IN HERITAGE & SENT WITH LUXURY PACKAGING
+            </DrawerLink>
+
+            <DrawerLink
+              href="/world-of-d-laven/packaging"
+              onNavigate={onNavigate}
+              className="block font-normal uppercase no-underline hover:no-underline"
+            >
+              PACKAGING
+            </DrawerLink>
+
+            <DrawerLink
+              href="/me"
+              onNavigate={onNavigate}
+              className="block font-normal uppercase no-underline hover:no-underline"
+            >
+              MY D’LAVÉN ACCOUNT
             </DrawerLink>
           </div>
         </div>
@@ -359,14 +377,22 @@ function PanelView({
           </button>
         </div>
         <div className="p-6 pt-4 space-y-4">
-          <h2 className="text-2xl">World of D ’ L Avén</h2>
+          <h2 className="text-2xl">World of D<Apostrophe /> L Avén</h2>
           <div className="space-y-3">
             <DrawerLink
-              href="/world-of-d-laven"
+              href="/world-of-d-laven/house-of-dl-creation"
               onNavigate={onNavigate}
               className="block font-normal uppercase no-underline hover:no-underline"
             >
-              Discover Stories
+              HOUSE OF D’L CREATIONS
+            </DrawerLink>
+
+            <DrawerLink
+              href="/world-of-d-laven/future-of-dlaven"
+              onNavigate={onNavigate}
+              className="block font-normal uppercase no-underline hover:no-underline"
+            >
+              FUTURE OF D’LAVÉN
             </DrawerLink>
           </div>
         </div>
@@ -564,7 +590,7 @@ export default function MenuDrawer({
                   panelId="world"
                   className="block font-normal uppercase no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
                 >
-                  WORLD OF D ’ L AVÉN
+                  WORLD OF D<Apostrophe /> L AVÉN
                 </DrawerLink>
                 <DrawerLink
                   href="/destinations"

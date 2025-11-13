@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import BrandText from "@/components/BrandText";
+import Apostrophe from "@/components/Apostrophe";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -102,7 +103,7 @@ export default function Footer() {
 
         {/* Copyright */}
         <div className="mt-10 text-center text-[10px] text-white/70">
-          © {year} D’ LAVÉN. All Rights Reserved
+          © {year} D<Apostrophe /> LAVÉN. All Rights Reserved
         </div>
       </div>
 
@@ -114,13 +115,13 @@ export default function Footer() {
             <div className="w-[92vw] max-w-[560px] sm:w-[88vw] sm:max-w-[640px] md:w-[72vw] md:max-w-[980px] lg:max-w-[1120px] px-2 sm:px-3">
               <div className="flex items-center justify-between text-xs sm:text-sm text-white/85">
                 <a href="tel:+917488575159" className="hover:underline">
-                  +91-7488575159
+                  <span className="font-['Montserrat']">+</span>917488575159
                 </a>
                 <a
                   href="mailto:youremail@gmail.com"
                   className="hover:underline"
                 >
-                  youremail@gmail.com
+                  youremail<span className="font-['Montserrat']">@</span>gmail.com
                 </a>
               </div>
             </div>

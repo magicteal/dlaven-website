@@ -10,6 +10,11 @@
   src: url("/fonts/lovato/fonnts.com-Lovato-Light.otf") format("truetype");
   
 }
+@font-face {
+  font-family: "Montserrat";
+  src: url("/fonts/Montserrat-Regular.ttf") format("truetype");
+  
+}
 
 @font-face {
   font-family: "Lovato-Regular";

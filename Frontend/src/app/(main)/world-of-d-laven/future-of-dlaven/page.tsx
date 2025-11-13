@@ -2,6 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Container from "@/components/Container";
 import RevealOnScroll from "@/components/RevealOnScroll";
+import StyledText from "@/components/StyledText";
 
 export default function FutureOfDlavenPage() {
   return (
@@ -39,9 +40,9 @@ export default function FutureOfDlavenPage() {
 
             <div className="mt-8 max-w-3xl mx-auto text-center text-sm text-black/70">
               <p>
-                A forward look at D&apos;LAVÉN — how we are combining heritage
-                and innovation to shape the future of craftsmanship, service and
-                design.
+                <StyledText>
+                  {"A forward look at D'LAVÉN — how we are combining heritage and innovation to shape the future of craftsmanship, service and design."}
+                </StyledText>
               </p>
             </div>
 
@@ -61,10 +62,9 @@ export default function FutureOfDlavenPage() {
                     />
                   </div>
                   <p className="mt-6 text-sm text-black/70">
-                    We are exploring new materials and techniques to complement
-                    our time-honoured practices. Each piece is conceived with
-                    longevity in mind — created to become the heirlooms of
-                    tomorrow.
+                    <StyledText>
+                      {"We are exploring new materials and techniques to complement our time-honoured practices. Each piece is conceived with longevity in mind — created to become the heirlooms of tomorrow."}
+                    </StyledText>
                   </p>
                 </div>
               </RevealOnScroll>

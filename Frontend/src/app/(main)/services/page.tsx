@@ -4,6 +4,7 @@ import Container from "@/components/Container";
 import Image from "next/image";
 import Link from "next/link";
 import { ShieldCheck, Crown, Scissors } from "lucide-react";
+import Apostrophe from "@/components/Apostrophe";
 
 export default function ServicesPage() {
   const ourCollections = [
@@ -90,7 +91,7 @@ export default function ServicesPage() {
             </div>
 
             <p className="mt-12 text-sm uppercase tracking-wider opacity-90">
-              The Present of D&apos;LAVÉN
+              The Present of D<Apostrophe />LAVÉN
             </p>
           </div>
 
@@ -111,7 +112,7 @@ export default function ServicesPage() {
               </h2>
 
               <p className="mt-6 text-sm text-black/70">
-                A D&apos;LAVÉN gift is a timeless gesture. Each creation is
+                A D<Apostrophe />LAVÉN gift is a timeless gesture. Each creation is
                 impeccably presented in our signature packaging, a promise of an
                 unforgettable experience. Our Client Advisors are available to
                 help you choose the perfect gift for any occasion.
@@ -164,7 +165,7 @@ export default function ServicesPage() {
               </h2>
               <p className="mt-6 text-sm text-gray-700 max-w-2xl mx-auto">
                 Explore our exclusive tiers of luxury, each crafted to provide a
-                unique and unforgettable D&apos;LAVÉN experience.
+                unique and unforgettable D<Apostrophe />LAVÉN experience.
               </p>
             </div>
 

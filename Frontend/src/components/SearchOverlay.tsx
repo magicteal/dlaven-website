@@ -11,9 +11,9 @@ interface SearchOverlayProps {
   onClose: () => void;
 }
 
-const trendingSearches = ["Handbags", "Shoes", "Belts", "Bags"];
-const newInLinks = ["Women", "Men"];
-const suggestionLinks = ["GG Marmont", "Personalization", "Store Locator"];
+const trendingSearches = ["Heritage Chain", "T Shirts", "Shirts"];
+const newInLinks = ["Heritage Chain", "Men"];
+const suggestionLinks = ["DL PRIVÉ SELECTIon", "Personalization", "BOUTIQUE Locator"];
 
 export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -99,7 +99,7 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
           <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-10 text-base md:text-lg">
             <div>
               <p className="font-semibold uppercase tracking-wider text-black text-base md:text-lg">
-                IN DEMAD
+                IN DEMAND
               </p>
               <ul className="mt-6 space-y-4">
                 {trendingSearches.map((item) => (

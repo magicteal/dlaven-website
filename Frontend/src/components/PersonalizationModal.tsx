@@ -3,6 +3,8 @@
 import React, { useEffect, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import gsap from "gsap";
+import StyledText from "@/components/StyledText";
+import Plus from "@/components/Plus";
 
 export default function PersonalizationModal({
   isOpen,
@@ -119,12 +121,14 @@ export default function PersonalizationModal({
           </p>
 
           <p className="mb-6 text-lg">
-            Message us at :-{" "}
-            <span className="font-medium">+91 7488-575159</span>
+            <StyledText>{"Message us at : - "}</StyledText>
+            <span className="font-medium">
+              <Plus />917488575159
+            </span>
           </p>
 
           <p className="text-sm italic text-neutral-600 mb-8">
-            [ Our team will assist you in creating your unique DL design ]
+             Our team will assist you in creating your unique DL design
           </p>
 
           <p className="text-lg font-medium tracking-wide uppercase mb-8">

@@ -2,6 +2,7 @@ import Head from "next/head";
 import Container from "@/components/Container";
 import Image from "next/image";
 import Link from "next/link";
+import StyledText from "@/components/StyledText";
 
 export default function PackagingPage() {
   return (
@@ -17,8 +18,9 @@ export default function PackagingPage() {
               Packaging
             </h1>
             <p className="mt-4 max-w-2xl mx-auto text-sm text-black/70">
-              Discover the art and care behind our signature packaging — where
-              heritage meets presentation.
+              <StyledText>
+                {"Discover the art and care behind our signature packaging — where heritage meets presentation."}
+              </StyledText>
             </p>
 
             {/* Video placeholder */}
@@ -46,8 +48,9 @@ export default function PackagingPage() {
 
             <div className="mt-8 max-w-3xl mx-auto text-sm text-black/70">
               <p>
-                Every package is crafted to protect and present our creations —
-                using sustainable materials blended with luxurious finishes.
+                <StyledText>
+                  {"Every package is crafted to protect and present our creations — using sustainable materials blended with luxurious finishes."}
+                </StyledText>
               </p>
             </div>
 

@@ -8,6 +8,8 @@ import {
 } from "@/components/ui/accordion";
 import faqs from "@/data/faqs.json";
 import RevealOnScroll from "@/components/RevealOnScroll";
+import Dash from "@/components/Dash";
+import StyledText from "@/components/StyledText";
 
 // Individual contact method component
 function ContactMethod({
@@ -72,7 +74,9 @@ export default function ContactPage() {
                   href="tel:+18774822430"
                   actionText="Call Us +1 (877) 482-2430"
                 >
-                  <p>Monday - Saturday from 9 AM to 11 PM (EST).</p>
+                  <p>
+                    Monday <Dash /> Saturday from 9 AM to 11 PM (EST).
+                  </p>
                   <p>Sunday from 10 AM to 9 PM (EST)</p>
                 </ContactMethod>
               </div>
@@ -108,7 +112,9 @@ export default function ContactPage() {
                     href="https://wa.me/18774822430"
                     actionText="WhatsApp Us"
                   >
-                    <p>Monday - Saturday from 9AM to 8PM (EST)</p>
+                    <p>
+                      Monday <Dash /> Saturday from 9AM to 8PM (EST)
+                    </p>
                     <p>Sunday from 10 AM to 7 PM (EST)</p>
                   </ContactMethod>
                 </div>
@@ -132,9 +138,13 @@ export default function ContactPage() {
                   className="zoom-reveal"
                   style={{ transitionDelay: `${80 + index * 60}ms` }}
                 >
-                  <AccordionTrigger>{faq.question}</AccordionTrigger>
+                  <AccordionTrigger>
+                    <StyledText>{faq.question}</StyledText>
+                  </AccordionTrigger>
                   <AccordionContent>
-                    <p className="text-black/80">{faq.answer}</p>
+                    <p className="text-black/80">
+                      <StyledText>{faq.answer}</StyledText>
+                    </p>
                   </AccordionContent>
                 </AccordionItem>
               </RevealOnScroll>

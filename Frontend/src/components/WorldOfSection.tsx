@@ -2,6 +2,7 @@ import Container from "@/components/Container";
 import Link from "next/link";
 import DottedIndiaMap from "@/components/DottedIndiaMap";
 import RevealOnScroll from "@/components/RevealOnScroll";
+import Apostrophe from "@/components/Apostrophe";
 
 export default function WorldOfSection() {
   return (
@@ -10,7 +11,7 @@ export default function WorldOfSection() {
         {/* small centered label */}
         <div className="text-center">
           <p className="text-[10px] uppercase tracking-widest text-black/70">
-            WORLD OF D&apos; LAVÉN
+            WORLD OF D<Apostrophe /> LAVÉN
           </p>
         </div>
 
@@ -37,11 +38,11 @@ export default function WorldOfSection() {
             <RevealOnScroll rootMargin="0px 0px -10% 0px">
               <div className="zoom-reveal max-w-[420px] text-center md:text-left">
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-widest uppercase leading-tight">
-                  FROM INDIA&apos;S SOUL TO THE
+                  FROM INDIA<Apostrophe />S SOUL TO THE
                   <br /> WORLD STAGE
                 </h2>
                 <p className="mt-4 text-sm text-black/70">
-                  D&apos;LAVÉN destinations where heritage meets modern luxury.
+                  D<Apostrophe />LAVÉN destinations where heritage meets modern luxury.
                   A journey from digital beginnings to timeless addresses. Our
                   boutiques will soon open doors in iconic cities, bringing
                   heritage craftsmanship and modern luxury under one roof.
