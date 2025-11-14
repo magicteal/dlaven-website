@@ -31,20 +31,20 @@ export default function WorldOfDlavenPage() {
           </div>
 
           <div className="relative z-10 px-6 max-w-4xl">
-            <p className="text-sm uppercase tracking-[0.22em] opacity-90">
+            <p className="text-sm uppercase tracking-[0.22em] opacity-90" data-reveal="fade">
               EXPERIENCE UNRIVALED HERITAGE
             </p>
 
-              <h1 className="mt-6 text-4xl sm:text-5xl md:text-6xl font-bold tracking-widest uppercase leading-tight">
+              <h1 className="mt-6 text-4xl sm:text-5xl md:text-6xl font-bold tracking-widest uppercase leading-tight" data-reveal="scale" data-duration="1" data-delay="0.2">
                 WORLD OF D<Apostrophe />LAVÉN
               </h1>
 
-            <p className="mt-8 text-sm uppercase tracking-wider text-white/90">
+            <p className="mt-8 text-sm uppercase tracking-wider text-white/90" data-reveal="fade" data-delay="0.4">
               An immersion into craft, provenance and the present of
               D&apos;LAVÉN.
             </p>
 
-            <div className="mt-10 flex items-center justify-center gap-4">
+            <div className="mt-10 flex items-center justify-center gap-4" data-reveal="slideUp" data-delay="0.6">
               <Link
                 href="/products"
                 className="inline-block px-8 py-3 border border-white text-xs uppercase tracking-wider hover:bg-white hover:text-black transition-colors duration-300"
@@ -70,10 +70,10 @@ export default function WorldOfDlavenPage() {
         <section className="py-16 sm:py-24 bg-white text-black">
           <Container>
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl font-bold tracking-widest uppercase">
+              <h2 className="text-3xl font-bold tracking-widest uppercase" data-reveal="slideUp">
                 SEALED IN HERITAGE SENT WITH LUXURY
               </h2>
-                <p className="mt-6 text-sm text-black/70">
+                <p className="mt-6 text-sm text-black/70" data-reveal="fade" data-delay="0.15">
                   A filmic glimpse into the rituals and care that define
                   D<Apostrophe />LAVÉN — coming soon.
                 </p>

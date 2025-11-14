@@ -1,7 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
 import Container from "@/components/Container";
-import RevealOnScroll from "@/components/RevealOnScroll";
 
 export default function HouseOfDlCreationPage() {
   return (
@@ -23,7 +22,7 @@ export default function HouseOfDlCreationPage() {
           </div>
           <div className="absolute inset-0 bg-black/30" />
           <div className="relative z-10 flex items-center justify-center h-full">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold uppercase text-white tracking-widest">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold uppercase text-white tracking-widest" data-reveal="scale" data-duration="1">
               House of DL Creations
             </h1>
           </div>
@@ -32,7 +31,7 @@ export default function HouseOfDlCreationPage() {
         <Container>
           <div className="py-12">
             {/* First three photos */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6" data-reveal="slideUp" data-stagger="0.15">
               <div className="relative h-64 w-full rounded overflow-hidden bg-gray-100">
                 <Image
                   src="/images/placeholder1.jpg"
@@ -61,8 +60,7 @@ export default function HouseOfDlCreationPage() {
 
             {/* Reveal more on scroll */}
             <div className="mt-12">
-              <RevealOnScroll>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6" data-reveal="slideUp" data-stagger="0.15" data-delay="0.2">
                   <div className="relative h-64 w-full rounded overflow-hidden bg-gray-100">
                     <Image
                       src="/images/placeholder4.jpg"
@@ -88,7 +86,6 @@ export default function HouseOfDlCreationPage() {
                     />
                   </div>
                 </div>
-              </RevealOnScroll>
             </div>
           </div>
         </Container>

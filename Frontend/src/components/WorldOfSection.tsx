@@ -1,7 +1,7 @@
 import Container from "@/components/Container";
 import Link from "next/link";
 import DottedIndiaMap from "@/components/DottedIndiaMap";
-import RevealOnScroll from "@/components/RevealOnScroll";
+
 import Apostrophe from "@/components/Apostrophe";
 
 export default function WorldOfSection() {
@@ -17,11 +17,10 @@ export default function WorldOfSection() {
 
         <div className="mt-10 grid grid-cols-12 gap-8 items-center">
           {/* Left: dotted India map (replaces image) (col 1-6) */}
-          <div className="col-span-12 md:col-span-6">
-            <RevealOnScroll rootMargin="0px 0px -10% 0px">
+          <div className="col-span-12 md:col-span-6" data-reveal="scale" data-duration="1">
               <div className="max-w-[560px] mx-auto md:mx-0">
                 <DottedIndiaMap
-                  className="w-full aspect-[4/5] zoom-reveal"
+                  className="w-full aspect-[4/5]"
                   title="India map"
                   mapHeight={64}
                   grid="diagonal"
@@ -30,18 +29,16 @@ export default function WorldOfSection() {
                   dotColor="#9CA3AF"
                 />
               </div>
-            </RevealOnScroll>
           </div>
 
           {/* Center: headline + paragraph (col 7-10) */}
           <div className="col-span-12 md:col-span-4 flex justify-center">
-            <RevealOnScroll rootMargin="0px 0px -10% 0px">
-              <div className="zoom-reveal max-w-[420px] text-center md:text-left">
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-widest uppercase leading-tight">
+              <div className="max-w-[420px] text-center md:text-left">
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-widest uppercase leading-tight" data-reveal="slideUp" data-delay="0.2">
                   FROM INDIA<Apostrophe />S SOUL TO THE
                   <br /> WORLD STAGE
                 </h2>
-                <p className="mt-4 text-sm text-black/70">
+                <p className="mt-4 text-sm text-black/70" data-reveal="fade" data-delay="0.4">
                   D<Apostrophe />LAVÉN destinations where heritage meets modern luxury.
                   A journey from digital beginnings to timeless addresses. Our
                   boutiques will soon open doors in iconic cities, bringing
@@ -51,17 +48,17 @@ export default function WorldOfSection() {
                 <Link
                   href="/world-of-d-laven"
                   className="mt-6 inline-block text-[10px] uppercase tracking-wider border border-black/10 px-3 py-2"
+                  data-reveal="slideUp"
+                  data-delay="0.6"
                 >
                   Discover Our Universe
                 </Link>
               </div>
-            </RevealOnScroll>
           </div>
 
           {/* Right: Upcoming locations vertical (col 11-12) */}
           <div className="col-span-12 md:col-span-2 hidden md:flex items-start justify-end">
-            <RevealOnScroll rootMargin="0px 0px -10% 0px">
-              <div className="zoom-reveal text-right">
+              <div className="text-right" data-reveal="slideLeft" data-delay="0.3">
                 <p className="text-sm uppercase tracking-widest">
                   Upcoming Locations
                 </p>
@@ -77,7 +74,6 @@ export default function WorldOfSection() {
                   </li>
                 </ul>
               </div>
-            </RevealOnScroll>
           </div>
         </div>
       </Container>

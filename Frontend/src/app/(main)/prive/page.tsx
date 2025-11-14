@@ -95,10 +95,10 @@ export default function DlavenPrivePage() {
           <div className="absolute inset-0 bg-black/60" />
         </div>
         <div className="relative z-10 p-4">
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-widest uppercase">
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-widest uppercase" data-reveal="scale" data-duration="1">
             D&#39;LAVÉN PRIVE
           </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-sm sm:text-base text-white/90">
+          <p className="mt-4 max-w-2xl mx-auto text-sm sm:text-base text-white/90" data-reveal="fade" data-delay="0.2">
             Ultra-exclusive pieces available only with a valid D&#39;LAVÉN Privé
             access code.
           </p>

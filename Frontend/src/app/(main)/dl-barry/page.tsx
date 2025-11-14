@@ -81,10 +81,10 @@ export default function DlBarryPage() {
           <div className="absolute inset-0 bg-black/60" />
         </div>
         <div className="relative z-10 p-4">
-          <h1 className="text-4xl font-bold tracking-widest uppercase">
+          <h1 className="text-4xl font-bold tracking-widest uppercase" data-reveal="scale" data-duration="1">
             DL Barry
           </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-sm sm:text-base text-white/90">
+          <p className="mt-4 max-w-2xl mx-auto text-sm sm:text-base text-white/90" data-reveal="fade" data-delay="0.2">
             Bespoke made-to-measure tailoring — a service tailored to precision
             and luxury. Contact our advisors to book a consultation.
           </p>
@@ -93,8 +93,8 @@ export default function DlBarryPage() {
 
       <Container className="py-12">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-2xl font-semibold">Bespoke Tailoring</h2>
-          <p className="mt-4 text-sm text-black/70">
+          <h2 className="text-2xl font-semibold" data-reveal="slideUp">Bespoke Tailoring</h2>
+          <p className="mt-4 text-sm text-black/70" data-reveal="fade" data-delay="0.15">
             DL Barry offers personalized fittings and handcrafted garments.
             Please get in touch with our Client Advisors to schedule an
             appointment.

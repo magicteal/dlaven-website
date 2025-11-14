@@ -38,15 +38,17 @@ export default function AdminUsersPage() {
 
   useEffect(() => {
     async function load() {
+      if (loading) return;
+      if (!user || user.role !== "admin") return;
       try {
-  const res = await apiAdmin.listUsers();
-  setUsers(uniqById(res.users.map(normalize)));
+        const res = await apiAdmin.listUsers();
+        setUsers(uniqById(res.users.map(normalize)));
       } catch (e: unknown) {
         setError(e instanceof Error ? e.message : "Failed to load users");
       }
     }
-    if (isAdmin) load();
-  }, [isAdmin]);
+    load();
+  }, [loading, user]);
 
   async function onToggleRole(u: User) {
     const uid = u.id;

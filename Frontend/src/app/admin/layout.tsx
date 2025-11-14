@@ -17,6 +17,9 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         <Link href="/admin/users" className="text-sm hover:underline">
           Users
         </Link>
+        <Link href="/admin/categories" className="text-sm hover:underline">
+          Categories
+        </Link>
         <Link href="/admin/products" className="text-sm hover:underline">
           Products
         </Link>

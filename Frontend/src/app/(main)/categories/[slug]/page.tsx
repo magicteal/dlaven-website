@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import Container from "@/components/Container";
 import ProductCard from "@/components/ProductCard";
 import { API_BASE } from "@/lib/api";
-import { getCategoryBySlug } from "@/data/categories";
 
 async function fetchProductsForCategory(slug: string) {
   const res = await fetch(
@@ -30,7 +29,20 @@ export default async function CategoryPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const category = getCategoryBySlug(slug);
+  const catRes = await fetch(
+    `${API_BASE}/api/categories/${encodeURIComponent(slug)}`,
+    { cache: "no-store" }
+  );
+  if (!catRes.ok) return notFound();
+  const catData = await catRes.json();
+  const category = (catData.item || null) as {
+    slug: string;
+    name: string;
+    imageSrc?: string;
+    imageAlt?: string;
+    heroImage?: string;
+    badge?: string;
+  } | null;
   if (!category) return notFound();
 
   const items = await fetchProductsForCategory(slug);
@@ -54,11 +66,11 @@ export default async function CategoryPage({
 
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-4">
             {category.badge ? (
-              <span className="inline-block text-[10px] tracking-[0.2em] uppercase bg-white/15 text-white px-2 py-1 mb-2 rounded-sm">
+              <span className="inline-block text-[10px] tracking-[0.2em] uppercase bg-white/15 text-white px-2 py-1 mb-2 rounded-sm" data-reveal="fade">
                 {category.badge}
               </span>
             ) : null}
-            <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-widest uppercase">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-widest uppercase" data-reveal="scale" data-duration="1" data-delay="0.2">
               {category.name}
             </h1>
           </div>
@@ -69,13 +81,13 @@ export default async function CategoryPage({
       <section className="py-12 sm:py-16">
         <Container>
           <div className="flex items-baseline justify-between">
-            <h2 className="text-xl font-bold tracking-widest uppercase text-black">
+            <h2 className="text-xl font-bold tracking-widest uppercase text-black" data-reveal="slideUp">
               Products
             </h2>
-            <span className="text-xs text-black/60">{items.length} items</span>
+            <span className="text-xs text-black/60" data-reveal="fade" data-delay="0.15">{items.length} items</span>
           </div>
 
-          <div className="mt-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="mt-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6" data-reveal="slideUp" data-stagger="0.1" data-delay="0.2">
             {items.map((p) => (
               <ProductCard
                 key={p.slug}

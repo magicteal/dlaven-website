@@ -1,8 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import Container from "@/components/Container";
-import { categories as dataCategories } from "@/data/categories";
-import RevealOnScroll from "@/components/RevealOnScroll";
+import { API_BASE } from "@/lib/api";
 
 /**
  * Single Category Item Component
@@ -21,13 +20,9 @@ function CategoryItem({
   index?: number;
 }) {
   return (
-    <RevealOnScroll rootMargin="0px 0px -20% 0px">
-      <Link href={`/categories/${slug}`} className="group block">
-        <div
-          className="zoom-reveal overflow-hidden rounded-md shadow-md"
-          style={{ transitionDelay: `${Math.min(index * 80, 400)}ms` }}
-        >
-          <div className="relative w-full h-[360px] sm:h-[420px] lg:h-[480px] bg-gray-100">
+    <Link href={`/categories/${slug}`} className="group block">
+      <div className="overflow-hidden rounded-md shadow-md">
+        <div className="relative w-full h-[360px] sm:h-[420px] lg:h-[480px] bg-gray-100">
             <Image
               src={imageSrc}
               alt={imageAlt}
@@ -37,11 +32,10 @@ function CategoryItem({
             />
           </div>
         </div>
-        <p className="mt-4 text-center text-sm font-bold tracking-wider uppercase text-black">
-          {name}
-        </p>
-      </Link>
-    </RevealOnScroll>
+      <p className="mt-4 text-center text-sm font-bold tracking-wider uppercase text-black">
+        {name}
+      </p>
+    </Link>
   );
 }
 
@@ -57,25 +51,41 @@ export default async function CategoryGrid({
 }: {
   title?: string;
 }) {
-  // Use the local hard-coded categories from data folder
-  const data = dataCategories;
+  // Fetch categories from backend
+  let data: Array<{
+    slug: string;
+    name: string;
+    imageSrc?: string;
+    imageAlt?: string;
+  }> = [];
+  try {
+    const res = await fetch(`${API_BASE}/api/categories`, { cache: "no-store" });
+    if (res.ok) {
+      const j = await res.json();
+      data = (j.items || []) as typeof data;
+    }
+  } catch (e) {
+    console.error("[CategoryGrid] Failed to load categories", e);
+  }
   return (
     <section className="bg-white my-22 py-16 sm:py-24">
       <Container className="text-center">
-        <RevealOnScroll rootMargin="0px 0px -10% 0px">
-          <h2 className="zoom-reveal text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-widest uppercase text-black">
-            {title}
-          </h2>
-        </RevealOnScroll>
+        <h2 
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-widest uppercase text-black"
+          data-reveal="slideUp"
+          data-duration="0.8"
+        >
+          {title}
+        </h2>
 
-        <div className="mt-8 sm:mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+        <div className="mt-8 sm:mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 items-start" data-reveal="slideUp" data-stagger="0.15" data-delay="0.2">
           {data.map((category, idx) => (
             <CategoryItem
               key={category.slug}
               name={category.name}
               slug={category.slug}
-              imageSrc={category.imageSrc}
-              imageAlt={category.imageAlt}
+              imageSrc={category.imageSrc || "/images/placeholder.png"}
+              imageAlt={category.imageAlt || ""}
               index={idx}
             />
           ))}

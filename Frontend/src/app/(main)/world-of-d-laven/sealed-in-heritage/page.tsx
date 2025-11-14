@@ -21,11 +21,11 @@ export default function SealedInHeritagePage() {
       <main className="min-h-screen bg-white text-black">
         <Container>
           <div className="py-16 text-center">
-            <h1 className="text-2xl sm:text-3xl font-bold uppercase">
+            <h1 className="text-2xl sm:text-3xl font-bold uppercase" data-reveal="slideUp">
               SEALED IN HERITAGE &amp; SENT WITH LUXURY
             </h1>
 
-            <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6 items-start max-w-4xl mx-auto">
+            <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6 items-start max-w-4xl mx-auto" data-reveal="scale" data-stagger="0.15" data-delay="0.2">
               <div className="relative h-56 w-full rounded overflow-hidden bg-gray-100">
                 <Image
                   src="/images/placeholder1.jpg"

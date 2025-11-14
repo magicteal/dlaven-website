@@ -7,7 +7,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import faqs from "@/data/faqs.json";
-import RevealOnScroll from "@/components/RevealOnScroll";
 import Dash from "@/components/Dash";
 import StyledText from "@/components/StyledText";
 
@@ -48,26 +47,18 @@ export default function ContactPage() {
       <Container>
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto">
-          <RevealOnScroll>
-            <h1 className="zoom-reveal text-3xl font-bold tracking-widest uppercase text-black">
-              Contact Us
-            </h1>
-          </RevealOnScroll>
-          <RevealOnScroll>
-            <p
-              className="zoom-reveal mt-4 text-sm uppercase tracking-wider text-black/70"
-              style={{ transitionDelay: "100ms" }}
-            >
-              Choose your preferred method of contact and connect with us
-            </p>
-          </RevealOnScroll>
+          <h1 className="text-3xl font-bold tracking-widest uppercase text-black" data-reveal="slideUp">
+            Contact Us
+          </h1>
+          <p className="mt-4 text-sm uppercase tracking-wider text-black/70" data-reveal="slideUp" data-delay="0.15">
+            Choose your preferred method of contact and connect with us
+          </p>
         </div>
 
         {/* Contact Methods Grid */}
         <div className="mt-20 max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-16 gap-x-10">
-            <RevealOnScroll>
-              <div className="zoom-reveal px-4 md:px-6 py-6 md:py-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-16 gap-x-10" data-reveal="slideUp" data-stagger="0.2" data-delay="0.3">
+            <div className="px-4 md:px-6 py-6 md:py-8">
                 <ContactMethod
                   icon={<Phone size={16} />}
                   title="Phone"
@@ -80,13 +71,8 @@ export default function ContactPage() {
                   <p>Sunday from 10 AM to 9 PM (EST)</p>
                 </ContactMethod>
               </div>
-            </RevealOnScroll>
 
-            <RevealOnScroll>
-              <div
-                className="zoom-reveal px-4 md:px-6 py-6 md:py-8"
-                style={{ transitionDelay: "120ms" }}
-              >
+            <div className="px-4 md:px-6 py-6 md:py-8">
                 <ContactMethod
                   icon={<Mail size={16} />}
                   title="Email"
@@ -98,14 +84,9 @@ export default function ContactPage() {
                   </p>
                 </ContactMethod>
               </div>
-            </RevealOnScroll>
 
             <div className="md:col-span-2 flex justify-center pt-8">
-              <RevealOnScroll>
-                <div
-                  className="zoom-reveal px-4 md:px-6 py-6 md:py-8"
-                  style={{ transitionDelay: "200ms" }}
-                >
+              <div className="px-4 md:px-6 py-6 md:py-8">
                   <ContactMethod
                     icon={<MessageSquare size={16} />}
                     title="WhatsApp"
@@ -117,26 +98,22 @@ export default function ContactPage() {
                     </p>
                     <p>Sunday from 10 AM to 7 PM (EST)</p>
                   </ContactMethod>
-                </div>
-              </RevealOnScroll>
+              </div>
             </div>
           </div>
         </div>
 
         {/* FAQs Section */}
         <div className="mt-24 max-w-3xl mx-auto">
-          <RevealOnScroll>
-            <h2 className="zoom-reveal text-center text-xl font-bold tracking-widest uppercase text-black">
-              Frequently Asked Questions
-            </h2>
-          </RevealOnScroll>
-          <Accordion type="single" collapsible className="w-full mt-10">
-            {faqs.map((faq, index) => (
-              <RevealOnScroll key={index}>
+          <h2 className="text-center text-xl font-bold tracking-widest uppercase text-black" data-reveal="slideUp">
+            Frequently Asked Questions
+          </h2>
+          <div data-reveal="slideUp" data-stagger="0.1" data-delay="0.2">
+            <Accordion type="single" collapsible className="w-full mt-10">
+              {faqs.map((faq, index) => (
                 <AccordionItem
+                  key={index}
                   value={`item-${index}`}
-                  className="zoom-reveal"
-                  style={{ transitionDelay: `${80 + index * 60}ms` }}
                 >
                   <AccordionTrigger>
                     <StyledText>{faq.question}</StyledText>
@@ -147,9 +124,9 @@ export default function ContactPage() {
                     </p>
                   </AccordionContent>
                 </AccordionItem>
-              </RevealOnScroll>
-            ))}
-          </Accordion>
+              ))}
+            </Accordion>
+          </div>
         </div>
       </Container>
     </main>

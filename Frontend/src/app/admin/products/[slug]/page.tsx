@@ -4,7 +4,6 @@ import { useAuth } from "@/components/providers/AuthProvider";
 import { useRouter } from "next/navigation";
 import { use, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { categories as HARD_CATEGORIES } from "@/data/categories";
 
 type Product = {
   slug: string;
@@ -52,9 +51,7 @@ export default function AdminEditProductPage({
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
-  const [categories] = useState<Array<{ slug: string; name: string }>>(
-    HARD_CATEGORIES.map((c) => ({ slug: c.slug, name: c.name }))
-  );
+  const [categories, setCategories] = useState<Array<{ slug: string; name: string }>>([]);
 
   useEffect(() => {
     if (!loading && (!user || !isAdmin)) router.replace("/");
@@ -62,6 +59,8 @@ export default function AdminEditProductPage({
 
   useEffect(() => {
     async function load() {
+      if (loading) return;
+      if (!user || user.role !== "admin") return;
       try {
         const data = await requestAdmin<{ item: Product }>(
           `/api/products/${slug}`
@@ -89,12 +88,27 @@ export default function AdminEditProductPage({
         setLoadingItem(false);
       }
     }
-    if (isAdmin) load();
-  }, [isAdmin, slug]);
+    load();
+  }, [loading, user, slug]);
 
   useEffect(() => {
-    // categories are hard-coded; nothing to load
-  }, [isAdmin]);
+    async function loadCategories() {
+      if (loading) return;
+      if (!user || user.role !== "admin") return;
+      try {
+        const { API_BASE } = await import("@/lib/api");
+        const res = await fetch(`${API_BASE}/api/categories`, { cache: "no-store", credentials: "include" });
+        if (res.ok) {
+          const j = await res.json();
+          const items = (j.items || []) as Array<{ slug: string; name: string }>;
+          setCategories(items.map((c) => ({ slug: c.slug, name: c.name })));
+        }
+      } catch (e) {
+        console.warn("Failed to load categories", e);
+      }
+    }
+    loadCategories();
+  }, [loading, user]);
 
   async function onSave(e: React.FormEvent) {
     e.preventDefault();

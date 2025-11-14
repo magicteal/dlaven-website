@@ -34,16 +34,22 @@ export default function FeaturedContent() {
 
       {/* Centered Content */}
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center text-center py-20 sm:py-24 md:py-48">
-        <h2 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-widest uppercase">
+        <h2 
+          className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-widest uppercase"
+          data-reveal="scale"
+          data-duration="1"
+        >
           DL PRIVÉ EDITION
         </h2>
-        <Button
-          variant="outline"
-          className="mt-8 rounded-none border-white bg-transparent text-white hover:bg-white hover:text-black"
-          aria-label="Get Access"
-        >
-          Get Access
-        </Button>
+        <div data-reveal="slideUp" data-delay="0.3">
+          <Button
+            variant="outline"
+            className="mt-8 rounded-none border-white bg-transparent text-white hover:bg-white hover:text-black"
+            aria-label="Get Access"
+          >
+            Get Access
+          </Button>
+        </div>
       </div>
     </section>
   );

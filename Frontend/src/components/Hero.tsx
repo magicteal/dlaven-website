@@ -38,7 +38,9 @@ export default function Hero() {
 
   {/* Centered Brand Text + CTA Button */}
   <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-6 translate-y-12">
-        <BrandText className="w-[82vw] md:w-[40vw]  drop-shadow-[0_2px_20px_rgba(0,0,0,0.4)]" />
+        <div data-reveal="scale" data-duration="1.2" data-delay="0.3">
+          <BrandText className="w-[82vw] md:w-[40vw]  drop-shadow-[0_2px_20px_rgba(0,0,0,0.4)]" />
+        </div>
 
         {/* CTA button - pointer-events-auto so it can be clicked despite parent being pointer-events-none */}
         <button
@@ -48,6 +50,9 @@ export default function Hero() {
             const el = document.getElementById("main");
             if (el) el.scrollIntoView({ behavior: "smooth" });
           }}
+          data-reveal="slideUp"
+          data-duration="0.8"
+          data-delay="0.8"
           className="pointer-events-auto inline-flex items-center justify-center bg-white text-black px-10 py-3 rounded-none text-sm md:text-base font-medium shadow-lg hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-black/30"
         >
           Explore

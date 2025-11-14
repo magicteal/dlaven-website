@@ -43,10 +43,10 @@ export default function DlavenLimitedPage() {
           <div className="absolute inset-0 bg-black/50" />
         </div>
         <div className="relative z-10 p-4">
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-widest uppercase">
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-widest uppercase" data-reveal="scale" data-duration="1">
             D&#39;LAVÉN LIMITED
           </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-sm sm:text-base text-white/90">
+          <p className="mt-4 max-w-2xl mx-auto text-sm sm:text-base text-white/90" data-reveal="fade" data-delay="0.2">
             An exclusive collection for our most valued clientele.
           </p>
         </div>
@@ -54,7 +54,7 @@ export default function DlavenLimitedPage() {
 
       <Container className="py-16 sm:py-24">
         <div>
-          <h2 className="text-2xl font-bold tracking-widest uppercase text-black text-center">
+          <h2 className="text-2xl font-bold tracking-widest uppercase text-black text-center" data-reveal="slideUp">
             Limited Collection
           </h2>
           {loading ? (

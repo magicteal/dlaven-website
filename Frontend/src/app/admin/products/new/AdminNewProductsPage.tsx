@@ -2,8 +2,7 @@
 
 import { useAuth } from "@/components/providers/AuthProvider";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { categories as HARD_CATEGORIES } from "@/data/categories";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -28,11 +27,8 @@ export default function AdminNewProductPage() {
     tag: "",
   });
   const searchParams = useSearchParams();
-  const [categories] = useState<Array<{ slug: string; name: string }>>(
-    HARD_CATEGORIES.map((c) => ({ slug: c.slug, name: c.name }))
-  );
+  const [categories, setCategories] = useState<Array<{ slug: string; name: string }>>([]);
   const [uploading, setUploading] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
@@ -41,8 +37,23 @@ export default function AdminNewProductPage() {
   }, [loading, user, isAdmin, router]);
 
   useEffect(() => {
-    // categories are hard-coded; no remote load
-  }, [isAdmin]);
+    async function loadCategories() {
+      if (loading) return;
+      if (!user || user.role !== "admin") return;
+      try {
+        const { API_BASE } = await import("@/lib/api");
+        const res = await fetch(`${API_BASE}/api/categories`, { cache: "no-store", credentials: "include" });
+        if (res.ok) {
+          const j = await res.json();
+          const items = (j.items || []) as Array<{ slug: string; name: string }>;
+          setCategories(items.map((c) => ({ slug: c.slug, name: c.name })));
+        }
+      } catch (e) {
+        console.warn("Failed to load categories", e);
+      }
+    }
+    loadCategories();
+  }, [loading, user]);
 
   useEffect(() => {
     // Prefill based on ?kind=limited or ?kind=prive
@@ -182,17 +193,21 @@ export default function AdminNewProductPage() {
               }
             />
             <div className="flex items-center gap-2">
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={onFileSelect}
-              />
               <button
                 type="button"
                 className="px-3 py-2 border border-black text-sm hover:bg-black hover:text-white disabled:opacity-60"
-                onClick={() => fileInputRef.current?.click()}
+                onClick={() => {
+                  const input = document.createElement('input');
+                  input.type = 'file';
+                  input.accept = 'image/*';
+                  input.onchange = (e: Event) => {
+                    const target = e.target as HTMLInputElement;
+                    if (target.files?.[0]) {
+                      onFileSelect({ target } as React.ChangeEvent<HTMLInputElement>);
+                    }
+                  };
+                  input.click();
+                }}
                 disabled={uploading}
               >
                 {uploading ? "Uploading…" : "Upload Image"}

@@ -34,10 +34,10 @@ export default function DestinationsPage() {
         </div>
         <div className="absolute inset-0 h-[60vh] min-h-[400px] bg-black/40" />
         <div className="relative z-10 p-4 h-[60vh] min-h-[400px] flex flex-col items-center justify-center">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-widest uppercase">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-widest uppercase" data-reveal="scale" data-duration="1">
             D<Apostrophe />LAVÉN DESTINATIONS
           </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-sm sm:text-base text-white/90">
+          <p className="mt-4 max-w-2xl mx-auto text-sm sm:text-base text-white/90" data-reveal="fade" data-delay="0.2">
             Explore our exclusive boutiques and curated experiences around the
             world.
           </p>
@@ -48,10 +48,10 @@ export default function DestinationsPage() {
       <div className="py-16 sm:py-24">
         <Container>
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-2xl font-semibold tracking-wider uppercase text-black">
+            <h2 className="text-2xl font-semibold tracking-wider uppercase text-black" data-reveal="slideUp">
               A World of Luxury
             </h2>
-            <div className="mt-6 text-sm text-black/70 space-y-4">
+            <div className="mt-6 text-sm text-black/70 space-y-4" data-reveal="fade" data-delay="0.2">
               <p>
                 Each D<Apostrophe />LAVÉN destination is more than just a store; it is
                 an immersion into a world of unparalleled craftsmanship and
@@ -67,7 +67,7 @@ export default function DestinationsPage() {
 
           {/* Cities List using the new animated component */}
           <div className="max-w-4xl mx-auto text-center mt-20">
-            <h2 className="text-2xl font-semibold tracking-wider uppercase text-black">
+            <h2 className="text-2xl font-semibold tracking-wider uppercase text-black" data-reveal="slideUp">
               Iconic Locations
             </h2>
             <div className="mt-8">

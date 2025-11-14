@@ -14,10 +14,10 @@ export default function PackagingPage() {
       <main className="min-h-screen bg-white text-black">
         <Container>
           <div className="py-16 text-center">
-            <h1 className="text-3xl sm:text-4xl font-bold uppercase">
+            <h1 className="text-3xl sm:text-4xl font-bold uppercase" data-reveal="slideUp">
               Packaging
             </h1>
-            <p className="mt-4 max-w-2xl mx-auto text-sm text-black/70">
+            <p className="mt-4 max-w-2xl mx-auto text-sm text-black/70" data-reveal="fade" data-delay="0.15">
               <StyledText>
                 {"Discover the art and care behind our signature packaging — where heritage meets presentation."}
               </StyledText>

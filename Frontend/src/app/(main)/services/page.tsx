@@ -59,21 +59,21 @@ export default function ServicesPage() {
 
           {/* Foreground content */}
           <div className="relative z-10 px-6 max-w-4xl">
-            <p className="text-sm uppercase tracking-[0.22em] opacity-90">
+            <p className="text-sm uppercase tracking-[0.22em] opacity-90" data-reveal="fade">
               Unparalleled Luxury and Care
             </p>
 
-            <h1 className="mt-6 text-4xl sm:text-5xl md:text-6xl font-bold tracking-widest uppercase leading-tight">
+            <h1 className="mt-6 text-4xl sm:text-5xl md:text-6xl font-bold tracking-widest uppercase leading-tight" data-reveal="scale" data-duration="1" data-delay="0.2">
               DL SERVICES
             </h1>
 
             {/* PDF tagline (pulled from your PDF) */}
             <div className="mt-10">
-              <p className="text-sm uppercase tracking-wider">
+              <p className="text-sm uppercase tracking-wider" data-reveal="fade" data-delay="0.4">
                 SEALED IN HERITAGE, SENT WITH LUXURY
               </p>
 
-              <div className="mt-8 flex items-center justify-center gap-4">
+              <div className="mt-8 flex items-center justify-center gap-4" data-reveal="slideUp" data-delay="0.6">
                 <Link
                   href="/products"
                   className="inline-block px-8 py-3 border border-white text-xs uppercase tracking-wider hover:bg-white hover:text-black transition-colors duration-300"
@@ -90,7 +90,7 @@ export default function ServicesPage() {
               </div>
             </div>
 
-            <p className="mt-12 text-sm uppercase tracking-wider opacity-90">
+            <p className="mt-12 text-sm uppercase tracking-wider opacity-90" data-reveal="fade" data-delay="0.8">
               The Present of D<Apostrophe />LAVÉN
             </p>
           </div>
@@ -107,18 +107,18 @@ export default function ServicesPage() {
         <section className="py-16 sm:py-24 bg-white text-black">
           <Container>
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl font-bold tracking-widest uppercase">
+              <h2 className="text-3xl font-bold tracking-widest uppercase" data-reveal="slideUp">
                 The Art of Gifting
               </h2>
 
-              <p className="mt-6 text-sm text-black/70">
+              <p className="mt-6 text-sm text-black/70" data-reveal="fade" data-delay="0.15">
                 A D<Apostrophe />LAVÉN gift is a timeless gesture. Each creation is
                 impeccably presented in our signature packaging, a promise of an
                 unforgettable experience. Our Client Advisors are available to
                 help you choose the perfect gift for any occasion.
               </p>
 
-              <div className="mt-8 flex justify-center">
+              <div className="mt-8 flex justify-center" data-reveal="slideUp" data-delay="0.3">
                 <Link
                   href="/collections"
                   className="inline-block px-8 py-3 border border-black text-xs uppercase tracking-wider hover:bg-black hover:text-white transition-colors duration-300"
@@ -160,16 +160,16 @@ export default function ServicesPage() {
         <section className="py-16 sm:py-24 bg-gray-100 text-gray-900">
           <Container>
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl font-bold tracking-widest uppercase">
+              <h2 className="text-3xl font-bold tracking-widest uppercase" data-reveal="slideUp">
                 Our Collections
               </h2>
-              <p className="mt-6 text-sm text-gray-700 max-w-2xl mx-auto">
+              <p className="mt-6 text-sm text-gray-700 max-w-2xl mx-auto" data-reveal="fade" data-delay="0.15">
                 Explore our exclusive tiers of luxury, each crafted to provide a
                 unique and unforgettable D<Apostrophe />LAVÉN experience.
               </p>
             </div>
 
-            <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-10" data-reveal="slideUp" data-stagger="0.15" data-delay="0.2">
               {ourCollections.map((service) => {
                 const href =
                   service.name === "DL Limited"

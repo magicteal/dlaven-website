@@ -97,6 +97,62 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
 }
 
 export const api = {
+  // Categories
+  listCategories() {
+    return request<{ items: Array<{
+      slug: string;
+      name: string;
+      imageSrc?: string;
+      imageAlt?: string;
+      heroImage?: string;
+      badge?: string;
+      description?: string;
+    }> }>("/api/categories");
+  },
+  getCategoryBySlug(slug: string) {
+    return request<{ item: {
+      slug: string;
+      name: string;
+      imageSrc?: string;
+      imageAlt?: string;
+      heroImage?: string;
+      badge?: string;
+      description?: string;
+    } }>(`/api/categories/${encodeURIComponent(slug)}`);
+  },
+  adminCreateCategory(data: {
+    slug: string;
+    name: string;
+    imageSrc?: string;
+    imageAlt?: string;
+    heroImage?: string;
+    badge?: string;
+    description?: string;
+  }) {
+    return request<{ item: unknown }>("/api/categories", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  },
+  adminUpdateCategory(slug: string, data: {
+    name?: string;
+    imageSrc?: string;
+    imageAlt?: string;
+    heroImage?: string;
+    badge?: string;
+    description?: string;
+  }) {
+    return request<{ item: unknown }>(`/api/categories/${encodeURIComponent(slug)}`, {
+      method: "PATCH",
+      body: JSON.stringify(data),
+    });
+  },
+  adminDeleteCategory(slug: string) {
+    return request<{ ok: boolean }>(`/api/categories/${encodeURIComponent(slug)}`, {
+      method: "DELETE",
+    });
+  },
+  // Products
   listProducts(params?: {
     category?: string;
     tag?: "normal-product" | "dl-limited" | "dl-prive" | "dl-barry";

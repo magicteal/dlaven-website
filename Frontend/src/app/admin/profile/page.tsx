@@ -56,8 +56,10 @@ export default function AdminProfilePage() {
         setAddresses([]);
       }
     }
-    if (user && isAdmin) loadAddresses();
-  }, [user, isAdmin]);
+    if (loading) return;
+    if (!user || !isAdmin) return;
+    loadAddresses();
+  }, [loading, user, isAdmin]);
 
   async function onSave() {
     setError(null);

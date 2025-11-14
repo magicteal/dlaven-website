@@ -30,7 +30,7 @@ const ProductSchema = new Schema<IProduct>(
     name: { type: String, required: true },
     description: { type: String },
     price: { type: Number, required: true },
-    currency: { type: String, default: "USD" },
+    currency: { type: String, default: "INR" },
     images: { type: [String], default: [] },
     categorySlug: { type: String, required: true, index: true },
     rating: { type: Number, default: 0 },

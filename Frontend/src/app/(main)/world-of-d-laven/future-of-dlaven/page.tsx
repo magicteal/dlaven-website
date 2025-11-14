@@ -1,7 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
 import Container from "@/components/Container";
-import RevealOnScroll from "@/components/RevealOnScroll";
 import StyledText from "@/components/StyledText";
 
 export default function FutureOfDlavenPage() {
@@ -14,12 +13,12 @@ export default function FutureOfDlavenPage() {
       <main className="min-h-screen bg-white text-black">
         <Container>
           <div className="py-16">
-            <h1 className="text-3xl sm:text-4xl font-bold uppercase text-center">
+            <h1 className="text-3xl sm:text-4xl font-bold uppercase text-center" data-reveal="slideUp">
               Future of D&apos;LAVÉN
             </h1>
 
             {/* Two images side by side */}
-            <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6" data-reveal="scale" data-stagger="0.2" data-delay="0.2">
               <div className="relative h-64 w-full rounded overflow-hidden bg-white">
                 <Image
                   src="/images/placeholder1.jpg"
@@ -48,8 +47,7 @@ export default function FutureOfDlavenPage() {
 
             {/* Reveal on scroll section */}
             <div className="mt-28">
-              <RevealOnScroll>
-                <div className="max-w-3xl mx-auto text-center px-4">
+                <div className="max-w-3xl mx-auto text-center px-4" data-reveal="slideUp">
                   <h2 className="text-2xl font-bold uppercase tracking-widest">
                     The Next Chapter
                   </h2>
@@ -67,7 +65,6 @@ export default function FutureOfDlavenPage() {
                     </StyledText>
                   </p>
                 </div>
-              </RevealOnScroll>
             </div>
           </div>
         </Container>

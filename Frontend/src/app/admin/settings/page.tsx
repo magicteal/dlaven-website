@@ -30,6 +30,8 @@ export default function AdminSettingsPage() {
 
   useEffect(() => {
     async function load() {
+      if (loading) return;
+      if (!user || user.role !== "admin") return;
       try {
         const res = await requestAdmin<{ settings: Settings }>("/api/admin/settings");
         setForm((prev) => ({ ...prev, smtpUser: res.settings.smtpUser || "", mailFrom: res.settings.mailFrom || "" }));
@@ -40,8 +42,8 @@ export default function AdminSettingsPage() {
         setInitialLoaded(true);
       }
     }
-    if (isAdmin) load();
-  }, [isAdmin, user]);
+    load();
+  }, [loading, user]);
 
   async function onSave(e: React.FormEvent) {
     e.preventDefault();

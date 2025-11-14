@@ -1,5 +1,4 @@
 import Container from "@/components/Container";
-import RevealOnScroll from "@/components/RevealOnScroll";
 import Link from "next/link";
 
 export default function TermsPage() {
@@ -7,21 +6,18 @@ export default function TermsPage() {
     <main className="py-20 sm:py-28">
       <Container>
         <div className="max-w-3xl mx-auto">
-          <RevealOnScroll>
-            <h1 className="zoom-reveal text-3xl font-bold tracking-widest uppercase text-black text-center">
+            <h1 className="text-3xl font-bold tracking-widest uppercase text-black text-center" data-reveal="slideUp">
               Terms & Conditions
             </h1>
-          </RevealOnScroll>
-          <RevealOnScroll>
             <p
-              className="zoom-reveal mt-4 text-sm uppercase tracking-wider text-black/70 text-center"
-              style={{ transitionDelay: "80ms" }}
+              className="mt-4 text-sm uppercase tracking-wider text-black/70 text-center"
+              data-reveal="fade"
+              data-delay="0.15"
             >
               Last updated: Oct 31, 2025
             </p>
-          </RevealOnScroll>
 
-          <div className="mt-12 space-y-10 text-black/80 leading-relaxed">
+          <div className="mt-12 space-y-10 text-black/80 leading-relaxed" data-reveal="slideUp" data-stagger="0.1" data-delay="0.2">
             <RevealOnScroll>
               <section className="zoom-reveal">
                 <h2 className="text-lg font-semibold tracking-wider uppercase text-black">
