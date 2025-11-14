@@ -42,7 +42,7 @@ function Brand() {
   return (
     <Link href="/" className="select-none leading-none inline-block">
       <Image
-        src="/logos/logoBlack.png"
+        src="/logos/logoBlack.svg"
         alt="D’ LAVÉN"
         width={32}
         height={32}

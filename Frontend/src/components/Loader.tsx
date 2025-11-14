@@ -64,7 +64,7 @@ export default function Loader({ onComplete }: { onComplete?: () => void }) {
         <div className="absolute inset-0 flex items-center justify-center">
           <div ref={logoRef} className="will-change-transform inline-block">
             <Image
-              src="/logos/logoBlack.png"
+              src="/logos/logoBlack.svg"
               alt="D’ LAVÉN logo"
               width={480}
               height={480}
