@@ -1,5 +1,6 @@
 import Container from "@/components/Container";
 import Link from "next/link";
+import RevealOnScroll from "@/components/RevealOnScroll";
 
 export default function TermsPage() {
   return (

@@ -11,18 +11,16 @@ function CategoryItem({
   slug,
   imageSrc,
   imageAlt,
-  index = 0,
 }: {
   name: string;
   slug: string;
   imageSrc: string;
   imageAlt: string;
-  index?: number;
 }) {
   return (
     <Link href={`/categories/${slug}`} className="group block">
-      <div className="overflow-hidden rounded-md shadow-md">
-        <div className="relative w-full h-[360px] sm:h-[420px] lg:h-[480px] bg-gray-100">
+      <div className="overflow-hidden rounded-none shadow-md">
+        <div className="relative w-full aspect-[4/5] max-h-[420px] lg:max-h-[480px] bg-gray-100">
             <Image
               src={imageSrc}
               alt={imageAlt}
@@ -59,7 +57,9 @@ export default async function CategoryGrid({
     imageAlt?: string;
   }> = [];
   try {
-    const res = await fetch(`${API_BASE}/api/categories`, { cache: "no-store" });
+    // Use force-cache so this component can be statically optimized during build.
+    // Using `no-store` forces dynamic server rendering which prevents static prerender.
+    const res = await fetch(`${API_BASE}/api/categories`, { cache: "force-cache" });
     if (res.ok) {
       const j = await res.json();
       data = (j.items || []) as typeof data;
@@ -78,15 +78,14 @@ export default async function CategoryGrid({
           {title}
         </h2>
 
-        <div className="mt-8 sm:mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 items-start" data-reveal="slideUp" data-stagger="0.15" data-delay="0.2">
-          {data.map((category, idx) => (
+        <div className="mt-8 sm:mt-12 grid grid-cols-4 gap-8 items-start overflow-x-auto pb-4" data-reveal="slideUp" data-stagger="0.15" data-delay="0.2">
+          {data.slice(0, 4).map((category) => (
             <CategoryItem
               key={category.slug}
               name={category.name}
               slug={category.slug}
               imageSrc={category.imageSrc || "/images/placeholder.png"}
               imageAlt={category.imageAlt || ""}
-              index={idx}
             />
           ))}
         </div>

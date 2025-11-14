@@ -34,34 +34,29 @@ const buttonVariants = cva(
   }
 )
 
-function Button({
-  className,
-  variant,
-  size,
-  asChild = false,
-  ...props
-}: React.ComponentProps<"button"> &
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
   VariantProps<typeof buttonVariants> & {
-    asChild?: boolean
-  }) {
-  const Comp = asChild ? Slot : "button"
+    asChild?: boolean;
+    className?: string;
+  };
+
+function Button({ className, variant, size, asChild = false, ...props }: ButtonProps) {
+  const Comp = asChild ? Slot : "button";
 
   // Ensure native buttons default to `type="button"` so icon buttons
   // inside forms don't act as submits. If a `type` is provided in props
   // we preserve it.
-  const { type, ...rest } = props as React.ButtonHTMLAttributes<
-    HTMLButtonElement
-  >
+  const { type, ...rest } = props;
 
   return (
+    // when rendering a native button, ensure it has a default `type` prop
     <Comp
       data-slot="button"
-      // If the rendered element is a native button, ensure it has a default type
-      {...(Comp === "button" ? { type: (type as any) ?? "button" } : {})}
+      {...(Comp === "button" ? { type: (type ?? "button") } : {})}
       className={cn(buttonVariants({ variant, size, className }))}
-      {...(rest as any)}
+      {...(rest as React.ButtonHTMLAttributes<HTMLButtonElement>)}
     />
-  )
+  );
 }
 
 export { Button, buttonVariants }

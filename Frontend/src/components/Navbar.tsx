@@ -62,7 +62,7 @@ function LeftMenuTrigger() {
         <button
           type="button"
           aria-label="Open menu"
-          className="inline-flex h-10 w-10 items-center justify-center hover:bg-accent"
+          className="inline-flex h-10 items-center justify-center hover:bg-accent w-10 md:w-auto md:px-2"
         >
           <MenuIcon className="h-5 w-5" />
           <span className="uppercase hidden md:ml-2 md:inline">Menu</span>

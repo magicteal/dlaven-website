@@ -455,24 +455,45 @@ export default function MenuDrawer({
   const [open, setOpen] = React.useState(false);
   const [showPersonalization, setShowPersonalization] = React.useState(false);
   const [activePanel, setActivePanel] = React.useState<string | null>(null);
+  const navTimeout = React.useRef<number | null>(null);
 
   // Reset panel when drawer closes
   React.useEffect(() => {
     if (!open) setActivePanel(null);
   }, [open]);
 
-  // Close with animation then navigate
+  // Close with animation then navigate. We wait until the close animation
+  // finishes so Radix's dialog/focus-trap and overlay are fully removed
+  // before client navigation — this prevents the menu trigger from being
+  // blocked after navigation.
   const navigateWithClose = React.useCallback(
     (href: string) => {
-      // Close the drawer and navigate immediately. Navigating right away
-      // avoids leaving the UI in a transient state where the drawer's
-      // animation timeout could interfere with event handlers on the
-      // new page (which caused the menu to stop working after navigation).
+      // First reset the active panel immediately
+      setActivePanel(null);
+      // Then close the drawer
       setOpen(false);
-      router.push(href);
+      // clear any previous timeout
+      if (navTimeout.current) {
+        window.clearTimeout(navTimeout.current);
+      }
+      // Wait for close animation to complete before navigating
+      navTimeout.current = window.setTimeout(() => {
+        router.push(href);
+        navTimeout.current = null;
+      }, 450); // slightly longer than Sheet animationDuration to ensure full cleanup
     },
     [router]
   );
+
+  // cleanup any pending timeout when component unmounts
+  React.useEffect(() => {
+    return () => {
+      if (navTimeout.current) {
+        window.clearTimeout(navTimeout.current);
+        navTimeout.current = null;
+      }
+    };
+  }, []);
 
   return (
     <>

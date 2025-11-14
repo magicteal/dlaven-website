@@ -1,12 +1,47 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import BrandText from "@/components/BrandText";
 import Apostrophe from "@/components/Apostrophe";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export default function Footer() {
   const year = new Date().getFullYear();
+  const logoRef = React.useRef<HTMLDivElement | null>(null);
+
+  // Register ScrollTrigger and create animation for footer logo
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    const el = logoRef.current;
+    if (!el) return;
+
+    // Set initial state
+    gsap.set(el, { opacity: 0, y: 40, scale: 0.95, transformOrigin: "50% 100%" });
+
+    const tl = gsap.to(el, {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      duration: 0.9,
+      ease: "back.out(1.6)",
+      scrollTrigger: {
+        trigger: el,
+        start: "top 85%",
+        toggleActions: "play reverse play reverse",
+      },
+    });
+
+    return () => {
+      if (tl && tl.scrollTrigger) tl.scrollTrigger.kill();
+      tl.kill();
+    };
+  }, []);
+
   return (
     <footer className="bg-black text-white">
       {/* Top grid */}
@@ -127,7 +162,9 @@ export default function Footer() {
             </div>
           </div>
           <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center select-none">
-            <BrandText className="w-[92vw]  sm:w-[88vw] sm:max-w-[640px] md:w-[50vw]  lg:max-w-[1120px] opacity-80" />
+            <div ref={logoRef} aria-hidden>
+              <BrandText className="w-[92vw]  sm:w-[88vw] sm:max-w-[640px] md:w-[50vw]  lg:max-w-[1120px] opacity-80" />
+            </div>
           </div>
         </div>
       </div>
