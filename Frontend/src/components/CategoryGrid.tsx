@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Container from "@/components/Container";
 import { categories as dataCategories } from "@/data/categories";
+import { api } from "@/lib/api";
 import RevealOnScroll from "@/components/RevealOnScroll";
 
 /**
@@ -24,15 +25,15 @@ function CategoryItem({
     <RevealOnScroll rootMargin="0px 0px -20% 0px">
       <Link href={`/categories/${slug}`} className="group block">
         <div
-          className="zoom-reveal overflow-hidden rounded-md shadow-md"
+          className="zoom-reveal w-full overflow-hidden border border-black/10 shadow-sm"
           style={{ transitionDelay: `${Math.min(index * 80, 400)}ms` }}
         >
-          <div className="relative w-full h-[360px] sm:h-[420px] lg:h-[480px] bg-gray-100">
+          <div className="relative w-full bg-gray-100" style={{ aspectRatio: "3 / 4" }}>
             <Image
               src={imageSrc}
               alt={imageAlt}
               fill
-              sizes="(max-width: 640px) 360px, (max-width: 1024px) 420px, 480px"
+              sizes="50vw"
               className="object-cover object-center group-hover:scale-105 transition-transform duration-300"
             />
           </div>
@@ -57,8 +58,23 @@ export default async function CategoryGrid({
 }: {
   title?: string;
 }) {
-  // Use the local hard-coded categories from data folder
-  const data = dataCategories;
+  // Try fetching categories from backend, fall back to local data
+  let data = dataCategories;
+  try {
+    const res = await api.listCategories();
+    if (res && Array.isArray(res.items) && res.items.length > 0) {
+      data = res.items.map((it: any) => ({
+        slug: it.slug,
+        name: it.name,
+        imageSrc: it.imageSrc || "/images/logos/default-category.jpg",
+        imageAlt: it.imageAlt || it.name,
+      }));
+    }
+  } catch (err) {
+    // Keep local data as fallback and log the error on the server
+    // eslint-disable-next-line no-console
+    console.warn("Category fetch failed, using local data:", err);
+  }
   return (
     <section className="bg-white my-22 py-16 sm:py-24">
       <Container className="text-center">
@@ -68,7 +84,7 @@ export default async function CategoryGrid({
           </h2>
         </RevealOnScroll>
 
-        <div className="mt-8 sm:mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+        <div className="mt-8 sm:mt-12 grid grid-cols-2 gap-8 gap-y-12 items-start max-w-6xl mx-auto">
           {data.map((category, idx) => (
             <CategoryItem
               key={category.slug}

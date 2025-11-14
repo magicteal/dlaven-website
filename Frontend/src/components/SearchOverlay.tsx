@@ -78,8 +78,10 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
   return (
     <div
       ref={overlayRef}
+      role="dialog"
+      aria-modal="true"
       aria-hidden={!isOpen}
-      className="fixed top-0 left-0 z-[100] h-[100dvh] w-full bg-white/95 backdrop-blur-md"
+      className="fixed inset-0 z-[9999] bg-white/95 backdrop-blur-md"
       style={{ transform: "translateY(-100%)" }}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

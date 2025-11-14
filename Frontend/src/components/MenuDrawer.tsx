@@ -464,9 +464,12 @@ export default function MenuDrawer({
   // Close with animation then navigate
   const navigateWithClose = React.useCallback(
     (href: string) => {
+      // Close the drawer and navigate immediately. Navigating right away
+      // avoids leaving the UI in a transient state where the drawer's
+      // animation timeout could interfere with event handlers on the
+      // new page (which caused the menu to stop working after navigation).
       setOpen(false);
-      // match animationDuration in SheetContent (400ms)
-      setTimeout(() => router.push(href), 380);
+      router.push(href);
     },
     [router]
   );

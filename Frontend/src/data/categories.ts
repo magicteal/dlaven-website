@@ -39,6 +39,15 @@ export const categories: Category[] = [
     description:
       "Modern silhouettes and refined tailoring for the contemporary wardrobe.",
   },
+  {
+    slug: "dl-prive",
+    name: "DL PRIVE",
+    imageSrc: "/images/prive.jpg",
+    imageAlt: "DL PRIVE collection image",
+    heroImage: "/images/prive.jpg",
+    badge: "Prive",
+    description: "Exclusive DL PRIVE collection — limited and curated pieces.",
+  },
 ];
 
 export function getCategoryBySlug(slug: string) {

@@ -97,6 +97,11 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
 }
 
 export const api = {
+  listCategories() {
+    return request<{ items: Array<{ slug: string; name: string; imageSrc?: string; imageAlt?: string }> }>(
+      "/api/categories"
+    );
+  },
   listProducts(params?: {
     category?: string;
     tag?: "normal-product" | "dl-limited" | "dl-prive" | "dl-barry";
