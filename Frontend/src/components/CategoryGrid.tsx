@@ -78,7 +78,7 @@ export default async function CategoryGrid({
           {title}
         </h2>
 
-        <div className="mt-8 sm:mt-12 grid grid-cols-4 gap-8 items-start overflow-x-auto pb-4" data-reveal="slideUp" data-stagger="0.15" data-delay="0.2">
+        <div className="mt-8 sm:mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 items-start" data-reveal="slideUp" data-stagger="0.15" data-delay="0.2">
           {data.slice(0, 4).map((category) => (
             <CategoryItem
               key={category.slug}
