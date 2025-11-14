@@ -27,7 +27,7 @@ function CategoryItem({
               src={imageSrc}
               alt={imageAlt}
               fill
-              sizes="(max-width: 640px) 360px, (max-width: 1024px) 420px, 480px"
+              sizes="50vw"
               className="object-cover object-center group-hover:scale-105 transition-transform duration-300"
             />
           </div>

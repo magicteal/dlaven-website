@@ -46,11 +46,20 @@ function Button({
   }) {
   const Comp = asChild ? Slot : "button"
 
+  // Ensure native buttons default to `type="button"` so icon buttons
+  // inside forms don't act as submits. If a `type` is provided in props
+  // we preserve it.
+  const { type, ...rest } = props as React.ButtonHTMLAttributes<
+    HTMLButtonElement
+  >
+
   return (
     <Comp
       data-slot="button"
+      // If the rendered element is a native button, ensure it has a default type
+      {...(Comp === "button" ? { type: (type as any) ?? "button" } : {})}
       className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
+      {...(rest as any)}
     />
   )
 }
