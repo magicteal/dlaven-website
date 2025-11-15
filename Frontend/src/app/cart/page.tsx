@@ -2,6 +2,7 @@
 
 import Container from "@/components/Container";
 import Image from "next/image";
+import { shimmerBase64 } from "@/lib/shimmer";
 import Link from "next/link";
 import { useCart } from "@/components/providers/CartProvider";
 import { Button } from "@/components/ui/button";
@@ -32,7 +33,15 @@ export default function CartPage() {
                   <div key={key} className="flex items-center justify-between gap-4 border-b pb-4">
                     <div className="flex items-center gap-4 min-w-0">
                       <div className="relative w-20 h-20 bg-gray-100 shrink-0">
-                        <Image src={item.image} alt={item.name} fill className="object-cover" />
+                        <Image
+                          src={item.image}
+                          alt={item.name}
+                          fill
+                          className="object-cover"
+                          loading="lazy"
+                          placeholder="blur"
+                          blurDataURL={shimmerBase64(8, 8)}
+                        />
                       </div>
                       <div className="min-w-0">
                         <Link href={`/products/${item.productSlug}`} className="text-sm font-medium hover:underline truncate block">

@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ShieldCheck, Crown, Scissors } from "lucide-react";
 import Apostrophe from "@/components/Apostrophe";
+import LazyVideo from "@/components/ui/LazyVideo";
+import { shimmerBase64 } from "@/lib/shimmer";
 
 export default function ServicesPage() {
   const ourCollections = [
@@ -52,6 +54,8 @@ export default function ServicesPage() {
               className="object-cover object-center"
               sizes="100vw"
               priority
+              placeholder="blur"
+              blurDataURL={shimmerBase64(32, 18)}
             />
             {/* subtle gradient/dark overlay for readable text */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/40" />
@@ -134,8 +138,8 @@ export default function ServicesPage() {
             3. Full-width Video Section
            ========================= */}
         <section className="relative h-96 w-full overflow-hidden">
-          {/* video as background; include poster fallback for devices that don't auto-play */}
-          <video
+          {/* Lazy-loaded video with poster fallback */}
+          <LazyVideo
             poster="/images/dl-service-video-poster.jpg"
             src="/videos/dummyVideo.mp4"
             className="h-full w-full object-cover"
@@ -143,6 +147,7 @@ export default function ServicesPage() {
             loop
             muted
             playsInline
+            preload="none"
           />
 
           {/* slight overlay */}

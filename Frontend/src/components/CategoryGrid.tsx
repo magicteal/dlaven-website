@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Container from "@/components/Container";
 import { API_BASE } from "@/lib/api";
+import { shimmerBase64 } from "@/lib/shimmer";
 
 /**
  * Single Category Item Component
@@ -20,17 +21,20 @@ function CategoryItem({
   return (
     <Link href={`/categories/${slug}`} className="group block">
       <div className="overflow-hidden rounded-none shadow-md">
-        <div className="relative w-full aspect-[4/5] max-h-[420px] lg:max-h-[480px] bg-gray-100">
+        <div className="relative w-full aspect-[4/5] max-h-[220px] sm:max-h-[240px] md:max-h-[260px] bg-gray-100">
             <Image
               src={imageSrc}
               alt={imageAlt}
               fill
               sizes="50vw"
               className="object-cover object-center group-hover:scale-105 transition-transform duration-300"
+              loading="lazy"
+              placeholder="blur"
+              blurDataURL={shimmerBase64(10, 12)}
             />
           </div>
         </div>
-      <p className="mt-4 text-center text-sm font-bold tracking-wider uppercase text-black">
+      <p className="mt-3 text-center text-sm font-bold tracking-wider uppercase text-black">
         {name}
       </p>
     </Link>
@@ -78,7 +82,7 @@ export default async function CategoryGrid({
           {title}
         </h2>
 
-        <div className="mt-8 sm:mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 items-start" data-reveal="slideUp" data-stagger="0.15" data-delay="0.2">
+        <div className="mt-8 sm:mt-12 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 items-start" data-reveal="slideUp" data-stagger="0.15" data-delay="0.2">
           {data.slice(0, 4).map((category) => (
             <CategoryItem
               key={category.slug}

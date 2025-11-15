@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { shimmerBase64 } from "@/lib/shimmer";
 
 type Props = {
   slug: string;
@@ -43,6 +44,9 @@ export default function ProductCard({
           width={800}
           height={1000}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          loading="lazy"
+          placeholder="blur"
+          blurDataURL={shimmerBase64(16, 20)}
         />
       </div>
       <div className="mt-3">

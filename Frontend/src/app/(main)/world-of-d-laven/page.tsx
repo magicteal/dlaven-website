@@ -123,11 +123,13 @@ export default function WorldOfDlavenPage() {
                   href="/world-of-d-laven/house-of-dl-creation"
                   className="group block"
                   aria-label="House of DL Creation"
+                  data-reveal="slideUp"
+                  data-delay="0.15"
                 >
                   <div className="h-56 bg-black rounded overflow-hidden">
                     <div className="h-full w-full bg-[url('/images/placeholder2.jpg')] bg-center bg-cover transition-transform duration-300 group-hover:scale-105" />
                   </div>
-                  <div className="mt-3 text-center text-sm uppercase tracking-wider">
+                  <div className="mt-3 text-center text-sm uppercase tracking-wider" data-reveal="fade" data-delay="0.2">
                     House of DL Creation
                   </div>
                 </Link>

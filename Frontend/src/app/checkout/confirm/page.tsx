@@ -5,6 +5,7 @@ import { useAuth } from "@/components/providers/AuthProvider";
 import { useCart } from "@/components/providers/CartProvider";
 import { api } from "@/lib/api";
 import Image from "next/image";
+import { shimmerBase64 } from "@/lib/shimmer";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -59,7 +60,15 @@ export default function CheckoutConfirmPage() {
                   return (
                     <div key={key} className="flex items-center gap-3">
                       <div className="relative w-14 h-14 bg-gray-100">
-                        <Image src={item.image} alt={item.name} fill className="object-cover" />
+                        <Image
+                          src={item.image}
+                          alt={item.name}
+                          fill
+                          className="object-cover"
+                          loading="lazy"
+                          placeholder="blur"
+                          blurDataURL={shimmerBase64(8, 8)}
+                        />
                       </div>
                       <div className="flex-1 text-sm">
                         <div className="font-medium">{item.name}</div>
