@@ -69,7 +69,7 @@ export default function Loader({ onComplete }: { onComplete?: () => void }) {
               width={480}
               height={480}
               priority
-              className="w-[42vw] max-w-[480px] h-auto"
+              className="w-[20vw] max-w-[480px] h-auto"
             />
           </div>
         </div>

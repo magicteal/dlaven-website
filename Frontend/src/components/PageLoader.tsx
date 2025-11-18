@@ -7,6 +7,7 @@ import Loader from "@/components/Loader";
 export default function PageLoader() {
   const pathname = usePathname();
   const [show, setShow] = React.useState(false);
+  const firstRender = React.useRef(true);
 
   React.useEffect(() => {
     // Don't show loader on admin pages
@@ -14,13 +15,13 @@ export default function PageLoader() {
       setShow(false);
       return;
     }
-
-    // Check if loader has been shown in this session
-    const hasShownLoader = sessionStorage.getItem("hasShownLoader");
-    
-    if (!hasShownLoader) {
-      setShow(true);
+    // Skip the initial page render — show loader on subsequent client-side navigations
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
     }
+
+    setShow(true);
   }, [pathname]);
 
   const handleComplete = () => {

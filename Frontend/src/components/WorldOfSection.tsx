@@ -1,80 +1,141 @@
+"use client";
+
 import Container from "@/components/Container";
 import Link from "next/link";
-import DottedIndiaMap from "@/components/DottedIndiaMap";
-
 import Apostrophe from "@/components/Apostrophe";
+import { useRef, useState } from "react";
+
+const cities = [
+  { name: "Mumbai", videoUrl: "/videos/location.mp4" },
+  { name: "Delhi", videoUrl: "/videos/location.mp4" },
+  { name: "Varanasi", videoUrl: "/videos/location.mp4" },
+];
+
+function VideoCard({ name, videoUrl }: { name: string; videoUrl: string }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+    if (videoRef.current) {
+      videoRef.current.play();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
+  };
+
+  return (
+    <div
+      className="relative h-full overflow-hidden cursor-pointer group"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      data-reveal="slideUp"
+    >
+      {/* Video */}
+      <video
+        ref={videoRef}
+        src={videoUrl}
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+      
+      {/* Black film overlay */}
+      <div 
+        className={`absolute inset-0 bg-black transition-opacity duration-500 ${
+          isHovered ? 'opacity-0' : 'opacity-70'
+        }`}
+      />
+      
+      {/* City name text */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <h3 
+          className={`text-white text-4xl md:text-5xl font-bold tracking-wider uppercase transition-opacity duration-500 ${
+            isHovered ? 'opacity-0' : 'opacity-100'
+          }`}
+        >
+          {name}
+        </h3>
+      </div>
+    </div>
+  );
+}
 
 export default function WorldOfSection() {
   return (
     <section className="bg-white py-16 sm:py-24">
       <Container>
-        {/* small centered label */}
+        {/* Small centered label */}
         <div className="text-center">
           <p className="text-[10px] uppercase tracking-widest text-black/70">
             WORLD OF D<Apostrophe /> LAVÉN
           </p>
         </div>
 
-        <div className="mt-10 grid grid-cols-12 gap-8 items-center">
-          {/* Left: dotted India map (replaces image) (col 1-6) */}
-          <div className="col-span-12 md:col-span-6" data-reveal="scale" data-duration="1">
-              <div className="max-w-[560px] mx-auto md:mx-0">
-                <DottedIndiaMap
-                  className="w-full aspect-[4/5]"
-                  title="India map"
-                  mapHeight={64}
-                  grid="diagonal"
-                  shape="hexagon"
-                  dotRadius={0.1}
-                  dotColor="#9CA3AF"
-                />
+        {/* Three portrait videos - divided into 3 equal columns */}
+        <div className="mt-10">
+          <div className="max-w-6xl mx-auto h-[640px] md:h-[780px] grid grid-cols-1 md:grid-cols-3 gap-0 divide-x divide-black/10 overflow-hidden">
+            {cities.map((city) => (
+              <div key={city.name} className="h-full px-6">
+                <VideoCard name={city.name} videoUrl={city.videoUrl} />
               </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Center: headline + paragraph + upcoming locations */}
+        <div className="mt-16 max-w-3xl mx-auto text-center">
+          <h2 
+            className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-widest uppercase leading-tight" 
+            data-reveal="slideUp" 
+            data-delay="0.2"
+          >
+            FROM INDIA<Apostrophe />S SOUL TO THE WORLD STAGE
+          </h2>
+          
+          <div className="mt-8" data-reveal="fade" data-delay="0.3">
+            <p className="text-xs uppercase tracking-widest text-black/80 mb-3">
+              Upcoming Locations
+            </p>
+            <div className="flex items-center justify-center gap-6 text-sm">
+              <div className="flex items-center gap-2">
+                Mumbai 
+              </div>
+              <div className="flex items-center gap-2">
+                Varanasi 
+              </div>
+              <div className="flex items-center gap-2">
+                Delhi 
+              </div>
+            </div>
           </div>
 
-          {/* Center: headline + paragraph (col 7-10) */}
-          <div className="col-span-12 md:col-span-4 flex justify-center">
-              <div className="max-w-[420px] text-center md:text-left">
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-widest uppercase leading-tight" data-reveal="slideUp" data-delay="0.2">
-                  FROM INDIA<Apostrophe />S SOUL TO THE
-                  <br /> WORLD STAGE
-                </h2>
-                <p className="mt-4 text-sm text-black/70" data-reveal="fade" data-delay="0.4">
-                  D<Apostrophe />LAVÉN destinations where heritage meets modern luxury.
-                  A journey from digital beginnings to timeless addresses. Our
-                  boutiques will soon open doors in iconic cities, bringing
-                  heritage craftsmanship and modern luxury under one roof.
-                </p>
+          <p 
+            className="mt-6 text-sm text-black/70 max-w-2xl mx-auto" 
+            data-reveal="fade" 
+            data-delay="0.4"
+          >
+            D<Apostrophe />LAVÉN destinations where heritage meets modern luxury.
+            A journey from digital beginnings to timeless addresses. Our
+            boutiques will soon open doors in iconic cities, bringing
+            heritage craftsmanship and modern luxury under one roof.
+          </p>
 
-                <Link
-                  href="/world-of-d-laven"
-                  className="mt-6 inline-block text-[10px] uppercase tracking-wider border border-black/10 px-3 py-2"
-                  data-reveal="slideUp"
-                  data-delay="0.6"
-                >
-                  Discover Our Universe
-                </Link>
-              </div>
-          </div>
-
-          {/* Right: Upcoming locations vertical (col 11-12) */}
-          <div className="col-span-12 md:col-span-2 hidden md:flex items-start justify-end">
-              <div className="text-right" data-reveal="slideLeft" data-delay="0.3">
-                <p className="text-sm uppercase tracking-widest">
-                  Upcoming Locations
-                </p>
-                <ul className="mt-4 text-xs space-y-2">
-                  <li className="flex items-center justify-end gap-2">
-                    Mumbai <span className="inline-block h-2 w-2 bg-black" />
-                  </li>
-                  <li className="flex items-center justify-end gap-2">
-                    Varanasi <span className="inline-block h-2 w-2 bg-black" />
-                  </li>
-                  <li className="flex items-center justify-end gap-2">
-                    Delhi <span className="inline-block h-2 w-2 bg-black" />
-                  </li>
-                </ul>
-              </div>
-          </div>
+          <Link
+            href="/world-of-d-laven"
+            className="mt-8 inline-block text-[10px] uppercase tracking-wider border border-black/10 px-6 py-3 hover:bg-black hover:text-white transition-colors duration-300"
+            data-reveal="slideUp"
+            data-delay="0.6"
+          >
+            Discover Our Universe
+          </Link>
         </div>
       </Container>
     </section>

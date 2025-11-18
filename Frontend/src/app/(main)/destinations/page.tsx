@@ -1,8 +1,7 @@
 "use client";
 import Container from "@/components/Container";
 import Image from "next/image";
-import AnimatedCities from "@/components/AnimatedCities"; // Naya component import karein
-// import GlobeModal from "@/components/GlobeModal";
+import AnimatedCities from "@/components/AnimatedCities";
 import Apostrophe from "@/components/Apostrophe";
 
 export default function DestinationsPage() {
@@ -65,53 +64,105 @@ export default function DestinationsPage() {
             </div>
           </div>
 
-          {/* Cities List using the new animated component */}
-          <div className="max-w-4xl mx-auto text-center mt-20">
-            <h2 className="text-2xl font-semibold tracking-wider uppercase text-black" data-reveal="slideUp">
+      {/* Cities List using the new animated component */}
+          <div className="max-w-6xl mx-auto text-center mt-20">
+            <h2 className="text-2xl font-semibold tracking-wider uppercase text-black mb-12" data-reveal="slideUp">
               Iconic Locations
             </h2>
-            <div className="mt-8">
-              <AnimatedCities />
-            </div>
+            <AnimatedCities />
           </div>
         </Container>
       </div>
 
-      {/* 3-Image Section */}
-      <Container>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-96">
-          <div className="relative h-full w-full">
+      {/* Parallax Section - Stacking Effect */}
+      <section className="relative h-[300vh] w-full">
+        {/* Section 1 - Image Left, Content Right */}
+        <div className="sticky top-0 h-screen w-full grid grid-cols-1 lg:grid-cols-12 z-10">
+          <div className="lg:col-span-6 h-1/2 lg:h-full relative">
             <Image
               src="/images/DPrimeOne.jpg"
-              alt="Boutique inspiration 1"
+              alt="Luxury Experience"
               fill
-              className="object-cover object-center"
-              sizes="(max-width: 768px) 100vw, 33vw"
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 50vw"
             />
           </div>
-          <div className="relative h-full w-full">
-            <Image
-              src="/images/dl-destinations-3.jpg"
-              alt="Boutique inspiration 2"
-              fill
-              className="object-cover object-center"
-              sizes="(max-width: 768px) 100vw, 33vw"
-            />
+          <div className="lg:col-span-6 bg-white flex items-center justify-center p-8 lg:p-16 h-1/2 lg:h-full">
+            <div className="max-w-lg text-center">
+              <h2 className="text-3xl lg:text-4xl font-bold tracking-wider uppercase mb-6">
+                Unparalleled Craftsmanship
+              </h2>
+              <p className="text-base text-black/70 leading-relaxed mb-8">
+                Step into a world where every detail is meticulously crafted. Our boutiques showcase
+                the finest collections, where traditional artistry meets contemporary design. Experience
+                luxury that transcends time.
+              </p>
+              <button className="px-8 py-3 border border-black text-xs uppercase tracking-wider hover:bg-black hover:text-white transition-colors duration-300">
+                Explore Collections
+              </button>
+            </div>
           </div>
-          <div className="relative h-full w-full">
+        </div>
+
+        {/* Section 2 - Content Left, Image Right */}
+        <div className="sticky top-0 h-screen w-full grid grid-cols-1 lg:grid-cols-12 z-20">
+          <div className="lg:col-span-6 bg-[#F5F5F5] flex items-center justify-center p-8 lg:p-16 h-1/2 lg:h-full">
+            <div className="max-w-lg text-center">
+              <h2 className="text-3xl lg:text-4xl font-bold tracking-wider uppercase mb-6">
+                Timeless Elegance
+              </h2>
+              <p className="text-base text-black/70 leading-relaxed mb-8">
+                Discover architectural marvels that house our most exclusive pieces. Each location
+                tells a unique story, blending local heritage with global sophistication. Immerse yourself
+                in an atmosphere of refined luxury.
+              </p>
+              <button className="px-8 py-3 border border-black text-xs uppercase tracking-wider hover:bg-black hover:text-white transition-colors duration-300">
+                Visit Our Stores
+              </button>
+            </div>
+          </div>
+          <div className="lg:col-span-6 h-1/2 lg:h-full relative">
             <Image
-              src="/images/DPrimeTwo.jpg"
-              alt="Boutique inspiration 3"
+              src="/images/DPrimeOne.jpg"
+              alt="Timeless Design"
               fill
-              className="object-cover object-center"
-              sizes="(max-width: 768px) 100vw, 33vw"
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 50vw"
             />
           </div>
         </div>
-      </Container>
+
+        {/* Section 3 - Image Left, Content Right */}
+        <div className="sticky top-0 h-screen w-full grid grid-cols-1 lg:grid-cols-12 z-30">
+          <div className="lg:col-span-6 h-1/2 lg:h-full relative">
+            <Image
+              src="/images/DPrimeTwo.jpg"
+              alt="Personalized Service"
+              fill
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+            />
+          </div>
+          <div className="lg:col-span-6 bg-white flex items-center justify-center p-8 lg:p-16 h-1/2 lg:h-full">
+            <div className="max-w-lg text-center">
+              <h2 className="text-3xl lg:text-4xl font-bold tracking-wider uppercase mb-6">
+                Personalized Journey
+              </h2>
+              <p className="text-base text-black/70 leading-relaxed mb-8">
+                Our dedicated client advisors await to guide you through a bespoke experience.
+                From custom creations to exclusive collections, discover pieces that resonate with
+                your unique style and vision.
+              </p>
+              <button className="px-8 py-3 border border-black text-xs uppercase tracking-wider hover:bg-black hover:text-white transition-colors duration-300">
+                Book Appointment
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Store Locator CTA */}
-      <div className="py-16 sm:py-24">
+      <div className="py-16 sm:py-24 bg-white">
         <Container>
           <div className="text-center">
             <h3 className="text-xl font-bold tracking-widest uppercase text-black">

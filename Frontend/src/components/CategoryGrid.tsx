@@ -20,21 +20,21 @@ function CategoryItem({
 }) {
   return (
     <Link href={`/categories/${slug}`} className="group block">
-      <div className="overflow-hidden rounded-none shadow-md">
-        <div className="relative w-full aspect-[4/5] max-h-[220px] sm:max-h-[240px] md:max-h-[260px] bg-gray-100">
+      <div className="overflow-hidden rounded-none">
+        <div className="relative w-full aspect-[4/5] bg-gray-100">
             <Image
               src={imageSrc}
               alt={imageAlt}
               fill
-              sizes="50vw"
-              className="object-cover object-center group-hover:scale-105 transition-transform duration-300"
+              sizes="(max-width: 768px) 50vw, 25vw"
+              className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
               loading="lazy"
               placeholder="blur"
               blurDataURL={shimmerBase64(10, 12)}
             />
           </div>
         </div>
-      <p className="mt-3 text-center text-sm font-bold tracking-wider uppercase text-black">
+      <p className="mt-4 sm:mt-6 text-center text-sm sm:text-base font-medium tracking-wide text-black">
         {name}
       </p>
     </Link>
@@ -72,17 +72,17 @@ export default async function CategoryGrid({
     console.error("[CategoryGrid] Failed to load categories", e);
   }
   return (
-    <section className="bg-white my-22 py-16 sm:py-24">
-      <Container className="text-center">
+    <section className="bg-white py-16 sm:py-20 md:py-24">
+      <Container className="text-center max-w-7xl">
         <h2 
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-widest uppercase text-black"
+          className="text-3xl sm:text-4xl md:text-5xl font-light tracking-wide text-black mb-12 sm:mb-16"
           data-reveal="slideUp"
           data-duration="0.8"
         >
           {title}
         </h2>
 
-        <div className="mt-8 sm:mt-12 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 items-start" data-reveal="slideUp" data-stagger="0.15" data-delay="0.2">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8" data-reveal="slideUp" data-stagger="0.15" data-delay="0.2">
           {data.slice(0, 4).map((category) => (
             <CategoryItem
               key={category.slug}

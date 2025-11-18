@@ -81,27 +81,44 @@ export default function DlavenPrivePage() {
 
   return (
     <main>
-      {/* Hero */}
-      <section className="relative w-full flex items-center justify-center text-center text-white h-[50vh] min-h-[400px]">
+      {/* Hero (updated to match DL PRIVÉ EDITION design) */}
+      <section className="relative w-full h-[72vh] min-h-[520px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="/images/dl-service-bg.jpg"
-            alt="D'LAVÉN Prive background"
+            src="/images/prive-hero.jpg"
+            alt="DL Privé Edition"
             fill
             className="object-cover object-center"
             sizes="100vw"
             priority
           />
-          <div className="absolute inset-0 bg-black/60" />
+          <div className="absolute inset-0 bg-[rgba(0,0,0,0.25)]" />
         </div>
-        <div className="relative z-10 p-4">
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-widest uppercase" data-reveal="scale" data-duration="1">
-            D&#39;LAVÉN PRIVE
+
+        <div className="relative z-10 px-6 text-center w-full max-w-[1400px]">
+          <h1
+            className="mx-auto text-white leading-[0.85] uppercase"
+            style={{
+              fontFamily: `Georgia, 'Times New Roman', serif`,
+              fontSize: 'clamp(48px, 9vw, 120px)',
+              letterSpacing: '0.04em',
+            }}
+            aria-label="DL PRIVÉ EDITION"
+          >
+            DL PRIVÉ EDITION
           </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-sm sm:text-base text-white/90" data-reveal="fade" data-delay="0.2">
-            Ultra-exclusive pieces available only with a valid D&#39;LAVÉN Privé
-            access code.
-          </p>
+
+          <div className="mt-6 flex justify-center">
+            <a
+              href="#access"
+              className="inline-flex items-center justify-center px-6 py-2 border border-white/70 text-white text-xs tracking-widest uppercase hover:bg-white/10 transition-all"
+              style={{
+                backdropFilter: 'blur(4px)',
+              }}
+            >
+              GET ACCESS
+            </a>
+          </div>
         </div>
       </section>
 
