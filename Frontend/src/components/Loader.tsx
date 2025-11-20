@@ -66,11 +66,16 @@ export default function Loader({ onComplete }: { onComplete?: () => void }) {
             <Image
               src="/logos/logoBlack.svg"
               alt="D’ LAVÉN logo"
-              width={480}
-              height={480}
+              width={280}
+              height={280}
               priority
               className="w-[20vw] max-w-[480px] h-auto"
             />
+            <p
+              className="mt-6 text-[10px] sm:text-xs md:text-sm tracking-[0.4em] font-medium text-black text-center leading-relaxed whitespace-pre"
+            >
+              {"A JOURNEY FROM DIGITAL BEGINNINGS TO TIMELESS ADDRESSES"}
+            </p>
           </div>
         </div>
       </div>

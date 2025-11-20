@@ -32,12 +32,11 @@ function VideoCard({ name, videoUrl }: { name: string; videoUrl: string }) {
 
   return (
     <div
-      className="relative h-full overflow-hidden cursor-pointer group"
+      className="relative w-full h-52 sm:h-64 md:h-full overflow-hidden cursor-pointer group"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       data-reveal="slideUp"
     >
-      {/* Video */}
       <video
         ref={videoRef}
         src={videoUrl}
@@ -46,19 +45,15 @@ function VideoCard({ name, videoUrl }: { name: string; videoUrl: string }) {
         playsInline
         className="absolute inset-0 w-full h-full object-cover"
       />
-      
-      {/* Black film overlay */}
-      <div 
+      <div
         className={`absolute inset-0 bg-black transition-opacity duration-500 ${
-          isHovered ? 'opacity-0' : 'opacity-70'
+          isHovered ? "opacity-0" : "opacity-70"
         }`}
       />
-      
-      {/* City name text */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <h3 
-          className={`text-white text-4xl md:text-5xl font-bold tracking-wider uppercase transition-opacity duration-500 ${
-            isHovered ? 'opacity-0' : 'opacity-100'
+        <h3
+          className={`text-white text-3xl md:text-5xl font-bold tracking-wider uppercase transition-opacity duration-500 ${
+            isHovered ? "opacity-0" : "opacity-100"
           }`}
         >
           {name}
@@ -71,23 +66,23 @@ function VideoCard({ name, videoUrl }: { name: string; videoUrl: string }) {
 export default function WorldOfSection() {
   return (
     <section className="bg-white py-16 sm:py-24">
+      {/* Full-width joined videos (hero) */}
+      <div className="w-[95%] mx-auto overflow-hidden">
+        <div className="w-full flex flex-col md:flex-row md:h-[640px] lg:h-[780px]">
+          {cities.map((city) => (
+            <div key={city.name} className="w-full md:flex-1 min-w-0">
+              <VideoCard name={city.name} videoUrl={city.videoUrl} />
+            </div>
+          ))}
+        </div>
+      </div>
+
       <Container>
         {/* Small centered label */}
         <div className="text-center">
           <p className="text-[10px] uppercase tracking-widest text-black/70">
             WORLD OF D<Apostrophe /> LAVÉN
           </p>
-        </div>
-
-        {/* Three portrait videos - divided into 3 equal columns */}
-        <div className="mt-10">
-          <div className="max-w-6xl mx-auto h-[640px] md:h-[780px] grid grid-cols-1 md:grid-cols-3 gap-0 divide-x divide-black/10 overflow-hidden">
-            {cities.map((city) => (
-              <div key={city.name} className="h-full px-6">
-                <VideoCard name={city.name} videoUrl={city.videoUrl} />
-              </div>
-            ))}
-          </div>
         </div>
 
         {/* Center: headline + paragraph + upcoming locations */}

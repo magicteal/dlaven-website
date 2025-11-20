@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import MenuDrawer from "@/components/MenuDrawer";
 import SearchOverlay from "@/components/SearchOverlay"; // Import the overlay
 import {
-  ShoppingBag,
+  Heart,
   Search,
   Menu as MenuIcon,
   User as UserIcon,
@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 import Container from "@/components/Container";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { useRouter } from "next/navigation";
-import { useCart } from "@/components/providers/CartProvider";
+// wishlist navigates to saved items; no cart provider needed here
 
 // --- Atoms ---
 function IconButton({
@@ -72,10 +72,9 @@ function LeftMenuTrigger() {
   );
 }
 
-function RightControls({ onSearchClick }: { onSearchClick: () => void }) {
+function RightControls() {
   const { user, logout, loading } = useAuth();
   const router = useRouter();
-  const { count } = useCart();
 
   // initials removed — not needed when using the human icon trigger
 
@@ -86,25 +85,13 @@ function RightControls({ onSearchClick }: { onSearchClick: () => void }) {
       {!loading && <AccountMenu user={user ?? undefined} logout={logout} />}
 
       <button
-        aria-label="Cart"
+        aria-label="Wishlist"
         className="relative inline-flex items-center justify-center h-9 w-9 rounded-none hover:bg-accent"
-        onClick={() => router.push("/cart")}
+        onClick={() => router.push("/me#saved")}
       >
-        <ShoppingBag className="h-5 w-5" />
-        {count > 0 && (
-          <span className="absolute -top-1 -right-1 bg-black text-white text-[10px] leading-none px-1.5 py-1 rounded-full">
-            {count}
-          </span>
-        )}
+        <Heart className="h-5 w-5" />
       </button>
       {/* Avatar and logout moved into dropdown for logged-in users. */}
-      <IconButton
-        aria-label="Search"
-        className="inline-flex"
-        onClick={onSearchClick}
-      >
-        <Search className="h-5 w-5" />
-      </IconButton>
     </>
   );
 }
@@ -115,12 +102,23 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 w-full bg-white/90 backdrop-blur-md shadow-sm font-['Lovato-Regular']">
+      <header className="fixed top-0 left-0 right-0 z-50  w-full bg-white/90 backdrop-blur-md shadow-sm font-['Lovato-Regular']">
         <Container>
           <nav aria-label="Primary">
-            <div className="grid grid-cols-3 items-center h-14 sm:h-16 md:h-20">
+            <div className="grid grid-cols-3 items-center h-20">
               <div className="justify-self-start">
-                <LeftMenuTrigger />
+                <div className="flex items-center gap-0 sm:gap-2">
+                  <LeftMenuTrigger />
+                  <button
+                    type="button"
+                    aria-label="Search"
+                    onClick={() => setIsSearchOpen(true)}
+                    className="inline-flex h-10 items-center justify-center hover:bg-accent w-10 md:w-auto md:px-2"
+                  >
+                    <Search className="h-5 w-5" />
+                    <span className="uppercase hidden md:ml-2 md:inline">Search</span>
+                  </button>
+                </div>
               </div>
 
               <div className="justify-self-center">
@@ -132,7 +130,7 @@ export default function Navbar() {
               <div className="justify-self-end">
                 <div className="flex items-center gap-1 sm:gap-2">
                   {/* Login/Register replaced by AccountMenu above */}
-                  <RightControls onSearchClick={() => setIsSearchOpen(true)} />
+                  <RightControls />
                 </div>
               </div>
             </div>

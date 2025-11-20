@@ -51,9 +51,9 @@ export default async function CategoryPage({
 
   return (
     <main>
-      {/* Hero Section */}
-      <section className="relative w-full text-white">
-        <div className="relative h-[42vh] min-h-[360px] w-full overflow-hidden">
+      {/* Hero Section - now with top and side spacing */}
+      <section className="relative w-full text-white mt-8 px-4 sm:px-8">
+        <div className="relative h-[42vh] min-h-[360px] w-full max-w-[1200px] mx-auto overflow-hidden rounded-none">
           <Image
             src={bg}
             alt={category.imageAlt || ""}
@@ -62,11 +62,11 @@ export default async function CategoryPage({
             sizes="100vw"
             priority
           />
-          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0 bg-black/60" />
 
-          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-4">
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-6">
             {category.badge ? (
-              <span className="inline-block text-[10px] tracking-[0.2em] uppercase bg-white/15 text-white px-2 py-1 mb-2 rounded-sm" data-reveal="fade">
+              <span className="inline-block text-[10px] tracking-[0.2em] uppercase  text-white px-2 py-1 mb-2 rounded-sm" data-reveal="fade">
                 {category.badge}
               </span>
             ) : null}

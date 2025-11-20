@@ -15,7 +15,7 @@ export default function AdminNewProductPage() {
     name: "",
     description: "",
     price: "",
-    currency: "USD",
+    currency: "INR",
     images: "",
     categorySlug: "",
     inStock: true,
@@ -110,7 +110,7 @@ export default function AdminNewProductPage() {
         name: form.name.trim(),
         description: form.description.trim(),
         price: Number(form.price) || 0,
-        currency: form.currency.trim() || "USD",
+        currency: "INR",
         images: form.images
           .split(",")
           .map((s) => s.trim())
@@ -169,18 +169,11 @@ export default function AdminNewProductPage() {
           value={form.description}
           onChange={(v) => setForm((p) => ({ ...p, description: v }))}
         />
-        <div className="grid grid-cols-2 gap-3">
-          <Input
-            label="Price"
-            value={form.price}
-            onChange={(v) => setForm((p) => ({ ...p, price: v }))}
-          />
-          <Input
-            label="Currency"
-            value={form.currency}
-            onChange={(v) => setForm((p) => ({ ...p, currency: v }))}
-          />
-        </div>
+        <Input
+          label="Price"
+          value={form.price}
+          onChange={(v) => setForm((p) => ({ ...p, price: v }))}
+        />
         <div>
           <label className="block text-sm font-medium">Images</label>
           <div className="mt-1 flex flex-col gap-2">

@@ -13,15 +13,15 @@ type Props = {
   inStock?: boolean;
 };
 
-function formatPrice(value: number, currency = "USD") {
+function formatPrice(value: number, currency = "INR") {
   try {
-    return new Intl.NumberFormat(undefined, {
+    return new Intl.NumberFormat('en-IN', {
       style: "currency",
       currency,
       maximumFractionDigits: 0,
     }).format(value);
   } catch {
-    return `$${value}`;
+    return `₹${value}`;
   }
 }
 
@@ -29,7 +29,7 @@ export default function ProductCard({
   slug,
   name,
   price,
-  currency = "USD",
+  currency = "INR",
   image,
   rating,
   reviewsCount,
