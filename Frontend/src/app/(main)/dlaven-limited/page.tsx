@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Container from "@/components/Container";
 import ProductCard from "@/components/ProductCard";
 import { api } from "@/lib/api";
-import type { Product } from "@/data/products";
+import type { Product } from "@/types/product";
 import Image from "next/image";
 
 export default function DlavenLimitedPage() {

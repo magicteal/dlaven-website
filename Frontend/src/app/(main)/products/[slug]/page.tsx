@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import ProductDetailClient from "@/components/ProductDetailClient";
 import { API_BASE } from "@/lib/api";
-import type { Product as ClientProduct } from "@/data/products";
+import type { Product as ClientProduct } from "@/types/product";
 
 type ApiProduct = {
   slug: string;

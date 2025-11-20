@@ -4,7 +4,7 @@ import Image from "next/image";
 import Container from "@/components/Container";
 import ProductCard from "@/components/ProductCard";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import type { Product } from "@/data/products";
+import type { Product } from "@/types/product";
 import { useEffect, useMemo, useState } from "react";
 import { useCart } from "@/components/providers/CartProvider";
 import { Button } from "@/components/ui/button";
