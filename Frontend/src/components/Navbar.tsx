@@ -103,7 +103,7 @@ export default function Navbar() {
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-50  w-full bg-white/90 backdrop-blur-md shadow-sm font-['Lovato-Regular']">
-        <Container>
+        <div className="px-5 md:px-10">
           <nav aria-label="Primary">
             <div className="grid grid-cols-3 items-center h-20">
               <div className="justify-self-start">
@@ -135,7 +135,7 @@ export default function Navbar() {
               </div>
             </div>
           </nav>
-        </Container>
+        </div>
       </header>
 
       {/* Search Overlay Component */}
