@@ -77,8 +77,8 @@ export default function DestinationsPage() {
       {/* Parallax Section - Stacking Effect */}
       <section className="relative h-[300vh] w-full">
         {/* Section 1 - Image Left, Content Right */}
-        <div className="sticky top-0 h-screen w-full grid grid-cols-1 lg:grid-cols-12 z-10">
-          <div className="lg:col-span-6 h-1/2 lg:h-full relative">
+        <div className="sticky top-0 h-screen w-full flex flex-col lg:grid lg:grid-cols-12 z-10">
+          <div className="lg:col-span-6 h-1/2 lg:h-full w-full relative">
             <Image
               src="/images/DPrimeOne.jpg"
               alt="Luxury Experience"
@@ -87,8 +87,8 @@ export default function DestinationsPage() {
               sizes="(max-width: 1024px) 100vw, 50vw"
             />
           </div>
-          <div className="lg:col-span-6 bg-white flex items-center justify-center p-8 lg:p-16 h-1/2 lg:h-full">
-            <div className="max-w-lg text-center">
+          <div className="lg:col-span-6 bg-white flex flex-col items-center justify-center p-8 lg:p-16 h-1/2 lg:h-full w-full">
+            <div className="max-w-lg w-full flex flex-col items-center text-center">
               <h2 className="text-3xl lg:text-4xl font-bold tracking-wider uppercase mb-6">
                 Unparalleled Craftsmanship
               </h2>
@@ -105,9 +105,9 @@ export default function DestinationsPage() {
         </div>
 
         {/* Section 2 - Content Left, Image Right */}
-        <div className="sticky top-0 h-screen w-full grid grid-cols-1 lg:grid-cols-12 z-20">
-          <div className="lg:col-span-6 bg-[#F5F5F5] flex items-center justify-center p-8 lg:p-16 h-1/2 lg:h-full">
-            <div className="max-w-lg text-center">
+        <div className="sticky top-0 h-screen w-full flex flex-col lg:grid lg:grid-cols-12 z-20">
+          <div className="lg:col-span-6 bg-[#F5F5F5] flex flex-col items-center justify-center p-8 lg:p-16 h-1/2 lg:h-full w-full">
+            <div className="max-w-lg w-full flex flex-col items-center text-center">
               <h2 className="text-3xl lg:text-4xl font-bold tracking-wider uppercase mb-6">
                 Timeless Elegance
               </h2>
@@ -121,7 +121,7 @@ export default function DestinationsPage() {
               </button>
             </div>
           </div>
-          <div className="lg:col-span-6 h-1/2 lg:h-full relative">
+          <div className="lg:col-span-6 h-1/2 lg:h-full w-full relative">
             <Image
               src="/images/DPrimeOne.jpg"
               alt="Timeless Design"
@@ -133,8 +133,8 @@ export default function DestinationsPage() {
         </div>
 
         {/* Section 3 - Image Left, Content Right */}
-        <div className="sticky top-0 h-screen w-full grid grid-cols-1 lg:grid-cols-12 z-30">
-          <div className="lg:col-span-6 h-1/2 lg:h-full relative">
+        <div className="sticky top-0 h-screen w-full flex flex-col lg:grid lg:grid-cols-12 z-30">
+          <div className="lg:col-span-6 h-1/2 lg:h-full w-full relative">
             <Image
               src="/images/DPrimeTwo.jpg"
               alt="Personalized Service"
@@ -143,8 +143,8 @@ export default function DestinationsPage() {
               sizes="(max-width: 1024px) 100vw, 50vw"
             />
           </div>
-          <div className="lg:col-span-6 bg-white flex items-center justify-center p-8 lg:p-16 h-1/2 lg:h-full">
-            <div className="max-w-lg text-center">
+          <div className="lg:col-span-6 bg-white flex flex-col items-center justify-center p-8 lg:p-16 h-1/2 lg:h-full w-full">
+            <div className="max-w-lg w-full flex flex-col items-center text-center">
               <h2 className="text-3xl lg:text-4xl font-bold tracking-wider uppercase mb-6">
                 Personalized Journey
               </h2>
@@ -178,9 +178,6 @@ export default function DestinationsPage() {
           </div>
         </Container>
       </div>
-
-      {/* Globe Modal */}
-      {/* <GlobeModal open={open} onClose={() => setOpen(false)} /> */}
     </main>
   );
 }

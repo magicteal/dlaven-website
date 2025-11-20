@@ -62,17 +62,20 @@ export default function Loader({ onComplete }: { onComplete?: () => void }) {
         className="w-full h-screen bg-white relative overflow-hidden"
       >
         <div className="absolute inset-0 flex items-center justify-center">
-          <div ref={logoRef} className="will-change-transform inline-block">
+          <div
+            ref={logoRef}
+            className="will-change-transform mx-auto flex flex-col items-center justify-center text-center"
+          >
             <Image
               src="/logos/logoBlack.svg"
               alt="D’ LAVÉN logo"
               width={280}
               height={280}
               priority
-              className="w-[20vw] max-w-[480px] h-auto"
+              className="h-auto w-[14vw] sm:w-[12vw] lg:w-[10vw] max-w-[240px]"
             />
             <p
-              className="mt-6 text-[10px] sm:text-xs md:text-sm tracking-[0.4em] font-medium text-black text-center leading-relaxed whitespace-pre"
+              className="mt-6 text-[10px] sm:text-xs md:text-sm tracking-[0.4em] font-medium text-black text-center leading-relaxed px-4 whitespace-pre"
             >
               {"A JOURNEY FROM DIGITAL BEGINNINGS TO TIMELESS ADDRESSES"}
             </p>
@@ -82,7 +85,7 @@ export default function Loader({ onComplete }: { onComplete?: () => void }) {
 
       <div
         ref={greyLayerRef}
-        className="w-full absolute bottom-0 bg-[#9ca3af]"
+        className="w-full absolute bottom-0 bg-white/20 backdrop-blur-md"
       />
     </div>
   );
