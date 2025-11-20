@@ -446,9 +446,11 @@ function PanelView({
 export default function MenuDrawer({
   trigger,
   side = "right",
+  onOpenChange,
 }: {
   trigger: React.ReactNode;
   side?: "left" | "right";
+  onOpenChange?: (open: boolean) => void;
 }) {
   const { user } = useAuth();
   const router = useRouter();
@@ -456,6 +458,11 @@ export default function MenuDrawer({
   const [showPersonalization, setShowPersonalization] = React.useState(false);
   const [activePanel, setActivePanel] = React.useState<string | null>(null);
   const navTimeout = React.useRef<number | null>(null);
+
+  // Notify parent when open state changes
+  React.useEffect(() => {
+    onOpenChange?.(open);
+  }, [open, onOpenChange]);
 
   // Reset panel when drawer closes
   React.useEffect(() => {
@@ -502,7 +509,7 @@ export default function MenuDrawer({
         {/* Removed padding from SheetContent to handle scroll layout better */}
         <SheetContent
           side={side}
-          className={`w-[360px] sm:w-[400px] flex flex-col p-0
+          className={`w-[360px] sm:w-[400px] flex flex-col p-0 top-[80px] h-[calc(100vh-80px)]
         data-[state=open]:animate-in ${
           side === "left"
             ? "data-[state=open]:slide-in-from-left"
@@ -515,18 +522,6 @@ export default function MenuDrawer({
         } data-[state=closed]:fade-out-0`}
           style={{ animationDuration: "400ms" }}
         >
-          {/* Header with Close Button */}
-          <div className="flex items-center justify-end p-4 border-b border-black/10">
-            <SheetClose asChild>
-              <Button
-                aria-label="Close menu"
-                className="h-10 w-10 rounded-full bg-black text-white text-2xl flex items-center justify-center shadow transition-transform duration-150 hover:scale-95 hover:shadow-md"
-              >
-                <span className="leading-none">×</span>
-              </Button>
-            </SheetClose>
-          </div>
-
           {/* Scrollable Navigation Area */}
           <div className="flex-1 relative">
             {/* Both root nav and panels are rendered and animated between using

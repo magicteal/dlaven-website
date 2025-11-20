@@ -54,10 +54,11 @@ function Brand() {
 }
 
 // --- Molecules ---
-function LeftMenuTrigger() {
+function LeftMenuTrigger({ onMenuOpenChange }: { onMenuOpenChange: (open: boolean) => void }) {
   return (
     <MenuDrawer
       side="left"
+      onOpenChange={onMenuOpenChange}
       trigger={
         <button
           type="button"
@@ -99,6 +100,7 @@ function RightControls() {
 // --- Organism: Navbar ---
 export default function Navbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <>
@@ -108,15 +110,17 @@ export default function Navbar() {
             <div className="grid grid-cols-3 items-center h-20">
               <div className="justify-self-start">
                 <div className="flex items-center gap-0 sm:gap-2">
-                  <LeftMenuTrigger />
+                  <LeftMenuTrigger onMenuOpenChange={setIsMenuOpen} />
                   <button
                     type="button"
                     aria-label="Search"
                     onClick={() => setIsSearchOpen(true)}
-                    className="inline-flex h-10 items-center justify-center hover:bg-accent w-10 md:w-auto md:px-2"
+                    className={`inline-flex h-10 items-center justify-center hover:bg-accent w-10 sm:w-auto sm:px-2 transition-opacity duration-200 ${
+                      isMenuOpen ? 'inline-flex' : 'hidden min-[425px]:inline-flex'
+                    }`}
                   >
                     <Search className="h-5 w-5" />
-                    <span className="uppercase hidden md:ml-2 md:inline">Search</span>
+                    <span className="uppercase hidden sm:ml-2 sm:inline">Search</span>
                   </button>
                 </div>
               </div>
