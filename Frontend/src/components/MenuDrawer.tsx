@@ -509,7 +509,7 @@ export default function MenuDrawer({
         {/* Removed padding from SheetContent to handle scroll layout better */}
         <SheetContent
           side={side}
-          className={`w-[360px] sm:w-[400px] flex flex-col p-0 top-[80px] h-[calc(100vh-80px)]
+          className={`w-[360px] sm:w-[400px] flex flex-col p-0 top-16 h-[calc(100vh-4rem)]
         data-[state=open]:animate-in ${
           side === "left"
             ? "data-[state=open]:slide-in-from-left"
@@ -536,8 +536,8 @@ export default function MenuDrawer({
                 }
               `}
             >
-              {/* Main Links (updated per design) */}
-              <div className="space-y-4">
+              {/* Main Links (Section 1) */}
+              <div className="space-y-3">
                 <DrawerLink
                   href="/products"
                   onNavigate={navigateWithClose}
@@ -574,8 +574,10 @@ export default function MenuDrawer({
                 >
                   Fragrance
                 </DrawerLink>
-                {/* spacer between Fragrance and Personalization Services */}
-                <div className="h-6" />
+              </div>
+
+              {/* Section 2 */}
+              <div className="mt-10 space-y-4">
                 {/* PERSONALIZATION SERVICES opens a centered modal */}
                 <button
                   onClick={() => {
@@ -625,42 +627,30 @@ export default function MenuDrawer({
               {/* Spacer to push bottom content down */}
               <div className="flex-grow"></div>
 
-              {/* Bottom Links */}
-              <div className="space-y-4 border-t border-black/10 pt-6 mt-8 text-sm">
-                {user ? (
-                  <>
-                    <DrawerLink
-                      href="/me"
-                      onNavigate={navigateWithClose}
-                      className="block underline uppercase hover:no-underline"
-                    >
-                      My Orders
-                    </DrawerLink>
+              {/* Bottom Links (Section 3) — equal top spacing */}
+              <div className="space-y-3 mt-10 text-xs">
+                {/* Always show same options; route to login when unauthenticated */}
+                <DrawerLink
+                  href={user ? "/me" : "/login"}
+                  onNavigate={navigateWithClose}
+                  className="block underline uppercase hover:no-underline"
+                >
+                  MY ACCOUNT
+                </DrawerLink>
 
-                    {/* Purchases link directly under My Orders */}
-                    <DrawerLink
-                      href="/purchases"
-                      onNavigate={navigateWithClose}
-                      className="block underline uppercase hover:no-underline"
-                    >
-                      Purchases
-                    </DrawerLink>
-                  </>
-                ) : (
-                  <DrawerLink
-                    href="/login"
-                    onNavigate={navigateWithClose}
-                    className="block underline uppercase hover:no-underline"
-                  >
-                    Sign In
-                  </DrawerLink>
-                )}
+                <DrawerLink
+                  href={user ? "/purchases" : "/login"}
+                  onNavigate={navigateWithClose}
+                  className="block underline uppercase hover:no-underline"
+                >
+                  PURCHASES
+                </DrawerLink>
                 <DrawerLink
                   href="/contact"
                   onNavigate={navigateWithClose}
                   className="block underline uppercase hover:no-underline"
                 >
-                  Contact Us
+                  CONTACT US
                 </DrawerLink>
                 <a
                   href="tel:+917488575159"

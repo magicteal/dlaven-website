@@ -1,8 +1,10 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 // Organism: Hero
 export default function Hero() {
@@ -10,6 +12,71 @@ export default function Hero() {
   const [rightPaused, setRightPaused] = useState(true);
   const leftVideoRef = useRef<HTMLVideoElement>(null);
   const rightVideoRef = useRef<HTMLVideoElement>(null);
+  const logoWrapperRef = useRef<HTMLDivElement>(null);
+  const logoBoxRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const wrapper = logoWrapperRef.current;
+    const box = logoBoxRef.current;
+    if (!wrapper || !box) return;
+
+    const setup = () => {
+      const target = document.getElementById("navbar-logo-target");
+      if (!target) return;
+
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const cx = vw / 2;
+      const cy = vh / 2; // center of viewport
+
+      const tRect = target.getBoundingClientRect();
+      const tx = tRect.left + tRect.width / 2;
+      const ty = tRect.top + tRect.height / 2;
+      const deltaX = tx - cx;
+      const deltaY = ty - cy;
+
+      const logoRect = box.getBoundingClientRect();
+      const scale = tRect.width > 0 ? tRect.width / logoRect.width : 0.5;
+
+      gsap.set(wrapper, { x: 0, y: 0, scale: 1, filter: "invert(1)" });
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: document.documentElement,
+          start: 0,
+          end: 80,
+          scrub: true,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      tl.to(wrapper, { x: deltaX, y: deltaY, scale, ease: "none" }, 0)
+        .to(wrapper, { filter: "invert(0) brightness(0)", ease: "none" }, 0);
+
+      return tl;
+    };
+
+    let tl = setup();
+
+    const onRefresh = () => {
+      tl?.scrollTrigger?.kill();
+      tl?.kill();
+      tl = setup();
+    };
+
+    window.addEventListener("resize", onRefresh);
+    ScrollTrigger.addEventListener("refreshInit", onRefresh);
+    ScrollTrigger.refresh();
+
+    return () => {
+      window.removeEventListener("resize", onRefresh);
+      ScrollTrigger.removeEventListener("refreshInit", onRefresh);
+      tl?.scrollTrigger?.kill();
+      tl?.kill();
+    };
+  }, []);
 
   return (
     <section className="relative w-full h-screen overflow-hidden">
@@ -103,15 +170,19 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Centered Dlaven Logo */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-        <div className=" px-8 py-4 md:px-12 md:py-6 shadow-2xl">
-          <Image 
-            src="/logos/logoText.svg" 
+      {/* Moving Dlaven Logo (fixed at center, animates to navbar) */}
+      <div
+        ref={logoWrapperRef}
+        className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-[60]"
+        aria-hidden
+      >
+        <div ref={logoBoxRef} className="w-[360px] md:w-[520px]">
+          <Image
+            src="/logos/logoText.svg"
             alt="Dlaven"
             width={256}
             height={80}
-            className="w-48 md:w-64 h-auto"
+            className="w-full h-auto"
             priority
           />
         </div>

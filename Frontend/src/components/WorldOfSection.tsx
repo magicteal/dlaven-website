@@ -80,19 +80,19 @@ export default function WorldOfSection() {
       <Container>
         {/* Small centered label */}
         <div className="text-center">
-          <p className="text-[10px] uppercase tracking-widest text-black/70">
-            WORLD OF D<Apostrophe /> LAVÉN
+          <p className="text-[10px] uppercase tracking-widest text-black/70 mt-10">
+             D<Apostrophe /> LAVÉN D ESTINATIONS, WHERE HERITAGE MEETS MODERN LUXURY
           </p>
         </div>
 
         {/* Center: headline + paragraph + upcoming locations */}
-        <div className="mt-16 max-w-3xl mx-auto text-center">
+        <div className="mt-10 max-w-full mx-auto text-center">
           <h2 
-            className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-widest uppercase leading-tight" 
+            className="text-3xl md:text-4xl lg:text-3xl font-bold tracking-widest uppercase leading-tight" 
             data-reveal="slideUp" 
             data-delay="0.2"
           >
-            FROM INDIA<Apostrophe />S SOUL TO THE WORLD STAGE
+           A JOURNEY FROM DIGITAL BEGINNINGS TO TIMELESS ADDRESSES
           </h2>
           
           <div className="mt-8" data-reveal="fade" data-delay="0.3">
@@ -112,16 +112,13 @@ export default function WorldOfSection() {
             </div>
           </div>
 
-          <p 
-            className="mt-6 text-sm text-black/70 max-w-2xl mx-auto" 
-            data-reveal="fade" 
+            <p
+            className="mt-6 text-sm text-black/70 max-w-2xl mx-auto"
+            data-reveal="fade"
             data-delay="0.4"
-          >
-            D<Apostrophe />LAVÉN destinations where heritage meets modern luxury.
-            A journey from digital beginnings to timeless addresses. Our
-            boutiques will soon open doors in iconic cities, bringing
-            heritage craftsmanship and modern luxury under one roof.
-          </p>
+            >
+            FROM INDIA<Apostrophe />S SOUL TO THE WORLD STAGE, D LAVÉN IS EXPANDING ITS UNIVERSE. SOON, OUR BOUTIQUES WILL OPEN DOORS IN ICONIC CITIES, BRINGING HERITAGE CRAFTSMANSHIP AND MODERN LUXURY UNDER ONE ROOF.
+            </p>
 
           <Link
             href="/world-of-d-laven"

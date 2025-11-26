@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -38,20 +38,7 @@ function IconButton({
 
 // (Avatar removed — we use the human icon for the dropdown trigger)
 
-function Brand() {
-  return (
-    <Link href="/" className="select-none leading-none inline-block">
-      <Image
-        src="/logos/logoBlack.svg"
-        alt="D’ LAVÉN"
-        width={32}
-        height={32}
-        priority
-        className="h-8 w-auto"
-      />
-    </Link>
-  );
-}
+// Brand removed from center per requirement
 
 // --- Molecules ---
 function LeftMenuTrigger({ onMenuOpenChange }: { onMenuOpenChange: (open: boolean) => void }) {
@@ -63,10 +50,10 @@ function LeftMenuTrigger({ onMenuOpenChange }: { onMenuOpenChange: (open: boolea
         <button
           type="button"
           aria-label="Open menu"
-          className="inline-flex h-10 items-center justify-center hover:bg-accent w-10 md:w-auto md:px-2"
+          className="inline-flex h-8 items-center justify-center hover:bg-accent w-8 md:w-auto md:px-2"
         >
-          <MenuIcon className="h-5 w-5" />
-          <span className="uppercase hidden md:ml-2 md:inline">Menu</span>
+          <MenuIcon className="h-4 w-4" />
+          <span className="uppercase text-sm hidden md:ml-2 md:inline">Menu</span>
         </button>
       }
     />
@@ -87,10 +74,10 @@ function RightControls() {
 
       <button
         aria-label="Wishlist"
-        className="relative inline-flex items-center justify-center h-9 w-9 rounded-none hover:bg-accent"
+        className="relative inline-flex items-center justify-center h-8 w-8 rounded-none hover:bg-accent"
         onClick={() => router.push("/me#saved")}
       >
-        <Heart className="h-5 w-5" />
+        <Heart className="h-4 w-4" />
       </button>
       {/* Avatar and logout moved into dropdown for logged-in users. */}
     </>
@@ -101,13 +88,26 @@ function RightControls() {
 export default function Navbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 0);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50  w-full bg-white/90 backdrop-blur-md shadow-sm font-['Lovato-Regular']">
-        <div className="px-5 md:px-10">
+      <header
+        className={cn(
+          "fixed top-0 left-0 right-0 z-50 w-full transition-colors duration-200 font-['Lovato-Regular']",
+          scrolled ? "bg-white shadow-sm text-black" : "bg-transparent text-white"
+        )}
+      >
+        <div className="px-4 md:px-8">
           <nav aria-label="Primary">
-            <div className="grid grid-cols-3 items-center h-20">
+              <div className="grid grid-cols-3 items-center h-16">
               <div className="justify-self-start">
                 <div className="flex items-center gap-0 sm:gap-2">
                   <LeftMenuTrigger onMenuOpenChange={setIsMenuOpen} />
@@ -115,20 +115,23 @@ export default function Navbar() {
                     type="button"
                     aria-label="Search"
                     onClick={() => setIsSearchOpen(true)}
-                    className={`inline-flex h-10 items-center justify-center hover:bg-accent w-10 sm:w-auto sm:px-2 transition-opacity duration-200 ${
+                    className={`inline-flex h-8 items-center justify-center hover:bg-accent w-8 sm:w-auto sm:px-2 transition-opacity duration-200 ${
                       isMenuOpen ? 'inline-flex' : 'hidden min-[425px]:inline-flex'
                     }`}
                   >
-                    <Search className="h-5 w-5" />
-                    <span className="uppercase hidden sm:ml-2 sm:inline">Search</span>
+                      <Search className="h-4 w-4" />
+                    <span className="uppercase text-sm hidden sm:ml-2 sm:inline">Search</span>
                   </button>
                 </div>
               </div>
 
+              {/* Center: invisible target for hero logo to dock into */}
               <div className="justify-self-center">
-                <div className="scale-95 md:scale-100">
-                  <Brand />
-                </div>
+                <div
+                  id="navbar-logo-target"
+                  aria-hidden
+                  className="h-7 w-[140px] md:w-[180px]"
+                />
               </div>
 
               <div className="justify-self-end">
@@ -185,10 +188,10 @@ function AccountMenu({
         aria-haspopup="menu"
         aria-expanded={open}
         aria-label="Account menu"
-        className="inline-flex items-center justify-center h-9 w-9 rounded-none hover:bg-accent"
+        className="inline-flex items-center justify-center h-8 w-8 rounded-none hover:bg-accent"
         onClick={() => setOpen((v) => !v)}
       >
-        <UserIcon className="h-5 w-5" />
+        <UserIcon className="h-4 w-4" />
       </button>
       {open && (
         <div
