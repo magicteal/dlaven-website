@@ -36,33 +36,50 @@ export default function Hero() {
       const ty = tRect.top + tRect.height / 2;
       const deltaX = tx - cx;
       const deltaY = ty - cy;
+      // Slight upward adjustment to avoid appearing just below the navbar line
+      const adjustY = -58;
 
       const logoRect = box.getBoundingClientRect();
-      const scale = tRect.width > 0 ? tRect.width / logoRect.width : 0.5;
+      const baseScale = tRect.width > 0 ? tRect.width / logoRect.width : 0.5;
+      const dockScaleFactor = 0.8; // reduce final logo size slightly
+      const scale = baseScale * dockScaleFactor;
 
-      gsap.set(wrapper, { x: 0, y: 0, scale: 1, filter: "invert(1)" });
+        // Start with inverted (white) logo in hero
+        gsap.set(wrapper, { x: 0, y: 0, scale: 1 });
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: document.documentElement,
-          start: 0,
-          end: 80,
-          scrub: true,
-          invalidateOnRefresh: true,
-        },
-      });
+      // Immediate snap-style behavior after small scroll threshold
+      let settled = false;
+      const settleLogo = () => {
+        if (settled) return;
+        settled = true;
+        gsap.to(wrapper, {
+          x: deltaX,
+          y: deltaY + adjustY,
+          scale,
+          filter: "invert(1) brightness(1)",
+          duration: 0.6,
+          ease: "power2.out",
+        });
+      };
 
-      tl.to(wrapper, { x: deltaX, y: deltaY, scale, ease: "none" }, 0)
-        .to(wrapper, { filter: "invert(0) brightness(0)", ease: "none" }, 0);
+      const onSmallScroll = () => {
+        if (window.scrollY > 8) {
+          settleLogo();
+        } else if (window.scrollY === 0 && settled) {
+          // Optional: revert when user scrolls back to top
+          settled = false;
+          gsap.set(wrapper, { x: 0, y: 0, scale: 1, filter: "invert(0) brightness(1)" });
+        }
+      };
+      window.addEventListener("scroll", onSmallScroll, { passive: true });
 
-      return tl;
+      return { kill: () => window.removeEventListener("scroll", onSmallScroll) } as { kill: () => void };
     };
 
     let tl = setup();
 
     const onRefresh = () => {
-      tl?.scrollTrigger?.kill();
-      tl?.kill();
+      tl?.kill?.();
       tl = setup();
     };
 
@@ -73,8 +90,7 @@ export default function Hero() {
     return () => {
       window.removeEventListener("resize", onRefresh);
       ScrollTrigger.removeEventListener("refreshInit", onRefresh);
-      tl?.scrollTrigger?.kill();
-      tl?.kill();
+      tl?.kill?.();
     };
   }, []);
 

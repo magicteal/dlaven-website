@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
+// import Link from "next/link";
+// import Image from "next/image";
+// import { Button } from "@/components/ui/button";
 import MenuDrawer from "@/components/MenuDrawer";
 import SearchOverlay from "@/components/SearchOverlay"; // Import the overlay
 import {
@@ -13,28 +13,28 @@ import {
   User as UserIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import Container from "@/components/Container";
+
 import { useAuth } from "@/components/providers/AuthProvider";
 import { useRouter } from "next/navigation";
 // wishlist navigates to saved items; no cart provider needed here
 
 // --- Atoms ---
-function IconButton({
-  children,
-  className,
-  ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement> & { className?: string }) {
-  return (
-    <Button
-      variant="ghost"
-      size="icon"
-      className={cn("rounded-none", className)}
-      {...props}
-    >
-      {children}
-    </Button>
-  );
-}
+// function IconButton({
+//   children,
+//   className,
+//   ...props
+// }: React.ButtonHTMLAttributes<HTMLButtonElement> & { className?: string }) {
+//   return (
+//     <Button
+//       variant="ghost"
+//       size="icon"
+//       className={cn("rounded-none", className)}
+//       {...props}
+//     >
+//       {children}
+//     </Button>
+//   );
+// }
 
 // (Avatar removed — we use the human icon for the dropdown trigger)
 
@@ -91,7 +91,8 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 0);
+    // Make navbar background change after a small scroll distance
+    const onScroll = () => setScrolled(window.scrollY > 40);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -101,7 +102,7 @@ export default function Navbar() {
     <>
       <header
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 w-full transition-colors duration-200 font-['Lovato-Regular']",
+          "fixed top-0 left-0 right-0 z-[40] w-full transition-colors duration-200 font-['Lovato-Regular']",
           scrolled ? "bg-white shadow-sm text-black" : "bg-transparent text-white"
         )}
       >
@@ -125,12 +126,12 @@ export default function Navbar() {
                 </div>
               </div>
 
-              {/* Center: invisible target for hero logo to dock into */}
+        
               <div className="justify-self-center">
                 <div
                   id="navbar-logo-target"
                   aria-hidden
-                  className="h-7 w-[140px] md:w-[180px]"
+                  className="h-8 md:h-10 w-[140px] md:w-[180px]"
                 />
               </div>
 
