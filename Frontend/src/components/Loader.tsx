@@ -75,7 +75,7 @@ export default function Loader({ onComplete }: { onComplete?: () => void }) {
               className="h-auto w-[14vw] sm:w-[12vw] lg:w-[10vw] max-w-[240px]"
             />
             <p
-              className="mt-6 text-[10px] sm:text-xs md:text-sm tracking-[0.4em] font-medium text-black text-center leading-relaxed px-4 whitespace-pre"
+              className="mt-6 text-[10px] sm:text-[10px] md:text-sm tracking-[0.4em] font-medium text-black text-center leading-relaxed px-4 whitespace-pre"
             >
               {"A JOURNEY FROM DIGITAL BEGINNINGS TO TIMELESS ADDRESSES"}
             </p>
