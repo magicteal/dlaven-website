@@ -131,7 +131,7 @@ export default function Navbar() {
                 <div
                   id="navbar-logo-target"
                   aria-hidden
-                  className="h-8 md:h-10 w-[140px] md:w-[180px]"
+                  className="h-7 sm:h-8 md:h-10 w-[120px] sm:w-[140px] md:w-[180px] lg:w-[200px]"
                 />
               </div>
 

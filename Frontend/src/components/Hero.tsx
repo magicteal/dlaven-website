@@ -36,12 +36,30 @@ export default function Hero() {
       const ty = tRect.top + tRect.height / 2;
       const deltaX = tx - cx;
       const deltaY = ty - cy;
-      // Slight upward adjustment to avoid appearing just below the navbar line
-      const adjustY = -58;
+      // Responsive upward adjustment to avoid appearing just below the navbar line
+      const getAdjustY = () => {
+        const w = window.innerWidth;
+        // if (w < 380) return -30;   // nudged down
+        // if (w < 480) return -40;
+        if (w < 640) return -30;
+        if (w < 768) return -48;
+        if (w < 1024) return -50;
+        return -52;
+      };
+      const adjustY = getAdjustY();
 
       const logoRect = box.getBoundingClientRect();
       const baseScale = tRect.width > 0 ? tRect.width / logoRect.width : 0.5;
-      const dockScaleFactor = 0.8; // reduce final logo size slightly
+      const getDockScaleFactor = () => {
+        const w = window.innerWidth;
+        if (w < 380) return 0.68;
+        if (w < 480) return 0.72;
+        if (w < 640) return 0.75;
+        if (w < 768) return 0.78;
+        if (w < 1024) return 0.80;
+        return 0.82;
+      };
+      const dockScaleFactor = getDockScaleFactor();
       const scale = baseScale * dockScaleFactor;
 
         // Start with inverted (white) logo in hero
@@ -192,7 +210,7 @@ export default function Hero() {
         className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-[60]"
         aria-hidden
       >
-        <div ref={logoBoxRef} className="w-[360px] md:w-[520px]">
+        <div ref={logoBoxRef} className="w-[260px] sm:w-[320px] md:w-[420px] lg:w-[520px]">
           <Image
             src="/logos/logoText.svg"
             alt="Dlaven"
