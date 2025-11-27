@@ -2,13 +2,13 @@
 
 import React from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetTrigger,
   SheetContent,
   SheetClose,
 } from "@/components/ui/sheet";
+import { X } from "lucide-react";
 import { useAuth } from "@/components/providers/AuthProvider";
 import PersonalizationModal from "@/components/PersonalizationModal";
 import { useRouter } from "next/navigation";
@@ -509,7 +509,7 @@ export default function MenuDrawer({
         {/* Removed padding from SheetContent to handle scroll layout better */}
         <SheetContent
           side={side}
-          className={`w-[360px] sm:w-[400px] flex flex-col p-0 top-16 h-[calc(100vh-4rem)]
+          className={`w-[360px] sm:w-[400px] flex flex-col p-0 top-0 h-screen
         data-[state=open]:animate-in ${
           side === "left"
             ? "data-[state=open]:slide-in-from-left"
@@ -537,7 +537,7 @@ export default function MenuDrawer({
               `}
             >
               {/* Main Links (Section 1) */}
-              <div className="space-y-3">
+              <div className="space-y-3 mt-5">
                 <DrawerLink
                   href="/products"
                   onNavigate={navigateWithClose}
@@ -682,6 +682,16 @@ export default function MenuDrawer({
               )}
             </div>
           </div>
+          {/* In-sheet close button (visible, top-right, above all content) */}
+          <SheetClose asChild>
+            <button
+              type="button"
+              aria-label="Close menu"
+              className="absolute right-12 sm:right-4 top-4 h-8 w-8 grid place-items-center bg-white text-black shadow-sm border border-black/10 z-[60] pointer-events-auto"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </SheetClose>
         </SheetContent>
       </Sheet>
       {/* Personalization modal rendered outside the drawer content so it appears centered */}

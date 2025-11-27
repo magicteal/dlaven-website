@@ -81,20 +81,20 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
       role="dialog"
       aria-modal="true"
       aria-hidden={!isOpen}
-      className="fixed inset-0 z-[9999] bg-white/95 backdrop-blur-md"
+      className="fixed inset-0 z-[9999] bg-white/95 backdrop-blur-md overflow-y-auto pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-end h-14 sm:h-16 md:h-20">
+        <div className="flex items-center justify-end h-12 sm:h-14 md:h-16">
           <button
             onClick={onClose}
             aria-label="Close search"
-            className="text-gray-600 hover:text-black"
+            className="text-gray-700 hover:text-black h-10 w-10 grid place-items-center"
           >
-            <X className="h-6 w-6" />
+            <X className="h-5 w-5 sm:h-6 sm:w-6" />
           </button>
         </div>
 
-        <div className="mt-8 max-w-6xl mx-auto">
+        <div className="mt-4 sm:mt-6 md:mt-8 max-w-6xl mx-auto">
           <form onSubmit={handleSearchSubmit}>
             <label htmlFor="search-input" className="sr-only">
               What are you looking for?
@@ -106,20 +106,20 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="What are you looking for?"
-                className="w-full bg-transparent py-4 text-xl md:text-2xl placeholder:text-gray-700 focus:outline-none"
+                className="w-full bg-transparent py-3 sm:py-4 text-lg sm:text-xl md:text-2xl placeholder:text-gray-600 focus:outline-none"
                 autoFocus
               />
               <button
                 type="submit"
                 aria-label="Submit search"
-                className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-600 hover:text-black"
+                className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-700 hover:text-black"
               >
-                <Search className="h-6 w-6" />
+                <Search className="h-5 w-5 sm:h-6 sm:w-6" />
               </button>
             </div>
           </form>
 
-          <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-10 text-base md:text-lg">
+          <div className="mt-8 sm:mt-10 grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10 text-base md:text-lg">
             <div>
               <p className="font-semibold uppercase tracking-wider text-black text-base md:text-lg">
                 IN DEMAND
@@ -160,7 +160,7 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
               </ul>
             </div>
 
-            <div className="border-l-2 border-black/20 pl-8">
+            <div className="md:border-l-2 border-black/20 md:pl-8">
               <p className="font-semibold uppercase tracking-wider text-black text-base md:text-lg">
                 SUGGESTIONS
               </p>
