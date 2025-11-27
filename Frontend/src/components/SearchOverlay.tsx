@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
+import gsap from "gsap";
 import { Search, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -34,10 +34,10 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
       document.body.style.overflow = "hidden"; // Disable scrolling
       // Ensure starting position is fully offscreen
       if (overlayRef.current) {
-        gsap.set(overlayRef.current, { y: "-100%" });
+        gsap.set(overlayRef.current, { yPercent: -100 });
       }
       gsap.to(overlayRef.current, {
-        y: "0%",
+        yPercent: 0,
         duration: 0.45,
         ease: "power3.out",
       });
@@ -45,7 +45,7 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
       // Animate out, then fully unmount so nothing leaks visually
       if (overlayRef.current) {
         gsap.to(overlayRef.current, {
-          y: "-100%",
+          yPercent: -100,
           duration: 0.35,
           ease: "power3.in",
           onComplete: () => {
@@ -82,7 +82,6 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
       aria-modal="true"
       aria-hidden={!isOpen}
       className="fixed inset-0 z-[9999] bg-white/95 backdrop-blur-md"
-      style={{ transform: "translateY(-100%)" }}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-end h-14 sm:h-16 md:h-20">
