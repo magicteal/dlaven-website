@@ -50,7 +50,7 @@ function LeftMenuTrigger({ onMenuOpenChange }: { onMenuOpenChange: (open: boolea
         <button
           type="button"
           aria-label="Open menu"
-          className="inline-flex h-8 items-center justify-center hover:bg-accent w-8 md:w-auto md:px-2"
+          className="inline-flex h-8 items-center justify-center hover: w-8 md:w-auto md:px-2"
         >
           <MenuIcon className="h-4 w-4" />
           <span className="uppercase text-sm hidden md:ml-2 md:inline">Menu</span>

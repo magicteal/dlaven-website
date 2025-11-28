@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 const BG_IMAGE_LEFT =
@@ -9,9 +10,9 @@ const BG_IMAGE_RIGHT =
 // This is the new component for the "DL PRIVÉ EDITION" section
 export default function FeaturedContent() {
   return (
-    <section className="relative w-full h-[400px] md:min-h-[900px] text-white  overflow-hidden">
+    <section className="relative w-full h-[400px] md:min-h-[500px] text-white overflow-hidden my-40">
       {/* Background Image Grid */}
-      <div className="absolute inset-0 grid grid-cols-2 mx-[1%]">
+      <div className="absolute inset-0 grid grid-cols-1 sm:grid-cols-2 max-w-[95%] mx-auto">
         <div className="relative h-full w-full ">
           <Image
             src={BG_IMAGE_LEFT}
@@ -25,7 +26,7 @@ export default function FeaturedContent() {
         <div className="relative h-full w-full">
           <Image
             src={BG_IMAGE_RIGHT}
-            alt="DL Privé background right"
+            alt="DL Barry background right"
             fill
             sizes="50vw"
             className="object-cover object-center"
@@ -34,28 +35,51 @@ export default function FeaturedContent() {
         </div>
       </div>
 
-      {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black/50 mx-[1%]"></div>
-
-      {/* Centered Content */}
-      <div className="relative z-10 h-full flex flex-col items-center justify-end text-center px-4 pb-20 sm:pb-24 md:pb-32">
-        <h2 
-          className="mt-6 text-5xl sm:text-6xl md:text-4xl lg:text-6xl font-serif tracking-[0.2em] uppercase mb-8"
-          data-reveal="scale"
-          data-duration="1"
-          style={{ letterSpacing: '0.15em' }}
+      {/* Per-column clickable overlays with heading + button at bottom */}
+      <div className="absolute inset-0 max-w-[95%] mx-auto grid grid-cols-1 sm:grid-cols-2 z-10">
+        {/* Left box - DL PRIVE */}
+        <Link
+          href="/dl-prive"
+          className="relative h-full w-full group overflow-hidden"
+          aria-label="Go to DL Privé"
         >
-          DL PRIVÉ EDITION
-        </h2>
-        <div data-reveal="slideUp" data-delay="0.3">
-          <Button
-            variant="outline"
-            className="mt-4 px-8 py-6 text-sm tracking-widest uppercase rounded-none border-2 border-white bg-transparent text-white hover:bg-white hover:text-black transition-all duration-300"
-            aria-label="Get Access"
-          >
-            GET ACCESS
-          </Button>
-        </div>
+          <div className="absolute inset-0 bg-black/50 group-hover:bg-black/60 transition-colors" />
+          <div className="relative z-10 h-full flex flex-col items-center justify-end text-center px-4 pb-12">
+            <h3
+              className="text-3xl sm:text-5xl md:text-6xl font-serif tracking-[0.2em] uppercase mb-4 sm:mb-6"
+              style={{ letterSpacing: "0.15em" }}
+            >
+              DL PRIVÉ
+            </h3>
+            <div data-reveal="slideUp" data-delay="0.3">
+              <span className="inline-block mt-4 px-6 py-2 text-xs sm:px-8 sm:py-3 sm:text-sm tracking-widest uppercase rounded-none border-2 border-white bg-transparent text-white hover:bg-white hover:text-black transition-all duration-300">
+                GET ACCESS
+              </span>
+            </div>
+          </div>
+        </Link>
+
+        {/* Right box - DL BARRY */}
+        <Link
+          href="/dl-barry"
+          className="relative h-full w-full group overflow-hidden"
+          aria-label="Go to DL Barry"
+        >
+          <div className="absolute inset-0 bg-black/50 group-hover:bg-black/60 transition-colors" />
+          <div className="relative z-10 h-full flex flex-col items-center justify-end text-center px-4 pb-12">
+            <h3
+              className="text-3xl sm:text-5xl md:text-6xl font-serif tracking-[0.2em] uppercase mb-4 sm:mb-6"
+              style={{ letterSpacing: "0.15em" }}
+            >
+              DL BÉRRY
+            </h3>
+            <div data-reveal="slideUp" data-delay="0.3">
+              <span className="inline-block mt-4 px-6 py-2 text-xs sm:px-8 sm:py-3 sm:text-sm tracking-widest uppercase rounded-none border-2 border-white bg-transparent text-white hover:bg-white hover:text-black transition-all duration-300">
+                GET ACCESS
+              </span>
+            </div>
+          </div>
+        </Link>
       </div>
     </section>
   );

@@ -15,14 +15,14 @@ export default function Footer() {
   return (
     <footer className="bg-black text-white border-t border-white/10">
       {/* Top grid - 4 columns */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      <div className="mx-auto max-w-[95%] px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Column 1: HELP */}
           <div>
-            <p className="text-xs uppercase tracking-wider font-semibold mb-6">
+            <p className="text-sm uppercase tracking-wider font-semibold mb-6">
               HELP
             </p>
-            <ul className="space-y-3 text-sm">
+            <ul className="space-y-3 text-base">
               <li>
                 <p className="text-white/80">
                   A Client Advisor is available at{" "}
@@ -75,10 +75,10 @@ export default function Footer() {
 
           {/* Column 2: QUICK LINKS */}
           <div>
-            <p className="text-xs uppercase tracking-wider font-semibold mb-6">
+            <p className="text-sm uppercase tracking-wider font-semibold mb-6">
               QUICK LINKS
             </p>
-            <ul className="space-y-3 text-sm">
+            <ul className="space-y-3 text-base">
               <li>
                 <Link href="/" className="hover:underline">
                   Home
@@ -114,7 +114,7 @@ export default function Footer() {
 
           {/* Column 3: WORLD OF D'LAVÉN (mirror navbar links) */}
           <div>
-            <div className="space-y-2 text-sm">
+            <div className="space-y-2 text-base">
               <Link href="/login" className="block hover:underline">
                 Sign In
               </Link>
@@ -138,13 +138,13 @@ export default function Footer() {
 
           {/* Column 4: CONNECT */}
           <div>
-            <p className="text-xs uppercase tracking-wider font-semibold mb-6">
+            <p className="text-sm uppercase tracking-wider font-semibold mb-6">
               CONNECT
             </p>
-            <p className="text-sm text-white/80 mb-4">
+            <p className="text-base text-white/80 mb-4">
               Sign up for D<Apostrophe /> Lavén emails and receive the latest news from the Maison, including exclusive online pre-launches and new collections.
             </p>
-            <p className="text-xs mb-6">
+            <p className="text-sm mb-6">
               <Link href="/social" className="underline hover:no-underline">
                 Follow Us
               </Link>
@@ -154,14 +154,14 @@ export default function Footer() {
 
         {/* Country selector */}
         <div className="mt-12 pt-8 border-t border-white/10">
-          <button className="flex items-center gap-2 text-sm hover:underline">
+          <button className="flex items-center gap-2 text-base hover:underline">
             <span className="text-lg">🇮🇳</span>
             <span>India</span>
           </button>
         </div>
 
         {/* Manufacturer and Importer details */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-xs text-white/70">
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-white/70">
           <div>
             <p className="font-semibold mb-2">Full Name and Address of the Manufacturer</p>
             <p>D<Apostrophe /> Lavén Maison SAS</p>
@@ -178,7 +178,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <p className="mt-6 text-xs text-white/70">
+        <p className="mt-6 text-sm text-white/70">
           Please refer to the product label for specific country of origin for each product.
         </p>
       </div>
@@ -187,7 +187,7 @@ export default function Footer() {
       <div className="border-t border-white/10 bg-black">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
           {/* Footer bottom links */}
-          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs mb-6">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm mb-6">
             <Link href="/sitemap" className="hover:underline">
               Sitemap
             </Link>

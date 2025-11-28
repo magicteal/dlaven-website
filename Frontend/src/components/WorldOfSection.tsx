@@ -67,7 +67,7 @@ export default function WorldOfSection() {
   return (
     <section className="bg-white py-16 sm:py-24">
       {/* Full-width joined videos (hero) */}
-      <div className="w-[95%] mx-auto overflow-hidden">
+      <div className="max-w-[95%] mx-auto overflow-hidden">
         <div className="w-full flex flex-col md:flex-row md:h-[640px] lg:h-[780px]">
           {cities.map((city) => (
             <div key={city.name} className="w-full md:flex-1 min-w-0">

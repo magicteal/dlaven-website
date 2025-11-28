@@ -103,7 +103,7 @@ function PanelView({
           </button>
         </div>
         <div className="p-6 pt-4 space-y-4">
-          <h2 className="text-2xl">New In</h2>
+            <h2 className="text-3xl">New In</h2>
           <div className="space-y-3">
             <DrawerLink
               href="/products"
@@ -509,7 +509,7 @@ export default function MenuDrawer({
         {/* Removed padding from SheetContent to handle scroll layout better */}
         <SheetContent
           side={side}
-          className={`w-[360px] sm:w-[400px] flex flex-col p-0 top-0 h-screen
+          className={`w-[420px] sm:w-[520px] flex flex-col p-0 top-0 h-screen
         data-[state=open]:animate-in ${
           side === "left"
             ? "data-[state=open]:slide-in-from-left"
@@ -528,7 +528,7 @@ export default function MenuDrawer({
                 translate + opacity transitions. This avoids unmount/mount
                 jank and gives a smooth panel slide-in effect. */}
             <nav
-              className={`absolute inset-0 overflow-y-auto p-6 flex flex-col text-left text-base transform transition-all duration-300 ease-out will-change-transform
+              className={`absolute inset-0 overflow-y-auto pt-12 px-8 pb-6 sm:pt-16 sm:px-12 flex flex-col text-left text-[1.3rem]  transform transition-all duration-300 ease-out will-change-transform
                 ${
                   activePanel
                     ? "opacity-0 -translate-x-4 pointer-events-none"
@@ -628,12 +628,12 @@ export default function MenuDrawer({
               <div className="flex-grow"></div>
 
               {/* Bottom Links (Section 3) — equal top spacing */}
-              <div className="space-y-3 mt-10 text-xs">
+              <div className="space-y-3 mt-10 text-base">
                 {/* Always show same options; route to login when unauthenticated */}
                 <DrawerLink
                   href={user ? "/me" : "/login"}
                   onNavigate={navigateWithClose}
-                  className="block underline uppercase hover:no-underline"
+                  className="block  uppercase hover:no-underline"
                 >
                   MY ACCOUNT
                 </DrawerLink>
@@ -641,14 +641,14 @@ export default function MenuDrawer({
                 <DrawerLink
                   href={user ? "/purchases" : "/login"}
                   onNavigate={navigateWithClose}
-                  className="block underline uppercase hover:no-underline"
+                  className="block  uppercase hover:no-underline"
                 >
                   PURCHASES
                 </DrawerLink>
                 <DrawerLink
                   href="/contact"
                   onNavigate={navigateWithClose}
-                  className="block underline uppercase hover:no-underline"
+                  className="block  uppercase hover:no-underline"
                 >
                   CONTACT US
                 </DrawerLink>
@@ -687,7 +687,7 @@ export default function MenuDrawer({
             <button
               type="button"
               aria-label="Close menu"
-              className="absolute right-12 sm:right-4 top-4 h-8 w-8 grid place-items-center bg-white text-black shadow-sm border border-black/10 z-[60] pointer-events-auto"
+              className="absolute right-12 sm:right-4 top-4 h-8 w-8 grid place-items-center bg-black text-white shadow-sm border border-transparent z-[60] pointer-events-auto"
             >
               <X className="h-4 w-4" />
             </button>

@@ -73,7 +73,7 @@ export default async function CategoryGrid({
   }
   return (
     <section className="bg-white py-16 sm:py-20 md:py-24">
-      <div className="text-center max-w-full mx-[2%]">
+      <div className="text-center max-w-[95%] mx-auto">
         <h2 
           className="text-5xl sm:text-4xl md:text-5xl font-light tracking-wide text-black mb-12 sm:mb-16"
           data-reveal="slideUp"
