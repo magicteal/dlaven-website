@@ -1,23 +1,25 @@
-import type { Metadata } from "next";
-import Navbar from "@/components/Navbar";
+"use client";
+
+import AnimatedNavbar from "@/components/AnimatedNavbar";
+import SimpleNavbar from "@/components/SimpleNavbar";
 import Footer from "@/components/Footer";
 import ScrollRevealInit from "@/components/ScrollRevealInit";
 import MainContent from "@/components/MainContent";
-
-export const metadata: Metadata = {
-  title: "D’ LAVÉN - Home",
-};
+import { usePathname } from "next/navigation";
 
 export default function MainLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // (main) layout: renders page chrome (Navbar + Footer) only for routes in this group
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
+
+  // Use AnimatedNavbar only on home page, SimpleNavbar for all other pages
   return (
     <div className="flex min-h-screen flex-col">
       <ScrollRevealInit />
-      <Navbar />
+      {isHomePage ? <AnimatedNavbar /> : <SimpleNavbar />}
       <MainContent>{children}</MainContent>
       <Footer />
     </div>

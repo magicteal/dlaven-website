@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
@@ -8,6 +9,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 // Organism: Hero
 export default function Hero() {
+  const pathname = usePathname();
   const [leftPaused, setLeftPaused] = useState(true);
   const [rightPaused, setRightPaused] = useState(true);
   const leftVideoRef = useRef<HTMLVideoElement>(null);
@@ -16,6 +18,9 @@ export default function Hero() {
   const logoBoxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Guard: wait until pathname is defined, then only enable on homepage
+    if (typeof pathname === "undefined") return;
+    if (pathname !== "/") return;
     gsap.registerPlugin(ScrollTrigger);
 
     const wrapper = logoWrapperRef.current;
@@ -26,27 +31,18 @@ export default function Hero() {
       const target = document.getElementById("navbar-logo-target");
       if (!target) return;
 
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-      const cx = vw / 2;
-      const cy = vh / 2; // center of viewport
-
       const tRect = target.getBoundingClientRect();
       const tx = tRect.left + tRect.width / 2;
       const ty = tRect.top + tRect.height / 2;
-      const deltaX = tx - cx;
-      const deltaY = ty - cy;
-      // Responsive upward adjustment to avoid appearing just below the navbar line
-      const getAdjustY = () => {
-        const w = window.innerWidth;
-        // if (w < 380) return -30;   // nudged down
-        // if (w < 480) return -40;
-        if (w < 640) return -30;
-        if (w < 768) return -48;
-        if (w < 1024) return -50;
-        return -52;
-      };
-      const adjustY = getAdjustY();
+
+      // compute current wrapper center (accounts for any existing CSS positioning)
+      const wRect = wrapper.getBoundingClientRect();
+      const wx = wRect.left + wRect.width / 2;
+      const wy = wRect.top + wRect.height / 2;
+
+      // delta to move wrapper center to target center
+      const deltaX = tx - wx;
+      const deltaY = ty - wy;
 
       const logoRect = box.getBoundingClientRect();
       const baseScale = tRect.width > 0 ? tRect.width / logoRect.width : 0.5;
@@ -63,7 +59,8 @@ export default function Hero() {
       const scale = baseScale * dockScaleFactor;
 
         // Start with inverted (white) logo in hero
-        gsap.set(wrapper, { x: 0, y: 0, scale: 1 });
+        // Use xPercent/yPercent to center via GSAP (avoid mixing CSS translate and GSAP transforms)
+        gsap.set(wrapper, { x: 0, y: 0, scale: 1, xPercent: -50, yPercent: -50 });
 
       // Snap behavior with smooth tween both ways
       let settled = false;
@@ -73,7 +70,7 @@ export default function Hero() {
         tween?.kill();
         tween = gsap.to(wrapper, {
           x: deltaX,
-          y: deltaY + adjustY,
+          y: deltaY,
           scale,
           filter: "invert(1) brightness(1)",
           duration: 0.6,
@@ -128,7 +125,7 @@ export default function Hero() {
       ScrollTrigger.removeEventListener("refreshInit", onRefresh);
       tl?.kill?.();
     };
-  }, []);
+  }, [pathname]);
 
   return (
     <section className="relative w-full h-screen overflow-hidden">
@@ -164,12 +161,12 @@ export default function Hero() {
           
           {/* Content overlay */}
           <div className="absolute inset-0 flex flex-col items-center justify-end pb-16 md:pb-24 text-white">
-            <h2 className="text-3xl md:text-5xl font-serif mb-4 tracking-wide">
+            <h2 className="text-2xl md:text-3xl font-serif mb-4 tracking-wide">
               Fashion & Accessories
             </h2>
             <Link 
               href="/categories/fashion-accessories"
-              className="text-sm md:text-base underline underline-offset-4 hover:opacity-75 transition-opacity"
+              className="text-xs underline underline-offset-4 hover:opacity-75 transition-opacity"
             >
               Shop now
             </Link>
@@ -207,12 +204,12 @@ export default function Hero() {
           
           {/* Content overlay */}
           <div className="absolute inset-0 flex flex-col items-center justify-end pb-16 md:pb-24 text-white">
-            <h2 className="text-3xl md:text-5xl font-serif mb-4 tracking-wide">
+            <h2 className="text-2xl md:text-3xl font-serif mb-4 tracking-wide">
               Fragrance & Beauty
             </h2>
             <Link 
               href="/fragrances"
-              className="text-sm md:text-base underline underline-offset-4 hover:opacity-75 transition-opacity"
+              className="text-xs  underline underline-offset-4 hover:opacity-75 transition-opacity"
             >
               Shop now
             </Link>
@@ -225,7 +222,7 @@ export default function Hero() {
       {/* Moving Dlaven Logo (fixed at center, animates to navbar) */}
       <div
         ref={logoWrapperRef}
-        className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-[60]"
+        className="fixed left-1/2 top-[49%] md:top-[35%] pointer-events-none z-[60]"
         aria-hidden
       >
         <div ref={logoBoxRef} className="w-[260px] sm:w-[320px] md:w-[420px] lg:w-[520px]">
