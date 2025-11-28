@@ -65,12 +65,13 @@ export default function Hero() {
         // Start with inverted (white) logo in hero
         gsap.set(wrapper, { x: 0, y: 0, scale: 1 });
 
-      // Immediate snap-style behavior after small scroll threshold
+      // Snap behavior with smooth tween both ways
       let settled = false;
-      const settleLogo = () => {
-        if (settled) return;
-        settled = true;
-        gsap.to(wrapper, {
+      let tween: gsap.core.Tween | null = null;
+
+      const animateDock = () => {
+        tween?.kill();
+        tween = gsap.to(wrapper, {
           x: deltaX,
           y: deltaY + adjustY,
           scale,
@@ -80,18 +81,35 @@ export default function Hero() {
         });
       };
 
+      const animateHome = () => {
+        tween?.kill();
+        tween = gsap.to(wrapper, {
+          x: 0,
+          y: 0,
+          scale: 1,
+          filter: "invert(0) brightness(1)",
+          duration: 0.6,
+          ease: "power2.out",
+        });
+      };
+
       const onSmallScroll = () => {
-        if (window.scrollY > 8) {
-          settleLogo();
-        } else if (window.scrollY === 0 && settled) {
-          // Optional: revert when user scrolls back to top
+        if (window.scrollY > 8 && !settled) {
+          settled = true;
+          animateDock();
+        } else if (window.scrollY <= 8 && settled) {
           settled = false;
-          gsap.set(wrapper, { x: 0, y: 0, scale: 1, filter: "invert(0) brightness(1)" });
+          animateHome();
         }
       };
       window.addEventListener("scroll", onSmallScroll, { passive: true });
 
-      return { kill: () => window.removeEventListener("scroll", onSmallScroll) } as { kill: () => void };
+      return {
+        kill: () => {
+          window.removeEventListener("scroll", onSmallScroll);
+          tween?.kill();
+        },
+      } as { kill: () => void };
     };
 
     let tl = setup();
