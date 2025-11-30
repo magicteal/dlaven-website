@@ -8,12 +8,10 @@
 @font-face {
   font-family: "Lovato-Light";
   src: url("/fonts/lovato/fonnts.com-Lovato-Light.otf") format("truetype");
-  
 }
 @font-face {
   font-family: "Montserrat";
   src: url("/fonts/Montserrat-Regular.ttf") format("truetype");
-  
 }
 
 @font-face {
@@ -38,7 +36,6 @@
 
 @layer base {
   :root {
-
     --font-sans: "Lovato-Regular", ui-sans-serif, system-ui, -apple-system,
       "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
       "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
@@ -83,13 +80,13 @@
 }
 
 .animate-in {
-  animation-duration: 200ms;
-  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   animation-fill-mode: both;
 }
 .animate-out {
-  animation-duration: 200ms;
-  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   animation-fill-mode: both;
 }
 .slide-in-from-right {
@@ -97,6 +94,30 @@
 }
 .slide-out-to-right {
   animation-name: out-to-right;
+}
+
+/* Left-side slide animations */
+@keyframes in-from-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes out-to-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+.slide-in-from-left {
+  animation-name: in-from-left;
+}
+.slide-out-to-left {
+  animation-name: out-to-left;
 }
 .fade-in-0 {
   animation-name: fade-in;

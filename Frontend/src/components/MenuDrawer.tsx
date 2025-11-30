@@ -103,7 +103,7 @@ function PanelView({
           </button>
         </div>
         <div className="p-6 pt-4 space-y-4">
-            <h2 className="text-3xl">New In</h2>
+          <h2 className="text-3xl">New In</h2>
           <div className="space-y-3">
             <DrawerLink
               href="/products"
@@ -158,7 +158,11 @@ function PanelView({
               panelId="men-ready"
               className="block font-normal uppercase no-underline hover:no-underline"
             >
-              READY<Dash />TO<Dash />WEAR
+              READY
+              <Dash />
+              TO
+              <Dash />
+              WEAR
             </DrawerLink>
 
             <DrawerLink
@@ -244,14 +248,21 @@ function PanelView({
           </button>
         </div>
         <div className="p-6 pt-4 space-y-4">
-          <h2 className="text-2xl">Ready<Dash />to<Dash />wear</h2>
+          <h2 className="text-2xl">
+            Ready
+            <Dash />
+            to
+            <Dash />
+            wear
+          </h2>
           <div className="space-y-3">
             <DrawerLink
               href="/mens-ready-to-wear/t-shirts-polo"
               onNavigate={onNavigate}
               className="block font-normal uppercase no-underline hover:no-underline"
             >
-              T<Dash />SHIRTS & POLO
+              T<Dash />
+              SHIRTS & POLO
             </DrawerLink>
 
             <DrawerLink
@@ -377,7 +388,9 @@ function PanelView({
           </button>
         </div>
         <div className="p-6 pt-4 space-y-4">
-          <h2 className="text-2xl">World of D<Apostrophe /> L Avén</h2>
+          <h2 className="text-2xl">
+            World of D<Apostrophe /> L Avén
+          </h2>
           <div className="space-y-3">
             <DrawerLink
               href="/world-of-d-laven/house-of-dl-creation"
@@ -510,17 +523,14 @@ export default function MenuDrawer({
         <SheetContent
           side={side}
           className={`w-[420px] sm:w-[520px] flex flex-col p-0 top-0 h-screen
-        data-[state=open]:animate-in ${
+        data-[state=open]:animate-in data-[state=closed]:animate-out
+        ${
           side === "left"
-            ? "data-[state=open]:slide-in-from-left"
-            : "data-[state=open]:slide-in-from-right"
-        } data-[state=open]:fade-in-0
-        data-[state=closed]:animate-out ${
-          side === "left"
-            ? "data-[state=closed]:slide-out-to-left"
-            : "data-[state=closed]:slide-out-to-right"
-        } data-[state=closed]:fade-out-0`}
-          style={{ animationDuration: "400ms" }}
+            ? "data-[state=open]:slide-in-from-left data-[state=closed]:slide-out-to-left"
+            : "data-[state=open]:slide-in-from-right data-[state=closed]:slide-out-to-right"
+        }
+        data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0
+        [animation-duration:400ms]`}
         >
           {/* Scrollable Navigation Area */}
           <div className="flex-1 relative">

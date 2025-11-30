@@ -41,7 +41,11 @@ import { useRouter } from "next/navigation";
 // Brand removed from center per requirement
 
 // --- Molecules ---
-function LeftMenuTrigger({ onMenuOpenChange }: { onMenuOpenChange: (open: boolean) => void }) {
+function LeftMenuTrigger({
+  onMenuOpenChange,
+}: {
+  onMenuOpenChange: (open: boolean) => void;
+}) {
   return (
     <MenuDrawer
       side="left"
@@ -50,10 +54,12 @@ function LeftMenuTrigger({ onMenuOpenChange }: { onMenuOpenChange: (open: boolea
         <button
           type="button"
           aria-label="Open menu"
-          className="inline-flex h-8 items-center justify-center hover: w-8 md:w-auto md:px-2"
+          className="inline-flex h-8 items-center justify-center w-8 md:w-auto md:px-2 "
         >
           <MenuIcon className="h-4 w-4" />
-          <span className="uppercase text-sm hidden md:ml-2 md:inline">Menu</span>
+          <span className="uppercase text-sm hidden md:ml-2 md:inline">
+            Menu
+          </span>
         </button>
       }
     />
@@ -103,12 +109,14 @@ export default function Navbar() {
       <header
         className={cn(
           "fixed top-0 left-0 right-0 z-[40] w-full transition-colors duration-200 font-['Lovato-Regular']",
-          scrolled ? "bg-white shadow-sm text-black" : "bg-transparent text-white"
+          scrolled
+            ? "bg-white shadow-sm text-black"
+            : "bg-transparent text-white"
         )}
       >
         <div className="px-4 md:px-8">
           <nav aria-label="Primary">
-              <div className="grid grid-cols-3 items-center h-20">
+            <div className="grid grid-cols-3 items-center h-20">
               <div className="justify-self-start">
                 <div className="flex items-center gap-0 sm:gap-2">
                   <LeftMenuTrigger onMenuOpenChange={setIsMenuOpen} />
@@ -117,16 +125,19 @@ export default function Navbar() {
                     aria-label="Search"
                     onClick={() => setIsSearchOpen(true)}
                     className={`inline-flex h-8 items-center justify-center hover:bg-accent w-8 sm:w-auto sm:px-2 transition-opacity duration-200 ${
-                      isMenuOpen ? 'inline-flex' : 'hidden min-[425px]:inline-flex'
+                      isMenuOpen
+                        ? "inline-flex"
+                        : "hidden min-[425px]:inline-flex"
                     }`}
                   >
-                      <Search className="h-4 w-4" />
-                    <span className="uppercase text-sm hidden sm:ml-2 sm:inline">Search</span>
+                    <Search className="h-4 w-4" />
+                    <span className="uppercase text-sm hidden sm:ml-2 sm:inline">
+                      Search
+                    </span>
                   </button>
                 </div>
               </div>
 
-        
               <div className="justify-self-center">
                 <div
                   id="navbar-logo-target"
