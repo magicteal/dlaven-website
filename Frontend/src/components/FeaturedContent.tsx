@@ -10,7 +10,7 @@ const BG_IMAGE_RIGHT =
 // This is the new component for the "DL PRIVÉ EDITION" section
 export default function FeaturedContent() {
   return (
-    <section className="relative w-full h-[400px] md:min-h-[500px] text-white overflow-hidden my-40">
+    <section className="relative w-full h-[70vh] text-white overflow-hidden my-40">
       {/* Background Image Grid */}
       <div className="absolute inset-0 grid grid-cols-1 sm:grid-cols-2 max-w-[95%] mx-auto">
         <div className="relative h-full w-full ">

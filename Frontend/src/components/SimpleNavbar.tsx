@@ -61,7 +61,7 @@ export default function SimpleNavbar() {
       <header className="fixed top-0 left-0 right-0 z-[40] w-full bg-white shadow-sm text-black font-['Lovato-Regular']">
         <div className="px-4 md:px-8">
           <nav aria-label="Primary">
-            <div className="grid grid-cols-3 items-center h-16">
+            <div className="grid grid-cols-3 items-center h-20">
               <div className="justify-self-start">
                 <div className="flex items-center gap-0 sm:gap-2">
                   <LeftMenuTrigger onMenuOpenChange={setIsMenuOpen} />
@@ -84,10 +84,10 @@ export default function SimpleNavbar() {
                   <Image
                     src="/logos/logoText.svg"
                     alt="D' LAVÉN"
-                    width={200}
-                    height={40}
+                    width={180}
+                    height={44}
                     priority
-                    className="h-7 sm:h-8 md:h-10 w-auto brightness-0"
+                    className="h-6 sm:h-7 md:h-8 w-auto brightness-0"
                   />
                 </Link>
               </div>

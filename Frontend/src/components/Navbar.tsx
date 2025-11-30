@@ -108,7 +108,7 @@ export default function Navbar() {
       >
         <div className="px-4 md:px-8">
           <nav aria-label="Primary">
-              <div className="grid grid-cols-3 items-center h-16">
+              <div className="grid grid-cols-3 items-center h-20">
               <div className="justify-self-start">
                 <div className="flex items-center gap-0 sm:gap-2">
                   <LeftMenuTrigger onMenuOpenChange={setIsMenuOpen} />
@@ -131,7 +131,7 @@ export default function Navbar() {
                 <div
                   id="navbar-logo-target"
                   aria-hidden
-                  className="h-7 sm:h-8 md:h-10 w-[120px] sm:w-[140px] md:w-[180px] lg:w-[200px]"
+                  className="h-6 sm:h-7 md:h-8 w-[100px] sm:w-[120px] md:w-[140px] lg:w-[160px]"
                 />
               </div>
 

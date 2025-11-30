@@ -45,18 +45,19 @@ export default function Hero() {
       const deltaY = ty - wy;
 
       const logoRect = box.getBoundingClientRect();
-      const baseScale = tRect.width > 0 ? tRect.width / logoRect.width : 0.5;
-      const getDockScaleFactor = () => {
-        const w = window.innerWidth;
-        if (w < 380) return 0.68;
-        if (w < 480) return 0.72;
-        if (w < 640) return 0.75;
-        if (w < 768) return 0.78;
-        if (w < 1024) return 0.80;
-        return 0.82;
-      };
-      const dockScaleFactor = getDockScaleFactor();
-      const scale = baseScale * dockScaleFactor;
+      // Compute a target dock width (px) for the navbar so the logo's "font" appears smaller
+      const vw = window.innerWidth;
+      let desiredDockWidth = 140;
+      if (vw < 380) desiredDockWidth = 80;
+      else if (vw < 480) desiredDockWidth = 100;
+      else if (vw < 640) desiredDockWidth = 110;
+      else if (vw < 768) desiredDockWidth = 120;
+      else if (vw < 1024) desiredDockWidth = 130;
+      else desiredDockWidth = 140;
+
+      // Use the navbar target width if it's smaller than our desired dock width
+      const finalDockWidth = Math.min(tRect.width || desiredDockWidth, desiredDockWidth);
+      const scale = logoRect.width > 0 ? finalDockWidth / logoRect.width : 0.2;
 
         // Start with inverted (white) logo in hero
         // Use xPercent/yPercent to center via GSAP (avoid mixing CSS translate and GSAP transforms)
@@ -73,7 +74,7 @@ export default function Hero() {
           y: deltaY,
           scale,
           filter: "invert(1) brightness(1)",
-          duration: 0.6,
+          duration: 0.8,
           ease: "power2.out",
         });
       };
@@ -85,7 +86,7 @@ export default function Hero() {
           y: 0,
           scale: 1,
           filter: "invert(0) brightness(1)",
-          duration: 0.6,
+          duration: 0.8,
           ease: "power2.out",
         });
       };
@@ -225,12 +226,15 @@ export default function Hero() {
         className="fixed left-1/2 top-[49%] md:top-[35%] pointer-events-none z-[60]"
         aria-hidden
       >
-        <div ref={logoBoxRef} className="w-[260px] sm:w-[320px] md:w-[420px] lg:w-[520px]">
+        <div
+          ref={logoBoxRef}
+          className="w-[92vw] sm:w-[82vw] md:w-[72vw] lg:w-[62vw] max-w-[1080px]"
+        >
           <Image
             src="/logos/logoText.svg"
             alt="Dlaven"
-            width={256}
-            height={80}
+            width={1080}
+            height={240}
             className="w-full h-auto"
             priority
           />
