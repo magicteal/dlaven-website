@@ -20,7 +20,8 @@ const suggestionLinks = [
 ];
 
 export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
-  const overlayRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const backdropRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState("");
   const router = useRouter();
   // Keep an internal mounted flag so we can fully unrender when closed,
@@ -31,37 +32,31 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
   useEffect(() => {
     if (isOpen) {
       setMounted(true);
-      document.body.style.overflow = "hidden"; // Disable scrolling
-      // Ensure starting position is fully offscreen
-      if (overlayRef.current) {
-        gsap.set(overlayRef.current, { yPercent: -100 });
+      // Animate in: subtle dropdown and fade
+      if (panelRef.current) {
+        gsap.fromTo(
+          panelRef.current,
+          { y: -18, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.45, ease: "power3.out" }
+        );
       }
-      gsap.to(overlayRef.current, {
-        yPercent: 0,
-        duration: 0.45,
-        ease: "power3.out",
-      });
+      if (backdropRef.current) {
+        gsap.fromTo(
+          backdropRef.current,
+          { opacity: 0 },
+          { opacity: 1, duration: 0.35, ease: "linear" }
+        );
+      }
     } else {
-      // Animate out, then fully unmount so nothing leaks visually
-      if (overlayRef.current) {
-        gsap.to(overlayRef.current, {
-          yPercent: -100,
-          duration: 0.35,
-          ease: "power3.in",
-          onComplete: () => {
-            setMounted(false);
-            document.body.style.overflow = "auto";
-          },
-        });
-      } else {
-        setMounted(false);
-        document.body.style.overflow = "auto";
-      }
+      // Animate out, then unmount
+      const tl = gsap.timeline({ onComplete: () => setMounted(false) });
+      if (panelRef.current) tl.to(panelRef.current, { y: -14, opacity: 0, duration: 0.38, ease: "power3.in" }, 0);
+      if (backdropRef.current) tl.to(backdropRef.current, { opacity: 0, duration: 0.35, ease: "linear" }, 0);
     }
 
     // Cleanup to restore scroll on unmount
     return () => {
-      document.body.style.overflow = "auto";
+      // no body lock for dropdown variant
     };
   }, [isOpen]);
 
@@ -75,62 +70,69 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
 
   if (!mounted) return null;
 
+  function onBackdropClick(e: React.MouseEvent<HTMLDivElement>) {
+    if (e.target === e.currentTarget) onClose();
+  }
+
   return (
     <div
-      ref={overlayRef}
+      ref={backdropRef}
+      onClick={onBackdropClick}
       role="dialog"
       aria-modal="true"
       aria-hidden={!isOpen}
-      className="fixed inset-0 z-[9999] bg-white/95 backdrop-blur-md overflow-y-auto pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]"
+      className="fixed inset-0 z-[80] bg-black/0"
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-end h-12 sm:h-14 md:h-16">
-          <button
-            onClick={onClose}
-            aria-label="Close search"
-            className="text-gray-700 hover:text-black h-10 w-10 grid place-items-center"
-          >
-            <X className="h-5 w-5 sm:h-6 sm:w-6" />
-          </button>
-        </div>
-
-        <div className="mt-4 sm:mt-6 md:mt-8 max-w-6xl mx-auto">
+      {/* Dropdown panel anchored below navbar */}
+      <div
+        ref={panelRef}
+        className="absolute left-1/2 -translate-x-1/2 top-[80px] w-[min(1200px,calc(100%-2rem))] bg-white shadow-2xl border border-black/10"
+      >
+        {/* Search row */}
+        <div className="px-4 sm:px-6 md:px-8 pt-4 sm:pt-6">
           <form onSubmit={handleSearchSubmit}>
             <label htmlFor="search-input" className="sr-only">
               What are you looking for?
             </label>
-            <div className="relative border-b-2 border-black">
+            <div className="relative">
               <input
                 id="search-input"
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="What are you looking for?"
-                className="w-full bg-transparent py-3 sm:py-4 text-lg sm:text-xl md:text-2xl placeholder:text-gray-600 focus:outline-none"
+                className="w-full bg-transparent border border-black/20 px-3 sm:px-4 py-3 sm:py-3.5 pr-12 text-sm sm:text-base md:text-lg placeholder:text-gray-600 focus:outline-none"
                 autoFocus
               />
               <button
                 type="submit"
                 aria-label="Submit search"
-                className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-700 hover:text-black"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-700 hover:text-black"
               >
-                <Search className="h-5 w-5 sm:h-6 sm:w-6" />
+                <Search className="h-5 w-5" />
               </button>
             </div>
           </form>
 
-          <div className="mt-8 sm:mt-10 grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10 text-base md:text-lg">
+          <div className="flex items-center justify-end py-2">
+            <button onClick={onClose} className="text-sm underline hover:no-underline">
+              Cancel
+            </button>
+          </div>
+        </div>
+
+        {/* Content grid */}
+        <div className="px-4 sm:px-6 md:px-8 pb-6 sm:pb-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10 text-sm sm:text-base">
             <div>
-              <p className="font-semibold uppercase tracking-wider text-black text-base md:text-lg">
-                IN DEMAND
-              </p>
-              <ul className="mt-6 space-y-4">
+              <p className="font-semibold uppercase tracking-wider text-black">IN DEMAND</p>
+              <ul className="mt-4 sm:mt-6 space-y-3 sm:space-y-4">
                 {trendingSearches.map((item) => (
                   <li key={item} className="uppercase">
                     <Link
                       href={`/products?q=${encodeURIComponent(item)}`}
                       onClick={onClose}
-                      className="block"
+                      className="block hover:underline"
                     >
                       {item}
                     </Link>
@@ -140,18 +142,14 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
             </div>
 
             <div>
-              <p className="font-semibold uppercase tracking-wider text-black text-base md:text-lg">
-                NEW IN
-              </p>
-              <ul className="mt-6 space-y-4">
+              <p className="font-semibold uppercase tracking-wider text-black">NEW IN</p>
+              <ul className="mt-4 sm:mt-6 space-y-3 sm:space-y-4">
                 {newInLinks.map((item) => (
                   <li key={item} className="uppercase">
                     <Link
-                      href={`/products?category=${encodeURIComponent(
-                        item.toLowerCase()
-                      )}`}
+                      href={`/products?category=${encodeURIComponent(item.toLowerCase())}`}
                       onClick={onClose}
-                      className="block"
+                      className="block hover:underline"
                     >
                       {item}
                     </Link>
@@ -160,14 +158,12 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
               </ul>
             </div>
 
-            <div className="md:border-l-2 border-black/20 md:pl-8">
-              <p className="font-semibold uppercase tracking-wider text-black text-base md:text-lg">
-                SUGGESTIONS
-              </p>
-              <ul className="mt-6 space-y-4">
+            <div className="md:border-l border-black/10 md:pl-8">
+              <p className="font-semibold uppercase tracking-wider text-black">SUGGESTIONS</p>
+              <ul className="mt-4 sm:mt-6 space-y-3 sm:space-y-4">
                 {suggestionLinks.map((item) => (
                   <li key={item} className="uppercase">
-                    <Link href="#" onClick={onClose} className="block">
+                    <Link href="#" onClick={onClose} className="block hover:underline">
                       {item}
                     </Link>
                   </li>

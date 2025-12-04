@@ -10,6 +10,7 @@ import {
   Search,
   Menu as MenuIcon,
   User as UserIcon,
+  ShoppingBag,
 } from "lucide-react";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { useRouter } from "next/navigation";
@@ -39,16 +40,104 @@ function RightControls() {
 
   return (
     <>
-      {!loading && <AccountMenu user={user ?? undefined} logout={logout} />}
-
-      <button
-        aria-label="Wishlist"
-        className="relative inline-flex items-center justify-center h-8 w-8 rounded-none hover:bg-accent"
-        onClick={() => router.push("/me#saved")}
-      >
-        <Heart className="h-4 w-4" />
-      </button>
+      {(!loading && user) ? (
+        <>
+          <ProfileDropdown />
+          <button
+            aria-label="Wishlist"
+            className="relative inline-flex items-center justify-center h-8 w-8 rounded-none hover:bg-accent"
+            onClick={() => router.push("/me#saved")}
+          >
+            <Heart className="h-4 w-4" />
+          </button>
+          <button
+            aria-label="Cart"
+            className="relative inline-flex items-center justify-center h-8 w-8 rounded-none hover:bg-accent"
+            onClick={() => router.push("/cart")}
+          >
+            <ShoppingBag className="h-4 w-4" />
+          </button>
+        </>
+      ) : (
+        <>
+          {!loading && <AccountMenu user={user ?? undefined} logout={logout} />}
+          <button
+            aria-label="Wishlist"
+            className="relative inline-flex items-center justify-center h-8 w-8 rounded-none hover:bg-accent"
+            onClick={() => router.push("/me#saved")}
+          >
+            <Heart className="h-4 w-4" />
+          </button>
+        </>
+      )}
     </>
+  );
+}
+
+function ProfileDropdown() {
+  const router = useRouter();
+  const { user } = useAuth();
+  const [open, setOpen] = React.useState(false);
+  const menuRef = React.useRef<HTMLDivElement | null>(null);
+
+  React.useEffect(() => {
+    function onDocClick(e: MouseEvent) {
+      if (!menuRef.current) return;
+      if (!menuRef.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", onDocClick);
+    return () => document.removeEventListener("mousedown", onDocClick);
+  }, []);
+
+  const go = (href: string) => {
+    setOpen(false);
+    router.push(href);
+  };
+
+  return (
+    <div className="relative" ref={menuRef}>
+      <button
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-label="Profile menu"
+        className="inline-flex items-center justify-center h-8 w-8 rounded-none hover:bg-accent"
+        onClick={() => setOpen((v) => !v)}
+      >
+        <UserIcon className="h-4 w-4" />
+      </button>
+      {open && (
+        <div
+          role="menu"
+          className="fixed right-4 top-[70px] mt-3 w-64 bg-white shadow-lg border border-black/10 z-[99999] text-black"
+        >
+          <ul className="py-4 px-4 text-sm uppercase tracking-[0.2em] space-y-3">
+            {user?.role === "admin" && (
+              <li>
+                <button className="w-full text-left" onClick={() => go("/admin")}>My Dashboard</button>
+              </li>
+            )}
+            <li>
+              <button className="w-full text-left" onClick={() => go("/login")}>Access</button>
+            </li>
+            <li>
+              <button className="w-full text-left" onClick={() => go("/me")}>Purchases</button>
+            </li>
+            <li>
+              <button className="w-full text-left" onClick={() => go("/destinations")}>Destinations</button>
+            </li>
+            <li>
+              <button className="w-full text-left" onClick={() => go("/prive")}>DL Privé</button>
+            </li>
+            <li>
+              <button className="w-full text-left" onClick={() => go("/profile")}>Account Setting</button>
+            </li>
+            <li>
+              <button className="w-full text-left" onClick={() => go("/me#saved")}>Saved Items</button>
+            </li>
+          </ul>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -151,7 +240,7 @@ function AccountMenu({
       {open && (
         <div
           role="menu"
-          className="absolute right-0 top-full mt-3 w-64 bg-white shadow-lg border border-black/10 z-[60]"
+          className="fixed right-4 top-[70px] mt-3 w-64 bg-white shadow-lg border border-black/10 z-[99999] text-black"
         >
           <ul className="py-3 text-sm capitalize px-2 space-y-1">
             {user && (

@@ -61,9 +61,8 @@ export default async function CategoryGrid({
     imageAlt?: string;
   }> = [];
   try {
-    // Use force-cache so this component can be statically optimized during build.
-    // Using `no-store` forces dynamic server rendering which prevents static prerender.
-    const res = await fetch(`${API_BASE}/api/categories`, { cache: "force-cache" });
+    // Use no-store so category updates reflect immediately on home/category pages.
+    const res = await fetch(`${API_BASE}/api/categories`, { cache: "no-store" });
     if (res.ok) {
       const j = await res.json();
       data = (j.items || []) as typeof data;

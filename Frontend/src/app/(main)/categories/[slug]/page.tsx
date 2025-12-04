@@ -47,7 +47,7 @@ export default async function CategoryPage({
 
   const items = await fetchProductsForCategory(slug);
   const bg =
-    category.heroImage || category.imageSrc || "/images/placeholder.png";
+    category.imageSrc || category.heroImage || "/images/placeholder.png";
 
   return (
     <main>
