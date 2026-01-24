@@ -129,7 +129,23 @@ export const api = {
       body: JSON.stringify({ code }),
     });
   },
-  register(data: { email: string; password: string; name?: string }) {
+  checkEmail(email: string) {
+    return request<{ exists: boolean }>("/api/auth/check-email", {
+      method: "POST",
+      body: JSON.stringify({ email }),
+    });
+  },
+  register(data: {
+    email: string;
+    password: string;
+    firstName?: string;
+    lastName?: string;
+    title?: string;
+    phone?: string;
+    areaCode?: string;
+    dob?: string;
+    marketingConsent?: boolean;
+  }) {
     return request<{
       user: {
         id: string;
@@ -193,12 +209,14 @@ export const api = {
       body: JSON.stringify(data),
     });
   },
-  updateProfile(data: { name?: string }) {
+  updateProfile(data: { name?: string; phone?: string; dob?: string }) {
     return request<{
       user: {
         id: string;
         email: string;
         name?: string;
+        phone?: string;
+        dob?: string;
         role?: "user" | "admin";
         address?: {
           fullName?: string;

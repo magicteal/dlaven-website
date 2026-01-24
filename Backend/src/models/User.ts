@@ -4,6 +4,10 @@ export interface IUser extends Document {
   email: string;
   passwordHash: string;
   name?: string;
+  title?: string;
+  phone?: string;
+  dob?: string;
+  marketingConsent?: boolean;
   role: "user" | "admin";
   addresses?: Types.DocumentArray<IUserAddress> | IUserAddress[];
   address?: {
@@ -61,6 +65,10 @@ const UserSchema = new Schema<IUser>(
     email: { type: String, required: true, unique: true, index: true },
     passwordHash: { type: String, required: true },
     name: { type: String },
+    title: { type: String },
+    phone: { type: String },
+    dob: { type: String },
+    marketingConsent: { type: Boolean, default: false },
     role: {
       type: String,
       enum: ["user", "admin"],

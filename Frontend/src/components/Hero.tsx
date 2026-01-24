@@ -162,7 +162,7 @@ export default function Hero() {
           
           {/* Content overlay */}
           <div className="absolute inset-0 flex flex-col items-center justify-end pb-16 md:pb-24 text-white">
-            <h2 className="text-2xl md:text-3xl font-serif mb-4 tracking-wide">
+            <h2 className="text-2xl md:text-3xl mb-4 tracking-wide" style={{ fontFamily: 'Montserrat, sans-serif' }}>
               Fashion & Accessories
             </h2>
             <Link 
@@ -205,7 +205,7 @@ export default function Hero() {
           
           {/* Content overlay */}
           <div className="absolute inset-0 flex flex-col items-center justify-end pb-16 md:pb-24 text-white">
-            <h2 className="text-2xl md:text-3xl font-serif mb-4 tracking-wide">
+            <h2 className="text-2xl md:text-3xl mb-4 tracking-wide" style={{ fontFamily: 'Montserrat, sans-serif' }}>
               Fragrance & Beauty
             </h2>
             <Link 

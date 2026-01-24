@@ -1,4 +1,4 @@
-# D’ LAVÉN — Monorepo
+# D’ LAVÉN
 
 A full-stack Next.js + Express/Mongo monorepo for D’ LAVÉN with authentication, admin panel, and email settings.
 

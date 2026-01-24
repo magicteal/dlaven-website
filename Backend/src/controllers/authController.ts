@@ -13,12 +13,32 @@ function signToken(payload: object) {
 
 export async function register(req: Request, res: Response) {
   try {
-    const { email, password, name } = req.body as { email: string; password: string; name?: string };
+    const { email, password, firstName, lastName, title, phone, areaCode, dob, marketingConsent } = req.body as {
+      email: string;
+      password: string;
+      firstName?: string;
+      lastName?: string;
+      title?: string;
+      phone?: string;
+      areaCode?: string;
+      dob?: string;
+      marketingConsent?: boolean;
+    };
     if (!email || !password) return res.status(400).json({ error: "Email and password are required" });
     const existing = await User.findOne({ email }).lean();
     if (existing) return res.status(409).json({ error: "Email already in use" });
     const passwordHash = await bcrypt.hash(password, 10);
-  const created = await User.create({ email, passwordHash, name });
+    const name = [firstName, lastName].filter(Boolean).join(" ") || undefined;
+    const fullPhone = areaCode && phone ? `${areaCode}${phone}` : phone;
+  const created = await User.create({
+    email,
+    passwordHash,
+    name,
+    title,
+    phone: fullPhone,
+    dob,
+    marketingConsent: !!marketingConsent,
+  });
   const token = signToken({ sub: created.id, email: created.email, role: created.role });
     res.cookie("token", token, { httpOnly: true, sameSite: "lax", secure: false, maxAge: 7 * 24 * 60 * 60 * 1000 });
     try {
@@ -68,7 +88,7 @@ export async function me(req: Request, res: Response) {
       postalCode: defaultAddress.postalCode,
       country: defaultAddress.country,
     } : (user.address || null);
-    return res.json({ user: { id: user.id, email: user.email, name: user.name, role: user.role, address: addr } });
+    return res.json({ user: { id: user.id, email: user.email, name: user.name, phone: user.phone, dob: user.dob, role: user.role, address: addr } });
   } catch (err) {
     return res.status(500).json({ error: "Failed" });
   }
@@ -141,10 +161,12 @@ export async function updateProfile(req: Request, res: Response) {
   try {
     const auth = (req as any).user as { sub: string } | undefined;
     if (!auth) return res.status(401).json({ error: "Unauthorized" });
-    const { name } = req.body as { name?: string };
+    const { name, phone, dob } = req.body as { name?: string; phone?: string; dob?: string };
     const user = await User.findById(auth.sub).exec();
     if (!user) return res.status(404).json({ error: "Not found" });
     if (typeof name === "string") user.name = name;
+    if (typeof phone === "string") user.phone = phone;
+    if (typeof dob === "string") user.dob = dob;
     await user.save();
     // Return with computed default address for consistency
     const defaultAddress = (user.addresses || []).find((a: any) => a.isDefault) || (user.addresses && user.addresses[0]) || null;
@@ -158,7 +180,7 @@ export async function updateProfile(req: Request, res: Response) {
       postalCode: defaultAddress.postalCode,
       country: defaultAddress.country,
     } : (user.address || null);
-    return res.json({ user: { id: user.id, email: user.email, name: user.name, role: user.role, address: addr } });
+    return res.json({ user: { id: user.id, email: user.email, name: user.name, phone: user.phone, dob: user.dob, role: user.role, address: addr } });
   } catch (err) {
     return res.status(500).json({ error: "Failed to update profile" });
   }

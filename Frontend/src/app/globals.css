@@ -36,13 +36,13 @@
 
 @layer base {
   :root {
-    --font-sans: "Lovato-Regular", ui-sans-serif, system-ui, -apple-system,
-      "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
-      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-      "Noto Color Emoji";
+    --font-sans: "Montserrat", "Lovato-Regular", ui-sans-serif, system-ui,
+      -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+      "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji",
+      "Segoe UI Symbol", "Noto Color Emoji";
   }
 
-  /* Do not set a global font-family here — components will opt in. */
+  /* Apply Montserrat as the default app font. Components may still opt-in to other fonts. */
 }
 
 /* Simple animation utility fallbacks (Tailwind v4 provides these by default, but include minimal defs if needed) */
@@ -239,6 +239,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-sans);
   }
 }
 

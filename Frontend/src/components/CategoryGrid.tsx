@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import Container from "@/components/Container";
 export const dynamic = "force-dynamic";
 import { API_BASE } from "@/lib/api";
 import { shimmerBase64 } from "@/lib/shimmer";

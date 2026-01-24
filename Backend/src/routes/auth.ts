@@ -5,6 +5,14 @@ import { User } from "../models/User";
 
 const router = Router();
 
+// Check if email exists (for login/register flow)
+router.post("/check-email", async (req, res) => {
+	const { email } = req.body as { email?: string };
+	if (!email) return res.status(400).json({ error: "Email is required" });
+	const user = await User.findOne({ email }).lean();
+	return res.json({ exists: !!user });
+});
+
 router.post("/register", register);
 router.post("/login", login);
 router.post("/logout", logout);

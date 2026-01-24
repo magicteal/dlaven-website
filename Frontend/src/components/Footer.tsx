@@ -3,13 +3,11 @@
 import React from "react";
 import Link from "next/link";
 import { Instagram, Facebook, Twitter, Youtube } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import BrandText from "@/components/BrandText";
 import Apostrophe from "@/components/Apostrophe";
 // No animation for footer logo — static and smaller
 
 export default function Footer() {
-  const year = new Date().getFullYear();
   // Footer logo is static (no animation). Size adjusted in JSX below.
 
   return (

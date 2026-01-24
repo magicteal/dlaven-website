@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
+import React, { useEffect, useState } from "react";
 import { Search, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -19,51 +18,44 @@ const suggestionLinks = [
   "BOUTIQUE Locator",
 ];
 
+// Animation duration to match MenuDrawer
+const ANIMATION_DURATION = 400;
+
 export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
-  const panelRef = useRef<HTMLDivElement>(null);
-  const backdropRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState("");
   const router = useRouter();
-  // Keep an internal mounted flag so we can fully unrender when closed,
-  // preventing any clipped content from appearing on mobile browsers.
   const [mounted, setMounted] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
 
-  // GSAP Animation Logic
+  // Animation mounting logic matching MenuDrawer pattern
   useEffect(() => {
+    let timeout: ReturnType<typeof setTimeout> | null = null;
+
     if (isOpen) {
+      // Opening: mount immediately
       setMounted(true);
-      // Animate in: subtle dropdown and fade
-      if (panelRef.current) {
-        gsap.fromTo(
-          panelRef.current,
-          { y: -18, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.45, ease: "power3.out" }
-        );
-      }
-      if (backdropRef.current) {
-        gsap.fromTo(
-          backdropRef.current,
-          { opacity: 0 },
-          { opacity: 1, duration: 0.35, ease: "linear" }
-        );
-      }
-    } else {
-      // Animate out, then unmount
-      const tl = gsap.timeline({ onComplete: () => setMounted(false) });
-      if (panelRef.current) tl.to(panelRef.current, { y: -14, opacity: 0, duration: 0.38, ease: "power3.in" }, 0);
-      if (backdropRef.current) tl.to(backdropRef.current, { opacity: 0, duration: 0.35, ease: "linear" }, 0);
+      setIsClosing(false);
+      // Lock body scroll
+      document.body.style.overflow = "hidden";
+    } else if (mounted) {
+      // Closing: set closing state and delay unmount
+      setIsClosing(true);
+      timeout = setTimeout(() => {
+        setMounted(false);
+        setIsClosing(false);
+        document.body.style.overflow = "";
+      }, ANIMATION_DURATION);
     }
 
-    // Cleanup to restore scroll on unmount
     return () => {
-      // no body lock for dropdown variant
+      if (timeout) clearTimeout(timeout);
     };
-  }, [isOpen]);
+  }, [isOpen, mounted]);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (query.trim()) {
-      onClose(); // Close the overlay
+      onClose();
       router.push(`/products?q=${encodeURIComponent(query)}`);
     }
   };
@@ -74,22 +66,29 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
     if (e.target === e.currentTarget) onClose();
   }
 
+  // Determine animation state like MenuDrawer
+  const state = isClosing ? "closed" : isOpen ? "open" : "closed";
+
   return (
     <div
-      ref={backdropRef}
       onClick={onBackdropClick}
       role="dialog"
       aria-modal="true"
       aria-hidden={!isOpen}
-      className="fixed inset-0 z-[80] bg-black/0"
+      data-state={state}
+      className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 [animation-duration:400ms]"
     >
-      {/* Dropdown panel anchored below navbar */}
+      {/* Full-width panel from top of viewport with slide animation */}
       <div
-        ref={panelRef}
-        className="absolute left-1/2 -translate-x-1/2 top-[80px] w-[min(1200px,calc(100%-2rem))] bg-white shadow-2xl border border-black/10"
+        data-state={state}
+        className="w-full bg-white/95 backdrop-blur-xl shadow-2xl border-b border-black/10 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 [animation-duration:400ms]"
       >
-        {/* Search row */}
-        <div className="px-4 sm:px-6 md:px-8 pt-4 sm:pt-6">
+        {/* Search section with max-width container */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 pb-4">
+          <div className="flex items-center justify-between mb-6">
+            {/* <h2 className="text-2xl sm:text-3xl font-light tracking-wide">Search</h2> */}
+          </div>
+
           <form onSubmit={handleSearchSubmit}>
             <label htmlFor="search-input" className="sr-only">
               What are you looking for?
@@ -101,70 +100,92 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="What are you looking for?"
-                className="w-full bg-transparent border border-black/20 px-3 sm:px-4 py-3 sm:py-3.5 pr-12 text-sm sm:text-base md:text-lg placeholder:text-gray-600 focus:outline-none"
+                className="w-full bg-white/80 backdrop-blur-sm border-2 border-black/15 focus:border-black/40 rounded-none px-4 sm:px-6 py-4 sm:py-5 pr-14 text-base sm:text-lg md:text-xl placeholder:text-gray-500 focus:outline-none transition-all duration-300 shadow-sm hover:shadow-md"
                 autoFocus
               />
               <button
                 type="submit"
                 aria-label="Submit search"
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-700 hover:text-black"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-black transition-colors duration-200"
               >
-                <Search className="h-5 w-5" />
+                <Search className="h-6 w-6" />
               </button>
             </div>
           </form>
-
-          <div className="flex items-center justify-end py-2">
-            <button onClick={onClose} className="text-sm underline hover:no-underline">
-              Cancel
-            </button>
-          </div>
         </div>
 
-        {/* Content grid */}
-        <div className="px-4 sm:px-6 md:px-8 pb-6 sm:pb-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10 text-sm sm:text-base">
-            <div>
-              <p className="font-semibold uppercase tracking-wider text-black">IN DEMAND</p>
-              <ul className="mt-4 sm:mt-6 space-y-3 sm:space-y-4">
-                {trendingSearches.map((item) => (
-                  <li key={item} className="uppercase">
+        {/* Content grid with max-width container */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 sm:gap-12 lg:gap-16">
+            {/* In Demand Section */}
+            <div className="space-y-5">
+              <h3 className="font-semibold uppercase tracking-widest text-xs sm:text-sm text-black/70 mb-6">
+                IN DEMAND
+              </h3>
+              <ul className="space-y-3">
+                {trendingSearches.map((item, index) => (
+                  <li
+                    key={item}
+                    className="transform transition-all duration-200 hover:translate-x-1"
+                    style={{ animationDelay: `${index * 50}ms` }}
+                  >
                     <Link
                       href={`/products?q=${encodeURIComponent(item)}`}
                       onClick={onClose}
-                      className="block hover:underline"
+                      className="block text-base sm:text-lg uppercase tracking-wide hover:text-gray-600 transition-colors duration-200 relative group"
                     >
                       {item}
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-black group-hover:w-full transition-all duration-300"></span>
                     </Link>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div>
-              <p className="font-semibold uppercase tracking-wider text-black">NEW IN</p>
-              <ul className="mt-4 sm:mt-6 space-y-3 sm:space-y-4">
-                {newInLinks.map((item) => (
-                  <li key={item} className="uppercase">
+            {/* New In Section */}
+            <div className="space-y-5">
+              <h3 className="font-semibold uppercase tracking-widest text-xs sm:text-sm text-black/70 mb-6">
+                NEW IN
+              </h3>
+              <ul className="space-y-3">
+                {newInLinks.map((item, index) => (
+                  <li
+                    key={item}
+                    className="transform transition-all duration-200 hover:translate-x-1"
+                    style={{ animationDelay: `${index * 50}ms` }}
+                  >
                     <Link
                       href={`/products?category=${encodeURIComponent(item.toLowerCase())}`}
                       onClick={onClose}
-                      className="block hover:underline"
+                      className="block text-base sm:text-lg uppercase tracking-wide hover:text-gray-600 transition-colors duration-200 relative group"
                     >
                       {item}
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-black group-hover:w-full transition-all duration-300"></span>
                     </Link>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="md:border-l border-black/10 md:pl-8">
-              <p className="font-semibold uppercase tracking-wider text-black">SUGGESTIONS</p>
-              <ul className="mt-4 sm:mt-6 space-y-3 sm:space-y-4">
-                {suggestionLinks.map((item) => (
-                  <li key={item} className="uppercase">
-                    <Link href="#" onClick={onClose} className="block hover:underline">
+            {/* Suggestions Section */}
+            <div className="space-y-5 md:border-l border-black/10 md:pl-10 lg:pl-12">
+              <h3 className="font-semibold uppercase tracking-widest text-xs sm:text-sm text-black/70 mb-6">
+                SUGGESTIONS
+              </h3>
+              <ul className="space-y-3">
+                {suggestionLinks.map((item, index) => (
+                  <li
+                    key={item}
+                    className="transform transition-all duration-200 hover:translate-x-1"
+                    style={{ animationDelay: `${index * 50}ms` }}
+                  >
+                    <Link
+                      href="#"
+                      onClick={onClose}
+                      className="block text-base sm:text-lg uppercase tracking-wide hover:text-gray-600 transition-colors duration-200 relative group"
+                    >
                       {item}
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-black group-hover:w-full transition-all duration-300"></span>
                     </Link>
                   </li>
                 ))}
@@ -172,6 +193,16 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
             </div>
           </div>
         </div>
+
+        {/* Close button styled like MenuDrawer */}
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close search"
+          className="absolute right-4 top-4 h-8 w-8 grid place-items-center bg-black text-white shadow-sm border border-transparent z-[60] pointer-events-auto"
+        >
+          <X className="h-4 w-4" />
+        </button>
       </div>
     </div>
   );
