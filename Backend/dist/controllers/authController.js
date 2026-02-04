@@ -48,7 +48,22 @@ async function register(req, res) {
             marketingConsent: !!marketingConsent,
         });
         const token = signToken({ sub: created.id, email: created.email, role: created.role });
-        res.cookie("token", token, { httpOnly: true, sameSite: "lax", secure: false, maxAge: 7 * 24 * 60 * 60 * 1000 });
+        // Cookie options: allow configuring secure/sameSite via env for production
+        const secure = process.env.COOKIE_SECURE
+            ? process.env.COOKIE_SECURE === "true"
+            : process.env.NODE_ENV === "production";
+        const sameSite = process.env.COOKIE_SAMESITE || (secure ? "none" : "lax");
+        res.cookie("token", token, {
+            httpOnly: true,
+            sameSite: sameSite,
+            secure,
+            path: "/",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+        });
+        if (process.env.NODE_ENV !== "production") {
+            const header = res.getHeader("Set-Cookie");
+            console.log("[auth] Set-Cookie header (register):", header);
+        }
         try {
             await (0, email_1.sendEmail)({
                 to: created.email,
@@ -75,7 +90,21 @@ async function login(req, res) {
         if (!ok)
             return res.status(401).json({ error: "Invalid credentials" });
         const token = signToken({ sub: user.id, email: user.email, role: user.role });
-        res.cookie("token", token, { httpOnly: true, sameSite: "lax", secure: false, maxAge: 7 * 24 * 60 * 60 * 1000 });
+        const secure = process.env.COOKIE_SECURE
+            ? process.env.COOKIE_SECURE === "true"
+            : process.env.NODE_ENV === "production";
+        const sameSite = process.env.COOKIE_SAMESITE || (secure ? "none" : "lax");
+        res.cookie("token", token, {
+            httpOnly: true,
+            sameSite: sameSite,
+            secure,
+            path: "/",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+        });
+        if (process.env.NODE_ENV !== "production") {
+            const header = res.getHeader("Set-Cookie");
+            console.log("[auth] Set-Cookie header (login):", header);
+        }
         return res.json({ user: { id: user.id, email: user.email, name: user.name, role: user.role } });
     }
     catch (err) {
@@ -123,7 +152,20 @@ async function forgotPassword(req, res) {
         user.passwordResetToken = token;
         user.passwordResetExpires = expires;
         await user.save();
-        const frontendBase = process.env.FRONTEND_ORIGIN || "http://localhost:3000";
+        // Prefer an explicit public frontend URL; otherwise pick the first non-wildcard origin from FRONTEND_ORIGIN.
+        const frontendBase = (() => {
+            const explicit = process.env.FRONTEND_PUBLIC_URL;
+            if (explicit)
+                return explicit;
+            const raw = process.env.FRONTEND_ORIGIN;
+            if (!raw)
+                return "http://localhost:3000";
+            const firstExact = raw
+                .split(",")
+                .map((s) => s.trim())
+                .find((s) => s && !s.includes("*"));
+            return firstExact || "http://localhost:3000";
+        })();
         const resetUrl = `${frontendBase}/reset-password?token=${encodeURIComponent(token)}`;
         try {
             await (0, email_1.sendEmail)({
@@ -169,9 +211,16 @@ async function resetPassword(req, res) {
     }
 }
 async function logout(_req, res) {
-    // Clear with the same attributes used when setting the cookie so browsers remove it reliably
-    const secure = false; // consider Boolean(process.env.COOKIE_SECURE) in prod
-    res.clearCookie("token", { httpOnly: true, sameSite: "lax", secure, path: "/" });
+    // Use same options as when setting the cookie so browsers remove it reliably
+    const secure = process.env.COOKIE_SECURE
+        ? process.env.COOKIE_SECURE === "true"
+        : process.env.NODE_ENV === "production";
+    const sameSite = process.env.COOKIE_SAMESITE || (secure ? "none" : "lax");
+    res.clearCookie("token", { httpOnly: true, sameSite: sameSite, secure, path: "/" });
+    if (process.env.NODE_ENV !== "production") {
+        const header = res.getHeader("Set-Cookie");
+        console.log("[auth] Clear-Cookie header (logout):", header);
+    }
     return res.json({ ok: true });
 }
 async function updateProfile(req, res) {

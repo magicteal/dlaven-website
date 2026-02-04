@@ -20,12 +20,59 @@ dotenv_1.default.config();
 const app = (0, express_1.default)();
 // CORS (allow frontend origins; comma-separated list)
 const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || "http://localhost:3000,http://127.0.0.1:3000";
-const ALLOWED_ORIGINS = FRONTEND_ORIGIN.split(",").map((s) => s.trim());
+function parseAllowedOriginRules(raw) {
+    return raw
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean)
+        .map((entry) => {
+        // Wildcards supported:
+        // - "*.vercel.app" (any protocol)
+        // - "https://*.vercel.app" (protocol restricted)
+        if (entry.includes("*")) {
+            const protocolMatch = entry.match(/^(https?):\/\//i);
+            const protocol = protocolMatch
+                ? protocolMatch[1].toLowerCase()
+                : undefined;
+            const withoutProtocol = entry.replace(/^(https?):\/\//i, "");
+            const host = withoutProtocol.replace(/^\*\./, "");
+            return { kind: "hostSuffix", suffix: host.toLowerCase(), protocol };
+        }
+        return { kind: "exact", origin: entry };
+    });
+}
+function isOriginAllowed(origin, rules) {
+    // Fast path: exact match
+    for (const rule of rules) {
+        if (rule.kind === "exact" && rule.origin === origin)
+            return true;
+    }
+    // Wildcard host suffix match
+    let url;
+    try {
+        url = new URL(origin);
+    }
+    catch {
+        return false;
+    }
+    const hostname = url.hostname.toLowerCase();
+    const protocol = url.protocol.replace(":", "");
+    for (const rule of rules) {
+        if (rule.kind !== "hostSuffix")
+            continue;
+        if (rule.protocol && rule.protocol !== protocol)
+            continue;
+        if (hostname === rule.suffix || hostname.endsWith(`.${rule.suffix}`))
+            return true;
+    }
+    return false;
+}
+const ALLOWED_ORIGIN_RULES = parseAllowedOriginRules(FRONTEND_ORIGIN);
 app.use((0, cors_1.default)({
     origin: (origin, callback) => {
         if (!origin)
             return callback(null, true); // non-browser or same-origin
-        if (ALLOWED_ORIGINS.includes(origin))
+        if (isOriginAllowed(origin, ALLOWED_ORIGIN_RULES))
             return callback(null, true);
         console.warn("CORS blocked origin:", origin);
         return callback(new Error("Not allowed by CORS"));

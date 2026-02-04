@@ -137,8 +137,21 @@ export async function forgotPassword(req: Request, res: Response) {
     user.passwordResetToken = token;
     user.passwordResetExpires = expires;
     await user.save();
-    const frontendBase = process.env.FRONTEND_ORIGIN || "http://localhost:3000";
-  const resetUrl = `${frontendBase}/reset-password?token=${encodeURIComponent(token)}`;
+
+    // Prefer an explicit public frontend URL; otherwise pick the first non-wildcard origin from FRONTEND_ORIGIN.
+    const frontendBase = (() => {
+      const explicit = process.env.FRONTEND_PUBLIC_URL;
+      if (explicit) return explicit;
+      const raw = process.env.FRONTEND_ORIGIN;
+      if (!raw) return "http://localhost:3000";
+      const firstExact = raw
+        .split(",")
+        .map((s) => s.trim())
+        .find((s) => s && !s.includes("*"));
+      return firstExact || "http://localhost:3000";
+    })();
+
+    const resetUrl = `${frontendBase}/reset-password?token=${encodeURIComponent(token)}`;
     try {
       await sendEmail({
         to: user.email,
