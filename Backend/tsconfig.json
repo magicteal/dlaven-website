@@ -8,8 +8,7 @@
     "skipLibCheck": true,
     "strict": true,
     "outDir": "dist",
-    "rootDir": "src",
-    "types": ["node", "nodemailer"]
+    "rootDir": "src"
   },
   "include": ["src/**/*"]
 }
