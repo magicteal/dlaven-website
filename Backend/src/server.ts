@@ -19,10 +19,10 @@ const app = express();
 // CORS (allow frontend origins; comma-separated list)
 const FRONTEND_ORIGIN =
   process.env.FRONTEND_ORIGIN || "http://localhost:3000,http://127.0.0.1:3000";
-const ALLOWED_ORIGINS = FRONTEND_ORIGIN.split(",").map((s) => s.trim());
+const ALLOWED_ORIGINS = FRONTEND_ORIGIN.split(",").map((s: string) => s.trim());
 app.use(
   cors({
-    origin: (origin, callback) => {
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
       if (!origin) return callback(null, true); // non-browser or same-origin
       if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
       console.warn("CORS blocked origin:", origin);

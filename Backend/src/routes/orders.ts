@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, type Request, type Response } from "express";
 import { requireAdmin, requireAuth } from "../middleware/auth";
 import {
   createOrder,
@@ -23,7 +23,7 @@ router.post("/create", requireAuth, createOrder);
 router.post("/verify", requireAuth, verifyPayment);
 router.get("/mine", requireAuth, myOrders);
 // Entitlement status (place before generic "/:id")
-router.get("/me/entitlements", requireAuth, async (req, res) => {
+router.get("/me/entitlements", requireAuth, async (req: Request, res: Response) => {
   try {
     const userId = (req as any).user?.sub;
     const u = await User.findById(userId)

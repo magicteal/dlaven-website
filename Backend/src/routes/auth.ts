@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, type Request, type Response } from "express";
 import { login, me, register, logout, forgotPassword, resetPassword, updateProfile, getAddress, updateAddress, listAddresses, createAddress, updateAddressById, deleteAddressById, setDefaultAddress } from "../controllers/authController";
 import { requireAuth, requireAdmin } from "../middleware/auth";
 import { User } from "../models/User";
@@ -6,7 +6,7 @@ import { User } from "../models/User";
 const router = Router();
 
 // Check if email exists (for login/register flow)
-router.post("/check-email", async (req, res) => {
+router.post("/check-email", async (req: Request, res: Response) => {
 	const { email } = req.body as { email?: string };
 	if (!email) return res.status(400).json({ error: "Email is required" });
 	const user = await User.findOne({ email }).lean();
@@ -31,12 +31,12 @@ router.delete("/addresses/:id", requireAuth, deleteAddressById);
 router.patch("/addresses/:id/default", requireAuth, setDefaultAddress);
 
 // Admin-only user management
-router.get("/users", requireAuth, requireAdmin, async (_req, res) => {
+router.get("/users", requireAuth, requireAdmin, async (_req: Request, res: Response) => {
 	const users = await User.find({}, { passwordHash: 0, __v: 0 }).sort({ createdAt: -1 }).lean();
 	res.json({ users });
 });
 
-router.patch("/users/:id", requireAuth, requireAdmin, async (req, res) => {
+router.patch("/users/:id", requireAuth, requireAdmin, async (req: Request, res: Response) => {
 	const { id } = req.params;
 	const { name, role } = req.body as { name?: string; role?: "user" | "admin" };
 	const toUpdate: Record<string, unknown> = {};
@@ -47,11 +47,11 @@ router.patch("/users/:id", requireAuth, requireAdmin, async (req, res) => {
 	res.json({ user });
 });
 
-router.delete("/users/:id", requireAuth, requireAdmin, async (req, res) => {
+router.delete("/users/:id", requireAuth, requireAdmin, async (req: Request, res: Response) => {
 	const { id } = req.params;
 	const deleted = await User.findByIdAndDelete(id).lean();
 	if (!deleted) return res.status(404).json({ error: "Not found" });
 	res.json({ ok: true });
 });
 
-	export default router;
+export default router;
