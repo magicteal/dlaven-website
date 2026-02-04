@@ -69,17 +69,22 @@ function isOriginAllowed(origin: string, rules: AllowedOriginRule[]): boolean {
 }
 
 const ALLOWED_ORIGIN_RULES = parseAllowedOriginRules(FRONTEND_ORIGIN);
+
 app.use(
   cors({
-    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-      if (!origin) return callback(null, true); // non-browser or same-origin
+    origin(origin, callback) {
+      if (!origin) return callback(null, true);
       if (isOriginAllowed(origin, ALLOWED_ORIGIN_RULES)) return callback(null, true);
-      console.warn("CORS blocked origin:", origin);
       return callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+// ✅ THIS IS THE KEY LINE
+app.options("*", cors());
 
 // Parsers
 app.use(express.json());
