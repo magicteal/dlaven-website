@@ -2,8 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    loader: "cloudinary",
-    path: "https://res.cloudinary.com/dclkg5sf6/image/upload/",
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
