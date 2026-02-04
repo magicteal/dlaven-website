@@ -24,12 +24,35 @@ type AllowedOriginRule =
   | { kind: "exact"; origin: string }
   | { kind: "hostSuffix"; suffix: string; protocol?: "http" | "https" };
 
+function stripWrappingQuotes(value: string): string {
+  const v = value.trim();
+  if ((v.startsWith("\"") && v.endsWith("\"")) || (v.startsWith("'") && v.endsWith("'"))) {
+    return v.slice(1, -1).trim();
+  }
+  return v;
+}
+
 function parseAllowedOriginRules(raw: string): AllowedOriginRule[] {
-  return raw
-    .split(",")
-    .map((s) => s.trim())
+  // Support comma-separated, semicolon-separated, or newline-separated lists.
+  // Also support JSON array format: ["https://a.com","https://b.com"].
+  const entries: string[] = (() => {
+    const trimmed = raw.trim();
+    if (trimmed.startsWith("[") && trimmed.endsWith("]")) {
+      try {
+        const arr = JSON.parse(trimmed) as unknown;
+        if (Array.isArray(arr)) return arr.map((x) => String(x));
+      } catch {
+        // fall through
+      }
+    }
+    return trimmed.split(/[,;\n]/g);
+  })();
+
+  return entries
+    .map((s) => stripWrappingQuotes(s))
     .filter(Boolean)
-    .map((entry) => {
+    .map((entryRaw) => {
+      const entry = entryRaw.trim();
       // Wildcards supported:
       // - "*.vercel.app" (any protocol)
       // - "https://*.vercel.app" (protocol restricted)
@@ -42,22 +65,40 @@ function parseAllowedOriginRules(raw: string): AllowedOriginRule[] {
         const host = withoutProtocol.replace(/^\*\./, "");
         return { kind: "hostSuffix", suffix: host.toLowerCase(), protocol };
       }
-      return { kind: "exact", origin: entry };
+
+      // Exact origin supported:
+      // - "https://example.com" (with or without trailing slash)
+      // Also allow hostname-only entries like "example.com" as a host rule.
+      if (/^https?:\/\//i.test(entry)) {
+        try {
+          const url = new URL(entry);
+          return { kind: "exact", origin: url.origin };
+        } catch {
+          // fall through to hostSuffix parsing
+        }
+      }
+
+      const host = entry.replace(/^\./, "").toLowerCase();
+      return { kind: "hostSuffix", suffix: host };
     });
 }
 
 function isOriginAllowed(origin: string, rules: AllowedOriginRule[]): boolean {
-  // Fast path: exact match
-  for (const rule of rules) {
-    if (rule.kind === "exact" && rule.origin === origin) return true;
-  }
-  // Wildcard host suffix match
+  // Normalize incoming origin (handles trailing slash / casing)
   let url: URL;
   try {
     url = new URL(origin);
   } catch {
     return false;
   }
+  const normalizedOrigin = url.origin;
+
+  // Exact match
+  for (const rule of rules) {
+    if (rule.kind === "exact" && rule.origin === normalizedOrigin) return true;
+  }
+
+  // Host suffix match (wildcards / hostname-only entries)
   const hostname = url.hostname.toLowerCase();
   const protocol = url.protocol.replace(":", "") as "http" | "https";
   for (const rule of rules) {
@@ -69,7 +110,8 @@ function isOriginAllowed(origin: string, rules: AllowedOriginRule[]): boolean {
 }
 
 const ALLOWED_ORIGIN_RULES = parseAllowedOriginRules(FRONTEND_ORIGIN);
-
+console.log("[cors] allowed origins config:", FRONTEND_ORIGIN);
+console.log("[cors] allowed origin rules:", ALLOWED_ORIGIN_RULES);
 app.use(
   cors({
     origin(origin, callback) {
