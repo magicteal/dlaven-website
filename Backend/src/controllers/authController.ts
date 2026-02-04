@@ -52,6 +52,10 @@ export async function register(req: Request, res: Response) {
       path: "/",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
+    if (process.env.NODE_ENV !== "production") {
+      const header = res.getHeader("Set-Cookie");
+      console.log("[auth] Set-Cookie header (register):", header);
+    }
     try {
       await sendEmail({
         to: created.email,
@@ -85,6 +89,10 @@ export async function login(req: Request, res: Response) {
       path: "/",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
+    if (process.env.NODE_ENV !== "production") {
+      const header = res.getHeader("Set-Cookie");
+      console.log("[auth] Set-Cookie header (login):", header);
+    }
   return res.json({ user: { id: user.id, email: user.email, name: user.name, role: user.role } });
   } catch (err) {
     return res.status(500).json({ error: "Login failed" });
@@ -178,6 +186,10 @@ export async function logout(_req: Request, res: Response) {
     : process.env.NODE_ENV === "production";
   const sameSite = process.env.COOKIE_SAMESITE || (secure ? "none" : "lax");
   res.clearCookie("token", { httpOnly: true, sameSite: sameSite as any, secure, path: "/" });
+  if (process.env.NODE_ENV !== "production") {
+    const header = res.getHeader("Set-Cookie");
+    console.log("[auth] Clear-Cookie header (logout):", header);
+  }
   return res.json({ ok: true });
 }
 
