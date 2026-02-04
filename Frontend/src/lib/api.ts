@@ -1,5 +1,5 @@
 export const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "https://dlaven-website.onrender.com";
+  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const url = `${API_BASE}${path}`;
