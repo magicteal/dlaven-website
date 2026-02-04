@@ -49,11 +49,11 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
       typeof navigator !== "undefined"
         ? (navigator as { onLine?: boolean }).onLine
         : "unknown";
-    console.error("[api] ✗ Network error while fetching API", {
-      url,
-      online,
-      err: errObj,
-    });
+    // console.error("[api] ✗ Network error while fetching API", {
+    //   url,
+    //   online,
+    //   err: errObj,
+    // });
 
     throw new Error(
       `Network error: Failed to reach API at ${url}. Check server, CORS and your network connection.`
