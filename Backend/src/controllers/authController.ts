@@ -40,7 +40,18 @@ export async function register(req: Request, res: Response) {
     marketingConsent: !!marketingConsent,
   });
   const token = signToken({ sub: created.id, email: created.email, role: created.role });
-    res.cookie("token", token, { httpOnly: true, sameSite: "lax", secure: false, maxAge: 7 * 24 * 60 * 60 * 1000 });
+    // Cookie options: allow configuring secure/sameSite via env for production
+    const secure = process.env.COOKIE_SECURE
+      ? process.env.COOKIE_SECURE === "true"
+      : process.env.NODE_ENV === "production";
+    const sameSite = process.env.COOKIE_SAMESITE || (secure ? "none" : "lax");
+    res.cookie("token", token, {
+      httpOnly: true,
+      sameSite: sameSite as any,
+      secure,
+      path: "/",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
     try {
       await sendEmail({
         to: created.email,
@@ -63,7 +74,17 @@ export async function login(req: Request, res: Response) {
     const ok = await bcrypt.compare(password, user.passwordHash);
     if (!ok) return res.status(401).json({ error: "Invalid credentials" });
   const token = signToken({ sub: user.id, email: user.email, role: user.role });
-    res.cookie("token", token, { httpOnly: true, sameSite: "lax", secure: false, maxAge: 7 * 24 * 60 * 60 * 1000 });
+    const secure = process.env.COOKIE_SECURE
+      ? process.env.COOKIE_SECURE === "true"
+      : process.env.NODE_ENV === "production";
+    const sameSite = process.env.COOKIE_SAMESITE || (secure ? "none" : "lax");
+    res.cookie("token", token, {
+      httpOnly: true,
+      sameSite: sameSite as any,
+      secure,
+      path: "/",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
   return res.json({ user: { id: user.id, email: user.email, name: user.name, role: user.role } });
   } catch (err) {
     return res.status(500).json({ error: "Login failed" });
@@ -151,9 +172,12 @@ export async function resetPassword(req: Request, res: Response) {
 }
 
 export async function logout(_req: Request, res: Response) {
-  // Clear with the same attributes used when setting the cookie so browsers remove it reliably
-  const secure = false; // consider Boolean(process.env.COOKIE_SECURE) in prod
-  res.clearCookie("token", { httpOnly: true, sameSite: "lax", secure, path: "/" });
+  // Use same options as when setting the cookie so browsers remove it reliably
+  const secure = process.env.COOKIE_SECURE
+    ? process.env.COOKIE_SECURE === "true"
+    : process.env.NODE_ENV === "production";
+  const sameSite = process.env.COOKIE_SAMESITE || (secure ? "none" : "lax");
+  res.clearCookie("token", { httpOnly: true, sameSite: sameSite as any, secure, path: "/" });
   return res.json({ ok: true });
 }
 
