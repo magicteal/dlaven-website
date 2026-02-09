@@ -6,10 +6,14 @@ import { useCart } from "@/components/providers/CartProvider";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import CheckoutProgress from "@/components/CheckoutProgress";
+import { fmt } from "@/lib/utils";
 import { api } from "@/lib/api";
 
 declare global {
-  interface Window { Razorpay: new (options: Record<string, unknown>) => { open: () => void } }
+  interface Window {
+    Razorpay: new (options: Record<string, unknown>) => { open: () => void };
+  }
 }
 
 async function loadRazorpayScript(): Promise<void> {
@@ -39,18 +43,16 @@ export default function CheckoutPayPage() {
   async function onPayNow() {
     try {
       setPaying(true);
-      // 0) Ensure cart is fresh
       await refresh();
-      if (!cart || !cart.items || cart.items.length === 0) {
-        alert("Your cart is empty. Please add items before paying.");
+
+      if (!cart || !cart.items.length) {
         router.replace("/cart");
         return;
       }
-      // 1) Create order on backend
+
       const { order, razorpayOrder, key } = await api.createOrder();
-      // 2) Load checkout script
       await loadRazorpayScript();
-      // 3) Open Razorpay Checkout
+
       const rzp = new window.Razorpay({
         key,
         amount: razorpayOrder.amount,
@@ -63,14 +65,17 @@ export default function CheckoutPayPage() {
           email: user?.email || "",
         },
         theme: { color: "#000000" },
-        handler: async (response: { razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string }) => {
+        handler: async (response: {
+          razorpay_payment_id: string;
+          razorpay_order_id: string;
+          razorpay_signature: string;
+        }) => {
           try {
             const verified = await api.verifyPayment({
               orderId: response.razorpay_order_id,
               paymentId: response.razorpay_payment_id,
               signature: response.razorpay_signature,
             });
-            // Refresh cart so UI clears immediately
             await refresh();
             const oid = verified.order._id || verified.order.id;
             router.replace(`/checkout/success/${encodeURIComponent(String(oid))}`);
@@ -81,34 +86,40 @@ export default function CheckoutPayPage() {
         },
         modal: { ondismiss: () => setPaying(false) },
       });
+
       rzp.open();
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : "Unable to start payment";
-      // Provide a more guided recovery path
-      if (/Unauthorized/i.test(msg)) {
-        alert("Please sign in again to continue to payment.");
-        router.replace("/login");
-      } else if (/Cart is empty/i.test(msg)) {
-        alert("Your cart appears empty. Please add items and try again.");
-        router.replace("/cart");
-      } else {
-        alert(msg);
-      }
-    } finally {
-      // If modal opened, paying will reset on close; keep as true during modal.
+      alert(msg);
     }
   }
 
   return (
-    <main className="pt-20 pb-16">
+    <main className="min-h-screen bg-white pt-24 pb-20">
       <Container>
-        <h1 className="text-2xl font-bold">Payment</h1>
-        <div className="mt-6 max-w-md">
-          <div className="text-sm text-black/70">Amount</div>
-          <div className="text-xl font-semibold mt-1">{cart?.items[0] ? new Intl.NumberFormat(undefined, { style: "currency", currency: cart.items[0].currency, maximumFractionDigits: 0 }).format(subtotal) : "—"}</div>
-          <Button className="mt-6 rounded-none" onClick={onPayNow} disabled={paying}>{paying ? "Processing…" : "Pay Now"}</Button>
+        <CheckoutProgress current="confirm" />
+
+        <div className="mt-16 max-w-xl">
+          <h1 className="text-xs tracking-[0.25em] uppercase mb-6">Payment</h1>
+
+          <div className="border border-black/10 p-10 bg-[#f7f4ef]">
+            <div className="text-sm text-black/60 mb-1">Amount</div>
+            <div className="text-2xl font-semibold">
+              {cart?.items[0] ? fmt(subtotal, cart.items[0].currency) : "—"}
+            </div>
+
+            <Button
+              className="mt-10 w-full h-12 rounded-none bg-black text-white hover:bg-black/90 tracking-widest"
+              onClick={onPayNow}
+              disabled={paying}
+            >
+              {paying ? "Processing…" : "Pay now"}
+            </Button>
+          </div>
         </div>
       </Container>
     </main>
   );
 }
+
+/* helpers moved to shared components */

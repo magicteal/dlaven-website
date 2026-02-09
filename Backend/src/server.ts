@@ -126,7 +126,7 @@ app.use(
 );
 
 // ✅ THIS IS THE KEY LINE
-app.options("*", cors());
+app.options("*", cors({ credentials: true }));
 
 // Parsers
 app.use(express.json());

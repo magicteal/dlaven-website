@@ -21,7 +21,6 @@ export default function OrderSuccessPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Keep cart UI in sync (should be empty after successful order)
     refreshCart().catch(() => {});
   }, [refreshCart]);
 
@@ -52,87 +51,115 @@ export default function OrderSuccessPage() {
   }
 
   return (
-    <main className="pt-20 pb-16">
+    <main className="min-h-screen bg-white pt-24 pb-20">
       <Container>
         <div className="max-w-3xl">
           {loading ? (
             <div className="text-sm text-black/70">Loading your order…</div>
           ) : error ? (
             <div>
-              <h1 className="text-2xl font-bold">Order</h1>
-              <p className="mt-2 text-red-600">{error}</p>
-              <Button className="mt-4 rounded-none" onClick={() => router.push("/")}>Go home</Button>
+              <h1 className="text-xl tracking-wide uppercase">Order</h1>
+              <p className="mt-4 text-red-600">{error}</p>
+              <Button className="mt-6 rounded-none" onClick={() => router.push("/")}>
+                Go home
+              </Button>
             </div>
           ) : !order ? (
             <div>
-              <h1 className="text-2xl font-bold">Order</h1>
-              <p className="mt-2">Order not found.</p>
-              <Button className="mt-4 rounded-none" onClick={() => router.push("/")}>Go home</Button>
+              <h1 className="text-xl tracking-wide uppercase">Order</h1>
+              <p className="mt-4">Order not found.</p>
+              <Button className="mt-6 rounded-none" onClick={() => router.push("/")}>
+                Go home
+              </Button>
             </div>
           ) : (
             <div>
-              <h1 className="text-2xl font-bold">Thank you! Your order is placed.</h1>
-              <p className="mt-2 text-black/70">Review your order details below. A confirmation has been recorded in your account orders.</p>
+              <h1 className="text-xl tracking-[0.2em] uppercase">Thank you</h1>
+              <p className="mt-3 text-black/70">
+                Your order has been confirmed. A confirmation is available in your account.
+              </p>
 
-              <div className="mt-6 grid gap-6 md:grid-cols-2">
-                <div>
-                  <div className="text-sm text-black/70">Order ID</div>
-                  <div className="font-medium break-all">{order._id || order.id}</div>
-                </div>
-                <div>
-                  <div className="text-sm text-black/70">Date</div>
-                  <div className="font-medium">{order.createdAt ? new Date(order.createdAt).toLocaleString() : "—"}</div>
-                </div>
-                <div>
-                  <div className="text-sm text-black/70">Status</div>
-                  <div className="font-medium capitalize">{order.status}</div>
-                </div>
-                <div>
-                  <div className="text-sm text-black/70">Total</div>
-                  <div className="font-medium">{fmtMoney(order.subtotal, order.currency)}</div>
-                </div>
+              <div className="mt-12 grid gap-10 md:grid-cols-2">
+                <Info label="Order ID" value={order._id || order.id || "—"} />
+                <Info
+                  label="Date"
+                  value={order.createdAt ? new Date(order.createdAt).toLocaleString() : "—"}
+                />
+                <Info label="Status" value={order.status} />
+                <Info label="Total" value={fmtMoney(order.subtotal, order.currency)} />
               </div>
 
-              <div className="mt-8">
-                <h2 className="text-lg font-semibold">Shipping address</h2>
-                <div className="mt-2 text-sm leading-relaxed">
+              <div className="mt-14">
+                <h2 className="text-xs tracking-[0.25em] uppercase mb-4">Shipping address</h2>
+                <div className="text-sm leading-relaxed">
                   <div className="font-medium">{order.address?.fullName || order.address?.label || "—"}</div>
                   <div>{order.address?.line1}</div>
-                  {order.address?.line2 ? <div>{order.address?.line2}</div> : null}
-                  <div>{[order.address?.city, order.address?.state, order.address?.postalCode].filter(Boolean).join(", ")}</div>
+                  {order.address?.line2 && <div>{order.address?.line2}</div>}
+                  <div>
+                    {[order.address?.city, order.address?.state, order.address?.postalCode]
+                      .filter(Boolean)
+                      .join(", ")}
+                  </div>
                   <div>{order.address?.country}</div>
-                  {order.address?.phone ? <div className="mt-1">Phone: {order.address.phone}</div> : null}
+                  {order.address?.phone && <div className="mt-1">Phone: {order.address.phone}</div>}
                 </div>
               </div>
 
-              <div className="mt-8">
-                <h2 className="text-lg font-semibold">Items</h2>
-                <div className="mt-3 divide-y border">
+              <div className="mt-14">
+                <h2 className="text-xs tracking-[0.25em] uppercase mb-6">Items</h2>
+                <div className="divide-y border border-black/10">
                   {order.items?.map((it, idx) => (
-                    <div key={idx} className="p-3 grid grid-cols-[1fr_auto] gap-3">
-                      <div>
+                    <div key={idx} className="p-5 flex justify-between gap-6">
+                      <div className="text-sm">
                         <div className="font-medium">{it.name}</div>
-                        <div className="text-sm text-black/70">{it.productSlug}</div>
-                        <div className="text-sm text-black/70">Qty: {it.quantity}{it.size ? ` · Size: ${it.size}` : ""}</div>
+                        <div className="text-black/60 mt-1">
+                          Qty {it.quantity}
+                          {it.size ? ` · Size ${it.size}` : ""}
+                        </div>
                       </div>
-                      <div className="text-right font-medium">{fmtMoney(it.price * it.quantity, it.currency)}</div>
+                      <div className="text-sm font-medium">
+                        {fmtMoney(it.price * it.quantity, it.currency)}
+                      </div>
                     </div>
                   ))}
                 </div>
-                <div className="mt-4 flex items-center justify-between font-semibold">
-                  <div>Subtotal</div>
-                  <div>{fmtMoney(order.subtotal, order.currency)}</div>
+
+                <div className="mt-6 flex justify-between text-sm font-semibold">
+                  <span>Subtotal</span>
+                  <span>{fmtMoney(order.subtotal, order.currency)}</span>
                 </div>
               </div>
 
-              <div className="mt-10 flex gap-3">
-                <Button className="rounded-none" onClick={() => router.push("/")}>Continue shopping</Button>
-                <Button variant="outline" className="rounded-none" onClick={() => router.push("/me")}>View my orders</Button>
+              <div className="mt-16 flex gap-4">
+                <Button
+                  className="rounded-none bg-black text-white hover:bg-black/90 tracking-widest"
+                  onClick={() => router.push("/")}
+                >
+                  Continue shopping
+                </Button>
+                <Button
+                  variant="outline"
+                  className="rounded-none tracking-widest"
+                  onClick={() => router.push("/me")}
+                >
+                  View my orders
+                </Button>
               </div>
             </div>
           )}
         </div>
       </Container>
     </main>
+  );
+}
+
+/* ---------------- components ---------------- */
+
+function Info({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <div className="text-xs tracking-wider uppercase text-black/60 mb-1">{label}</div>
+      <div className="text-sm font-medium break-all">{value}</div>
+    </div>
   );
 }
