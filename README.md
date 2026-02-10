@@ -1,6 +1,6 @@
 # D’ LAVÉN
 
-A full-stack Next.js + Express/Mongo monorepo for D’ LAVÉN with authentication, admin panel, and email settings.
+A full-stack Next.js + Express/Mongo monorepo for D’ LAVÉN with authentication, admin panel, and email settings
 
 ## Structure
 
@@ -77,5 +77,6 @@ Frontend runs on `http://localhost:3000`.
 - Backend: `npm run dev`, `npm run build`, `npm start`
 
 ## License
+
 
 Proprietary — internal project use only.
