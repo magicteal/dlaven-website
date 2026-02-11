@@ -9,6 +9,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useCart } from "@/components/providers/CartProvider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { fmt } from "@/lib/utils";
 
 interface Props {
   product: Product;
@@ -86,7 +87,7 @@ export default function ProductDetailClient({ product, related }: Props) {
             {/* Summary */}
             <div className="order-1 lg:order-2">
               <h1 className="text-2xl sm:text-3xl font-bold text-black">{product.name}</h1>
-              <div className="mt-2 text-xl text-black/80">{new Intl.NumberFormat(undefined, { style: "currency", currency: product.currency, maximumFractionDigits: 0 }).format(product.price)}</div>
+              <div className="mt-2 text-xl text-black/80">{fmt(product.price)}</div>
               <p className="mt-4 text-sm text-neutral-700">{product.description}</p>
 
               <div className="mt-6 flex items-center gap-4 text-sm">
@@ -197,7 +198,6 @@ export default function ProductDetailClient({ product, related }: Props) {
                       slug={p.slug}
                       name={p.name}
                       price={p.price}
-                      currency={p.currency}
                       image={p.images[0]}
                       rating={p.rating}
                       reviewsCount={p.reviewsCount}

@@ -71,7 +71,6 @@ export default function DlavenLimitedPage() {
                   slug={p.slug}
                   name={p.name}
                   price={p.price}
-                  currency={p.currency}
                   image={(p.images && p.images[0]) || "/images/placeholder.png"}
                   inStock={p.inStock}
                 />

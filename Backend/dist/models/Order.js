@@ -6,7 +6,6 @@ const OrderItemSchema = new mongoose_1.Schema({
     productSlug: { type: String, required: true },
     name: { type: String, required: true },
     price: { type: Number, required: true },
-    currency: { type: String, required: true },
     image: { type: String, required: true },
     quantity: { type: Number, required: true, min: 1 },
     size: { type: String },
@@ -27,7 +26,6 @@ const OrderSchema = new mongoose_1.Schema({
     items: { type: [OrderItemSchema], required: true },
     address: { type: AddressSchema, required: true },
     subtotal: { type: Number, required: true },
-    currency: { type: String, required: true },
     status: { type: String, enum: ["created", "paid", "failed", "refunded", "cancelled", "shipped", "delivered"], default: "created", index: true },
     razorpay: {
         orderId: { type: String },

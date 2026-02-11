@@ -4,7 +4,6 @@ export interface ICartItem {
   productSlug: string;
   name: string;
   price: number;
-  currency: string;
   image: string;
   quantity: number;
   size?: string;
@@ -20,7 +19,6 @@ const CartItemSchema = new Schema<ICartItem>({
   productSlug: { type: String, required: true },
   name: { type: String, required: true },
   price: { type: Number, required: true },
-  currency: { type: String, required: true },
   image: { type: String, required: true },
   quantity: { type: Number, required: true, min: 1 },
   size: { type: String, required: false },

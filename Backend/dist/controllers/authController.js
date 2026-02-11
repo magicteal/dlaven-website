@@ -90,17 +90,18 @@ async function login(req, res) {
         if (!ok)
             return res.status(401).json({ error: "Invalid credentials" });
         const token = signToken({ sub: user.id, email: user.email, role: user.role });
-        const isProd = process.env.NODE_ENV === "production";
-
+        const secure = process.env.COOKIE_SECURE
+            ? process.env.COOKIE_SECURE === "true"
+            : process.env.NODE_ENV === "production";
+        const sameSite = process.env.COOKIE_SAMESITE || (secure ? "none" : "lax");
         res.cookie("token", token, {
             httpOnly: true,
-            secure: true,        // always true in prod
-            sameSite: "none",    // always none for cross-site
+            sameSite: sameSite,
+            secure,
             path: "/",
             maxAge: 7 * 24 * 60 * 60 * 1000,
         });
-
-        if (isProd) {
+        if (process.env.NODE_ENV !== "production") {
             const header = res.getHeader("Set-Cookie");
             console.log("[auth] Set-Cookie header (login):", header);
         }
@@ -267,8 +268,7 @@ async function getAddress(req, res) {
         // Return default address; fallback to legacy single address
         const defaultAddress = (user.addresses || []).find((a) => a.isDefault) || (user.addresses && user.addresses[0]) || null;
         if (defaultAddress) {
-            return res.json({
-                address: {
+            return res.json({ address: {
                     fullName: defaultAddress.fullName,
                     phone: defaultAddress.phone,
                     line1: defaultAddress.line1,
@@ -277,8 +277,7 @@ async function getAddress(req, res) {
                     state: defaultAddress.state,
                     postalCode: defaultAddress.postalCode,
                     country: defaultAddress.country,
-                }
-            });
+                } });
         }
         return res.json({ address: user.address || null });
     }
@@ -312,8 +311,7 @@ async function updateAddress(req, res) {
             }
             await user.save();
             const def = (user.addresses || []).find((a) => a.isDefault) || (user.addresses && user.addresses[0]) || null;
-            return res.json({
-                address: def ? {
+            return res.json({ address: def ? {
                     fullName: def.fullName,
                     phone: def.phone,
                     line1: def.line1,
@@ -322,8 +320,7 @@ async function updateAddress(req, res) {
                     state: def.state,
                     postalCode: def.postalCode,
                     country: def.country,
-                } : null
-            });
+                } : null });
         }
         // Legacy fallback
         user.address = { ...user.address, ...body };
@@ -384,8 +381,7 @@ async function createAddress(req, res) {
     });
     await user.save();
     const created = user.addresses[user.addresses.length - 1];
-    return res.status(201).json({
-        address: {
+    return res.status(201).json({ address: {
             id: created._id,
             label: created.label,
             fullName: created.fullName,
@@ -397,8 +393,7 @@ async function createAddress(req, res) {
             postalCode: created.postalCode,
             country: created.country,
             isDefault: !!created.isDefault,
-        }
-    });
+        } });
 }
 async function updateAddressById(req, res) {
     const auth = req.user;

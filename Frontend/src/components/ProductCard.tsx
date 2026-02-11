@@ -1,35 +1,22 @@
 import Link from "next/link";
 import Image from "next/image";
 import { shimmerBase64 } from "@/lib/shimmer";
+import { fmt } from "@/lib/utils";
 
 type Props = {
   slug: string;
   name: string;
   price: number;
-  currency?: string;
   image: string;
   rating?: number;
   reviewsCount?: number;
   inStock?: boolean;
 };
 
-function formatPrice(value: number, currency = "INR") {
-  try {
-    return new Intl.NumberFormat('en-IN', {
-      style: "currency",
-      currency,
-      maximumFractionDigits: 0,
-    }).format(value);
-  } catch {
-    return `₹${value}`;
-  }
-}
-
 export default function ProductCard({
   slug,
   name,
   price,
-  currency = "INR",
   image,
   rating,
   reviewsCount,
@@ -52,7 +39,7 @@ export default function ProductCard({
       <div className="mt-3">
         <h3 className="text-sm font-medium text-black">{name}</h3>
         <div className="mt-1 flex items-center justify-between text-sm">
-          <span className="text-black/80">{formatPrice(price, currency)}</span>
+          <span className="text-black/80">{fmt(price)}</span>
           <span className={inStock ? "text-emerald-600" : "text-red-600"}>
             {inStock ? "In stock" : "Sold out"}
           </span>

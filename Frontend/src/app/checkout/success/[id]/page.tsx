@@ -6,6 +6,7 @@ import Container from "@/components/Container";
 import { api, type OrderDTO } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/providers/CartProvider";
+import { fmt } from "@/lib/utils";
 
 export default function OrderSuccessPage() {
   const params = useParams();
@@ -41,14 +42,6 @@ export default function OrderSuccessPage() {
     }
     load();
   }, [orderId]);
-
-  function fmtMoney(amount: number, currency: string) {
-    try {
-      return new Intl.NumberFormat(undefined, { style: "currency", currency, maximumFractionDigits: 0 }).format(amount);
-    } catch {
-      return `${currency} ${amount.toFixed(0)}`;
-    }
-  }
 
   return (
     <main className="min-h-screen bg-white pt-24 pb-20">
@@ -86,7 +79,7 @@ export default function OrderSuccessPage() {
                   value={order.createdAt ? new Date(order.createdAt).toLocaleString() : "—"}
                 />
                 <Info label="Status" value={order.status} />
-                <Info label="Total" value={fmtMoney(order.subtotal, order.currency)} />
+                <Info label="Total" value={fmt(order.subtotal)} />
               </div>
 
               <div className="mt-14">
@@ -118,7 +111,7 @@ export default function OrderSuccessPage() {
                         </div>
                       </div>
                       <div className="text-sm font-medium">
-                        {fmtMoney(it.price * it.quantity, it.currency)}
+                        {fmt(it.price * it.quantity)}
                       </div>
                     </div>
                   ))}
@@ -126,7 +119,7 @@ export default function OrderSuccessPage() {
 
                 <div className="mt-6 flex justify-between text-sm font-semibold">
                   <span>Subtotal</span>
-                  <span>{fmtMoney(order.subtotal, order.currency)}</span>
+                  <span>{fmt(order.subtotal)}</span>
                 </div>
               </div>
 

@@ -4,7 +4,6 @@ export interface IOrderItem {
   productSlug: string;
   name: string;
   price: number;
-  currency: string;
   image: string;
   quantity: number;
   size?: string;
@@ -29,7 +28,6 @@ export interface IOrder {
   items: IOrderItem[];
   address: IOrderAddress;
   subtotal: number;
-  currency: string;
   status: OrderStatus;
   razorpay?: {
     orderId?: string;
@@ -42,7 +40,6 @@ const OrderItemSchema = new Schema<IOrderItem>({
   productSlug: { type: String, required: true },
   name: { type: String, required: true },
   price: { type: Number, required: true },
-  currency: { type: String, required: true },
   image: { type: String, required: true },
   quantity: { type: Number, required: true, min: 1 },
   size: { type: String },
@@ -65,7 +62,6 @@ const OrderSchema = new Schema<IOrder>({
   items: { type: [OrderItemSchema], required: true },
   address: { type: AddressSchema, required: true },
   subtotal: { type: Number, required: true },
-  currency: { type: String, required: true },
   status: { type: String, enum: ["created", "paid", "failed", "refunded", "cancelled", "shipped", "delivered"], default: "created", index: true },
   razorpay: {
     orderId: { type: String },

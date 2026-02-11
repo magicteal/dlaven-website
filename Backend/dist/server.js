@@ -108,17 +108,21 @@ function isOriginAllowed(origin, rules) {
 const ALLOWED_ORIGIN_RULES = parseAllowedOriginRules(FRONTEND_ORIGIN);
 console.log("[cors] allowed origins config:", FRONTEND_ORIGIN);
 console.log("[cors] allowed origin rules:", ALLOWED_ORIGIN_RULES);
-app.use((0, cors_1.default)({
-    origin: (origin, callback) => {
+const corsOptions = {
+    origin(origin, callback) {
         if (!origin)
-            return callback(null, true); // non-browser or same-origin
+            return callback(null, true);
         if (isOriginAllowed(origin, ALLOWED_ORIGIN_RULES))
             return callback(null, true);
-        console.warn("CORS blocked origin:", origin);
         return callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
-}));
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+};
+app.use((0, cors_1.default)(corsOptions));
+// Preflight (use the SAME options as normal requests)
+app.options("*", (0, cors_1.default)(corsOptions));
 // Parsers
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());

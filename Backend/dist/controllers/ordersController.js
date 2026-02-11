@@ -13,6 +13,22 @@ const User_1 = require("../models/User");
 const razorpay_1 = require("../utils/razorpay");
 const email_1 = require("../utils/email");
 const Product_1 = require("../models/Product");
+function stripCurrencyFromOrder(order) {
+    if (!order)
+        return order;
+    const obj = typeof order.toObject === "function" ? order.toObject() : { ...order };
+    if ("currency" in obj)
+        delete obj.currency;
+    if (Array.isArray(obj.items)) {
+        obj.items = obj.items.map((it) => {
+            if (!it || typeof it !== "object")
+                return it;
+            const { currency, ...rest } = it;
+            return rest;
+        });
+    }
+    return obj;
+}
 async function createOrder(req, res) {
     try {
         const userId = req.user?.sub;
@@ -91,7 +107,7 @@ async function createOrder(req, res) {
                 });
             }
         }
-        const currency = items[0].currency || "INR";
+        const paymentCurrency = process.env.PAYMENT_CURRENCY || "INR";
         const subtotal = items.reduce((sum, it) => sum + it.price * it.quantity, 0);
         // Create Razorpay order (amount in paise)
         const rp = (0, razorpay_1.getRazorpay)();
@@ -101,7 +117,7 @@ async function createOrder(req, res) {
         const receipt = `r_${shortSub}_${shortTs}`; // e.g. r_abcdef12_345678 (<= 40)
         const rpOrder = await rp.orders.create({
             amount: Math.round(subtotal * 100),
-            currency,
+            currency: paymentCurrency,
             receipt,
         });
         // Persist order with status created
@@ -110,14 +126,13 @@ async function createOrder(req, res) {
             items,
             address: defaultAddr,
             subtotal,
-            currency,
             status: "created",
             razorpay: { orderId: rpOrder.id },
         });
         return res
             .status(201)
             .json({
-            order,
+            order: stripCurrencyFromOrder(order),
             razorpayOrder: rpOrder,
             key: process.env.RAZORPAY_API_KEY,
         });
@@ -200,15 +215,15 @@ async function verifyPayment(req, res) {
                 await (0, email_1.sendEmail)({
                     to,
                     subject: `Order paid: ${String(order._id)}`,
-                    text: `Thank you! Your order ${String(order._id)} has been paid successfully. Total: ${order.currency} ${order.subtotal}.`,
-                    html: `<p>Thank you! Your order <strong>${String(order._id)}</strong> has been paid successfully.</p><p>Total: <strong>${order.currency} ${order.subtotal}</strong></p>`,
+                    text: `Thank you! Your order ${String(order._id)} has been paid successfully. Total: ₹${order.subtotal}.`,
+                    html: `<p>Thank you! Your order <strong>${String(order._id)}</strong> has been paid successfully.</p><p>Total: <strong>${`₹${order.subtotal}`}</strong></p>`,
                 });
             }
         }
         catch (e) {
             console.warn("[orders:verify] email send failed", e);
         }
-        return res.json({ order });
+        return res.json({ order: stripCurrencyFromOrder(order) });
     }
     catch (e) {
         console.error("[orders:verify] error", e);
@@ -223,7 +238,7 @@ async function myOrders(req, res) {
         if (!userId)
             return res.status(401).json({ error: "Unauthorized" });
         const orders = await Order_1.Order.find({ userId }).sort({ createdAt: -1 }).lean();
-        return res.json({ items: orders });
+        return res.json({ items: orders.map(stripCurrencyFromOrder) });
     }
     catch (e) {
         return res
@@ -240,7 +255,7 @@ async function getOrderById(req, res) {
         const order = await Order_1.Order.findOne({ _id: id, userId }).lean();
         if (!order)
             return res.status(404).json({ error: "Order not found" });
-        return res.json({ item: order });
+        return res.json({ item: stripCurrencyFromOrder(order) });
     }
     catch (e) {
         return res.status(400).json({ error: e?.message || "Failed to get order" });
@@ -250,7 +265,7 @@ async function getOrderById(req, res) {
 async function adminListOrders(_req, res) {
     try {
         const orders = await Order_1.Order.find({}).sort({ createdAt: -1 }).lean();
-        return res.json({ items: orders });
+        return res.json({ items: orders.map(stripCurrencyFromOrder) });
     }
     catch (e) {
         return res
@@ -264,7 +279,7 @@ async function adminGetOrder(req, res) {
         const order = await Order_1.Order.findById(id).lean();
         if (!order)
             return res.status(404).json({ error: "Order not found" });
-        return res.json({ item: order });
+        return res.json({ item: stripCurrencyFromOrder(order) });
     }
     catch (e) {
         return res.status(400).json({ error: e?.message || "Failed to get order" });
@@ -306,7 +321,7 @@ async function adminUpdateStatus(req, res) {
         catch (e) {
             console.warn("[orders:adminUpdateStatus] email send failed", e);
         }
-        return res.json({ item: order });
+        return res.json({ item: stripCurrencyFromOrder(order) });
     }
     catch (e) {
         return res

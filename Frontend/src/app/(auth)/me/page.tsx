@@ -6,6 +6,7 @@ import { useAuth } from "@/components/providers/AuthProvider";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { api, type OrderDTO } from "@/lib/api";
+import { fmt } from "@/lib/utils";
 
 export default function MePage() {
   const { user, loading } = useAuth();
@@ -115,7 +116,7 @@ export default function MePage() {
                       <div className="text-black/60 text-xs mt-1">{new Date(o.createdAt || Date.now()).toLocaleString()}</div>
                       <div className="mt-2 flex items-center justify-between">
                         <div className="text-black/80">{o.items.length} item{o.items.length > 1 ? "s" : ""}</div>
-                        <div>{new Intl.NumberFormat(undefined, { style: "currency", currency: o.currency, maximumFractionDigits: 0 }).format(o.subtotal)}</div>
+                        <div>{fmt(o.subtotal)}</div>
                       </div>
                     </div>
                   ))}

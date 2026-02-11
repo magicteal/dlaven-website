@@ -10,7 +10,6 @@ type Product = {
   name: string;
   description?: string;
   price: number;
-  currency: string;
   images: string[];
   categorySlug?: string;
   inStock?: boolean;
@@ -36,7 +35,6 @@ export default function AdminEditProductPage({
     name: "",
     description: "",
     price: "",
-    currency: "USD",
     images: "",
     categorySlug: "",
     inStock: true,
@@ -71,7 +69,6 @@ export default function AdminEditProductPage({
           name: p.name,
           description: p.description || "",
           price: String(p.price),
-          currency: p.currency,
           images: (p.images || []).join(","),
           categorySlug: p.categorySlug || "",
           inStock: !!p.inStock,
@@ -119,7 +116,6 @@ export default function AdminEditProductPage({
         name: form.name.trim(),
         description: form.description.trim(),
         price: Number(form.price) || 0,
-        currency: form.currency.trim() || "USD",
         images: form.images
           .split(",")
           .map((s) => s.trim())
@@ -199,16 +195,11 @@ export default function AdminEditProductPage({
             value={form.description}
             onChange={(v) => setForm((p) => ({ ...p, description: v }))}
           />
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3">
             <Input
               label="Price"
               value={form.price}
               onChange={(v) => setForm((p) => ({ ...p, price: v }))}
-            />
-            <Input
-              label="Currency"
-              value={form.currency}
-              onChange={(v) => setForm((p) => ({ ...p, currency: v }))}
             />
           </div>
           <Input

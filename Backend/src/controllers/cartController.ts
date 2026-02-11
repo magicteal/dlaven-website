@@ -4,6 +4,18 @@ import { Product } from "../models/Product";
 import { User } from "../models/User";
 import crypto from "crypto";
 
+function stripCurrencyFromCart(cart: CartDoc | Record<string, unknown>) {
+  const obj = typeof (cart as CartDoc).toObject === "function" ? (cart as CartDoc).toObject() : { ...(cart as any) };
+  if (Array.isArray((obj as any).items)) {
+    (obj as any).items = (obj as any).items.map((it: any) => {
+      if (!it || typeof it !== "object") return it;
+      const { currency, ...rest } = it as any;
+      return rest;
+    });
+  }
+  return obj;
+}
+
 function getAuthUser(req: Request): { sub: string } | undefined {
   return (req as any).user as { sub: string } | undefined;
 }
@@ -39,7 +51,7 @@ async function getOrCreateCart(req: Request, res: Response): Promise<CartDoc> {
 
 export async function getCart(req: Request, res: Response) {
   const cart = await getOrCreateCart(req, res);
-  return res.json({ cart: cart.toObject() });
+  return res.json({ cart: stripCurrencyFromCart(cart) });
 }
 
 export async function addItem(req: Request, res: Response) {
@@ -99,7 +111,6 @@ export async function addItem(req: Request, res: Response) {
       productSlug: product.slug,
       name: product.name,
       price: product.price,
-      currency: product.currency,
       image: product.images[0],
       quantity: qty,
       size: size,
@@ -107,7 +118,7 @@ export async function addItem(req: Request, res: Response) {
   }
   current.items = items;
   await current.save();
-  return res.status(201).json({ cart: current.toObject() });
+  return res.status(201).json({ cart: stripCurrencyFromCart(current) });
 }
 
 export async function updateItem(req: Request, res: Response) {
@@ -130,7 +141,7 @@ export async function updateItem(req: Request, res: Response) {
   }
   current.items = items;
   await current.save();
-  return res.json({ cart: current.toObject() });
+  return res.json({ cart: stripCurrencyFromCart(current) });
 }
 
 export async function removeItem(req: Request, res: Response) {
@@ -148,5 +159,5 @@ export async function removeItem(req: Request, res: Response) {
   );
   current.items = items;
   await current.save();
-  return res.json({ cart: current.toObject() });
+  return res.json({ cart: stripCurrencyFromCart(current) });
 }

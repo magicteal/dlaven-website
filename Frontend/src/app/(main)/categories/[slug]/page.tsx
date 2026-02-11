@@ -15,7 +15,6 @@ async function fetchProductsForCategory(slug: string) {
     slug: string;
     name: string;
     price: number;
-    currency: string;
     images: string[];
     rating?: number;
     reviewsCount?: number;
@@ -94,7 +93,6 @@ export default async function CategoryPage({
                 slug={p.slug}
                 name={p.name}
                 price={p.price}
-                currency={p.currency}
                 image={p.images[0]}
                 rating={p.rating}
                 reviewsCount={p.reviewsCount}

@@ -14,7 +14,6 @@ export type CartItem = {
   productSlug: string;
   name: string;
   price: number;
-  currency: string;
   image: string;
   quantity: number;
   size?: string;

@@ -1,5 +1,5 @@
 import express, { type Request, type Response } from "express";
-import cors from "cors";
+import cors, { type CorsOptions } from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import { connectDB } from "./utils/db";
@@ -112,21 +112,21 @@ function isOriginAllowed(origin: string, rules: AllowedOriginRule[]): boolean {
 const ALLOWED_ORIGIN_RULES = parseAllowedOriginRules(FRONTEND_ORIGIN);
 console.log("[cors] allowed origins config:", FRONTEND_ORIGIN);
 console.log("[cors] allowed origin rules:", ALLOWED_ORIGIN_RULES);
-app.use(
-  cors({
-    origin(origin, callback) {
-      if (!origin) return callback(null, true);
-      if (isOriginAllowed(origin, ALLOWED_ORIGIN_RULES)) return callback(null, true);
-      return callback(new Error("Not allowed by CORS"));
-    },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+const corsOptions: CorsOptions = {
+  origin(origin, callback) {
+    if (!origin) return callback(null, true);
+    if (isOriginAllowed(origin, ALLOWED_ORIGIN_RULES)) return callback(null, true);
+    return callback(new Error("Not allowed by CORS"));
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
 
-// ✅ THIS IS THE KEY LINE
-app.options("*", cors({ credentials: true }));
+app.use(cors(corsOptions));
+
+// Preflight (use the SAME options as normal requests)
+app.options("*", cors(corsOptions));
 
 // Parsers
 app.use(express.json());

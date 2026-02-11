@@ -5,14 +5,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function fmt(amount: number, currency: string) {
+export function fmt(amount: number) {
   try {
-    return new Intl.NumberFormat(undefined, {
-      style: "currency",
-      currency,
+    return `₹${new Intl.NumberFormat("en-IN", {
       maximumFractionDigits: 0,
-    }).format(amount);
+    }).format(amount)}`;
   } catch {
-    return `${currency} ${amount.toFixed(0)}`;
+    return `₹${amount.toFixed(0)}`;
   }
 }

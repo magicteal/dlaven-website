@@ -4,6 +4,7 @@ import { useAuth } from "@/components/providers/AuthProvider";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
 import { api, type OrderDTO } from "@/lib/api";
+import { fmt } from "@/lib/utils";
 import { HiOutlinePencil } from "react-icons/hi2";
 import Link from "next/link";
 
@@ -368,11 +369,7 @@ function AccountPageContent() {
                               {o.items.length} item{o.items.length > 1 ? "s" : ""}
                             </div>
                             <div className="text-[#333] font-medium">
-                              {new Intl.NumberFormat(undefined, {
-                                style: "currency",
-                                currency: o.currency,
-                                maximumFractionDigits: 0,
-                              }).format(o.subtotal)}
+                              {fmt(o.subtotal)}
                             </div>
                           </div>
                         </div>

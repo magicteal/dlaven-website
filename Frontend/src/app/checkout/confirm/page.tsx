@@ -103,11 +103,7 @@ export default function CheckoutConfirmPage() {
                         </div>
                       </div>
                       <div className="text-sm font-medium">
-                        {new Intl.NumberFormat(undefined, {
-                          style: "currency",
-                          currency: item.currency,
-                          maximumFractionDigits: 0,
-                        }).format(item.price * item.quantity)}
+                        {fmt(item.price * item.quantity)}
                       </div>
                     </div>
                   );
@@ -121,13 +117,13 @@ export default function CheckoutConfirmPage() {
             <h2 className="text-xs tracking-[0.25em] uppercase mb-6">Summary</h2>
 
             <div className="space-y-4 text-sm">
-              <DetailRow label="Subtotal" value={fmt(subtotal, cart?.items[0]?.currency || "USD")} />
+              <DetailRow label="Subtotal" value={fmt(subtotal)} />
               <DetailRow label="Shipping" value="FedEx – Ground" muted />
               <DetailRow label="Taxes" value="Calculated at checkout" muted />
             </div>
 
             <div className="mt-6 border-t border-black/10 pt-6">
-              <DetailRow label="Total" value={fmt(subtotal, cart?.items[0]?.currency || "USD")} bold />
+              <DetailRow label="Total" value={fmt(subtotal)} bold />
             </div>
 
             <Button

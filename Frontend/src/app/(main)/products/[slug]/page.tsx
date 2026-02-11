@@ -8,7 +8,6 @@ type ApiProduct = {
   name: string;
   description?: string;
   price: number;
-  currency: string;
   images: string[];
   categorySlug?: string;
   rating?: number;
@@ -24,7 +23,6 @@ function toClientProduct(p: ApiProduct): ClientProduct {
     slug: p.slug,
     name: p.name,
     price: p.price,
-    currency: p.currency,
     images: p.images,
     description: p.description || "",
     categorySlug: p.categorySlug,

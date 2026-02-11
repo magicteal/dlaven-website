@@ -3,13 +3,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { useRouter } from "next/navigation";
+import { fmt } from "@/lib/utils";
 import Link from "next/link";
 
 type Product = {
   slug: string;
   name: string;
   price: number;
-  currency: string;
   images: string[];
   categorySlug?: string;
   inStock?: boolean;
@@ -76,7 +76,7 @@ export default function AdminProductsPage() {
               <tr key={p.slug} className="border-b border-black/5">
                 <td className="py-2 pr-4 font-mono text-xs">{p.slug}</td>
                 <td className="py-2 pr-4">{p.name}</td>
-                <td className="py-2 pr-4">{new Intl.NumberFormat(undefined, { style: "currency", currency: p.currency, maximumFractionDigits: 0 }).format(p.price)}</td>
+                <td className="py-2 pr-4">{fmt(p.price)}</td>
                 <td className="py-2 pr-4">{p.categorySlug || "—"}</td>
                 <td className="py-2 pr-4">{p.inStock ? "In stock" : "Sold out"}</td>
                 <td className="py-2 pr-4 flex gap-2">

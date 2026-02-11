@@ -2,7 +2,6 @@ export interface Product {
   slug: string;
   name: string;
   price: number;
-  currency: string;
   images: string[];
   description?: string;
   rating?: number;

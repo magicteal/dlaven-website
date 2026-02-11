@@ -11,6 +11,18 @@ const Cart_1 = require("../models/Cart");
 const Product_1 = require("../models/Product");
 const User_1 = require("../models/User");
 const crypto_1 = __importDefault(require("crypto"));
+function stripCurrencyFromCart(cart) {
+    const obj = typeof cart.toObject === "function" ? cart.toObject() : { ...cart };
+    if (Array.isArray(obj.items)) {
+        obj.items = obj.items.map((it) => {
+            if (!it || typeof it !== "object")
+                return it;
+            const { currency, ...rest } = it;
+            return rest;
+        });
+    }
+    return obj;
+}
 function getAuthUser(req) {
     return req.user;
 }
@@ -44,7 +56,7 @@ async function getOrCreateCart(req, res) {
 }
 async function getCart(req, res) {
     const cart = await getOrCreateCart(req, res);
-    return res.json({ cart: cart.toObject() });
+    return res.json({ cart: stripCurrencyFromCart(cart) });
 }
 async function addItem(req, res) {
     const { productSlug, quantity = 1, size, } = req.body;
@@ -89,7 +101,6 @@ async function addItem(req, res) {
             productSlug: product.slug,
             name: product.name,
             price: product.price,
-            currency: product.currency,
             image: product.images[0],
             quantity: qty,
             size: size,
@@ -97,7 +108,7 @@ async function addItem(req, res) {
     }
     current.items = items;
     await current.save();
-    return res.status(201).json({ cart: current.toObject() });
+    return res.status(201).json({ cart: stripCurrencyFromCart(current) });
 }
 async function updateItem(req, res) {
     const { productSlug } = req.params;
@@ -118,7 +129,7 @@ async function updateItem(req, res) {
     }
     current.items = items;
     await current.save();
-    return res.json({ cart: current.toObject() });
+    return res.json({ cart: stripCurrencyFromCart(current) });
 }
 async function removeItem(req, res) {
     const { productSlug } = req.params;
@@ -134,5 +145,5 @@ async function removeItem(req, res) {
     });
     current.items = items;
     await current.save();
-    return res.json({ cart: current.toObject() });
+    return res.json({ cart: stripCurrencyFromCart(current) });
 }

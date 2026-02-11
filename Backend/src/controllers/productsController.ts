@@ -35,6 +35,7 @@ export async function listProducts(req: Request, res: Response) {
     if (q) filter.$text = { $search: String(q) };
 
     const items = await Product.find(filter)
+      .select({ currency: 0 })
       .sort({ createdAt: -1 })
       .limit(Math.min(parseInt(limit, 10) || 50, 200))
       .skip(Math.max(parseInt(skip, 10) || 0, 0))
@@ -53,7 +54,9 @@ export async function listProducts(req: Request, res: Response) {
 export async function getProductBySlug(req: Request, res: Response) {
   try {
     const slug = req.params.slug as string;
-    const item = await Product.findOne({ slug }).lean();
+    const item = await Product.findOne({ slug })
+      .select({ currency: 0 })
+      .lean();
     if (!item) return res.status(404).json({ error: "Not found" });
     return res.json({ item });
   } catch (err) {
@@ -64,7 +67,7 @@ export async function getProductBySlug(req: Request, res: Response) {
 
 /**
  * Create product (admin route)
- * Expect body to include: slug, name, price, currency, categorySlug, images (array), etc
+ * Expect body to include: slug, name, price, categorySlug, images (array), etc
  */
 export async function createProduct(req: Request, res: Response) {
   try {
@@ -72,7 +75,6 @@ export async function createProduct(req: Request, res: Response) {
       slug: string;
       name: string;
       price: number;
-      currency: string;
       images: string[];
       categorySlug: string;
       description?: string;
@@ -117,7 +119,6 @@ export async function createProduct(req: Request, res: Response) {
       name: body.name,
       description: body.description ?? "",
       price: body.price,
-      currency: body.currency ?? "USD",
       images: body.images ?? [],
       categorySlug: body.categorySlug,
       sizeOptions: body.sizeOptions ?? undefined,

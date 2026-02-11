@@ -12,7 +12,6 @@ type Product = {
   slug: string;
   name: string;
   price: number;
-  currency: string;
   images: string[];
   inStock?: boolean;
 };
@@ -148,7 +147,6 @@ export default function DlBarryPage() {
                   slug={p.slug}
                   name={p.name}
                   price={p.price}
-                  currency={p.currency}
                   image={(p.images && p.images[0]) || "/images/placeholder.png"}
                   inStock={p.inStock}
                 />

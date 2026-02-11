@@ -4,6 +4,7 @@ import { useAuth } from "@/components/providers/AuthProvider";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { api, type OrderDTO } from "@/lib/api";
+import { fmt } from "@/lib/utils";
 
 export default function AdminOrdersPage() {
   const { user, loading } = useAuth();
@@ -51,7 +52,7 @@ export default function AdminOrdersPage() {
             </thead>
             <tbody>
               {orders.map((o) => {
-                const amount = new Intl.NumberFormat(undefined, { style: "currency", currency: o.currency, maximumFractionDigits: 0 }).format(o.subtotal || 0);
+                const amount = fmt(o.subtotal || 0);
                 return (
                   <tr key={String(o._id || o.id)} className="border-t border-black/10">
                     <td className="p-2 align-top">

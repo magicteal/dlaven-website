@@ -376,7 +376,6 @@ export const api = {
           productSlug: string;
           name: string;
           price: number;
-          currency: string;
           image: string;
           quantity: number;
           size?: string;
@@ -391,7 +390,6 @@ export const api = {
           productSlug: string;
           name: string;
           price: number;
-          currency: string;
           image: string;
           quantity: number;
           size?: string;
@@ -409,7 +407,6 @@ export const api = {
           productSlug: string;
           name: string;
           price: number;
-          currency: string;
           image: string;
           quantity: number;
           size?: string;
@@ -427,7 +424,6 @@ export const api = {
           productSlug: string;
           name: string;
           price: number;
-          currency: string;
           image: string;
           quantity: number;
           size?: string;
@@ -523,7 +519,6 @@ export type OrderItemDTO = {
   productSlug: string;
   name: string;
   price: number;
-  currency: string;
   image: string;
   quantity: number;
   size?: string;
@@ -546,7 +541,6 @@ export type OrderDTO = {
   items: OrderItemDTO[];
   address: OrderAddressDTO;
   subtotal: number;
-  currency: string;
   status: OrderStatus;
   razorpay?: { orderId?: string; paymentId?: string; signature?: string };
   createdAt?: string;

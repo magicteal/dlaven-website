@@ -105,7 +105,7 @@ export default function CheckoutPayPage() {
           <div className="border border-black/10 p-10 bg-[#f7f4ef]">
             <div className="text-sm text-black/60 mb-1">Amount</div>
             <div className="text-2xl font-semibold">
-              {cart?.items[0] ? fmt(subtotal, cart.items[0].currency) : "—"}
+              {cart?.items[0] ? fmt(subtotal) : "—"}
             </div>
 
             <Button

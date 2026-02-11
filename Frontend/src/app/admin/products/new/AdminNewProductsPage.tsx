@@ -15,7 +15,6 @@ export default function AdminNewProductPage() {
     name: "",
     description: "",
     price: "",
-    currency: "INR",
     images: "",
     categorySlug: "",
     inStock: true,
@@ -110,7 +109,6 @@ export default function AdminNewProductPage() {
         name: form.name.trim(),
         description: form.description.trim(),
         price: Number(form.price) || 0,
-        currency: "INR",
         images: form.images
           .split(",")
           .map((s) => s.trim())
