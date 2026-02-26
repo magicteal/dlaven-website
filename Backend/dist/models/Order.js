@@ -23,6 +23,7 @@ const AddressSchema = new mongoose_1.Schema({
 });
 const OrderSchema = new mongoose_1.Schema({
     userId: { type: mongoose_1.Schema.Types.ObjectId, ref: "User", required: true, index: true },
+    orderNumber: { type: String, required: true, index: true },
     items: { type: [OrderItemSchema], required: true },
     address: { type: AddressSchema, required: true },
     subtotal: { type: Number, required: true },

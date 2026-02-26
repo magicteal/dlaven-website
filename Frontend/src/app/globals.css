@@ -15,6 +15,22 @@
 }
 
 @font-face {
+  font-family: "holiday";
+  src: url("/fonts/HolidayFree.otf") format("opentype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Perandory";
+  src: url("/fonts/perandory/Perandory-Regular.otf") format("opentype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
   font-family: "Lovato-Regular";
   src: url("/fonts/lovato/fonnts.com-Lovato-Regular.otf") format("truetype");
 }
@@ -43,6 +59,12 @@
   }
 
   /* Apply Montserrat as the default app font. Components may still opt-in to other fonts. */
+}
+
+@layer utilities {
+  .font-holiday {
+    font-family: "holiday", "Perandory", "Lovato-Regular", var(--font-sans);
+  }
 }
 
 /* Simple animation utility fallbacks (Tailwind v4 provides these by default, but include minimal defs if needed) */

@@ -5,6 +5,42 @@ import { User } from "../models/User";
 import crypto from "crypto";
 import { sendEmail } from "../utils/email";
 
+type AddressBody = Partial<{
+  label: string;
+  title: string;
+  firstName: string;
+  lastName: string;
+  company: string;
+  fullName: string;
+  areaCode: string;
+  phoneNumber: string;
+  phone: string;
+  line1: string;
+  line2: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  zipPlus: string;
+  country: string;
+  isDefault?: boolean;
+}>;
+
+function normalizeAddress(body: AddressBody) {
+  const update: AddressBody = { ...body };
+  if (!update.fullName && (update.title || update.firstName || update.lastName)) {
+    const name = [update.title, update.firstName, update.lastName].filter(Boolean).join(" ").trim();
+    if (name) update.fullName = name;
+  }
+  if (!update.phone && (update.areaCode || update.phoneNumber)) {
+    const phone = [update.areaCode, update.phoneNumber].filter(Boolean).join(" ").trim();
+    if (phone) update.phone = phone;
+  }
+  if (update.postalCode && update.zipPlus && !update.postalCode.includes("-")) {
+    update.postalCode = `${update.postalCode}-${update.zipPlus}`;
+  }
+  return update;
+}
+
 function signToken(payload: object) {
   const secret = (process.env.JWT_SECRET || "dev-secret") as jwt.Secret;
   const expiresIn = (process.env.JWT_EXPIRES_IN || "7d") as jwt.SignOptions["expiresIn"];
@@ -108,13 +144,21 @@ export async function me(req: Request, res: Response) {
     // Prefer default address from addresses[]; fallback to legacy address field
     const defaultAddress = (user.addresses || []).find((a: any) => a.isDefault) || (user.addresses && user.addresses[0]) || null;
     const addr = defaultAddress ? {
+      label: defaultAddress.label,
+      title: defaultAddress.title,
+      firstName: defaultAddress.firstName,
+      lastName: defaultAddress.lastName,
+      company: defaultAddress.company,
       fullName: defaultAddress.fullName,
+      areaCode: defaultAddress.areaCode,
+      phoneNumber: defaultAddress.phoneNumber,
       phone: defaultAddress.phone,
       line1: defaultAddress.line1,
       line2: defaultAddress.line2,
       city: defaultAddress.city,
       state: defaultAddress.state,
       postalCode: defaultAddress.postalCode,
+      zipPlus: defaultAddress.zipPlus,
       country: defaultAddress.country,
     } : (user.address || null);
     return res.json({ user: { id: user.id, email: user.email, name: user.name, phone: user.phone, dob: user.dob, role: user.role, address: addr } });
@@ -219,16 +263,24 @@ export async function updateProfile(req: Request, res: Response) {
     await user.save();
     // Return with computed default address for consistency
     const defaultAddress = (user.addresses || []).find((a: any) => a.isDefault) || (user.addresses && user.addresses[0]) || null;
-    const addr = defaultAddress ? {
-      fullName: defaultAddress.fullName,
-      phone: defaultAddress.phone,
-      line1: defaultAddress.line1,
-      line2: defaultAddress.line2,
-      city: defaultAddress.city,
-      state: defaultAddress.state,
-      postalCode: defaultAddress.postalCode,
-      country: defaultAddress.country,
-    } : (user.address || null);
+      const addr = defaultAddress ? {
+        label: defaultAddress.label,
+        title: defaultAddress.title,
+        firstName: defaultAddress.firstName,
+        lastName: defaultAddress.lastName,
+        company: defaultAddress.company,
+        fullName: defaultAddress.fullName,
+        areaCode: defaultAddress.areaCode,
+        phoneNumber: defaultAddress.phoneNumber,
+        phone: defaultAddress.phone,
+        line1: defaultAddress.line1,
+        line2: defaultAddress.line2,
+        city: defaultAddress.city,
+        state: defaultAddress.state,
+        postalCode: defaultAddress.postalCode,
+        zipPlus: defaultAddress.zipPlus,
+        country: defaultAddress.country,
+      } : (user.address || null);
     return res.json({ user: { id: user.id, email: user.email, name: user.name, phone: user.phone, dob: user.dob, role: user.role, address: addr } });
   } catch (err) {
     return res.status(500).json({ error: "Failed to update profile" });
@@ -245,13 +297,21 @@ export async function getAddress(req: Request, res: Response) {
     const defaultAddress = (user.addresses || []).find((a: any) => a.isDefault) || (user.addresses && user.addresses[0]) || null;
     if (defaultAddress) {
       return res.json({ address: {
+        label: defaultAddress.label,
+        title: defaultAddress.title,
+        firstName: defaultAddress.firstName,
+        lastName: defaultAddress.lastName,
+        company: defaultAddress.company,
         fullName: defaultAddress.fullName,
+        areaCode: defaultAddress.areaCode,
+        phoneNumber: defaultAddress.phoneNumber,
         phone: defaultAddress.phone,
         line1: defaultAddress.line1,
         line2: defaultAddress.line2,
         city: defaultAddress.city,
         state: defaultAddress.state,
         postalCode: defaultAddress.postalCode,
+        zipPlus: defaultAddress.zipPlus,
         country: defaultAddress.country,
       } });
     }
@@ -265,16 +325,7 @@ export async function updateAddress(req: Request, res: Response) {
   try {
     const auth = (req as any).user as { sub: string } | undefined;
     if (!auth) return res.status(401).json({ error: "Unauthorized" });
-    const body = (req.body || {}) as Partial<{
-      fullName: string;
-      phone: string;
-      line1: string;
-      line2: string;
-      city: string;
-      state: string;
-      postalCode: string;
-      country: string;
-    }>;
+    const body = normalizeAddress((req.body || {}) as AddressBody);
     const user = await User.findById(auth.sub).exec();
     if (!user) return res.status(404).json({ error: "Not found" });
     // If addresses[] exists, upsert default address there; else write legacy field
@@ -293,13 +344,21 @@ export async function updateAddress(req: Request, res: Response) {
       await user.save();
       const def = (user.addresses || []).find((a: any) => a.isDefault) || (user.addresses && user.addresses[0]) || null;
       return res.json({ address: def ? {
+        label: def.label,
+        title: def.title,
+        firstName: def.firstName,
+        lastName: def.lastName,
+        company: def.company,
         fullName: def.fullName,
+        areaCode: def.areaCode,
+        phoneNumber: def.phoneNumber,
         phone: def.phone,
         line1: def.line1,
         line2: def.line2,
         city: def.city,
         state: def.state,
         postalCode: def.postalCode,
+        zipPlus: def.zipPlus,
         country: def.country,
       } : null });
     }
@@ -321,13 +380,20 @@ export async function listAddresses(req: Request, res: Response) {
   const addresses = (user.addresses || []).map((a: any) => ({
     id: a._id,
     label: a.label,
+    title: a.title,
+    firstName: a.firstName,
+    lastName: a.lastName,
+    company: a.company,
     fullName: a.fullName,
+    areaCode: a.areaCode,
+    phoneNumber: a.phoneNumber,
     phone: a.phone,
     line1: a.line1,
     line2: a.line2,
     city: a.city,
     state: a.state,
     postalCode: a.postalCode,
+    zipPlus: a.zipPlus,
     country: a.country,
     isDefault: !!a.isDefault,
   }));
@@ -337,7 +403,7 @@ export async function listAddresses(req: Request, res: Response) {
 export async function createAddress(req: Request, res: Response) {
   const auth = (req as any).user as { sub: string } | undefined;
   if (!auth) return res.status(401).json({ error: "Unauthorized" });
-  const body = (req.body || {}) as Partial<{ label: string; fullName: string; phone: string; line1: string; line2: string; city: string; state: string; postalCode: string; country: string; isDefault?: boolean }>;
+  const body = normalizeAddress((req.body || {}) as AddressBody);
   const user = await User.findById(auth.sub).exec();
   if (!user) return res.status(404).json({ error: "Not found" });
   const makeDefault = body.isDefault || !(user.addresses && user.addresses.length);
@@ -347,13 +413,20 @@ export async function createAddress(req: Request, res: Response) {
   (user.addresses as any) = user.addresses || [];
   (user.addresses as any).push({
     label: body.label,
+    title: body.title,
+    firstName: body.firstName,
+    lastName: body.lastName,
+    company: body.company,
     fullName: body.fullName,
+    areaCode: body.areaCode,
+    phoneNumber: body.phoneNumber,
     phone: body.phone,
     line1: body.line1,
     line2: body.line2,
     city: body.city,
     state: body.state,
     postalCode: body.postalCode,
+    zipPlus: body.zipPlus,
     country: body.country,
     isDefault: !!makeDefault,
   });
@@ -362,13 +435,20 @@ export async function createAddress(req: Request, res: Response) {
   return res.status(201).json({ address: {
     id: created._id,
     label: created.label,
+    title: created.title,
+    firstName: created.firstName,
+    lastName: created.lastName,
+    company: created.company,
     fullName: created.fullName,
+    areaCode: created.areaCode,
+    phoneNumber: created.phoneNumber,
     phone: created.phone,
     line1: created.line1,
     line2: created.line2,
     city: created.city,
     state: created.state,
     postalCode: created.postalCode,
+    zipPlus: created.zipPlus,
     country: created.country,
     isDefault: !!created.isDefault,
   } });
@@ -378,14 +458,33 @@ export async function updateAddressById(req: Request, res: Response) {
   const auth = (req as any).user as { sub: string } | undefined;
   if (!auth) return res.status(401).json({ error: "Unauthorized" });
   const { id } = req.params as { id: string };
-  const body = (req.body || {}) as Partial<{ label: string; fullName: string; phone: string; line1: string; line2: string; city: string; state: string; postalCode: string; country: string }>;
+  const body = normalizeAddress((req.body || {}) as AddressBody);
   const user = await User.findById(auth.sub).exec();
   if (!user) return res.status(404).json({ error: "Not found" });
   const addr = (user.addresses || []).find((a: any) => String(a._id) === id);
   if (!addr) return res.status(404).json({ error: "Address not found" });
   Object.assign(addr, body);
   await user.save();
-  return res.json({ address: { id: addr._id, label: addr.label, fullName: addr.fullName, phone: addr.phone, line1: addr.line1, line2: addr.line2, city: addr.city, state: addr.state, postalCode: addr.postalCode, country: addr.country, isDefault: !!addr.isDefault } });
+  return res.json({ address: {
+    id: addr._id,
+    label: addr.label,
+    title: addr.title,
+    firstName: addr.firstName,
+    lastName: addr.lastName,
+    company: addr.company,
+    fullName: addr.fullName,
+    areaCode: addr.areaCode,
+    phoneNumber: addr.phoneNumber,
+    phone: addr.phone,
+    line1: addr.line1,
+    line2: addr.line2,
+    city: addr.city,
+    state: addr.state,
+    postalCode: addr.postalCode,
+    zipPlus: addr.zipPlus,
+    country: addr.country,
+    isDefault: !!addr.isDefault,
+  } });
 }
 
 export async function deleteAddressById(req: Request, res: Response) {

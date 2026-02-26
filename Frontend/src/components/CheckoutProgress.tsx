@@ -19,7 +19,7 @@ export default function CheckoutProgress({ current }: ProgressProps) {
               {/* Left Line */}
               <div
                 className={`h-[2px] flex-1 ${
-                  i === 0 ? "bg-transparent" : active ? "bg-black" : "bg-black/25"
+                  i <= index ? "bg-black" : "bg-black/25"
                 }`}
               />
 
@@ -35,9 +35,7 @@ export default function CheckoutProgress({ current }: ProgressProps) {
               {/* Right Line */}
               <div
                 className={`h-[2px] flex-1 ${
-                  i === steps.length - 1
-                    ? "bg-transparent"
-                    : active
+                  i < index
                     ? "bg-black"
                     : "bg-black/25"
                 }`}

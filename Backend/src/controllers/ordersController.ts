@@ -6,6 +6,13 @@ import { getRazorpay, verifyRazorpaySignature } from "../utils/razorpay";
 import { sendEmail } from "../utils/email";
 import { Product } from "../models/Product";
 
+function generateOrderNumber() {
+  // 10-digit numeric string (timestamp-based + small random), good for display.
+  const ts = Date.now().toString();
+  const rand = Math.floor(10 + Math.random() * 90).toString();
+  return (ts + rand).slice(-10);
+}
+
 function stripCurrencyFromOrder(order: any) {
   if (!order) return order;
   const obj = typeof order.toObject === "function" ? order.toObject() : { ...order };
@@ -121,6 +128,7 @@ export async function createOrder(req: Request, res: Response) {
     // Persist order with status created
     const order = await Order.create({
       userId,
+      orderNumber: generateOrderNumber(),
       items,
       address: defaultAddr,
       subtotal,

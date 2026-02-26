@@ -10,7 +10,26 @@ import CheckoutProgress from "@/components/CheckoutProgress";
 import DetailRow from "@/components/DetailRow";
 import { fmt } from "@/lib/utils";
 import { useCart } from "@/components/providers/CartProvider";
-import { Store, Truck, Lock, RefreshCcw } from "lucide-react";
+import { ArrowLeft, Store, Truck, Lock, RefreshCcw, CreditCard, QrCode } from "lucide-react";
+
+declare global {
+  interface Window {
+    Razorpay: new (options: Record<string, unknown>) => { open: () => void };
+  }
+}
+
+async function loadRazorpayScript(): Promise<void> {
+  if (typeof window === "undefined") return;
+  if (typeof (window as Window).Razorpay !== "undefined") return;
+  await new Promise<void>((resolve, reject) => {
+    const s = document.createElement("script");
+    s.src = "https://checkout.razorpay.com/v1/checkout.js";
+    s.async = true;
+    s.onload = () => resolve();
+    s.onerror = () => reject(new Error("Failed to load Razorpay"));
+    document.body.appendChild(s);
+  });
+}
 
 type Address = {
   id?: string;
@@ -28,12 +47,26 @@ type Address = {
 
 export default function CheckoutAddressPage() {
   const { user, loading } = useAuth();
-  const { cart, subtotal } = useCart();
+  const { cart, subtotal, refresh } = useCart();
   const router = useRouter();
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [selectedId, setSelectedId] = useState<string | "new" | null>(null);
-  const [newAddr, setNewAddr] = useState<Address>({});
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [title, setTitle] = useState("Mr.");
+  const [company, setCompany] = useState("");
+  const [address1, setAddress1] = useState("");
+  const [address2, setAddress2] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [zipPlus, setZipPlus] = useState("");
+  const [country, setCountry] = useState("United States");
+  const [areaCode, setAreaCode] = useState("+1");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [busy, setBusy] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<"card" | "upi">("card");
+  const [paying, setPaying] = useState(false);
   const isLoggedIn = useMemo(() => !!user, [user]);
   const itemCount = cart?.items?.reduce((sum, i) => sum + i.quantity, 0) ?? 0;
   const itemLabel = itemCount === 1 ? "ITEM" : "ITEMS";
@@ -63,7 +96,21 @@ export default function CheckoutAddressPage() {
     setBusy(true);
     try {
       if (selectedId === "new" || !selectedId) {
-        const created = await api.createAddress({ ...newAddr, isDefault: addresses.length === 0 });
+        const fullName = [title, firstName, lastName].filter(Boolean).join(" ").trim();
+        const zip = zipPlus ? `${postalCode}-${zipPlus}` : postalCode;
+        const line2 = [address2, company].filter(Boolean).join(" · ") || undefined;
+        const phone = [areaCode, phoneNumber].filter(Boolean).join(" ").trim();
+        const created = await api.createAddress({
+          fullName,
+          phone,
+          line1: address1,
+          line2,
+          city,
+          state,
+          postalCode: zip,
+          country,
+          isDefault: addresses.length === 0,
+        });
         if (created.address?.id) await api.setDefaultAddress(created.address.id);
       } else {
         await api.setDefaultAddress(selectedId);
@@ -74,9 +121,112 @@ export default function CheckoutAddressPage() {
     }
   }
 
+  async function onPayNow() {
+    // Validate new address fields if needed
+    if (selectedId === "new" || !selectedId) {
+      if (!address1 || !firstName || !lastName || !phoneNumber || !city || !state || !postalCode) {
+        alert("Please fill in all required address fields before proceeding.");
+        return;
+      }
+    }
+
+    // First save the address
+    try {
+      setPaying(true);
+      if (selectedId === "new" || !selectedId) {
+        const fullName = [title, firstName, lastName].filter(Boolean).join(" ").trim();
+        const zip = zipPlus ? `${postalCode}-${zipPlus}` : postalCode;
+        const line2 = [address2, company].filter(Boolean).join(" · ") || undefined;
+        const phone = [areaCode, phoneNumber].filter(Boolean).join(" ").trim();
+        const created = await api.createAddress({
+          fullName,
+          phone,
+          line1: address1,
+          line2,
+          city,
+          state,
+          postalCode: zip,
+          country,
+          isDefault: true,
+        });
+        if (created.address?.id) await api.setDefaultAddress(created.address.id);
+      } else {
+        await api.setDefaultAddress(selectedId);
+      }
+
+      // Then process payment
+      await refresh();
+
+      if (!cart || !cart.items.length) {
+        router.replace("/cart");
+        return;
+      }
+
+      const { order, razorpayOrder, key } = await api.createOrder();
+      await loadRazorpayScript();
+
+      const rzp = new window.Razorpay({
+        key,
+        amount: razorpayOrder.amount,
+        currency: razorpayOrder.currency,
+        name: "DLaven",
+        description: `Order ${order._id || order.id}`,
+        order_id: razorpayOrder.id,
+        prefill: {
+          name: user?.name || "",
+          email: user?.email || "",
+        },
+        theme: { color: "#000000" },
+        method: {
+          card: paymentMethod === "card",
+          upi: paymentMethod === "upi",
+          netbanking: false,
+          wallet: false,
+          emi: false,
+          paylater: false,
+        },
+        handler: async (response: {
+          razorpay_payment_id: string;
+          razorpay_order_id: string;
+          razorpay_signature: string;
+        }) => {
+          try {
+            const verified = await api.verifyPayment({
+              orderId: response.razorpay_order_id,
+              paymentId: response.razorpay_payment_id,
+              signature: response.razorpay_signature,
+            });
+            await refresh();
+            const oid = verified.order._id || verified.order.id;
+            router.replace(`/checkout/success/${encodeURIComponent(String(oid))}`);
+          } catch (e: unknown) {
+            const msg = e instanceof Error ? e.message : "Payment verification failed";
+            alert(msg);
+            setPaying(false);
+          }
+        },
+        modal: { ondismiss: () => setPaying(false) },
+      });
+
+      rzp.open();
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Unable to process payment";
+      alert(msg);
+      setPaying(false);
+    }
+  }
+
   return (
     <main className="min-h-screen bg-[#faf7f2] pt-24 pb-24">
       <Container>
+        <button
+          type="button"
+          onClick={() => router.back()}
+          className="inline-flex items-center gap-2 text-xs tracking-[0.25em] uppercase mb-6"
+        >
+          <ArrowLeft size={14} />
+          Back
+        </button>
         <CheckoutProgress current="checkout" />
 
         <div className="mt-12 grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-12">
@@ -92,7 +242,7 @@ export default function CheckoutAddressPage() {
             <section className="bg-white border border-black/10">
               <div className="px-8 py-5 border-b border-black/10 text-xs tracking-[0.3em] uppercase">Delivery</div>
               <div className="px-8 py-5 border-b border-black/10 grid grid-cols-2 text-center text-xs uppercase tracking-[0.2em]">
-                <div className="flex flex-col items-center gap-2">
+                <div className="flex flex-col items-center gap-2 border-b-2 border-black pb-3">
                   <Truck size={18} />
                   <span>Ship to an address</span>
                 </div>
@@ -142,17 +292,81 @@ export default function CheckoutAddressPage() {
 
                 {selectedId === "new" && (
                   <div className="mt-6">
-                    <div className="grid grid-cols-1 gap-4 max-w-xl">
-                      <Text label="Full name" value={newAddr.fullName || ""} onChange={(v) => setNewAddr((p) => ({ ...p, fullName: v }))} />
-                      <Text label="Phone" value={newAddr.phone || ""} onChange={(v) => setNewAddr((p) => ({ ...p, phone: v }))} />
-                      <Text label="Address line 1" value={newAddr.line1 || ""} onChange={(v) => setNewAddr((p) => ({ ...p, line1: v }))} />
-                      <Text label="Address line 2" value={newAddr.line2 || ""} onChange={(v) => setNewAddr((p) => ({ ...p, line2: v }))} />
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <Text label="City" value={newAddr.city || ""} onChange={(v) => setNewAddr((p) => ({ ...p, city: v }))} />
-                        <Text label="State" value={newAddr.state || ""} onChange={(v) => setNewAddr((p) => ({ ...p, state: v }))} />
-                        <Text label="Postal code" value={newAddr.postalCode || ""} onChange={(v) => setNewAddr((p) => ({ ...p, postalCode: v }))} />
+                    <div className="grid grid-cols-1 gap-6">
+                      <div className="grid grid-cols-1 sm:grid-cols-[1fr_1fr] gap-6">
+                        <SelectField
+                          label="Location"
+                          required
+                          value={country}
+                          onChange={setCountry}
+                          options={["United States", "Canada", "United Kingdom", "United Arab Emirates"]}
+                        />
+                        <SelectField
+                          label="Title"
+                          required
+                          value={title}
+                          onChange={setTitle}
+                          options={["Mr.", "Ms.", "Mrs.", "Mx."]}
+                        />
                       </div>
-                      <Text label="Country" value={newAddr.country || ""} onChange={(v) => setNewAddr((p) => ({ ...p, country: v }))} />
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <TextField label="First name" required value={firstName} onChange={setFirstName} />
+                        <TextField label="Last name" required value={lastName} onChange={setLastName} />
+                      </div>
+
+                      <TextField label="Company" value={company} onChange={setCompany} />
+                      <TextField label="Address" required value={address1} onChange={setAddress1} />
+                      <TextField label="Address continued" value={address2} onChange={setAddress2} />
+
+                      <TextField label="City" required value={city} onChange={setCity} />
+
+                      <div className="grid grid-cols-1 sm:grid-cols-[1fr_120px] gap-6">
+                        <SelectField
+                          label="State"
+                          required
+                          value={state}
+                          onChange={setState}
+                          options={["", "AL", "AK", "AZ", "CA", "FL", "NY", "TX"]}
+                        />
+                        <TextField label="Zip code" required value={postalCode} onChange={setPostalCode} />
+                      </div>
+
+                      <TextField label="Zip +" value={zipPlus} onChange={setZipPlus} />
+
+                      <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-6 items-end">
+                        <SelectField
+                          label="Area code"
+                          required
+                          value={areaCode}
+                          onChange={setAreaCode}
+                          options={["+1", "+44", "+971", "+91"]}
+                        />
+                        <div>
+                          <TextField label="Telephone number" required value={phoneNumber} onChange={setPhoneNumber} />
+                          <div className="mt-2 text-[11px] text-black/50">
+                            Expected format: phone number with 10 digits
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-8 flex items-center justify-end gap-3">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="h-10 px-8 rounded-none uppercase tracking-[0.2em]"
+                        onClick={() => router.back()}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        type="submit"
+                        disabled={busy}
+                        className="h-10 px-8 rounded-none bg-black text-white tracking-[0.2em] hover:bg-black/90"
+                      >
+                        {busy ? "Saving…" : "Save"}
+                      </Button>
                     </div>
                   </div>
                 )}
@@ -160,15 +374,78 @@ export default function CheckoutAddressPage() {
             </section>
 
             <section className="bg-white border border-black/10 px-8 py-6">
-              <div className="text-xs tracking-[0.25em] uppercase">Payment</div>
+              <h2 className="text-xs tracking-[0.25em] uppercase mb-6">Payment Method</h2>
+              
+              <div className="space-y-4">
+                {/* Credit Card Option */}
+                <button
+                  type="button"
+                  onClick={() => setPaymentMethod("card")}
+                  className={`w-full p-6 border-2 transition ${
+                    paymentMethod === "card"
+                      ? "border-black bg-black/5"
+                      : "border-black/20 bg-white"
+                  }`}
+                >
+                  <div className="flex items-center gap-4">
+                    <div className={`h-5 w-5 rounded-full border-2 flex items-center justify-center ${
+                      paymentMethod === "card"
+                        ? "border-black bg-black"
+                        : "border-black/40"
+                    }`}>
+                      {paymentMethod === "card" && (
+                        <div className="h-2 w-2 bg-white rounded-full" />
+                      )}
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <CreditCard size={20} className="text-black/70" />
+                      <div className="text-left">
+                        <div className="text-sm font-medium">Credit/Debit Card</div>
+                        <div className="text-[11px] text-black/50">Visa, Mastercard, Amex</div>
+                      </div>
+                    </div>
+                  </div>
+                </button>
+
+                {/* UPI Option */}
+                <button
+                  type="button"
+                  onClick={() => setPaymentMethod("upi")}
+                  className={`w-full p-6 border-2 transition ${
+                    paymentMethod === "upi"
+                      ? "border-black bg-black/5"
+                      : "border-black/20 bg-white"
+                  }`}
+                >
+                  <div className="flex items-center gap-4">
+                    <div className={`h-5 w-5 rounded-full border-2 flex items-center justify-center ${
+                      paymentMethod === "upi"
+                        ? "border-black bg-black"
+                        : "border-black/40"
+                    }`}>
+                      {paymentMethod === "upi" && (
+                        <div className="h-2 w-2 bg-white rounded-full" />
+                      )}
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <QrCode size={20} className="text-black/70" />
+                      <div className="text-left">
+                        <div className="text-sm font-medium">UPI</div>
+                        <div className="text-[11px] text-black/50">Google Pay, PhonePe, Paytm</div>
+                      </div>
+                    </div>
+                  </div>
+                </button>
+              </div>
             </section>
 
             <Button
-              type="submit"
-              disabled={busy}
-              className="h-12 px-12 rounded-none bg-black text-white tracking-widest hover:bg-black/90"
+              type="button"
+              disabled={paying}
+              className="w-full h-12 rounded-none bg-black text-white hover:bg-black/90 tracking-widest"
+              onClick={onPayNow}
             >
-              {busy ? "Saving…" : "Continue"}
+              {paying ? "Processing…" : "COMPLETE PAYMENT"}
             </Button>
           </form>
 
@@ -218,14 +495,16 @@ export default function CheckoutAddressPage() {
             </div>
 
             <div className="bg-white border border-black/10 p-6">
-              <h2 className="text-xs tracking-[0.3em] uppercase">Gift from Dlaven</h2>
+              <h2 className="text-xs tracking-[0.3em] uppercase">The Orange Box</h2>
               <div className="mt-5 flex gap-4">
                 <div className="relative h-16 w-16 bg-orange-500 shrink-0">
                   <span className="absolute left-1/2 top-0 h-full w-[2px] -translate-x-1/2 bg-black/70" />
                   <span className="absolute top-1/2 left-0 w-full h-[2px] -translate-y-1/2 bg-black/70" />
                   <span className="absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 bg-black" />
                 </div>
-                <p className="text-sm text-black/70">Gift from Dlaven.</p>
+                <p className="text-sm text-black/70">
+                  Orders arrive in our signature box with a Dlaven ribbon.
+                </p>
               </div>
             </div>
 
@@ -258,15 +537,62 @@ export default function CheckoutAddressPage() {
 
 /* ---------------- components ---------------- */
 
-function Text({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+function TextField({
+  label,
+  value,
+  onChange,
+  required,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  required?: boolean;
+}) {
   return (
     <div>
-      <label className="block text-[11px] tracking-[0.2em] uppercase mb-1 text-black/60">{label}</label>
+      <label className="block text-[11px] tracking-[0.2em] uppercase mb-1 text-black/60">
+        {label}
+        {required ? " *" : ""}
+      </label>
       <input
         className="w-full border-b border-black/30 bg-transparent px-0 py-2 text-sm focus:outline-none focus:border-black"
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />
+    </div>
+  );
+}
+
+function SelectField({
+  label,
+  value,
+  onChange,
+  options,
+  required,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  options: string[];
+  required?: boolean;
+}) {
+  return (
+    <div>
+      <label className="block text-[11px] tracking-[0.2em] uppercase mb-1 text-black/60">
+        {label}
+        {required ? " *" : ""}
+      </label>
+      <select
+        className="w-full border-b border-black/30 bg-transparent px-0 py-2 text-sm focus:outline-none focus:border-black"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      >
+        {options.map((opt) => (
+          <option key={opt || "empty"} value={opt}>
+            {opt || "Select"}
+          </option>
+        ))}
+      </select>
     </div>
   );
 }

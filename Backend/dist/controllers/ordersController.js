@@ -13,6 +13,12 @@ const User_1 = require("../models/User");
 const razorpay_1 = require("../utils/razorpay");
 const email_1 = require("../utils/email");
 const Product_1 = require("../models/Product");
+function generateOrderNumber() {
+    // 10-digit numeric string (timestamp-based + small random), good for display.
+    const ts = Date.now().toString();
+    const rand = Math.floor(10 + Math.random() * 90).toString();
+    return (ts + rand).slice(-10);
+}
 function stripCurrencyFromOrder(order) {
     if (!order)
         return order;
@@ -123,6 +129,7 @@ async function createOrder(req, res) {
         // Persist order with status created
         const order = await Order_1.Order.create({
             userId,
+            orderNumber: generateOrderNumber(),
             items,
             address: defaultAddr,
             subtotal,

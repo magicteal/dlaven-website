@@ -13,6 +13,7 @@ import {
   ShoppingBag,
 } from "lucide-react";
 import { useAuth } from "@/components/providers/AuthProvider";
+import { useCart } from "@/components/providers/CartProvider";
 import { useRouter } from "next/navigation";
 
 function LeftMenuTrigger({ onMenuOpenChange }: { onMenuOpenChange: (open: boolean) => void }) {
@@ -36,6 +37,7 @@ function LeftMenuTrigger({ onMenuOpenChange }: { onMenuOpenChange: (open: boolea
 
 function RightControls() {
   const { user, loading } = useAuth();
+  const { count } = useCart();
   const router = useRouter();
 
   return (
@@ -57,11 +59,19 @@ function RightControls() {
       </button>
       {(!loading && user) && (
         <button
-          aria-label="Cart"
+          aria-label={count > 0 ? `Cart (${count} items)` : "Cart"}
           className="relative inline-flex items-center justify-center h-8 w-8 rounded-none bg-transparent"
           onClick={() => router.push("/cart")}
         >
           <ShoppingBag className="h-4 w-4" />
+          {count > 0 ? (
+            <span
+              className="absolute -top-1 -right-1 min-w-[16px] h-4 px-1 rounded-full bg-black text-white text-[10px] leading-4 text-center"
+              aria-hidden
+            >
+              {count > 99 ? "99+" : count}
+            </span>
+          ) : null}
         </button>
       )}
     </>
@@ -74,7 +84,7 @@ export default function SimpleNavbar() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-[40] w-full bg-white shadow-sm text-black font-['Lovato-Regular']">
+      <header className="fixed top-0 left-0 right-0 z-[40] w-full bg-white shadow-sm text-black font-sans">
         <div className="px-4 md:px-8">
           <nav aria-label="Primary">
             <div className="grid grid-cols-3 items-center h-20">

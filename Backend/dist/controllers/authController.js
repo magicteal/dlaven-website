@@ -22,6 +22,23 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const User_1 = require("../models/User");
 const crypto_1 = __importDefault(require("crypto"));
 const email_1 = require("../utils/email");
+function normalizeAddress(body) {
+    const update = { ...body };
+    if (!update.fullName && (update.title || update.firstName || update.lastName)) {
+        const name = [update.title, update.firstName, update.lastName].filter(Boolean).join(" ").trim();
+        if (name)
+            update.fullName = name;
+    }
+    if (!update.phone && (update.areaCode || update.phoneNumber)) {
+        const phone = [update.areaCode, update.phoneNumber].filter(Boolean).join(" ").trim();
+        if (phone)
+            update.phone = phone;
+    }
+    if (update.postalCode && update.zipPlus && !update.postalCode.includes("-")) {
+        update.postalCode = `${update.postalCode}-${update.zipPlus}`;
+    }
+    return update;
+}
 function signToken(payload) {
     const secret = (process.env.JWT_SECRET || "dev-secret");
     const expiresIn = (process.env.JWT_EXPIRES_IN || "7d");
@@ -122,13 +139,21 @@ async function me(req, res) {
         // Prefer default address from addresses[]; fallback to legacy address field
         const defaultAddress = (user.addresses || []).find((a) => a.isDefault) || (user.addresses && user.addresses[0]) || null;
         const addr = defaultAddress ? {
+            label: defaultAddress.label,
+            title: defaultAddress.title,
+            firstName: defaultAddress.firstName,
+            lastName: defaultAddress.lastName,
+            company: defaultAddress.company,
             fullName: defaultAddress.fullName,
+            areaCode: defaultAddress.areaCode,
+            phoneNumber: defaultAddress.phoneNumber,
             phone: defaultAddress.phone,
             line1: defaultAddress.line1,
             line2: defaultAddress.line2,
             city: defaultAddress.city,
             state: defaultAddress.state,
             postalCode: defaultAddress.postalCode,
+            zipPlus: defaultAddress.zipPlus,
             country: defaultAddress.country,
         } : (user.address || null);
         return res.json({ user: { id: user.id, email: user.email, name: user.name, phone: user.phone, dob: user.dob, role: user.role, address: addr } });
@@ -242,13 +267,21 @@ async function updateProfile(req, res) {
         // Return with computed default address for consistency
         const defaultAddress = (user.addresses || []).find((a) => a.isDefault) || (user.addresses && user.addresses[0]) || null;
         const addr = defaultAddress ? {
+            label: defaultAddress.label,
+            title: defaultAddress.title,
+            firstName: defaultAddress.firstName,
+            lastName: defaultAddress.lastName,
+            company: defaultAddress.company,
             fullName: defaultAddress.fullName,
+            areaCode: defaultAddress.areaCode,
+            phoneNumber: defaultAddress.phoneNumber,
             phone: defaultAddress.phone,
             line1: defaultAddress.line1,
             line2: defaultAddress.line2,
             city: defaultAddress.city,
             state: defaultAddress.state,
             postalCode: defaultAddress.postalCode,
+            zipPlus: defaultAddress.zipPlus,
             country: defaultAddress.country,
         } : (user.address || null);
         return res.json({ user: { id: user.id, email: user.email, name: user.name, phone: user.phone, dob: user.dob, role: user.role, address: addr } });
@@ -269,13 +302,21 @@ async function getAddress(req, res) {
         const defaultAddress = (user.addresses || []).find((a) => a.isDefault) || (user.addresses && user.addresses[0]) || null;
         if (defaultAddress) {
             return res.json({ address: {
+                    label: defaultAddress.label,
+                    title: defaultAddress.title,
+                    firstName: defaultAddress.firstName,
+                    lastName: defaultAddress.lastName,
+                    company: defaultAddress.company,
                     fullName: defaultAddress.fullName,
+                    areaCode: defaultAddress.areaCode,
+                    phoneNumber: defaultAddress.phoneNumber,
                     phone: defaultAddress.phone,
                     line1: defaultAddress.line1,
                     line2: defaultAddress.line2,
                     city: defaultAddress.city,
                     state: defaultAddress.state,
                     postalCode: defaultAddress.postalCode,
+                    zipPlus: defaultAddress.zipPlus,
                     country: defaultAddress.country,
                 } });
         }
@@ -290,7 +331,7 @@ async function updateAddress(req, res) {
         const auth = req.user;
         if (!auth)
             return res.status(401).json({ error: "Unauthorized" });
-        const body = (req.body || {});
+        const body = normalizeAddress((req.body || {}));
         const user = await User_1.User.findById(auth.sub).exec();
         if (!user)
             return res.status(404).json({ error: "Not found" });
@@ -312,13 +353,21 @@ async function updateAddress(req, res) {
             await user.save();
             const def = (user.addresses || []).find((a) => a.isDefault) || (user.addresses && user.addresses[0]) || null;
             return res.json({ address: def ? {
+                    label: def.label,
+                    title: def.title,
+                    firstName: def.firstName,
+                    lastName: def.lastName,
+                    company: def.company,
                     fullName: def.fullName,
+                    areaCode: def.areaCode,
+                    phoneNumber: def.phoneNumber,
                     phone: def.phone,
                     line1: def.line1,
                     line2: def.line2,
                     city: def.city,
                     state: def.state,
                     postalCode: def.postalCode,
+                    zipPlus: def.zipPlus,
                     country: def.country,
                 } : null });
         }
@@ -342,13 +391,20 @@ async function listAddresses(req, res) {
     const addresses = (user.addresses || []).map((a) => ({
         id: a._id,
         label: a.label,
+        title: a.title,
+        firstName: a.firstName,
+        lastName: a.lastName,
+        company: a.company,
         fullName: a.fullName,
+        areaCode: a.areaCode,
+        phoneNumber: a.phoneNumber,
         phone: a.phone,
         line1: a.line1,
         line2: a.line2,
         city: a.city,
         state: a.state,
         postalCode: a.postalCode,
+        zipPlus: a.zipPlus,
         country: a.country,
         isDefault: !!a.isDefault,
     }));
@@ -358,7 +414,7 @@ async function createAddress(req, res) {
     const auth = req.user;
     if (!auth)
         return res.status(401).json({ error: "Unauthorized" });
-    const body = (req.body || {});
+    const body = normalizeAddress((req.body || {}));
     const user = await User_1.User.findById(auth.sub).exec();
     if (!user)
         return res.status(404).json({ error: "Not found" });
@@ -369,13 +425,20 @@ async function createAddress(req, res) {
     user.addresses = user.addresses || [];
     user.addresses.push({
         label: body.label,
+        title: body.title,
+        firstName: body.firstName,
+        lastName: body.lastName,
+        company: body.company,
         fullName: body.fullName,
+        areaCode: body.areaCode,
+        phoneNumber: body.phoneNumber,
         phone: body.phone,
         line1: body.line1,
         line2: body.line2,
         city: body.city,
         state: body.state,
         postalCode: body.postalCode,
+        zipPlus: body.zipPlus,
         country: body.country,
         isDefault: !!makeDefault,
     });
@@ -384,13 +447,20 @@ async function createAddress(req, res) {
     return res.status(201).json({ address: {
             id: created._id,
             label: created.label,
+            title: created.title,
+            firstName: created.firstName,
+            lastName: created.lastName,
+            company: created.company,
             fullName: created.fullName,
+            areaCode: created.areaCode,
+            phoneNumber: created.phoneNumber,
             phone: created.phone,
             line1: created.line1,
             line2: created.line2,
             city: created.city,
             state: created.state,
             postalCode: created.postalCode,
+            zipPlus: created.zipPlus,
             country: created.country,
             isDefault: !!created.isDefault,
         } });
@@ -400,7 +470,7 @@ async function updateAddressById(req, res) {
     if (!auth)
         return res.status(401).json({ error: "Unauthorized" });
     const { id } = req.params;
-    const body = (req.body || {});
+    const body = normalizeAddress((req.body || {}));
     const user = await User_1.User.findById(auth.sub).exec();
     if (!user)
         return res.status(404).json({ error: "Not found" });
@@ -409,7 +479,26 @@ async function updateAddressById(req, res) {
         return res.status(404).json({ error: "Address not found" });
     Object.assign(addr, body);
     await user.save();
-    return res.json({ address: { id: addr._id, label: addr.label, fullName: addr.fullName, phone: addr.phone, line1: addr.line1, line2: addr.line2, city: addr.city, state: addr.state, postalCode: addr.postalCode, country: addr.country, isDefault: !!addr.isDefault } });
+    return res.json({ address: {
+            id: addr._id,
+            label: addr.label,
+            title: addr.title,
+            firstName: addr.firstName,
+            lastName: addr.lastName,
+            company: addr.company,
+            fullName: addr.fullName,
+            areaCode: addr.areaCode,
+            phoneNumber: addr.phoneNumber,
+            phone: addr.phone,
+            line1: addr.line1,
+            line2: addr.line2,
+            city: addr.city,
+            state: addr.state,
+            postalCode: addr.postalCode,
+            zipPlus: addr.zipPlus,
+            country: addr.country,
+            isDefault: !!addr.isDefault,
+        } });
 }
 async function deleteAddressById(req, res) {
     const auth = req.user;

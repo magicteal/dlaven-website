@@ -538,6 +538,7 @@ export type OrderDTO = {
   id?: string;
   _id?: string;
   userId: string;
+  orderNumber?: string;
   items: OrderItemDTO[];
   address: OrderAddressDTO;
   subtotal: number;

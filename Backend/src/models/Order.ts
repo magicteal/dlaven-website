@@ -25,6 +25,7 @@ export type OrderStatus = "created" | "paid" | "failed" | "refunded" | "cancelle
 
 export interface IOrder {
   userId: Types.ObjectId;
+  orderNumber: string;
   items: IOrderItem[];
   address: IOrderAddress;
   subtotal: number;
@@ -59,6 +60,7 @@ const AddressSchema = new Schema<IOrderAddress>({
 
 const OrderSchema = new Schema<IOrder>({
   userId: { type: Schema.Types.ObjectId, ref: "User", required: true, index: true },
+  orderNumber: { type: String, required: true, index: true },
   items: { type: [OrderItemSchema], required: true },
   address: { type: AddressSchema, required: true },
   subtotal: { type: Number, required: true },

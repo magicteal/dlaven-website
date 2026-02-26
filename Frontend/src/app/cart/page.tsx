@@ -8,7 +8,15 @@ import { useCart } from "@/components/providers/CartProvider";
 import CheckoutProgress from "@/components/CheckoutProgress";
 import DetailRow from "@/components/DetailRow";
 import { fmt } from "@/lib/utils";
-import { Lock, Minus, Plus, RefreshCcw, Trash2, Truck } from "lucide-react";
+import {
+  Lock,
+  Minus,
+  Plus,
+  RefreshCcw,
+  ShoppingBag,
+  Trash2,
+  Truck,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
@@ -16,6 +24,46 @@ export default function CartPage() {
   const { cart, update, remove, subtotal, count } = useCart();
   const router = useRouter();
   const itemLabel = count === 1 ? "ITEM" : "ITEMS";
+  const isEmpty = !cart || cart.items.length === 0;
+
+  const infoAside = (
+    <aside className="space-y-6">
+      <div className="bg-white border border-black/10 p-6">
+        <h2 className="text-xs tracking-[0.3em] uppercase">The Orange Box</h2>
+        <div className="mt-5 flex gap-4">
+          <div className="relative h-16 w-16 bg-orange-500 shrink-0">
+            <span className="absolute left-1/2 top-0 h-full w-[2px] -translate-x-1/2 bg-black/70" />
+            <span className="absolute top-1/2 left-0 w-full h-[2px] -translate-y-1/2 bg-black/70" />
+            <span className="absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 bg-black" />
+          </div>
+          <p className="text-sm text-black/70">
+            Orders arrive in our signature box with a Dlaven ribbon.
+          </p>
+        </div>
+      </div>
+
+      <div className="bg-white border border-black/10 p-6">
+        <h2 className="text-xs tracking-[0.3em] uppercase">Customer Service</h2>
+        <div className="mt-4 text-sm text-black/70">Monday to Saturday 10am - 9pm EST</div>
+        <div className="mt-2 text-sm underline underline-offset-4">800-441-4488</div>
+
+        <div className="mt-6 grid grid-cols-3 gap-3 text-center text-[11px] uppercase tracking-[0.2em] text-black/70">
+          <div className="flex flex-col items-center gap-2">
+            <Truck size={18} />
+            <span>Free standard delivery</span>
+          </div>
+          <div className="flex flex-col items-center gap-2">
+            <RefreshCcw size={18} />
+            <span>Returns & exchanges</span>
+          </div>
+          <div className="flex flex-col items-center gap-2">
+            <Lock size={18} />
+            <span>Shop securely</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+  );
 
   return (
     <main className="min-h-screen bg-[#faf7f2] pt-24 pb-24">
@@ -24,16 +72,30 @@ export default function CartPage() {
         <CheckoutProgress current="cart" />
 
         <h1 className="mt-10 text-sm tracking-[0.25em] uppercase">
-          You have {count} {itemLabel} in your cart.
+          {isEmpty ? "Your cart" : `You have ${count} ${itemLabel} in your cart.`}
         </h1>
 
-        {!cart || cart.items.length === 0 ? (
-          <div className="mt-12 text-sm text-neutral-600">
-            Your cart is empty.{" "}
-            <Link href="/products" className="underline underline-offset-4">
-              Continue shopping
-            </Link>
-            .
+        {isEmpty ? (
+          <div className="mt-12 grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-12">
+            <section className="bg-white border border-black/10">
+              <div className="px-8 py-12 sm:py-16 flex flex-col items-center text-center">
+                <div className="h-10 w-10 rounded-full border border-black/15 grid place-items-center text-black/70">
+                  <ShoppingBag size={18} />
+                </div>
+                <h2 className="mt-6 text-sm tracking-[0.25em] uppercase">Your cart is empty</h2>
+                <p className="mt-3 text-sm text-black/60 max-w-md">
+                  Explore the collection and return when you have found something you love.
+                </p>
+                <Button
+                  className="mt-8 h-12 rounded-none bg-black text-white hover:bg-black/90 tracking-[0.25em] uppercase"
+                  onClick={() => router.push("/products")}
+                >
+                  Continue shopping
+                </Button>
+              </div>
+            </section>
+
+            {infoAside}
           </div>
         ) : (
           <div className="mt-12 grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-12">
@@ -151,42 +213,7 @@ export default function CartPage() {
             </section>
 
             {/* RIGHT — INFO */}
-            <aside className="space-y-6">
-              <div className="bg-white border border-black/10 p-6">
-                <h2 className="text-xs tracking-[0.3em] uppercase">Gift from Dlaven</h2>
-                <div className="mt-5 flex gap-4">
-                  <div className="relative h-16 w-16 bg-orange-500 shrink-0">
-                    <span className="absolute left-1/2 top-0 h-full w-[2px] -translate-x-1/2 bg-black/70" />
-                    <span className="absolute top-1/2 left-0 w-full h-[2px] -translate-y-1/2 bg-black/70" />
-                    <span className="absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 bg-black" />
-                  </div>
-                  <p className="text-sm text-black/70">
-                    Gift from Dlaven.
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-white border border-black/10 p-6">
-                <h2 className="text-xs tracking-[0.3em] uppercase">Customer Service</h2>
-                <div className="mt-4 text-sm text-black/70">Monday to Saturday 10am - 9pm EST</div>
-                <div className="mt-2 text-sm underline underline-offset-4">800-441-4488</div>
-
-                <div className="mt-6 grid grid-cols-3 gap-3 text-center text-[11px] uppercase tracking-[0.2em] text-black/70">
-                  <div className="flex flex-col items-center gap-2">
-                    <Truck size={18} />
-                    <span>Free standard delivery</span>
-                  </div>
-                  <div className="flex flex-col items-center gap-2">
-                    <RefreshCcw size={18} />
-                    <span>Returns & exchanges</span>
-                  </div>
-                  <div className="flex flex-col items-center gap-2">
-                    <Lock size={18} />
-                    <span>Shop securely</span>
-                  </div>
-                </div>
-              </div>
-            </aside>
+            {infoAside}
           </div>
         )}
       </Container>

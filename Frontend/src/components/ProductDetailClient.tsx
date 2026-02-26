@@ -7,9 +7,11 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import type { Product } from "@/types/product";
 import { useEffect, useMemo, useState } from "react";
 import { useCart } from "@/components/providers/CartProvider";
+import { useAuth } from "@/components/providers/AuthProvider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { fmt } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 interface Props {
   product: Product;
@@ -18,6 +20,8 @@ interface Props {
 
 export default function ProductDetailClient({ product, related }: Props) {
   const { add, loading: cartLoading, cart } = useCart();
+  const { user, loading: authLoading } = useAuth();
+  const router = useRouter();
   const gallery = useMemo(() => product.images, [product]);
   const [selectedImage, setSelectedImage] = useState<string>(gallery[0]);
   const [quantity, setQuantity] = useState<number>(1);
@@ -118,13 +122,41 @@ export default function ProductDetailClient({ product, related }: Props) {
                   className="rounded-none px-6 py-3 text-sm uppercase tracking-wider"
                   variant="outline"
                   onClick={async () => {
+                    if (!user) {
+                      router.push(
+                        `/login?next=${encodeURIComponent(`/products/${product.slug}`)}`
+                      );
+                      return;
+                    }
                     try { await add(product.slug, quantity, selectedSize); } catch {}
                   }}
-                  disabled={cartLoading || alreadyInCart || !product.inStock}
+                  disabled={cartLoading || alreadyInCart || !product.inStock || authLoading}
                 >
                   {alreadyInCart ? "Added" : "Add to Cart"}
                 </Button>
-                <Button variant="outline" className="rounded-none px-6 py-3 text-sm uppercase tracking-wider">Buy Now</Button>
+                <Button
+                  variant="outline"
+                  className="rounded-none px-6 py-3 text-sm uppercase tracking-wider"
+                  onClick={async () => {
+                    if (!user) {
+                      router.push(`/login?next=${encodeURIComponent("/checkout/address")}`);
+                      return;
+                    }
+
+                    if (!product.inStock) return;
+
+                    // Ensure the product is in cart, then jump to checkout.
+                    try {
+                      if (!alreadyInCart) await add(product.slug, quantity, selectedSize);
+                    } catch {
+                      return;
+                    }
+                    router.push("/checkout/address");
+                  }}
+                  disabled={cartLoading || !product.inStock || authLoading}
+                >
+                  Buy Now
+                </Button>
               </div>
 
               {/* Size options for jewelry/clothing if available */}

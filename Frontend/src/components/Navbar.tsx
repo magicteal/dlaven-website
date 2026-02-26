@@ -16,6 +16,7 @@ import {
 import { cn } from "@/lib/utils";
 
 import { useAuth } from "@/components/providers/AuthProvider";
+import { useCart } from "@/components/providers/CartProvider";
 import { useRouter } from "next/navigation";
 // wishlist navigates to saved items; no cart provider needed here
 
@@ -75,6 +76,7 @@ function LeftMenuTrigger({
 
 function RightControls() {
   const { user, loading } = useAuth();
+  const { count } = useCart();
   const router = useRouter();
 
   const goAccount = () => {
@@ -113,11 +115,19 @@ function RightControls() {
         <Heart className="h-4 w-4" />
       </button>
       <button
-        aria-label="Cart"
+        aria-label={count > 0 ? `Cart (${count} items)` : "Cart"}
         className="relative inline-flex items-center justify-center h-8 w-8 rounded-none transition-transform duration-200 hover:scale-110"
         onClick={() => router.push("/cart")}
       >
         <ShoppingBag className="h-4 w-4" />
+        {count > 0 ? (
+          <span
+            className="absolute -top-1 -right-1 min-w-[16px] h-4 px-1 rounded-full bg-black text-white text-[10px] leading-4 text-center"
+            aria-hidden
+          >
+            {count > 99 ? "99+" : count}
+          </span>
+        ) : null}
       </button>
     </>
   );
@@ -141,7 +151,7 @@ export default function Navbar() {
     <>
       <header
         className={cn(
-          "fixed top-0 left-0 right-0 z-[40] w-full transition-colors duration-200 font-['Lovato-Regular']",
+          "fixed top-0 left-0 right-0 z-[40] w-full transition-colors duration-200 font-sans",
           scrolled
             ? "bg-white shadow-sm text-black"
             : "bg-transparent text-white"

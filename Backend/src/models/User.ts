@@ -11,13 +11,20 @@ export interface IUser extends Document {
   role: "user" | "admin";
   addresses?: Types.DocumentArray<IUserAddress> | IUserAddress[];
   address?: {
+    title?: string;
+    firstName?: string;
+    lastName?: string;
+    company?: string;
     fullName?: string;
+    areaCode?: string;
+    phoneNumber?: string;
     phone?: string;
     line1?: string;
     line2?: string;
     city?: string;
     state?: string;
     postalCode?: string;
+    zipPlus?: string;
     country?: string;
   };
   passwordResetToken?: string | null;
@@ -33,13 +40,20 @@ export interface IUser extends Document {
 export interface IUserAddress extends Document {
   _id: Types.ObjectId;
   label?: string;
+  title?: string;
+  firstName?: string;
+  lastName?: string;
+  company?: string;
   fullName?: string;
+  areaCode?: string;
+  phoneNumber?: string;
   phone?: string;
   line1?: string;
   line2?: string;
   city?: string;
   state?: string;
   postalCode?: string;
+  zipPlus?: string;
   country?: string;
   isDefault?: boolean;
 }
@@ -47,13 +61,20 @@ export interface IUserAddress extends Document {
 const AddressSchema = new Schema<IUserAddress>(
   {
     label: { type: String },
+    title: { type: String },
+    firstName: { type: String },
+    lastName: { type: String },
+    company: { type: String },
     fullName: { type: String },
+    areaCode: { type: String },
+    phoneNumber: { type: String },
     phone: { type: String },
     line1: { type: String },
     line2: { type: String },
     city: { type: String },
     state: { type: String },
     postalCode: { type: String },
+    zipPlus: { type: String },
     country: { type: String },
     isDefault: { type: Boolean, default: false, index: true },
   },
@@ -77,13 +98,20 @@ const UserSchema = new Schema<IUser>(
     },
     addresses: { type: [AddressSchema], default: [] },
     address: {
+      title: { type: String },
+      firstName: { type: String },
+      lastName: { type: String },
+      company: { type: String },
       fullName: { type: String },
+      areaCode: { type: String },
+      phoneNumber: { type: String },
       phone: { type: String },
       line1: { type: String },
       line2: { type: String },
       city: { type: String },
       state: { type: String },
       postalCode: { type: String },
+      zipPlus: { type: String },
       country: { type: String },
     },
     passwordResetToken: { type: String, default: null },
