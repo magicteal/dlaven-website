@@ -32,20 +32,24 @@ export default function LoginClient() {
   async function handleContinue(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    const normalizedEmail = email.trim();
 
-    if (!email.trim()) {
+    if (!normalizedEmail) {
       setError("Email is required");
       return;
     }
 
-    if (!isValidEmail(email)) {
+    if (!isValidEmail(normalizedEmail)) {
       setError("Please enter a valid email address");
       return;
     }
 
+    // Keep local state in sync so the password step uses the same clean value.
+    setEmail(normalizedEmail);
+
     setLoading(true);
     try {
-      const res = await api.checkEmail(email);
+      const res = await api.checkEmail(normalizedEmail);
       if (res.exists) {
         setStep("password");
       } else {
@@ -64,6 +68,7 @@ export default function LoginClient() {
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    const normalizedEmail = email.trim();
 
     if (!password) {
       setError("Password is required");
@@ -72,7 +77,7 @@ export default function LoginClient() {
 
     setLoading(true);
     try {
-      await api.login({ email, password });
+      await api.login({ email: normalizedEmail, password });
       await refresh();
       router.push(nextPath);
     } catch (err: unknown) {
@@ -123,10 +128,10 @@ export default function LoginClient() {
                   <div className="flex items-start gap-2 text-red-600 text-xs mb-2">
                     <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-medium">Required information</p>
-                      <p className="text-[#666]">
-                        Expected format: yourname@domain.com
-                      </p>
+                      <p className="font-medium">{error}</p>
+                      {error === "Please enter a valid email address" ? (
+                        <p className="text-[#666]">Expected format: yourname@domain.com</p>
+                      ) : null}
                     </div>
                   </div>
                 )}

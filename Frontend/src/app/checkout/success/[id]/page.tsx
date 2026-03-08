@@ -131,7 +131,7 @@ export default function OrderSuccessPage() {
                   <div>A confirmation will be sent to you shortly by email.</div>
                 </div>
 
-                <div className="mt-10 font-holiday text-5xl sm:text-6xl tracking-wide">
+                <div className="mt-20 pb-5 font-holiday text-5xl sm:text-6xl tracking-wide inline-block" style={{ transform: "rotate(-10deg)" }}>
                   GRAZIE!
                 </div>
               </section>
