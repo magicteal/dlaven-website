@@ -19,7 +19,7 @@
 
 # production
 /build
-
+*.JPEG
 # misc
 .DS_Store
 *.pem
