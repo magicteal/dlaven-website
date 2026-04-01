@@ -233,7 +233,7 @@ export default function DlPriveClient() {
 
         <div className="mt-5 flex justify-center">
           <Link
-            href="/heritage-jewelry"
+            href="/prive-jewellery"
             className="inline-flex items-center justify-center px-10 py-3 border border-[#9a9080] text-xs tracking-[0.25em] uppercase hover:bg-[#e0d8cc] transition-colors"
             style={{ fontFamily: POPPINS, color: "#2a2a2a" }}
           >
