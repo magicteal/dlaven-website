@@ -1,69 +1,52 @@
 "use client";
 
 import React, { useState } from "react";
-import MenuDrawer from "@/components/MenuDrawer";
 import SearchOverlay from "@/components/SearchOverlay";
+import MenuDrawer from "@/components/MenuDrawer";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  Heart,
   Search,
-  Menu as MenuIcon,
   User as UserIcon,
   ShoppingBag,
+  Menu as MenuIcon,
 } from "lucide-react";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { useCart } from "@/components/providers/CartProvider";
 import { useRouter } from "next/navigation";
-
-function LeftMenuTrigger({ onMenuOpenChange }: { onMenuOpenChange: (open: boolean) => void }) {
-  return (
-    <MenuDrawer
-      side="left"
-      onOpenChange={onMenuOpenChange}
-      trigger={
-        <button
-          type="button"
-          aria-label="Open menu"
-          className="inline-flex h-8 items-center justify-center hover: w-8 md:w-auto md:px-2"
-        >
-          <MenuIcon className="h-4 w-4" />
-          <span className="uppercase text-sm hidden md:ml-2 md:inline">Menu</span>
-        </button>
-      }
-    />
-  );
-}
 
 function RightControls() {
   const { user, loading } = useAuth();
   const { count } = useCart();
   const router = useRouter();
 
+  const goAccount = () => {
+    if (loading) return;
+    if (user) {
+      router.push("/account");
+      return;
+    }
+    router.push(`/login?next=${encodeURIComponent("/account")}`);
+  };
+
   return (
     <>
-      {/* Profile/Account icon - redirects to account page or login */}
       <button
         aria-label="Account"
-        className="inline-flex items-center justify-center h-8 w-8 rounded-none bg-transparent"
-        onClick={() => router.push(user ? "/account" : "/login")}
+        className="inline-flex items-center justify-center gap-2 h-8 rounded-none transition-transform duration-200 hover:scale-105"
+        onClick={goAccount}
       >
-        <UserIcon className="h-4 w-4" />
-      </button>
-      <button
-        aria-label="Wishlist"
-        className="relative inline-flex items-center justify-center h-8 w-8 rounded-none bg-transparent"
-        onClick={() => router.push("/me#saved")}
-      >
-        <Heart className="h-4 w-4" />
+        <UserIcon strokeWidth={1.5} className="h-5 w-5" />
+        <span className="uppercase text-sm hidden md:inline">Account</span>
       </button>
       {(!loading && user) && (
         <button
           aria-label={count > 0 ? `Cart (${count} items)` : "Cart"}
-          className="relative inline-flex items-center justify-center h-8 w-8 rounded-none bg-transparent"
+          className="relative inline-flex items-center justify-center gap-2 h-8 rounded-none transition-transform duration-200 hover:scale-105"
           onClick={() => router.push("/cart")}
         >
-          <ShoppingBag className="h-4 w-4" />
+          <ShoppingBag strokeWidth={1.5} className="h-5 w-5" />
+          <span className="uppercase text-sm hidden md:inline">Cart</span>
           {count > 0 ? (
             <span
               className="absolute -top-1 -right-1 min-w-[16px] h-4 px-1 rounded-full bg-black text-white text-[10px] leading-4 text-center"
@@ -78,51 +61,80 @@ function RightControls() {
   );
 }
 
+const CATEGORY_LINKS = [
+  { label: "WOMENS", href: "/womens" },
+  { label: "MENS", href: "/mens" },
+  { label: "JEWELLERY", href: "/jewellery" },
+  { label: "DL PRIVE", href: "/dl-prive" },
+  { label: "DL BERRY", href: "/dl-berry" },
+  { label: "FRAGRANCE", href: "/fragrance" },
+  { label: "NEW IN", href: "/new-in" },
+];
+
 export default function SimpleNavbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-[40] w-full bg-white shadow-sm text-black font-sans">
-        <div className="px-4 md:px-8">
-          <nav aria-label="Primary">
-            <div className="grid grid-cols-3 items-center h-20">
-              <div className="justify-self-start">
-                <div className="flex items-center gap-0 sm:gap-2">
-                  <LeftMenuTrigger onMenuOpenChange={setIsMenuOpen} />
-                  <button
-                    type="button"
-                    aria-label="Search"
-                    onClick={() => setIsSearchOpen(true)}
-                    className={`inline-flex h-8 items-center justify-center hover:bg-accent w-8 sm:w-auto sm:px-2 ${
-                      isMenuOpen ? 'inline-flex' : 'hidden min-[425px]:inline-flex'
-                    }`}
-                  >
-                    <Search className="h-4 w-4" />
-                    <span className="uppercase text-sm hidden sm:ml-2 sm:inline">Search</span>
-                  </button>
-                </div>
+      <header className="absolute top-4 left-[5%] right-[5%] z-[40] w-[90%] rounded-full bg-[#d9d9d9]/80 backdrop-blur-md text-black font-sans shadow-sm">
+        <div className="px-6 md:px-10 py-3 md:py-4">
+          <nav aria-label="Primary" className="flex flex-col gap-4">
+            {/* Top Row */}
+            <div className="flex items-center justify-between">
+              <div className="flex-1 flex justify-start gap-4 sm:gap-6">
+                <MenuDrawer
+                  side="left"
+                  trigger={
+                    <button
+                      type="button"
+                      aria-label="Menu"
+                      className="inline-flex h-8 items-center justify-center gap-2 transition-transform duration-200 hover:scale-105"
+                    >
+                      <MenuIcon strokeWidth={1.5} className="h-5 w-5" />
+                      <span className="uppercase text-sm hidden sm:inline">Menu</span>
+                    </button>
+                  }
+                />
+                <button
+                  type="button"
+                  aria-label="Search"
+                  onClick={() => setIsSearchOpen(true)}
+                  className="inline-flex h-8 items-center justify-center gap-2 transition-transform duration-200 hover:scale-105"
+                >
+                  <Search strokeWidth={1.5} className="h-5 w-5" />
+                  <span className="uppercase text-sm hidden sm:inline">Search</span>
+                </button>
               </div>
 
-              <div className="justify-self-center">
+              <div className="flex-1 flex justify-center">
                 <Link href="/" className="block">
                   <Image
-                    src="/logos/logoText.svg"
+                    src="/logos/logo.svg"
                     alt="D' LAVÉN"
                     width={180}
                     height={44}
                     priority
-                    className="h-6 sm:h-7 md:h-8 w-auto brightness-0"
+                    className="h-10 sm:h-12 md:h-14 w-auto brightness-0"
                   />
                 </Link>
               </div>
 
-              <div className="justify-self-end">
-                <div className="flex items-center gap-1 sm:gap-2">
-                  <RightControls />
-                </div>
+              <div className="flex-1 flex justify-end gap-4 sm:gap-6">
+                <RightControls />
               </div>
+            </div>
+
+            {/* Bottom Row - Links */}
+            <div className="hidden md:flex items-center justify-center gap-6 lg:gap-10">
+              {CATEGORY_LINKS.map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className="text-sm uppercase tracking-widest hover:text-gray-600 transition-colors"
+                >
+                  {link.label}
+                </Link>
+              ))}
             </div>
           </nav>
         </div>

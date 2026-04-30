@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function BrandText({ className = "" }: { className?: string }) {
   return (
     <Image
-      src="/logos/logoText.svg"
+      src="/logos/logo.svg"
       alt="D’ LAVÉN"
       width={360}
       height={86}
