@@ -1,0 +1,32 @@
+services:
+  backend:
+    build:
+      context: ./Backend
+    container_name: dlaven-backend
+    restart: unless-stopped
+    env_file:
+      - ./Backend/.env
+    expose:
+      - "4000"
+
+  frontend:
+    build:
+      context: ./Frontend
+      args:
+        NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://72.60.221.173}
+    container_name: dlaven-frontend
+    restart: unless-stopped
+    expose:
+      - "3000"
+
+  nginx:
+    image: nginx:alpine
+    container_name: dlaven-nginx
+    restart: unless-stopped
+    depends_on:
+      - backend
+      - frontend
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
