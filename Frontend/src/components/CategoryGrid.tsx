@@ -34,7 +34,7 @@ function CategoryItem({
             />
           </div>
         </div>
-      <p className="mt-4 sm:mt-6 text-center text-sm sm:text-base font-medium tracking-wide text-black">
+      <p className="mt-4 sm:mt-6 text-center text-sm sm:text-base font-medium tracking-wide" style={{ color: "#431717" }}>
         {name}
       </p>
     </Link>
@@ -71,10 +71,11 @@ export default async function CategoryGrid({
     console.error("[CategoryGrid] Failed to load categories", e);
   }
   return (
-    <section className="bg-white py-16 sm:py-20 md:py-24">
+    <section className="py-16 sm:py-20 md:py-24" style={{ backgroundColor: "#F6F4E6" }}>
       <div className="text-center max-w-[95%] mx-auto">
-        <h2 
-          className="text-5xl sm:text-4xl md:text-5xl font-light tracking-wide text-black mb-12 sm:mb-16"
+        <h2
+          className="font-le-grand text-4xl sm:text-5xl md:text-6xl font-normal tracking-wide mb-12 sm:mb-16"
+          style={{ color: "#431717" }}
           data-reveal="slideUp"
           data-duration="0.8"
         >

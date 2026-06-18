@@ -1,210 +1,143 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { Instagram, Facebook, Twitter, Youtube } from "lucide-react";
-import BrandText from "@/components/BrandText";
-import Apostrophe from "@/components/Apostrophe";
-// No animation for footer logo — static and smaller
+import Image from "next/image";
 
 export default function Footer() {
-  // Footer logo is static (no animation). Size adjusted in JSX below.
+  const [email, setEmail] = useState("");
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    setEmail("");
+  };
 
   return (
-    <footer className="bg-black text-white border-t border-white/10">
-      {/* Top grid - 4 columns */}
-      <div className="mx-auto max-w-[95%] px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-          {/* Column 1: HELP */}
-          <div>
-            <p className="text-sm uppercase tracking-wider font-semibold mb-6">
-              HELP
-            </p>
-            <ul className="space-y-3 text-base">
-              <li>
-                <p className="text-white/80">
-                  A Client Advisor is available at{" "}
-                  <Link href="tel:18001039988" className="underline hover:no-underline">
-                    1800 103 9988
-                  </Link>
-                  . You can also{" "}
-                  <Link href="/contact" className="underline hover:no-underline">
-                    chat
-                  </Link>{" "}
-                  or{" "}
-                  <Link href="mailto:contact@dlaven.com" className="underline hover:no-underline">
-                    email us
-                  </Link>
-                  .
-                </p>
-              </li>
-              <li>
-                <Link href="/faq" className="hover:underline">
-                  FAQ
-                </Link>
-              </li>
-              <li>
-                <Link href="/product-care" className="hover:underline">
-                  Product Care
-                </Link>
-              </li>
-              <li>
-                <Link href="/stores" className="hover:underline">
-                  Stores
-                </Link>
-              </li>
-            </ul>
-            <hr className="my-4 border-white/10" />
-            <div className="flex items-center gap-4">
-              <a href="#" aria-label="Instagram" className="text-white/90 hover:text-white">
-                <Instagram className="h-5 w-5" />
-              </a>
-              <a href="#" aria-label="Facebook" className="text-white/90 hover:text-white">
-                <Facebook className="h-5 w-5" />
-              </a>
-              <a href="#" aria-label="Twitter" className="text-white/90 hover:text-white">
-                <Twitter className="h-5 w-5" />
-              </a>
-              <a href="#" aria-label="YouTube" className="text-white/90 hover:text-white">
-                <Youtube className="h-5 w-5" />
-              </a>
-            </div>
-          </div>
+    <footer
+      className="text-white"
+      style={{ backgroundColor: "#431717" }}
+    >
+        {/* Main grid */}
+        <div className="max-w-[95%] mx-auto px-4 pt-16 pb-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
 
-          {/* Column 2: QUICK LINKS */}
-          <div>
-            <p className="text-sm uppercase tracking-wider font-semibold mb-6">
-              QUICK LINKS
-            </p>
-            <ul className="space-y-3 text-base">
-              <li>
-                <Link href="/" className="hover:underline">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="hover:underline">
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link href="/products" className="hover:underline">
-                  Shop
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="hover:underline">
-                  Contact Us
-                </Link>
-              </li>
-              <li>
-                <Link href="/privacy" className="hover:underline">
+            {/* Column 1: The company */}
+            <div>
+              <p
+                className="text-xs uppercase tracking-[0.2em] mb-6 font-medium"
+                style={{ color: "#F6F4E6" }}
+              >
+                The company
+              </p>
+              <ul className="space-y-4">
+                {[
+                  { label: "Home", href: "/" },
+                  { label: "Shop", href: "/products" },
+                  { label: "About Us", href: "/about" },
+                  { label: "Contact Us", href: "/contact" },
+                  { label: "Privacy Policy", href: "/privacy" },
+                  { label: "Terms and Conditions", href: "/terms" },
+                  { label: "Refund Policy", href: "/refund-policy" },
+                ].map((item) => (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className="text-sm underline underline-offset-2 decoration-white/40 hover:decoration-white transition-colors"
+                      style={{ color: "#F6F4E6" }}
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Column 2: Your Account */}
+            <div>
+              <p
+                className="text-xs uppercase tracking-[0.2em] mb-6 font-medium"
+                style={{ color: "#F6F4E6" }}
+              >
+                Your Account
+              </p>
+              <ul className="space-y-4">
+                {[
+                  { label: "My Account", href: "/me" },
+                  { label: "Orders", href: "/orders" },
+                ].map((item) => (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className="text-sm underline underline-offset-2 decoration-white/40 hover:decoration-white transition-colors"
+                      style={{ color: "#F6F4E6" }}
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Column 3: Sign Up For Updates */}
+            <div>
+              <p
+                className="text-xs uppercase tracking-[0.2em] mb-6 font-medium"
+                style={{ color: "#F6F4E6" }}
+              >
+                Sign Up For Updates
+              </p>
+              <p className="text-sm mb-6 leading-relaxed" style={{ color: "#F6F4E6", opacity: 0.8 }}>
+                By entering your email address below, you consent to receiving our newsletter with
+                access to our latest collections, events and initiatives. More details on this are
+                provided in our{" "}
+                <Link href="/privacy" className="underline hover:opacity-100 transition-opacity" style={{ opacity: 0.9 }}>
                   Privacy Policy
                 </Link>
-              </li>
-              <li>
-                <Link href="/terms" className="hover:underline">
-                  Terms & Conditions
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 3: WORLD OF D'LAVÉN (mirror navbar links) */}
-          <div>
-            <div className="space-y-2 text-base">
-              <Link href="/login" className="block hover:underline">
-                Sign In
-              </Link>
-              <Link href="/me" className="block hover:underline">
-                My Account
-              </Link>
-              <Link href="/purchases" className="block hover:underline">
-                Purchases
-              </Link>
-              <Link href="/profile" className="block hover:underline">
-                Account Setting
-              </Link>
-              <Link href="/prive" className="block hover:underline">
-                DL Privé
-              </Link>
-              <Link href="/me#saved" className="block hover:underline">
-                Saved Items
-              </Link>
+                .
+              </p>
+              <form onSubmit={handleSubscribe} className="relative">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Email"
+                  required
+                  className="w-full bg-transparent border-b text-sm py-3 pr-10 outline-none placeholder:text-white/50 focus:placeholder:text-white/30 transition-colors"
+                  style={{
+                    borderColor: "rgba(246,244,230,0.4)",
+                    color: "#F6F4E6",
+                  }}
+                />
+                <button
+                  type="submit"
+                  aria-label="Subscribe"
+                  className="absolute right-0 top-1/2 -translate-y-1/2 p-1 hover:opacity-70 transition-opacity"
+                  style={{ color: "#F6F4E6" }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                </button>
+              </form>
             </div>
-          </div>
 
-          {/* Column 4: CONNECT */}
-          <div>
-            <p className="text-sm uppercase tracking-wider font-semibold mb-6">
-              CONNECT
-            </p>
-            <p className="text-base text-white/80 mb-4">
-              Sign up for D<Apostrophe /> Lavén emails and receive the latest news from the Maison, including exclusive online pre-launches and new collections.
-            </p>
-            <p className="text-sm mb-6">
-              <Link href="/social" className="underline hover:no-underline">
-                Follow Us
-              </Link>
-            </p>
           </div>
         </div>
 
-        {/* Country selector */}
-        <div className="mt-12 pt-8 border-t border-white/10">
-          <button className="flex items-center gap-2 text-base hover:underline">
-            <span className="text-lg">🇮🇳</span>
-            <span>India</span>
-          </button>
+        {/* Bottom: large logo */}
+        <div className="border-t border-white/10 py-10 flex flex-col items-center gap-2">
+          <Image
+            src="/logos/logo.svg"
+            alt="D' LAVÉN"
+            width={480}
+            height={115}
+            className="w-[280px] sm:w-[380px] md:w-[480px] brightness-0 invert"
+            priority
+          />
+          <p className="text-xs tracking-[0.3em] uppercase" style={{ color: "#F6F4E6", opacity: 0.7 }}>
+            Estd. 2026
+          </p>
         </div>
-
-        {/* Manufacturer and Importer details */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-white/70">
-          <div>
-            <p className="font-semibold mb-2">Full Name and Address of the Manufacturer</p>
-            <p>D<Apostrophe /> Lavén Maison SAS</p>
-            <p>2 Rue du Pont Neuf</p>
-            <p>75034 Paris CEDEX 01</p>
-            <p>FRANCE</p>
-          </div>
-          <div>
-            <p className="font-semibold mb-2">Full Name and Address of the Importer</p>
-            <p>D<Apostrophe /> Lavén India Retail Private Limited</p>
-            <p>901A Ninth Floor, Time Tower, MG Road</p>
-            <p>Gurgaon, Haryana - 122002</p>
-            <p>INDIA</p>
-          </div>
-        </div>
-
-        <p className="mt-6 text-sm text-white/70">
-          Please refer to the product label for specific country of origin for each product.
-        </p>
-      </div>
-
-      {/* Bottom brand section with logo */}
-      <div className="border-t border-white/10 bg-black">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-          {/* Footer bottom links */}
-          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm mb-6">
-            <Link href="/sitemap" className="hover:underline">
-              Sitemap
-            </Link>
-            <Link href="/legal" className="hover:underline">
-              Legal & Privacy
-            </Link>
-            <Link href="/cookies" className="hover:underline">
-              Cookies
-            </Link>
-          </div>
-
-          {/* Centered brand logo */}
-          <div className="flex justify-center">
-            <div>
-              <BrandText className="w-[160px] sm:w-[220px] md:w-[280px]" />
-            </div>
-          </div>
-        </div>
-      </div>
     </footer>
   );
 }

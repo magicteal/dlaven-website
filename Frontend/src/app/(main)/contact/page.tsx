@@ -10,7 +10,6 @@ import faqs from "@/data/faqs.json";
 import Dash from "@/components/Dash";
 import StyledText from "@/components/StyledText";
 
-// Individual contact method component
 function ContactMethod({
   icon,
   title,
@@ -26,13 +25,19 @@ function ContactMethod({
 }) {
   return (
     <div className="flex flex-col items-center text-center">
-      <h3 className="text-sm font-semibold uppercase tracking-wider text-black">
+      <h3
+        className="text-xs font-semibold uppercase tracking-[0.2em]"
+        style={{ color: "#431717" }}
+      >
         {title}
       </h3>
-      <div className="mt-4 text-xs text-black/70 space-y-1">{children}</div>
+      <div className="mt-4 text-sm space-y-1" style={{ color: "#431717", opacity: 0.7 }}>
+        {children}
+      </div>
       <a
         href={href}
-        className="mt-6 flex items-center justify-center gap-2 text-sm text-black hover:underline"
+        className="mt-6 flex items-center justify-center gap-2 text-sm underline underline-offset-2 hover:opacity-80 transition-opacity"
+        style={{ color: "#6F3D24" }}
       >
         {icon}
         <span>{actionText}</span>
@@ -43,90 +48,94 @@ function ContactMethod({
 
 export default function ContactPage() {
   return (
-    <main className="py-20 sm:py-28">
+    <main className="py-20 sm:py-28" style={{ backgroundColor: "#F6F4E6" }}>
       <Container>
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto">
-          <h1 className="text-3xl font-bold tracking-widest uppercase text-black" data-reveal="slideUp">
-            Contact Us
+          <h1
+            className="font-le-grand text-3xl sm:text-4xl md:text-5xl font-normal tracking-widest uppercase"
+            style={{ color: "#431717" }}
+          >
+            How To Contact D&apos; Lavén
           </h1>
-          <p className="mt-4 text-sm uppercase tracking-wider text-black/70" data-reveal="slideUp" data-delay="0.15">
+          <p className="mt-4 text-sm" style={{ color: "#431717", opacity: 0.7 }}>
             Choose your preferred method of contact and connect with us
           </p>
         </div>
 
-        {/* Contact Methods Grid */}
-        <div className="mt-20 max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-16 gap-x-10" data-reveal="slideUp" data-stagger="0.2" data-delay="0.3">
+        {/* Contact Methods */}
+        <div className="mt-20 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-16 gap-x-10">
             <div className="px-4 md:px-6 py-6 md:py-8">
-                <ContactMethod
-                  icon={<Phone size={16} />}
-                  title="Phone"
-                  href="tel:+18774822430"
-                  actionText="Call Us +1 (877) 482-2430"
-                >
-                  <p>
-                    Monday <Dash /> Saturday from 9 AM to 11 PM (EST).
-                  </p>
-                  <p>Sunday from 10 AM to 9 PM (EST)</p>
-                </ContactMethod>
-              </div>
+              <ContactMethod
+                icon={<Phone size={14} />}
+                title="Phone"
+                href="tel:+18774822430"
+                actionText="Call Us +1 (877) 482-2430"
+              >
+                <p>Monday <Dash /> Saturday from 9 AM to 11 PM (EST).</p>
+                <p>Sunday from 10 AM to 9 PM (EST).</p>
+              </ContactMethod>
+            </div>
 
             <div className="px-4 md:px-6 py-6 md:py-8">
-                <ContactMethod
-                  icon={<Mail size={16} />}
-                  title="Email"
-                  href="mailto:youremail@gmail.com"
-                  actionText="Write Us"
-                >
-                  <p>
-                    Your inquiry will receive a response from a Client Advisor.
-                  </p>
-                </ContactMethod>
-              </div>
+              <ContactMethod
+                icon={<Mail size={14} />}
+                title="Email"
+                href="mailto:youremail@gmail.com"
+                actionText="Write Us"
+              >
+                <p>Your inquiry will receive a response from a Client Advisor.</p>
+              </ContactMethod>
+            </div>
 
-            <div className="md:col-span-2 flex justify-center pt-8">
+            <div className="md:col-span-2 flex justify-center pt-4">
               <div className="px-4 md:px-6 py-6 md:py-8">
-                  <ContactMethod
-                    icon={<MessageSquare size={16} />}
-                    title="WhatsApp"
-                    href="https://wa.me/18774822430"
-                    actionText="WhatsApp Us"
-                  >
-                    <p>
-                      Monday <Dash /> Saturday from 9AM to 8PM (EST)
-                    </p>
-                    <p>Sunday from 10 AM to 7 PM (EST)</p>
-                  </ContactMethod>
+                <ContactMethod
+                  icon={<MessageSquare size={14} />}
+                  title="WhatsApp"
+                  href="https://wa.me/18774822430"
+                  actionText="WhatsApp Us"
+                >
+                  <p>Monday <Dash /> Saturday from 9 AM to 8 PM (EST).</p>
+                  <p>Sunday from 10 AM to 7 PM (EST).</p>
+                </ContactMethod>
               </div>
             </div>
           </div>
         </div>
 
-        {/* FAQs Section */}
+        {/* FAQs */}
         <div className="mt-24 max-w-3xl mx-auto">
-          <h2 className="text-center text-xl font-bold tracking-widest uppercase text-black" data-reveal="slideUp">
+          <h2
+            className="text-center font-le-grand text-2xl sm:text-3xl md:text-4xl font-normal tracking-widest uppercase"
+            style={{ color: "#431717" }}
+          >
             Frequently Asked Questions
           </h2>
-          <div data-reveal="slideUp" data-stagger="0.1" data-delay="0.2">
-            <Accordion type="single" collapsible className="w-full mt-10">
-              {faqs.map((faq, index) => (
-                <AccordionItem
-                  key={index}
-                  value={`item-${index}`}
+
+          <Accordion type="single" collapsible className="w-full mt-10">
+            {faqs.map((faq, index) => (
+              <AccordionItem
+                key={index}
+                value={`item-${index}`}
+                className="border-b"
+                style={{ borderColor: "rgba(67,23,23,0.2)" }}
+              >
+                <AccordionTrigger
+                  className="text-sm text-left hover:no-underline py-5"
+                  style={{ color: "#431717" }}
                 >
-                  <AccordionTrigger>
-                    <StyledText>{faq.question}</StyledText>
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <p className="text-black/80">
-                      <StyledText>{faq.answer}</StyledText>
-                    </p>
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </div>
+                  <StyledText>{faq.question}</StyledText>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <p className="text-sm pb-5" style={{ color: "#431717", opacity: 0.75 }}>
+                    <StyledText>{faq.answer}</StyledText>
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </div>
       </Container>
     </main>

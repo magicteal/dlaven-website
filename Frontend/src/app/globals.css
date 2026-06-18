@@ -3,67 +3,16 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Import Lovato font family variants for use locally in components.
-   We don't apply them to <body> so components can opt-in individually. */
-@font-face {
-  font-family: "Lovato-Light";
-  src: url("/fonts/lovato/fonnts.com-Lovato-Light.otf") format("truetype");
-}
-@font-face {
-  font-family: "Montserrat";
-  src: url("/fonts/Montserrat-Regular.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "holiday";
-  src: url("/fonts/HolidayFree.otf") format("opentype");
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Perandory";
-  src: url("/fonts/perandory/Perandory-Regular.otf") format("opentype");
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Lovato-Regular";
-  src: url("/fonts/lovato/fonnts.com-Lovato-Regular.otf") format("truetype");
-}
-
-@font-face {
-  font-family: "Lovato-Demi";
-  src: url("/fonts/lovato/fonnts.com-Lovato-Demi.otf") format("truetype");
-}
-
-@font-face {
-  font-family: "Lovato-Bold";
-  src: url("/fonts/lovato/fonnts.com-Lovato-Bold.otf") format("truetype");
-}
-
-@font-face {
-  font-family: "Lovato-Black";
-  src: url("/fonts/lovato/fonnts.com-Lovato-Black.otf") format("truetype");
-}
-
 @layer base {
   :root {
-    --font-sans: "Montserrat", "Lovato-Regular", ui-sans-serif, system-ui,
-      -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
-      "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji",
-      "Segoe UI Symbol", "Noto Color Emoji";
+    --font-sans: var(--font-manrope), ui-sans-serif, system-ui, -apple-system,
+      "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
   }
-
-  /* Apply Montserrat as the default app font. Components may still opt-in to other fonts. */
 }
 
 @layer utilities {
-  .font-holiday {
-    font-family: "holiday", "Perandory", "Lovato-Regular", var(--font-sans);
+  .font-le-grand {
+    font-family: var(--font-le-grand), serif;
   }
 }
 
