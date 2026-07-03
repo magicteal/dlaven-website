@@ -44,3 +44,5 @@ next-env.d.ts
 /package.json
 /package-lock.json
 /node_modules/
+/scratch/
+

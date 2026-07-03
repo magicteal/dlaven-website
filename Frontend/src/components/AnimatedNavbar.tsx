@@ -11,7 +11,6 @@ import {
   ShoppingBag,
   Menu as MenuIcon,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { useCart } from "@/components/providers/CartProvider";
 import { useRouter } from "next/navigation";
@@ -34,22 +33,22 @@ function RightControls() {
     <>
       <button
         aria-label="Account"
-        className="inline-flex items-center justify-center gap-2 h-8 rounded-none transition-transform duration-200 hover:scale-105"
+        className="inline-flex items-center justify-center gap-1.5 h-7 rounded-none transition-colors duration-200 hover:text-black/60"
         onClick={goAccount}
       >
-        <UserIcon strokeWidth={1.5} className="h-5 w-5" />
-        <span className="uppercase text-sm hidden md:inline">Account</span>
+        <UserIcon strokeWidth={1.25} className="h-[18px] w-[18px]" />
+        <span className="uppercase text-xs tracking-wide hidden md:inline">Account</span>
       </button>
       <button
         aria-label={count > 0 ? `Cart (${count} items)` : "Cart"}
-        className="relative inline-flex items-center justify-center gap-2 h-8 rounded-none transition-transform duration-200 hover:scale-105"
+        className="relative inline-flex items-center justify-center gap-1.5 h-7 rounded-none transition-colors duration-200 hover:text-black/60"
         onClick={() => router.push("/cart")}
       >
-        <ShoppingBag strokeWidth={1.5} className="h-5 w-5" />
-        <span className="uppercase text-sm hidden md:inline">Cart</span>
+        <ShoppingBag strokeWidth={1.25} className="h-[18px] w-[18px]" />
+        <span className="uppercase text-xs tracking-wide hidden md:inline">Cart</span>
         {count > 0 ? (
           <span
-            className="absolute -top-1 -right-1 min-w-[16px] h-4 px-1 rounded-full bg-black text-white text-[10px] leading-4 text-center"
+            className="absolute -top-1.5 -right-1.5 min-w-[15px] h-[15px] px-1 rounded-full bg-black text-white text-[9px] leading-[15px] text-center"
             aria-hidden
           >
             {count > 99 ? "99+" : count}
@@ -57,6 +56,41 @@ function RightControls() {
         ) : null}
       </button>
     </>
+  );
+}
+
+function SearchTrigger({ onOpen }: { onOpen: () => void }) {
+  return (
+    <button
+      type="button"
+      aria-label="Search"
+      onClick={onOpen}
+      className="group inline-flex h-7 items-center justify-center gap-2 transition-colors duration-200 hover:text-black/60"
+    >
+      <Search strokeWidth={1.25} className="h-[18px] w-[18px]" />
+      <span className="flex min-w-[110px] flex-col items-start text-left">
+        <span className="text-sm tracking-wide leading-5">Search</span>
+        <span className="mt-0.5 h-px w-full bg-black/70 transition-colors duration-200 group-hover:bg-black/40" />
+      </span>
+    </button>
+  );
+}
+
+function MenuTrigger() {
+  return (
+    <MenuDrawer
+      side="left"
+      trigger={
+        <button
+          type="button"
+          aria-label="Menu"
+          className="inline-flex h-7 items-center justify-center gap-2 transition-colors duration-200 hover:text-black/60"
+        >
+          <MenuIcon strokeWidth={1.25} className="h-[18px] w-[18px]" />
+          <span className="uppercase text-sm tracking-wide">Menu</span>
+        </button>
+      }
+    />
   );
 }
 
@@ -76,38 +110,20 @@ export default function AnimatedNavbar() {
   return (
     <>
       <header
-        className="absolute top-4 left-[5%] right-[5%] z-[40] w-[90%] rounded-full bg-[#d9d9d9]/80 backdrop-blur-md text-black font-sans shadow-sm"
+        className="absolute top-1 left-1 right-1 z-[40] rounded-none bg-[#e2ddd7]/80 backdrop-blur-md text-black font-sans shadow-sm md:left-2 md:right-2"
       >
-        <div className="px-6 md:px-10 py-3 md:py-4">
-          <nav aria-label="Primary" className="flex flex-col gap-4">
+        <div className="px-5 py-3 md:px-8">
+          <nav aria-label="Primary" className="flex flex-col gap-2.5">
             {/* Top Row */}
-            <div className="flex items-center justify-between">
-              <div className="flex-1 flex justify-start gap-4 sm:gap-6">
-                <MenuDrawer
-                  side="left"
-                  trigger={
-                    <button
-                      type="button"
-                      aria-label="Menu"
-                      className="inline-flex h-8 items-center justify-center gap-2 transition-transform duration-200 hover:scale-105"
-                    >
-                      <MenuIcon strokeWidth={1.5} className="h-5 w-5" />
-                      <span className="uppercase text-sm hidden sm:inline">Menu</span>
-                    </button>
-                  }
-                />
-                <button
-                  type="button"
-                  aria-label="Search"
-                  onClick={() => setIsSearchOpen(true)}
-                  className="inline-flex h-8 items-center justify-center gap-2 transition-transform duration-200 hover:scale-105"
-                >
-                  <Search strokeWidth={1.5} className="h-5 w-5" />
-                  <span className="uppercase text-sm hidden sm:inline">Search</span>
-                </button>
+            <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4">
+              <div className="flex items-center justify-start gap-5 sm:gap-7">
+                <MenuTrigger />
+                <div className="hidden sm:block">
+                  <SearchTrigger onOpen={() => setIsSearchOpen(true)} />
+                </div>
               </div>
 
-              <div className="flex-1 flex justify-center">
+              <div className="flex justify-center">
                 <Link href="/" className="block">
                   <Image
                     src="/logos/logo.svg"
@@ -115,23 +131,23 @@ export default function AnimatedNavbar() {
                     width={180}
                     height={44}
                     priority
-                    className="h-10 sm:h-12 md:h-14 w-auto brightness-0"
+                    className="h-8 w-auto sm:h-9 md:h-10"
                   />
                 </Link>
               </div>
 
-              <div className="flex-1 flex justify-end gap-4 sm:gap-6">
+              <div className="flex justify-end gap-5 sm:gap-7">
                 <RightControls />
               </div>
             </div>
 
             {/* Bottom Row - Links */}
-            <div className="hidden md:flex items-center justify-center gap-6 lg:gap-10">
+            <div className="hidden md:flex items-center justify-center gap-8 lg:gap-12">
               {CATEGORY_LINKS.map((link) => (
                 <Link
                   key={link.label}
                   href={link.href}
-                  className="text-sm uppercase tracking-widest hover:text-gray-600 transition-colors"
+                  className="text-xs uppercase tracking-[0.15em] text-black/80 hover:text-black/50 transition-colors"
                 >
                   {link.label}
                 </Link>

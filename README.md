@@ -7,9 +7,9 @@ A full-stack Next.js + Express/Mongo monorepo for D’ LAVÉN with authenticatio
 - `Frontend/` — Next.js App Router site (TypeScript, Tailwind)
 - `Backend/` — Express + MongoDB API (TypeScript, JWT via httpOnly cookie)
 
-## Quick start (development)
+## Quick Start
 
-Open two terminals and run Frontend and Backend separately.
+To run the services locally in your development environment:
 
 ### 1) Backend
 
@@ -75,8 +75,6 @@ Frontend runs on `http://localhost:3000`.
 
 - Frontend: `npm run dev`, `npm run build`, `npm start`
 - Backend: `npm run dev`, `npm run build`, `npm start`
-
 ## License
-
 
 Proprietary — internal project use only.
