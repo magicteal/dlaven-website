@@ -77,11 +77,10 @@ export default function AdornmentsPrivePage() {
       <section className="w-full pb-10" style={{ background: BG }}>
         <Marquee
           images={[
-            "/images/menswear/IMG_9338.JPEG",
-            "/images/menswear/IMG_9706.JPEG",
             "/images/menswear/IMG_9691.PNG",
-            "/images/menswear/IMG_9345.JPEG",
-            "/images/menswear/IMG_9757.JPEG",
+            "/images/menswear/IMG_9340.PNG",
+            "/images/menswear/adornments_main.png",
+            "/images/heritage/mens_heritage.jpg",
           ]}
           speed={45}
           direction="right"

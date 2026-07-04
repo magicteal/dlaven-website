@@ -60,11 +60,11 @@ export default function PriveWomensAdornmentsPage() {
       <section className="w-full pb-10" style={{ background: BG }}>
         <Marquee
           images={[
-            "/images/menswear/IMG_9338.JPEG",
-            "/images/menswear/IMG_9706.JPEG",
-            "/images/menswear/IMG_9691.PNG",
-            "/images/menswear/IMG_9345.JPEG",
-            "/images/menswear/IMG_9757.JPEG",
+            "/images/womenswear/adornments_1.png",
+            "/images/womenswear/adornments_2.jpg",
+            "/images/heritage/womens_adornments.jpg",
+            "/images/heritage/mesh_woman.jpg",
+            "/images/heritage/womens_heritage.jpg",
           ]}
           speed={45}
           direction="right"

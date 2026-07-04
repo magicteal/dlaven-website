@@ -60,11 +60,10 @@ export default function PriveMensAdornmentsPage() {
       <section className="w-full pb-10" style={{ background: BG }}>
         <Marquee
           images={[
-            "/images/menswear/IMG_9338.JPEG",
-            "/images/menswear/IMG_9706.JPEG",
             "/images/menswear/IMG_9691.PNG",
-            "/images/menswear/IMG_9345.JPEG",
-            "/images/menswear/IMG_9757.JPEG",
+            "/images/menswear/IMG_9340.PNG",
+            "/images/menswear/adornments_main.png",
+            "/images/heritage/mens_heritage.jpg",
           ]}
           speed={45}
           direction="right"
@@ -78,7 +77,7 @@ export default function PriveMensAdornmentsPage() {
         <div className="flex flex-col items-center text-center max-w-4xl w-full">
           <div className="relative overflow-hidden w-[clamp(280px,80vw,550px)]" style={{ aspectRatio: "4/5" }}>
             <Image
-              src="/images/menswear/IMG_9705.JPEG"
+              src="/images/menswear/IMG_9340.PNG"
               alt="The Heritage"
               fill
               className="object-cover object-center"

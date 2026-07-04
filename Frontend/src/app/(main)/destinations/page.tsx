@@ -12,7 +12,7 @@ export default function DestinationsPage() {
         <div className="absolute inset-0 grid grid-cols-1 md:grid-cols-2 h-[60vh] min-h-[400px]">
           <div className="relative h-full w-full">
             <Image
-              src="/images/DL Destinations.jpg"
+              src="/images/DPrimeOne.jpg"
               alt="D'LAVÉN Destination 1"
               fill
               className="object-cover object-center"
@@ -22,7 +22,7 @@ export default function DestinationsPage() {
           </div>
           <div className="relative h-full w-full hidden md:block">
             <Image
-              src="/images/dl-destinations-2.jpg"
+              src="/images/DPrimeTwo.jpg"
               alt="D'LAVÉN Destination 2"
               fill
               className="object-cover object-center"

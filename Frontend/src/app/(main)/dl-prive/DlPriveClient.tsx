@@ -56,6 +56,15 @@ export default function DlPriveClient() {
         >
           D&apos; LAVEN &nbsp;&nbsp; X &nbsp;&nbsp; DL PRIVÉ L&apos;ORDONNANCE
         </h1>
+        <div className="mt-8 flex justify-center">
+          <Link
+            href="/prive"
+            className="inline-flex items-center justify-center px-8 py-3 border border-[#1a1a1a] text-xs tracking-[0.25em] font-semibold uppercase hover:bg-[#1a1a1a] hover:text-white transition-all duration-300"
+            style={{ fontFamily: POPPINS }}
+          >
+            ENTER PRIVÉ ACCESS CODE
+          </Link>
+        </div>
       </section>
 
       {/* ── Divider ── */}

@@ -20,7 +20,7 @@ export default function MensAdornmentsPage() {
       <section className="relative w-full grid grid-cols-2" style={{ height: "65vh", minHeight: "400px" }}>
         <div className="relative overflow-hidden">
           <Image
-            src="/images/menswear/IMG_9706.JPEG"
+            src="/images/heritage/mens_heritage.jpg"
             alt="MensWear Left"
             fill
             className="object-cover object-center"
@@ -31,7 +31,7 @@ export default function MensAdornmentsPage() {
         </div>
         <div className="relative overflow-hidden">
           <Image
-            src="/images/menswear/IMG_9726.JPEG"
+            src="/images/heritage/mens_adornments.jpg"
             alt="MensWear Right"
             fill
             className="object-cover object-center"
@@ -62,11 +62,11 @@ export default function MensAdornmentsPage() {
         <Marquee
           images={[
             "/images/menswear/IMG_9691.PNG",
-            "/images/menswear/IMG_9693.JPEG",
-            "/images/menswear/IMG_9696.JPEG",
-            "/images/menswear/IMG_9697.JPEG",
-            "/images/menswear/IMG_9757.JPEG",
-            "/images/menswear/IMG_9758.JPEG",
+            "/images/menswear/IMG_9340.PNG",
+            "/images/menswear/adornments_main.png",
+            "/images/heritage/mens_heritage.jpg",
+            "/images/menswear/IMG_9691.PNG",
+            "/images/menswear/IMG_9340.PNG",
           ]}
           speed={45}
           direction="right"
@@ -80,7 +80,7 @@ export default function MensAdornmentsPage() {
         <div className="flex flex-col items-center text-center max-w-4xl w-full">
           <div className="relative overflow-hidden w-full" style={{ aspectRatio: "16/9" }}>
             <Image
-              src="/images/menswear/IMG_9705.JPEG"
+              src="/images/menswear/IMG_9340.PNG"
               alt="The Heritage"
               fill
               className="object-cover object-center"
@@ -127,7 +127,7 @@ export default function MensAdornmentsPage() {
         <div className="flex flex-col items-center text-center max-w-4xl w-full">
           <div className="relative overflow-hidden w-full" style={{ aspectRatio: "16/9" }}>
             <Image
-              src="/images/menswear/IMG_9724.JPEG"
+              src="/images/menswear/adornments_main.png"
               alt="The International"
               fill
               className="object-cover object-center"

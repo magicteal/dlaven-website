@@ -178,6 +178,64 @@ function PanelView({
     );
   }
 
+  if (id === "women") {
+    return (
+      <div className="flex flex-col h-full">
+        <div className="flex items-center gap-2 p-6 pb-2">
+          <button
+            onClick={onBack}
+            className="text-sm uppercase underline decoration-1 underline-offset-4 hover:no-underline"
+            aria-label="Back"
+          >
+            ‹ Back
+          </button>
+        </div>
+        <div className="p-6 pt-4 space-y-4">
+          <h2 className="text-2xl">Women</h2>
+          <div className="space-y-3">
+            <DrawerLink
+              href="/prive"
+              onNavigate={onNavigate}
+              onOpenPanel={onOpenPanel}
+              panelId="women-prive"
+              className="block font-normal uppercase no-underline hover:no-underline"
+            >
+              DL PRIVÉ EDITION
+            </DrawerLink>
+
+            <DrawerLink
+              href="/products"
+              onNavigate={onNavigate}
+              className="block font-normal uppercase no-underline hover:no-underline"
+            >
+              NEW IN WOMEN
+            </DrawerLink>
+
+            <DrawerLink
+              href="/womens-ready-to-wear"
+              onNavigate={onNavigate}
+              className="block font-normal uppercase no-underline hover:no-underline"
+            >
+              READY
+              <Dash />
+              TO
+              <Dash />
+              WEAR
+            </DrawerLink>
+
+            <DrawerLink
+              href="/heritage-jewelry"
+              onNavigate={onNavigate}
+              className="block font-normal uppercase no-underline hover:no-underline"
+            >
+              HERITAGE JEWELERY
+            </DrawerLink>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (id === "heritage") {
     return (
       <div className="flex flex-col h-full">
@@ -304,6 +362,34 @@ function PanelView({
 
   // Men -> DL Privé panel (view all)
   if (id === "men-prive") {
+    return (
+      <div className="flex flex-col h-full">
+        <div className="flex items-center gap-2 p-6 pb-2">
+          <button
+            onClick={onBack}
+            className="text-sm uppercase underline decoration-1 underline-offset-4 hover:no-underline"
+            aria-label="Back"
+          >
+            ‹ Back
+          </button>
+        </div>
+        <div className="p-6 pt-4 space-y-4">
+          <h2 className="text-2xl">DL PRIVÉ EDITION</h2>
+          <div className="space-y-3">
+            <DrawerLink
+              href="/prive"
+              onNavigate={onNavigate}
+              className="block font-normal uppercase no-underline hover:no-underline"
+            >
+              VIEW ALL
+            </DrawerLink>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (id === "women-prive") {
     return (
       <div className="flex flex-col h-full">
         <div className="flex items-center gap-2 p-6 pb-2">
@@ -522,14 +608,16 @@ export default function MenuDrawer({
         {/* Removed padding from SheetContent to handle scroll layout better */}
         <SheetContent
           side={side}
-          className={`w-[420px] sm:w-[520px] flex flex-col p-0 top-0 h-screen
+          className={`w-[420px] sm:w-[520px] max-w-[calc(100vw-1rem)] flex flex-col p-0 top-24 h-[calc(100vh-6rem)] border-none bg-[#e2ddd7]/80 text-black backdrop-blur-md shadow-2xl ${
+            side === "left" ? "left-1 md:left-2" : "right-1 md:right-2"
+          }
         data-[state=open]:animate-in data-[state=closed]:animate-out
         ${
           side === "left"
             ? "data-[state=open]:slide-in-from-left data-[state=closed]:slide-out-to-left"
             : "data-[state=open]:slide-in-from-right data-[state=closed]:slide-out-to-right"
         }
-        data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0
+        data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:duration-500 data-[state=closed]:duration-300
         [animation-duration:400ms]`}
         >
           {/* Scrollable Navigation Area */}
@@ -556,6 +644,15 @@ export default function MenuDrawer({
                   className="block font-normal uppercase no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
                 >
                   New In
+                </DrawerLink>
+                <DrawerLink
+                  href="/womens-adornments"
+                  onNavigate={navigateWithClose}
+                  onOpenPanel={(id) => setActivePanel(id)}
+                  panelId="women"
+                  className="block font-normal uppercase no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+                >
+                  Women
                 </DrawerLink>
                 <DrawerLink
                   href="/mens-ready-to-wear"
@@ -674,7 +771,7 @@ export default function MenuDrawer({
 
             {/* Panel area (placed after nav so it appears above when active) */}
             <div
-              className={`absolute inset-0 overflow-y-auto bg-white transform transition-all duration-300 ease-out will-change-transform
+              className={`absolute inset-0 overflow-y-auto bg-[#e2ddd7]/80 backdrop-blur-md transform transition-all duration-300 ease-out will-change-transform
                 ${
                   activePanel
                     ? "opacity-100 translate-x-0"

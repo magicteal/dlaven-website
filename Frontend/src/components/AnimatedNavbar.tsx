@@ -59,35 +59,59 @@ function RightControls() {
   );
 }
 
-function SearchTrigger({ onOpen }: { onOpen: () => void }) {
+function SearchTrigger({
+  isOpen,
+  onToggle,
+}: {
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
   return (
     <button
       type="button"
       aria-label="Search"
-      onClick={onOpen}
+      onClick={onToggle}
       className="group inline-flex h-7 items-center justify-center gap-2 transition-colors duration-200 hover:text-black/60"
+      data-state={isOpen ? "open" : "closed"}
     >
-      <Search strokeWidth={1.25} className="h-[18px] w-[18px]" />
-      <span className="flex min-w-[110px] flex-col items-start text-left">
-        <span className="text-sm tracking-wide leading-5">Search</span>
-        <span className="mt-0.5 h-px w-full bg-black/70 transition-colors duration-200 group-hover:bg-black/40" />
-      </span>
+      <Search
+        strokeWidth={1.25}
+        className={`h-[18px] w-[18px] transition-transform duration-300 ${
+          isOpen ? "rotate-90 scale-110" : "rotate-0 scale-100"
+        }`}
+      />
+      <span className="text-sm tracking-wide leading-5">Search</span>
     </button>
   );
 }
 
-function MenuTrigger() {
+function MenuTrigger({
+  isOpen,
+  onOpenChange,
+}: {
+  isOpen: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
   return (
     <MenuDrawer
       side="left"
+      onOpenChange={onOpenChange}
       trigger={
         <button
           type="button"
           aria-label="Menu"
           className="inline-flex h-7 items-center justify-center gap-2 transition-colors duration-200 hover:text-black/60"
+          data-state={isOpen ? "open" : "closed"}
         >
-          <MenuIcon strokeWidth={1.25} className="h-[18px] w-[18px]" />
-          <span className="uppercase text-sm tracking-wide">Menu</span>
+          <MenuIcon
+            strokeWidth={1.25}
+            className={`h-[18px] w-[18px] transition-transform duration-300 ${
+              isOpen ? "rotate-90" : "rotate-0"
+            }`}
+          />
+          <span className="uppercase text-sm tracking-wide">
+            Menu
+          </span>
         </button>
       }
     />
@@ -95,31 +119,38 @@ function MenuTrigger() {
 }
 
 const CATEGORY_LINKS = [
-  { label: "WOMENS", href: "/womens" },
-  { label: "MENS", href: "/mens" },
-  { label: "JEWELLERY", href: "/jewellery" },
+  { label: "WOMENS", href: "/womens-adornments" },
+  { label: "MENS", href: "/mens-adornments" },
+  { label: "JEWELLERY", href: "/heritage-jewelry" },
   { label: "DL PRIVE", href: "/dl-prive" },
   { label: "DL BERRY", href: "/dl-berry" },
-  { label: "FRAGRANCE", href: "/fragrance" },
-  { label: "NEW IN", href: "/new-in" },
+  { label: "FRAGRANCE", href: "/fragrances" },
+  { label: "NEW IN", href: "/products" },
 ];
 
 export default function AnimatedNavbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <>
       <header
-        className="absolute top-1 left-1 right-1 z-[40] rounded-none bg-[#e2ddd7]/80 backdrop-blur-md text-black font-sans shadow-sm md:left-2 md:right-2"
+        className="absolute top-1 left-1 right-1 z-[40] rounded-none bg-[#e2ddd7]/80 backdrop-blur-md text-black [font-family:var(--font-manrope)] shadow-sm md:left-2 md:right-2"
       >
         <div className="px-5 py-3 md:px-8">
           <nav aria-label="Primary" className="flex flex-col gap-2.5">
             {/* Top Row */}
             <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4">
               <div className="flex items-center justify-start gap-5 sm:gap-7">
-                <MenuTrigger />
+                <MenuTrigger
+                  isOpen={isMenuOpen}
+                  onOpenChange={setIsMenuOpen}
+                />
                 <div className="hidden sm:block">
-                  <SearchTrigger onOpen={() => setIsSearchOpen(true)} />
+                  <SearchTrigger
+                    isOpen={isSearchOpen}
+                    onToggle={() => setIsSearchOpen((open) => !open)}
+                  />
                 </div>
               </div>
 

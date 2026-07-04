@@ -51,8 +51,10 @@ function safeNextPath(next: string) {
 // --- Molecules ---
 function LeftMenuTrigger({
   onMenuOpenChange,
+  isOpen,
 }: {
   onMenuOpenChange: (open: boolean) => void;
+  isOpen: boolean;
 }) {
   return (
     <MenuDrawer
@@ -63,8 +65,13 @@ function LeftMenuTrigger({
           type="button"
           aria-label="Open menu"
           className="inline-flex h-8 items-center justify-center w-8 md:w-auto md:px-2 transition-transform duration-200 hover:scale-110"
+          data-state={isOpen ? "open" : "closed"}
         >
-          <MenuIcon className="h-4 w-4" />
+          <MenuIcon
+            className={`h-4 w-4 transition-transform duration-300 ${
+              isOpen ? "rotate-90" : "rotate-0"
+            }`}
+          />
           <span className="cursor-pointer text-sm hidden md:ml-2 md:inline">
             Menu
           </span>
@@ -151,7 +158,7 @@ export default function Navbar() {
     <>
       <header
         className={cn(
-          "fixed top-0 left-0 right-0 z-[40] w-full transition-colors duration-200 font-sans",
+          "fixed top-0 left-0 right-0 z-[40] w-full transition-colors duration-200 [font-family:var(--font-manrope)]",
           scrolled
             ? "bg-white shadow-sm text-black"
             : "bg-transparent text-white"
@@ -162,17 +169,25 @@ export default function Navbar() {
             <div className="grid grid-cols-3 items-center h-20">
               <div className="justify-self-start">
                 <div className="flex items-center gap-0 sm:gap-2">
-                  <LeftMenuTrigger onMenuOpenChange={setIsMenuOpen} />
+                  <LeftMenuTrigger
+                    onMenuOpenChange={setIsMenuOpen}
+                    isOpen={isMenuOpen}
+                  />
                   <button
                     type="button"
                     aria-label="Search"
-                    onClick={() => setIsSearchOpen(true)}
+                    onClick={() => setIsSearchOpen((open) => !open)}
+                    data-state={isSearchOpen ? "open" : "closed"}
                     className={`inline-flex h-8 items-center justify-center w-8 sm:w-auto sm:px-2 transition-all duration-200 hover:scale-110 ${isMenuOpen
                       ? "inline-flex"
                       : "hidden min-[425px]:inline-flex"
                       }`}
                   >
-                    <Search className="h-4 w-4" />
+                    <Search
+                      className={`h-4 w-4 transition-transform duration-300 ${
+                        isSearchOpen ? "rotate-90 scale-110" : "rotate-0 scale-100"
+                      }`}
+                    />
                     <span className="uppercase text-sm hidden sm:ml-2 sm:inline">
                       Search
                     </span>

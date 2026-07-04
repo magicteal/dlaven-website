@@ -12,7 +12,7 @@ import ordersRoutes from "./routes/orders";
 import codesRoutes from "./routes/codes";
 import cartRoutes from "./routes/cart";
 
-dotenv.config();
+dotenv.config({ override: true });
 
 const app = express();
 

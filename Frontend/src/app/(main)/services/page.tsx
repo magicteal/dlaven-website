@@ -48,7 +48,7 @@ export default function ServicesPage() {
           {/* Background image with Next/Image fill mode */}
           <div className="absolute inset-0">
             <Image
-              src="/images/dl-service-bg.jpg"
+              src="/images/hero_bg.png"
               alt="D'LAVÉN Bespoke Services background"
               fill
               className="object-cover object-center"

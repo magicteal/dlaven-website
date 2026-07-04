@@ -20,7 +20,7 @@ export default function WomensAdornmentsPage() {
       <section className="relative w-full grid grid-cols-2" style={{ height: "65vh", minHeight: "400px" }}>
         <div className="relative overflow-hidden">
           <Image
-            src="/images/womenswear/IMG_9339.JPEG"
+            src="/images/heritage/womens_heritage.jpg"
             alt="WomensWear Left"
             fill
             className="object-cover object-center"
@@ -31,7 +31,7 @@ export default function WomensAdornmentsPage() {
         </div>
         <div className="relative overflow-hidden">
           <Image
-            src="/images/womenswear/IMG_9341.JPEG"
+            src="/images/heritage/womens_adornments.jpg"
             alt="WomensWear Right"
             fill
             className="object-cover object-center"
@@ -61,12 +61,12 @@ export default function WomensAdornmentsPage() {
       <section className="w-full pb-10" style={{ background: BG }}>
         <Marquee
           images={[
-            "/images/womenswear/IMG_9666.JPEG",
-            "/images/womenswear/IMG_9667.JPEG",
-            "/images/womenswear/IMG_9668.JPEG",
-            "/images/womenswear/IMG_9669.JPEG",
-            "/images/womenswear/IMG_9670.JPEG",
-            "/images/womenswear/IMG_9347.JPEG",
+            "/images/womenswear/adornments_1.png",
+            "/images/womenswear/adornments_2.jpg",
+            "/images/heritage/mesh_woman.jpg",
+            "/images/heritage/womens_heritage.jpg",
+            "/images/womenswear/adornments_1.png",
+            "/images/womenswear/adornments_2.jpg",
           ]}
           speed={45}
           direction="right"
@@ -80,7 +80,7 @@ export default function WomensAdornmentsPage() {
         <div className="flex flex-col items-center text-center max-w-4xl w-full">
           <div className="relative overflow-hidden w-full" style={{ aspectRatio: "16/9" }}>
             <Image
-              src="/images/womenswear/IMG_9343.JPEG"
+              src="/images/womenswear/adornments_1.png"
               alt="The Heritage"
               fill
               className="object-cover object-center"
@@ -127,7 +127,7 @@ export default function WomensAdornmentsPage() {
         <div className="flex flex-col items-center text-center max-w-4xl w-full">
           <div className="relative overflow-hidden w-full" style={{ aspectRatio: "16/9" }}>
             <Image
-              src="/images/womenswear/IMG_9345.JPEG"
+              src="/images/womenswear/adornments_2.jpg"
               alt="The International"
               fill
               className="object-cover object-center"

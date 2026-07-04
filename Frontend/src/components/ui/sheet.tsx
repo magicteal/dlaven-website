@@ -68,7 +68,7 @@ function SheetPortal({
 }: Dialog.DialogPortalProps & { className?: string }) {
   return (
     <Dialog.Portal {...props}>
-      <div className={cn("fixed inset-0 z-[1000] flex", className)}>
+      <div className={cn("fixed inset-0 z-[35] flex pointer-events-none", className)}>
         {children}
       </div>
     </Dialog.Portal>
@@ -86,7 +86,7 @@ function SheetOverlay({
     <Dialog.Overlay
       data-state={state}
       className={cn(
-        "fixed inset-0 z-[1000] bg-black/20 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+        "fixed inset-0 z-[35] bg-black/20 backdrop-blur-sm pointer-events-auto data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
         className
       )}
       style={{ animationDuration: `${ANIMATION_DURATION}ms` }}
@@ -121,7 +121,7 @@ function SheetContent({
       <Dialog.Content
         data-state={state}
         className={cn(
-          "fixed z-[1001] grid gap-4 p-6 shadow-lg outline-none",
+          "fixed z-[36] grid gap-4 p-6 shadow-lg outline-none pointer-events-auto",
           sideClasses[side],
           className
         )}

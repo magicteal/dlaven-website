@@ -76,12 +76,12 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
       aria-modal="true"
       aria-hidden={!isOpen}
       data-state={state}
-      className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 [animation-duration:400ms]"
+      className="fixed inset-0 z-[35] bg-black/20 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 [animation-duration:400ms]"
     >
-      {/* Full-width panel from top of viewport with slide animation */}
+      {/* Panel drops down from beneath the navbar. */}
       <div
         data-state={state}
-        className="w-full bg-white/95 backdrop-blur-xl shadow-2xl border-b border-black/10 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 [animation-duration:400ms]"
+        className="absolute left-1 right-1 top-24 z-[36] bg-[#e2ddd7]/80 backdrop-blur-md shadow-2xl border-none md:left-2 md:right-2 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:duration-500 data-[state=closed]:duration-300 [animation-duration:400ms]"
       >
         {/* Search section with max-width container */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 pb-4">
@@ -100,7 +100,7 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="What are you looking for?"
-                className="w-full bg-white/80 backdrop-blur-sm border-2 border-black/15 focus:border-black/40 rounded-none px-4 sm:px-6 py-4 sm:py-5 pr-14 text-base sm:text-lg md:text-xl placeholder:text-gray-500 focus:outline-none transition-all duration-300 shadow-sm hover:shadow-md"
+                className="w-full bg-white/35 backdrop-blur-sm border-2 border-black/15 focus:border-black/40 rounded-none px-4 sm:px-6 py-4 sm:py-5 pr-14 text-base sm:text-lg md:text-xl placeholder:text-gray-500 focus:outline-none transition-all duration-300 shadow-sm hover:shadow-md"
                 autoFocus
               />
               <button

@@ -121,7 +121,7 @@ export default function DlavenPrivePage() {
         </div>
       </section>
 
-      <Container className="py-16 sm:py-24">
+      <Container id="access" className="py-16 sm:py-24">
         {!unlocked ? (
           <div className="max-w-md mx-auto">
             <h2 className="text-center text-xl font-semibold">

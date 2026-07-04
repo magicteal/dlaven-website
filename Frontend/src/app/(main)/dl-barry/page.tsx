@@ -70,7 +70,7 @@ export default function DlBarryPage() {
       <section className="relative w-full flex items-center justify-center text-center text-white h-[40vh] min-h-[280px]">
         <div className="absolute inset-0">
           <Image
-            src="/images/dl-service-bg.jpg"
+            src="/images/hero_bg.png"
             alt="DL Barry background"
             fill
             className="object-cover object-center"

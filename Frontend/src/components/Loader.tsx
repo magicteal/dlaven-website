@@ -1,15 +1,22 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import Image from "next/image";
 
 export default function Loader({ onComplete }: { onComplete?: () => void }) {
   const blackLayerRef = useRef<HTMLDivElement | null>(null);
   const greyLayerRef = useRef<HTMLDivElement | null>(null);
   const logoRef = useRef<HTMLDivElement | null>(null);
+  const [logoReady, setLogoReady] = useState(false);
 
   useEffect(() => {
+    const fallbackTimer = window.setTimeout(() => setLogoReady(true), 1200);
+    return () => window.clearTimeout(fallbackTimer);
+  }, []);
+
+  useEffect(() => {
+    if (!logoReady) return;
+
     const tl = gsap.timeline({
       onComplete: () => {
         if (typeof onComplete === "function") onComplete();
@@ -53,7 +60,11 @@ export default function Loader({ onComplete }: { onComplete?: () => void }) {
       .set(logoRef.current, { autoAlpha: 0 })
       .set(blackLayerRef.current, { display: "none" })
       .set(greyLayerRef.current, { display: "none" });
-  }, [onComplete]);
+
+    return () => {
+      tl.kill();
+    };
+  }, [logoReady, onComplete]);
 
   return (
     <div className="relative w-full h-full">
@@ -66,16 +77,19 @@ export default function Loader({ onComplete }: { onComplete?: () => void }) {
             ref={logoRef}
             className="will-change-transform mx-auto flex flex-col items-center justify-center text-center"
           >
-            <Image
-              src="/logos/logoBlack.svg"
+            <img
+              src="/logos/logo.svg"
               alt="D’ LAVÉN logo"
               width={280}
-              height={280}
-              priority
-              className="h-auto w-[14vw] sm:w-[12vw] lg:w-[10vw] max-w-[240px]"
+              height={140}
+              decoding="sync"
+              fetchPriority="high"
+              onLoad={() => setLogoReady(true)}
+              onError={() => setLogoReady(true)}
+              className="h-auto w-[160px] max-w-[70vw] sm:w-[180px] lg:w-[220px]"
             />
             <p
-              className="mt-6 text-[10px] sm:text-[8px] md:text-sm tracking-[0.4em] font-medium text-black text-center leading-relaxed px-4 whitespace-pre text-black"
+              className="mt-6 text-[10px] sm:text-[8px] md:text-sm tracking-[0.4em] font-medium text-black text-center leading-relaxed px-4 whitespace-pre"
             >
               {"A JOURNEY FROM DIGITAL BEGINNINGS TO TIMELESS ADDRESSES"}
             </p>
