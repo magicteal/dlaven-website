@@ -208,10 +208,71 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    /* Always reserve the scrollbar gutter so opening a modal/overlay
+       (which locks body scroll) doesn't shift the page + fixed navbar. */
+    scrollbar-gutter: stable;
+  }
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-sans);
   }
+}
+
+/* Slide-drawer (menu) enter/exit — explicit + !important so it always
+   wins over the base Sheet's conflicting animate-in/out utilities. */
+@keyframes drawerInLeft {
+  from { opacity: 0; transform: translateX(-100%); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes drawerOutLeft {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(-100%); }
+}
+@keyframes drawerInRight {
+  from { opacity: 0; transform: translateX(100%); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes drawerOutRight {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(100%); }
+}
+[data-drawer="left"][data-state="open"] {
+  animation: drawerInLeft 400ms cubic-bezier(0.22, 1, 0.36, 1) both !important;
+}
+[data-drawer="left"][data-state="closed"] {
+  animation: drawerOutLeft 340ms cubic-bezier(0.4, 0, 1, 1) both !important;
+}
+[data-drawer="right"][data-state="open"] {
+  animation: drawerInRight 400ms cubic-bezier(0.22, 1, 0.36, 1) both !important;
+}
+[data-drawer="right"][data-state="closed"] {
+  animation: drawerOutRight 340ms cubic-bezier(0.4, 0, 1, 1) both !important;
+}
+
+/* Search overlay: panel drops from top, backdrop fades. Explicit + !important
+   with fill so the panel never snaps back to visible before unmounting. */
+@keyframes searchIn {
+  from { opacity: 0; transform: translateY(-100%); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes searchOut {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-100%); }
+}
+@keyframes overlayFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes overlayFadeOut { from { opacity: 1; } to { opacity: 0; } }
+[data-search-panel][data-state="open"] {
+  animation: searchIn 400ms cubic-bezier(0.22, 1, 0.36, 1) both !important;
+}
+[data-search-panel][data-state="closed"] {
+  animation: searchOut 340ms cubic-bezier(0.4, 0, 1, 1) both !important;
+}
+[data-search-backdrop][data-state="open"] {
+  animation: overlayFadeIn 300ms ease both !important;
+}
+[data-search-backdrop][data-state="closed"] {
+  animation: overlayFadeOut 340ms ease both !important;
 }
 
 /* Scroll reveal: zoom-out to zoom-in effect */

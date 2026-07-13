@@ -71,7 +71,7 @@ function SearchTrigger({
       type="button"
       aria-label="Search"
       onClick={onToggle}
-      className="group inline-flex h-7 items-center justify-center gap-2 transition-colors duration-200 hover:text-black/60"
+      className="group inline-flex h-7 items-center justify-center gap-2 border-b border-black/40 pb-0.5 transition-colors duration-200 hover:text-black/60 hover:border-black/70"
       data-state={isOpen ? "open" : "closed"}
     >
       <Search
@@ -95,6 +95,7 @@ function MenuTrigger({
   return (
     <MenuDrawer
       side="left"
+      open={isOpen}
       onOpenChange={onOpenChange}
       trigger={
         <button
@@ -132,10 +133,25 @@ export default function AnimatedNavbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // Menu and search are mutually exclusive — opening one closes the other.
+  const handleMenuOpenChange = (open: boolean) => {
+    setIsMenuOpen(open);
+    if (open) setIsSearchOpen(false);
+  };
+  const handleSearchToggle = () => {
+    setIsSearchOpen((prev) => {
+      const next = !prev;
+      if (next) setIsMenuOpen(false);
+      return next;
+    });
+  };
+
   return (
     <>
       <header
-        className="absolute top-1 left-1 right-1 z-[40] rounded-none bg-[#e2ddd7]/80 backdrop-blur-md text-black [font-family:var(--font-manrope)] shadow-sm md:left-2 md:right-2"
+        className={`absolute top-4 left-4 right-4 z-[40] rounded-none backdrop-blur-md text-black [font-family:var(--font-manrope)] shadow-sm md:top-6 md:left-6 md:right-6 transition-colors duration-200 ${
+          isMenuOpen || isSearchOpen ? "bg-[#e2ddd7]" : "bg-[#e2ddd7]/40"
+        }`}
       >
         <div className="px-5 py-3 md:px-8">
           <nav aria-label="Primary" className="flex flex-col gap-2.5">
@@ -144,12 +160,12 @@ export default function AnimatedNavbar() {
               <div className="flex items-center justify-start gap-5 sm:gap-7">
                 <MenuTrigger
                   isOpen={isMenuOpen}
-                  onOpenChange={setIsMenuOpen}
+                  onOpenChange={handleMenuOpenChange}
                 />
                 <div className="hidden sm:block">
                   <SearchTrigger
                     isOpen={isSearchOpen}
-                    onToggle={() => setIsSearchOpen((open) => !open)}
+                    onToggle={handleSearchToggle}
                   />
                 </div>
               </div>

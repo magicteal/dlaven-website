@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Search, X } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 interface SearchOverlayProps {
@@ -10,12 +11,71 @@ interface SearchOverlayProps {
   onClose: () => void;
 }
 
-const trendingSearches = ["Heritage Chain", "T Shirts", "Shirts"];
-const newInLinks = ["Heritage Chain", "Men"];
-const suggestionLinks = [
-  "DL PRIVÉ SELECTIon",
-  "Personalization",
-  "BOUTIQUE Locator",
+type NavLink = { label: string; href: string };
+type NavSection = { heading: string; links: NavLink[] };
+
+// Featured visual on the left of the search panel
+const featured = {
+  label: "Heritage Jewellery",
+  href: "/heritage-jewelry",
+  image: "/images/leftVisual.png",
+};
+
+// Category columns shown on the right. Each column may hold several sections.
+const searchColumns: NavSection[][] = [
+  [
+    {
+      heading: "Women",
+      links: [
+        { label: "New In", href: "/products" },
+        { label: "Ready-to-Wear", href: "/womens-ready-to-wear" },
+        { label: "Heritage Jewellery", href: "/heritage-jewelry" },
+        { label: "DL Privé Edition", href: "/prive" },
+        { label: "Fragrance", href: "/fragrances" },
+        { label: "View all", href: "/womens-adornments" },
+      ],
+    },
+  ],
+  [
+    {
+      heading: "Men",
+      links: [
+        { label: "New In", href: "/products" },
+        { label: "Ready-to-Wear", href: "/mens-ready-to-wear" },
+        { label: "Heritage Jewellery", href: "/heritage-jewelry" },
+        { label: "DL Privé Edition", href: "/prive" },
+        { label: "View all", href: "/mens-adornments" },
+      ],
+    },
+  ],
+  [
+    {
+      heading: "Jewellery",
+      links: [
+        { label: "Heritage Jewellery", href: "/heritage-jewelry" },
+        { label: "Privé Jewellery", href: "/prive-jewellery" },
+        { label: "View all", href: "/heritage-jewelry" },
+      ],
+    },
+    {
+      heading: "Fragrance",
+      links: [
+        { label: "Signature Scents", href: "/fragrances" },
+        { label: "View all", href: "/fragrances" },
+      ],
+    },
+  ],
+  [
+    {
+      heading: "The House",
+      links: [
+        { label: "World of D'Lavén", href: "/world-of-d-laven" },
+        { label: "DL Services", href: "/services" },
+        { label: "Destinations", href: "/destinations" },
+        { label: "Personalization", href: "/services" },
+      ],
+    },
+  ],
 ];
 
 // Animation duration to match MenuDrawer
@@ -76,20 +136,18 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
       aria-modal="true"
       aria-hidden={!isOpen}
       data-state={state}
-      className="fixed inset-0 z-[35] bg-black/20 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 [animation-duration:400ms]"
+      data-search-backdrop=""
+      className="fixed inset-0 z-[35] bg-black/20 backdrop-blur-sm"
     >
       {/* Panel drops down from beneath the navbar. */}
       <div
         data-state={state}
-        className="absolute left-1 right-1 top-24 z-[36] bg-[#e2ddd7]/80 backdrop-blur-md shadow-2xl border-none md:left-2 md:right-2 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:duration-500 data-[state=closed]:duration-300 [animation-duration:400ms]"
+        data-search-panel=""
+        className="absolute left-4 right-4 top-28 z-[36] bg-[#e2ddd7] text-[#14161f] [font-family:var(--font-manrope)] backdrop-blur-md shadow-2xl border-none md:left-6 md:right-6 md:top-32"
       >
-        {/* Search section with max-width container */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 pb-4">
-          <div className="flex items-center justify-between mb-6">
-            {/* <h2 className="text-2xl sm:text-3xl font-light tracking-wide">Search</h2> */}
-          </div>
-
-          <form onSubmit={handleSearchSubmit}>
+        {/* Search field */}
+        <div className="px-6 sm:px-10 lg:px-12 pt-8 sm:pt-10 pb-6">
+          <form onSubmit={handleSearchSubmit} className="max-w-2xl">
             <label htmlFor="search-input" className="sr-only">
               What are you looking for?
             </label>
@@ -100,106 +158,76 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="What are you looking for?"
-                className="w-full bg-white/35 backdrop-blur-sm border-2 border-black/15 focus:border-black/40 rounded-none px-4 sm:px-6 py-4 sm:py-5 pr-14 text-base sm:text-lg md:text-xl placeholder:text-gray-500 focus:outline-none transition-all duration-300 shadow-sm hover:shadow-md"
+                className="w-full bg-transparent border-0 border-b border-black/25 focus:border-black/60 rounded-none px-1 py-2.5 pr-10 text-sm sm:text-base placeholder:text-gray-500 focus:outline-none transition-colors duration-300"
                 autoFocus
               />
               <button
                 type="submit"
                 aria-label="Submit search"
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-black transition-colors duration-200"
+                className="absolute right-1 top-1/2 -translate-y-1/2 text-gray-600 hover:text-black transition-colors duration-200"
               >
-                <Search className="h-6 w-6" />
+                <Search className="h-5 w-5" />
               </button>
             </div>
           </form>
         </div>
 
-        {/* Content grid with max-width container */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 sm:gap-12 lg:gap-16">
-            {/* In Demand Section */}
-            <div className="space-y-5">
-              <h3 className="font-semibold uppercase tracking-widest text-xs sm:text-sm text-black/70 mb-6">
-                IN DEMAND
-              </h3>
-              <ul className="space-y-3">
-                {trendingSearches.map((item, index) => (
-                  <li
-                    key={item}
-                    className="transform transition-all duration-200 hover:translate-x-1"
-                    style={{ animationDelay: `${index * 50}ms` }}
-                  >
-                    <Link
-                      href={`/products?q=${encodeURIComponent(item)}`}
-                      onClick={onClose}
-                      className="block text-base sm:text-lg uppercase tracking-wide hover:text-gray-600 transition-colors duration-200 relative group"
-                    >
-                      {item}
-                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-black group-hover:w-full transition-all duration-300"></span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+        {/* Featured image + category columns */}
+        <div className="flex items-stretch gap-6 lg:gap-10 px-6 sm:px-10 lg:px-12 pb-10">
+          {/* Left visual with label overlay */}
+          <Link
+            href={featured.href}
+            onClick={onClose}
+            className="group relative hidden md:block w-52 lg:w-64 shrink-0 overflow-hidden"
+          >
+            <Image
+              src={featured.image}
+              alt={featured.label}
+              fill
+              sizes="256px"
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
+            <span className="absolute bottom-4 left-4 right-4 text-white text-xs uppercase tracking-[0.15em]">
+              {featured.label}
+            </span>
+          </Link>
 
-            {/* New In Section */}
-            <div className="space-y-5">
-              <h3 className="font-semibold uppercase tracking-widest text-xs sm:text-sm text-black/70 mb-6">
-                NEW IN
-              </h3>
-              <ul className="space-y-3">
-                {newInLinks.map((item, index) => (
-                  <li
-                    key={item}
-                    className="transform transition-all duration-200 hover:translate-x-1"
-                    style={{ animationDelay: `${index * 50}ms` }}
-                  >
-                    <Link
-                      href={`/products?category=${encodeURIComponent(item.toLowerCase())}`}
-                      onClick={onClose}
-                      className="block text-base sm:text-lg uppercase tracking-wide hover:text-gray-600 transition-colors duration-200 relative group"
-                    >
-                      {item}
-                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-black group-hover:w-full transition-all duration-300"></span>
-                    </Link>
-                  </li>
+          {/* Category columns */}
+          <div className="flex-1 min-w-0 grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-10">
+            {searchColumns.map((column, ci) => (
+              <div key={ci} className="space-y-8">
+                {column.map((section) => (
+                  <div key={section.heading}>
+                    <h3 className="font-semibold uppercase tracking-widest text-[0.65rem] text-[#14161f]/55 mb-4">
+                      {section.heading}
+                    </h3>
+                    <ul className="space-y-2.5">
+                      {section.links.map((link) => (
+                        <li key={link.label}>
+                          <Link
+                            href={link.href}
+                            onClick={onClose}
+                            className="block text-xs tracking-wide text-[#14161f]/90 hover:text-black transition-colors duration-200"
+                          >
+                            {link.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 ))}
-              </ul>
-            </div>
-
-            {/* Suggestions Section */}
-            <div className="space-y-5 md:border-l border-black/10 md:pl-10 lg:pl-12">
-              <h3 className="font-semibold uppercase tracking-widest text-xs sm:text-sm text-black/70 mb-6">
-                SUGGESTIONS
-              </h3>
-              <ul className="space-y-3">
-                {suggestionLinks.map((item, index) => (
-                  <li
-                    key={item}
-                    className="transform transition-all duration-200 hover:translate-x-1"
-                    style={{ animationDelay: `${index * 50}ms` }}
-                  >
-                    <Link
-                      href="#"
-                      onClick={onClose}
-                      className="block text-base sm:text-lg uppercase tracking-wide hover:text-gray-600 transition-colors duration-200 relative group"
-                    >
-                      {item}
-                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-black group-hover:w-full transition-all duration-300"></span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Close button styled like MenuDrawer */}
+        {/* Close button */}
         <button
           type="button"
           onClick={onClose}
           aria-label="Close search"
-          className="absolute right-4 top-4 h-8 w-8 grid place-items-center bg-black text-white shadow-sm border border-transparent z-[60] pointer-events-auto"
+          className="absolute right-5 top-5 h-9 w-9 grid place-items-center rounded-full border border-[#14161f]/20 bg-transparent text-[#14161f]/70 hover:text-[#000000] hover:border-[#14161f]/45 transition-colors duration-200 z-[60] pointer-events-auto"
         >
           <X className="h-4 w-4" />
         </button>

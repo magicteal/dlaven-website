@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc -p .",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "db:pull": "powershell -ExecutionPolicy Bypass -File scripts/db_pull_atlas_to_local.ps1"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

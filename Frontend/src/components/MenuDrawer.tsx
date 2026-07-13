@@ -545,23 +545,30 @@ function PanelView({
 export default function MenuDrawer({
   trigger,
   side = "right",
+  open: openProp,
   onOpenChange,
 }: {
   trigger: React.ReactNode;
   side?: "left" | "right";
+  open?: boolean;
   onOpenChange?: (open: boolean) => void;
 }) {
   const { user } = useAuth();
   const router = useRouter();
-  const [open, setOpen] = React.useState(false);
+  // Support both controlled (open prop) and uncontrolled usage.
+  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(false);
+  const isControlled = openProp !== undefined;
+  const open = isControlled ? openProp : uncontrolledOpen;
+  const setOpen = React.useCallback(
+    (next: boolean) => {
+      if (!isControlled) setUncontrolledOpen(next);
+      onOpenChange?.(next);
+    },
+    [isControlled, onOpenChange]
+  );
   const [showPersonalization, setShowPersonalization] = React.useState(false);
   const [activePanel, setActivePanel] = React.useState<string | null>(null);
   const navTimeout = React.useRef<number | null>(null);
-
-  // Notify parent when open state changes
-  React.useEffect(() => {
-    onOpenChange?.(open);
-  }, [open, onOpenChange]);
 
   // Reset panel when drawer closes
   React.useEffect(() => {
@@ -588,7 +595,7 @@ export default function MenuDrawer({
         navTimeout.current = null;
       }, 450); // slightly longer than Sheet animationDuration to ensure full cleanup
     },
-    [router]
+    [router, setOpen]
   );
 
   // cleanup any pending timeout when component unmounts
@@ -608,25 +615,18 @@ export default function MenuDrawer({
         {/* Removed padding from SheetContent to handle scroll layout better */}
         <SheetContent
           side={side}
-          className={`w-[420px] sm:w-[520px] max-w-[calc(100vw-1rem)] flex flex-col p-0 top-24 h-[calc(100vh-6rem)] border-none bg-[#e2ddd7]/80 text-black backdrop-blur-md shadow-2xl ${
-            side === "left" ? "left-1 md:left-2" : "right-1 md:right-2"
-          }
-        data-[state=open]:animate-in data-[state=closed]:animate-out
-        ${
-          side === "left"
-            ? "data-[state=open]:slide-in-from-left data-[state=closed]:slide-out-to-left"
-            : "data-[state=open]:slide-in-from-right data-[state=closed]:slide-out-to-right"
-        }
-        data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:duration-500 data-[state=closed]:duration-300
-        [animation-duration:400ms]`}
+          data-drawer={side}
+          className={`w-[290px] sm:w-[320px] max-w-[calc(100vw-2rem)] flex flex-col p-0 top-28 md:top-32 bottom-auto h-fit max-h-[calc(100dvh-9rem)] overflow-hidden rounded-none border-none bg-[#e2ddd7] text-[#14161f] [font-family:var(--font-manrope)] backdrop-blur-md shadow-2xl ${
+            side === "left" ? "left-4 md:left-6" : "right-4 md:right-6"
+          }`}
         >
-          {/* Scrollable Navigation Area */}
-          <div className="flex-1 relative">
+          {/* Navigation Area — height follows the nav content */}
+          <div className="relative">
             {/* Both root nav and panels are rendered and animated between using
                 translate + opacity transitions. This avoids unmount/mount
                 jank and gives a smooth panel slide-in effect. */}
             <nav
-              className={`absolute inset-0 overflow-y-auto pt-12 px-8 pb-6 sm:pt-16 sm:px-12 flex flex-col text-left text-[1.3rem]  transform transition-all duration-300 ease-out will-change-transform
+              className={`relative pt-9 px-7 pb-7 sm:pt-10 sm:px-8 flex flex-col text-left text-[0.8rem] [font-family:var(--font-manrope)] transform transition-all duration-300 ease-out will-change-transform
                 ${
                   activePanel
                     ? "opacity-0 -translate-x-4 pointer-events-none"
@@ -635,13 +635,13 @@ export default function MenuDrawer({
               `}
             >
               {/* Main Links (Section 1) */}
-              <div className="space-y-3 mt-5">
+              <div className="space-y-2.5 mt-0">
                 <DrawerLink
                   href="/products"
                   onNavigate={navigateWithClose}
                   onOpenPanel={(id) => setActivePanel(id)}
                   panelId="new-in"
-                  className="block font-normal uppercase no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+                  className="block font-normal uppercase tracking-[0.06em] text-[#14161f] no-underline hover:no-underline hover:text-[#000000] transition-colors duration-200"
                 >
                   New In
                 </DrawerLink>
@@ -650,7 +650,7 @@ export default function MenuDrawer({
                   onNavigate={navigateWithClose}
                   onOpenPanel={(id) => setActivePanel(id)}
                   panelId="women"
-                  className="block font-normal uppercase no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+                  className="block font-normal uppercase tracking-[0.06em] text-[#14161f] no-underline hover:no-underline hover:text-[#000000] transition-colors duration-200"
                 >
                   Women
                 </DrawerLink>
@@ -659,7 +659,7 @@ export default function MenuDrawer({
                   onNavigate={navigateWithClose}
                   onOpenPanel={(id) => setActivePanel(id)}
                   panelId="men"
-                  className="block font-normal uppercase no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+                  className="block font-normal uppercase tracking-[0.06em] text-[#14161f] no-underline hover:no-underline hover:text-[#000000] transition-colors duration-200"
                 >
                   Men
                 </DrawerLink>
@@ -668,7 +668,7 @@ export default function MenuDrawer({
                   onNavigate={navigateWithClose}
                   onOpenPanel={(id) => setActivePanel(id)}
                   panelId="heritage"
-                  className="block font-normal uppercase no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+                  className="block font-normal uppercase tracking-[0.06em] text-[#14161f] no-underline hover:no-underline hover:text-[#000000] transition-colors duration-200"
                 >
                   Heritage Jewelery
                 </DrawerLink>
@@ -677,14 +677,14 @@ export default function MenuDrawer({
                   onNavigate={navigateWithClose}
                   onOpenPanel={(id) => setActivePanel(id)}
                   panelId="fragrances"
-                  className="block font-normal uppercase no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+                  className="block font-normal uppercase tracking-[0.06em] text-[#14161f] no-underline hover:no-underline hover:text-[#000000] transition-colors duration-200"
                 >
                   Fragrance
                 </DrawerLink>
               </div>
 
               {/* Section 2 */}
-              <div className="mt-10 space-y-4">
+              <div className="mt-6 space-y-2.5">
                 {/* PERSONALIZATION SERVICES opens a centered modal */}
                 <button
                   onClick={() => {
@@ -692,7 +692,7 @@ export default function MenuDrawer({
                     setOpen(false);
                     setTimeout(() => setShowPersonalization(true), 380);
                   }}
-                  className="text-left w-full font-normal uppercase no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105 group flex items-center justify-between"
+                  className="text-left w-full font-normal uppercase tracking-[0.06em] text-[#14161f] no-underline hover:no-underline hover:text-[#000000] transition-colors duration-200 group flex items-center justify-between"
                 >
                   <span>PERSONALIZATION SERVICES</span>
                   <span
@@ -707,7 +707,7 @@ export default function MenuDrawer({
                   onNavigate={navigateWithClose}
                   onOpenPanel={(id) => setActivePanel(id)}
                   panelId="services"
-                  className="block font-normal uppercase no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+                  className="block font-normal uppercase tracking-[0.06em] text-[#14161f] no-underline hover:no-underline hover:text-[#000000] transition-colors duration-200"
                 >
                   DL SERVICES
                 </DrawerLink>
@@ -716,7 +716,7 @@ export default function MenuDrawer({
                   onNavigate={navigateWithClose}
                   onOpenPanel={(id) => setActivePanel(id)}
                   panelId="world"
-                  className="block font-normal uppercase no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+                  className="block font-normal uppercase tracking-[0.06em] text-[#14161f] no-underline hover:no-underline hover:text-[#000000] transition-colors duration-200"
                 >
                   WORLD OF D<Apostrophe /> L AVÉN
                 </DrawerLink>
@@ -725,22 +725,19 @@ export default function MenuDrawer({
                   onNavigate={navigateWithClose}
                   onOpenPanel={(id) => setActivePanel(id)}
                   panelId="destinations"
-                  className="block font-normal uppercase no-underline hover:no-underline transition-transform duration-200 will-change-transform hover:scale-105"
+                  className="block font-normal uppercase tracking-[0.06em] text-[#14161f] no-underline hover:no-underline hover:text-[#000000] transition-colors duration-200"
                 >
                   DL DESTINATIONS
                 </DrawerLink>
               </div>
 
-              {/* Spacer to push bottom content down */}
-              <div className="flex-grow"></div>
-
               {/* Bottom Links (Section 3) — equal top spacing */}
-              <div className="space-y-3 mt-10 text-base">
+              <div className="space-y-1.5 mt-6 text-[0.7rem] tracking-[0.08em]">
                 {/* Always show same options; route to login when unauthenticated */}
                 <DrawerLink
                   href={user ? "/me" : "/login"}
                   onNavigate={navigateWithClose}
-                  className="block  uppercase hover:no-underline"
+                  className="block uppercase hover:text-[#000000] transition-colors duration-200"
                 >
                   MY ACCOUNT
                 </DrawerLink>
@@ -748,20 +745,20 @@ export default function MenuDrawer({
                 <DrawerLink
                   href={user ? "/purchases" : "/login"}
                   onNavigate={navigateWithClose}
-                  className="block  uppercase hover:no-underline"
+                  className="block uppercase hover:text-[#000000] transition-colors duration-200"
                 >
                   PURCHASES
                 </DrawerLink>
                 <DrawerLink
                   href="/contact"
                   onNavigate={navigateWithClose}
-                  className="block  uppercase hover:no-underline"
+                  className="block uppercase hover:text-[#000000] transition-colors duration-200"
                 >
                   CONTACT US
                 </DrawerLink>
                 <a
                   href="tel:+917488575159"
-                  className="block hover:underline"
+                  className="block pt-1.5 tracking-[0.05em] hover:text-[#000000] transition-colors duration-200"
                   aria-label="Call +91 7488-575159"
                 >
                   +91 7488-575159
@@ -771,7 +768,7 @@ export default function MenuDrawer({
 
             {/* Panel area (placed after nav so it appears above when active) */}
             <div
-              className={`absolute inset-0 overflow-y-auto bg-[#e2ddd7]/80 backdrop-blur-md transform transition-all duration-300 ease-out will-change-transform
+              className={`absolute inset-0 overflow-hidden bg-[#e2ddd7] backdrop-blur-md transform transition-all duration-300 ease-out will-change-transform
                 ${
                   activePanel
                     ? "opacity-100 translate-x-0"
@@ -794,7 +791,7 @@ export default function MenuDrawer({
             <button
               type="button"
               aria-label="Close menu"
-              className="absolute right-12 sm:right-4 top-4 h-8 w-8 grid place-items-center bg-black text-white shadow-sm border border-transparent z-[60] pointer-events-auto"
+              className="absolute right-4 top-4 h-8 w-8 grid place-items-center rounded-full border border-[#14161f]/20 bg-transparent text-[#14161f]/70 hover:text-[#000000] hover:border-[#14161f]/45 transition-colors duration-200 z-[60] pointer-events-auto"
             >
               <X className="h-4 w-4" />
             </button>
