@@ -14,9 +14,32 @@ export default function Footer() {
 
   return (
     <footer
-      className="text-white"
+      className="relative overflow-hidden text-white"
       style={{ backgroundColor: "#431717" }}
     >
+      {/* Tiled quotation-mark pattern */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage: "url(/pattern.svg)",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      />
+      {/* Red overlay gradient: solid at top, fading to reveal the pattern below */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(180deg, #431717 0%, #431717 26%, rgba(67,23,23,0) 100%)",
+        }}
+      />
+
+      {/* Foreground content */}
+      <div className="relative z-10">
         {/* Main grid */}
         <div className="max-w-[95%] mx-auto px-4 pt-16 pb-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
@@ -138,6 +161,7 @@ export default function Footer() {
             Estd. 2026
           </p>
         </div>
+      </div>
     </footer>
   );
 }
