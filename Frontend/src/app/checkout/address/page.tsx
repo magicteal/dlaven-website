@@ -217,12 +217,13 @@ export default function CheckoutAddressPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#faf7f2] pt-24 pb-24">
+    <main className="min-h-screen pt-28 sm:pt-32 pb-24" style={{ backgroundColor: "#F6F4E6" }}>
       <Container>
         <button
           type="button"
           onClick={() => router.back()}
-          className="inline-flex items-center gap-2 text-xs tracking-[0.25em] uppercase mb-6"
+          className="inline-flex items-center gap-2 text-xs tracking-[0.25em] uppercase mb-6 hover:opacity-70 transition-opacity"
+          style={{ color: "#431717" }}
         >
           <ArrowLeft size={14} />
           Back
@@ -232,21 +233,21 @@ export default function CheckoutAddressPage() {
         <div className="mt-12 grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-12">
           {/* LEFT */}
           <form onSubmit={onContinue} className="space-y-8">
-            <section className="bg-white border border-black/10">
-              <div className="px-8 py-5 border-b border-black/10 flex items-center justify-between text-xs tracking-[0.3em] uppercase">
+            <section className="border" style={{ backgroundColor: "rgba(255,255,255,0.55)", borderColor: "rgba(67,23,23,0.12)" }}>
+              <div className="px-8 py-5 border-b flex items-center justify-between text-xs tracking-[0.3em] uppercase font-medium" style={{ borderColor: "rgba(67,23,23,0.12)", color: "#431717" }}>
                 <span>Account</span>
-                <span className="text-black/60 tracking-normal text-[11px] uppercase">{user?.email || ""}</span>
+                <span className="tracking-normal text-[11px] uppercase opacity-70" style={{ color: "#6F3D24" }}>{user?.email || ""}</span>
               </div>
             </section>
 
-            <section className="bg-white border border-black/10">
-              <div className="px-8 py-5 border-b border-black/10 text-xs tracking-[0.3em] uppercase">Delivery</div>
-              <div className="px-8 py-5 border-b border-black/10 grid grid-cols-2 text-center text-xs uppercase tracking-[0.2em]">
-                <div className="flex flex-col items-center gap-2 border-b-2 border-black pb-3">
+            <section className="border" style={{ backgroundColor: "rgba(255,255,255,0.55)", borderColor: "rgba(67,23,23,0.12)" }}>
+              <div className="px-8 py-5 border-b text-xs tracking-[0.3em] uppercase font-medium" style={{ borderColor: "rgba(67,23,23,0.12)", color: "#431717" }}>Delivery</div>
+              <div className="px-8 py-5 border-b grid grid-cols-2 text-center text-xs uppercase tracking-[0.2em]" style={{ borderColor: "rgba(67,23,23,0.12)" }}>
+                <div className="flex flex-col items-center gap-2 border-b-2 pb-3 font-semibold" style={{ borderColor: "#431717", color: "#431717" }}>
                   <Truck size={18} />
                   <span>Ship to an address</span>
                 </div>
-                <div className="flex flex-col items-center gap-2 text-black/40">
+                <div className="flex flex-col items-center gap-2 opacity-40" style={{ color: "#431717" }}>
                   <Store size={18} />
                   <span>Collect in store</span>
                 </div>

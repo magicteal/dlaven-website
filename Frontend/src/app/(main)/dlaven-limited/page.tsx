@@ -28,41 +28,48 @@ export default function DlavenLimitedPage() {
   }, []);
 
   return (
-    <main>
+    <main className="min-h-screen pt-28 sm:pt-32 pb-24" style={{ backgroundColor: "#F6F4E6" }}>
       {/* Hero Section */}
-      <section className="relative w-full flex items-center justify-center text-center text-white h-[50vh] min-h-[400px]">
+      <section className="relative w-full h-[50vh] min-h-[380px] flex items-center justify-center text-center text-white mb-16">
         <div className="absolute inset-0">
           <Image
-            src="/images/dl-service-bg.jpg" // Placeholder image
+            src="/images/dl-service-bg.jpg"
             alt="Dlaven Limited background"
             fill
             className="object-cover object-center"
             sizes="100vw"
             priority
           />
-          <div className="absolute inset-0 bg-black/50" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30" />
         </div>
-        <div className="relative z-10 p-4">
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-widest uppercase" data-reveal="scale" data-duration="1">
-            D&#39;LAVÉN LIMITED
+        <div className="relative z-10 p-6 max-w-3xl">
+          <p className="text-xs uppercase tracking-[0.35em] text-[#E2DDD7] font-medium mb-2">
+            Rare & Numbered Editions
+          </p>
+          <h1 className="font-le-grand text-4xl sm:text-6xl font-normal tracking-widest uppercase text-white" data-reveal="scale">
+            D&apos;LAVÉN LIMITED
           </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-sm sm:text-base text-white/90" data-reveal="fade" data-delay="0.2">
-            An exclusive collection for our most valued clientele.
+          <p className="mt-4 text-xs sm:text-sm text-[#E2DDD7]/90 leading-relaxed" data-reveal="fade" data-delay="0.2">
+            An exclusive collection released in limited quantities for our most valued clientele.
           </p>
         </div>
       </section>
 
-      <Container className="py-16 sm:py-24">
+      <Container className="pb-16 sm:pb-24">
         <div>
-          <h2 className="text-2xl font-bold tracking-widest uppercase text-black text-center" data-reveal="slideUp">
-            Limited Collection
-          </h2>
+          <div className="text-center mb-12">
+            <h2 className="font-le-grand text-2xl sm:text-4xl font-normal tracking-widest uppercase" style={{ color: "#431717" }} data-reveal="slideUp">
+              Limited Collection
+            </h2>
+            <div className="h-px w-16 mx-auto my-3" style={{ backgroundColor: "rgba(111,61,36,0.3)" }} />
+          </div>
+
           {loading ? (
-            <p className="mt-8 text-center text-neutral-700">
-              Loading products...
+            <p className="mt-8 text-center text-xs uppercase tracking-widest" style={{ color: "#431717", opacity: 0.7 }}>
+              Loading limited edition creations...
             </p>
           ) : error ? (
-            <p className="mt-8 text-center text-red-600">{error}</p>
+            <p className="mt-8 text-center text-xs text-red-700 uppercase tracking-widest">{error}</p>
           ) : products.length > 0 ? (
             <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
               {products.map((p) => (
@@ -77,7 +84,7 @@ export default function DlavenLimitedPage() {
               ))}
             </div>
           ) : (
-            <p className="mt-8 text-center text-neutral-700">
+            <p className="mt-8 text-center text-xs uppercase tracking-widest" style={{ color: "#431717", opacity: 0.7 }}>
               No limited products available at this moment.
             </p>
           )}

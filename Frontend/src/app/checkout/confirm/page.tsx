@@ -132,12 +132,13 @@ export default function CheckoutConfirmPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#faf7f2] pt-24 pb-20">
+    <main className="min-h-screen pt-28 sm:pt-32 pb-20" style={{ backgroundColor: "#F6F4E6" }}>
       <Container>
         <button
           type="button"
           onClick={() => router.back()}
-          className="inline-flex items-center gap-2 text-xs tracking-[0.25em] uppercase mb-6"
+          className="inline-flex items-center gap-2 text-xs tracking-[0.25em] uppercase mb-6 hover:opacity-70 transition-opacity"
+          style={{ color: "#431717" }}
         >
           <ArrowLeft size={14} />
           Back

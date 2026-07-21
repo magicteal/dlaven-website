@@ -6,7 +6,6 @@ import ProductCard from "@/components/ProductCard";
 import { api } from "@/lib/api";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 
 type Product = {
   slug: string;
@@ -29,7 +28,6 @@ export default function DlavenPrivePage() {
   const [unlocked, setUnlocked] = useState<boolean>(false);
 
   useEffect(() => {
-    // Restore unlocked state from session storage
     try {
       const v = sessionStorage.getItem(SESSION_KEY);
       setUnlocked(v === "1");
@@ -79,9 +77,9 @@ export default function DlavenPrivePage() {
   };
 
   return (
-    <main>
-      {/* Hero (updated to match DL PRIVÉ EDITION design) */}
-      <section className="relative w-full h-[72vh] min-h-[520px] flex items-center justify-center overflow-hidden">
+    <main className="min-h-screen pt-24 sm:pt-28 pb-24" style={{ backgroundColor: "#F6F4E6" }}>
+      {/* Hero */}
+      <section className="relative w-full h-[65vh] min-h-[440px] flex items-center justify-center overflow-hidden mb-16">
         <div className="absolute inset-0">
           <Image
             src="/images/prive-hero.jpg"
@@ -91,93 +89,109 @@ export default function DlavenPrivePage() {
             sizes="100vw"
             priority
           />
-          <div className="absolute inset-0 bg-[rgba(0,0,0,0.25)]" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/30" />
         </div>
 
         <div className="relative z-10 px-6 text-center w-full max-w-[1400px]">
+          <p className="text-xs uppercase tracking-[0.35em] text-[#E2DDD7] font-medium mb-3">
+            Invitation Only Access
+          </p>
           <h1
-            className="mx-auto text-white leading-[0.85] uppercase"
-            style={{
-              fontFamily: `Georgia, 'Times New Roman', serif`,
-              fontSize: 'clamp(48px, 9vw, 120px)',
-              letterSpacing: '0.04em',
-            }}
+            className="font-le-grand text-4xl sm:text-6xl md:text-7xl font-normal text-white uppercase tracking-widest leading-none"
             aria-label="DL PRIVÉ EDITION"
           >
             DL PRIVÉ EDITION
           </h1>
 
-          <div className="mt-6 flex justify-center">
+          <div className="mt-8 flex justify-center">
             <a
               href="#access"
-              className="inline-flex items-center justify-center px-6 py-2 border border-white/70 text-white text-xs tracking-widest uppercase hover:bg-white/10 transition-all"
+              className="inline-flex items-center justify-center px-8 py-3.5 border border-white/70 text-white text-xs tracking-[0.25em] uppercase hover:bg-white hover:text-[#431717] transition-all duration-300"
               style={{
                 backdropFilter: 'blur(4px)',
               }}
             >
-              GET ACCESS
+              Get Access
             </a>
           </div>
         </div>
       </section>
 
-      <Container id="access" className="py-16 sm:py-24">
+      <Container id="access" className="pb-16 sm:pb-24">
         {!unlocked ? (
-          <div className="max-w-md mx-auto">
-            <h2 className="text-center text-xl font-semibold">
+          <div
+            className="max-w-md mx-auto p-8 sm:p-12 border text-center"
+            style={{
+              backgroundColor: "rgba(255,255,255,0.55)",
+              borderColor: "rgba(67,23,23,0.12)",
+            }}
+          >
+            <h2 className="font-le-grand text-2xl font-normal tracking-widest uppercase" style={{ color: "#431717" }}>
               Enter Access Code
             </h2>
-            <p className="mt-2 text-center text-sm text-black/70">
-              Enter your exclusive D&#39;LAVÉN Privé code to access our most
-              exclusive collection.
+            <div className="h-px w-12 mx-auto my-3" style={{ backgroundColor: "rgba(111,61,36,0.3)" }} />
+            <p className="mt-2 text-xs sm:text-sm leading-relaxed" style={{ color: "#431717", opacity: 0.8 }}>
+              Enter your exclusive D&apos;LAVÉN Privé code to access our most private collection.
             </p>
-            <form onSubmit={onVerify} className="mt-6 flex gap-2">
+            <form onSubmit={onVerify} className="mt-6 flex flex-col sm:flex-row gap-3">
               <Input
                 value={code}
                 onChange={(e) => setCode(e.target.value.toUpperCase())}
-                placeholder="Enter your code"
+                placeholder="ENTER YOUR CODE"
                 maxLength={16}
                 required
+                className="bg-transparent border-[#431717]/30 text-[#431717] text-xs uppercase tracking-widest placeholder:text-[#431717]/40 rounded-none h-12"
               />
-              <Button type="submit" disabled={verifying}>
+              <button
+                type="submit"
+                disabled={verifying}
+                className="px-8 h-12 text-xs uppercase tracking-[0.2em] font-medium text-white transition-colors duration-300 disabled:opacity-60 shrink-0"
+                style={{ backgroundColor: "#431717" }}
+              >
                 {verifying ? "Verifying..." : "Unlock"}
-              </Button>
+              </button>
             </form>
             {verifyError ? (
-              <p className="mt-3 text-center text-red-600 text-sm">
+              <p className="mt-3 text-center text-red-700 text-xs uppercase tracking-wider font-semibold">
                 {verifyError}
               </p>
             ) : null}
-            <p className="mt-6 text-xs text-center text-black/60">
-              Note: D&#39;LAVÉN Privé codes are single-use and tied to your
-              account. Each code can only be used once and access is verified
-              against our records.
+            <p className="mt-6 text-[10px] uppercase tracking-wider leading-relaxed" style={{ color: "#6F3D24" }}>
+              Note: Privé codes are single-use and assigned directly to registered client advisory profiles.
             </p>
           </div>
         ) : (
           <div>
-            <div className="flex items-center justify-between gap-4">
-              <h2 className="text-2xl font-bold tracking-widest uppercase text-black">
-                Prive Collection
-              </h2>
-              <Button
-                variant="outline"
+            <div className="flex items-center justify-between gap-4 mb-8">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.3em]" style={{ color: "#6F3D24" }}>
+                  Unlocked Privé Access
+                </p>
+                <h2 className="font-le-grand text-2xl sm:text-3xl font-normal tracking-widest uppercase" style={{ color: "#431717" }}>
+                  Privé Collection
+                </h2>
+              </div>
+              <button
+                type="button"
                 onClick={() => {
                   setUnlocked(false);
                   try {
                     sessionStorage.removeItem(SESSION_KEY);
                   } catch {}
                 }}
+                className="px-6 py-2.5 text-xs uppercase tracking-wider border transition-colors"
+                style={{ borderColor: "#431717", color: "#431717" }}
               >
-                Lock
-              </Button>
+                Lock Collection
+              </button>
             </div>
+
             {loadingProducts ? (
-              <p className="mt-8 text-center text-neutral-700">
-                Loading products...
+              <p className="mt-8 text-center text-xs uppercase tracking-widest" style={{ color: "#431717", opacity: 0.7 }}>
+                Loading Privé creations...
               </p>
             ) : error ? (
-              <p className="mt-8 text-center text-red-600">{error}</p>
+              <p className="mt-8 text-center text-xs text-red-700 uppercase tracking-widest">{error}</p>
             ) : products.length > 0 ? (
               <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
                 {products.map((p) => (
@@ -194,8 +208,8 @@ export default function DlavenPrivePage() {
                 ))}
               </div>
             ) : (
-              <p className="mt-8 text-center text-neutral-700">
-                No Prive products available at this moment.
+              <p className="mt-8 text-center text-xs uppercase tracking-widest" style={{ color: "#431717", opacity: 0.7 }}>
+                No Privé products available at this moment.
               </p>
             )}
           </div>

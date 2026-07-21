@@ -3,77 +3,81 @@ import Link from "next/link";
 
 export default function PrivacyPolicyPage() {
   return (
-    <main className="py-20 sm:py-28">
+    <main className="min-h-screen pt-32 sm:pt-36 pb-24" style={{ backgroundColor: "#F6F4E6" }}>
       <Container>
         <div className="max-w-3xl mx-auto">
-            <h1 className="text-3xl font-bold tracking-widest uppercase text-black text-center" data-reveal="slideUp">
-              Privacy Policy
-            </h1>
-            <p
-              className="mt-4 text-sm uppercase tracking-wider text-black/70 text-center"
-              data-reveal="fade"
-              data-delay="0.15"
-            >
-              Last updated: Oct 31, 2025
-            </p>
+          <p className="text-[10px] sm:text-xs uppercase tracking-[0.35em] mb-2 text-center font-medium" style={{ color: "#6F3D24" }}>
+            Client Protection & Transparency
+          </p>
+          <h1
+            className="font-le-grand text-3xl sm:text-5xl font-normal tracking-widest uppercase text-center"
+            style={{ color: "#431717" }}
+            data-reveal="slideUp"
+          >
+            Privacy Policy
+          </h1>
+          <div className="h-px w-16 mx-auto my-4" style={{ backgroundColor: "rgba(111,61,36,0.3)" }} />
+          <p
+            className="text-xs uppercase tracking-widest text-center"
+            style={{ color: "#6F3D24" }}
+            data-reveal="fade"
+            data-delay="0.15"
+          >
+            Last updated: Oct 31, 2025
+          </p>
 
-          <div className="mt-12 space-y-10 text-black/80 leading-relaxed" data-reveal="slideUp" data-stagger="0.1" data-delay="0.2">
-              <section>
-                <h2 className="text-lg font-semibold tracking-wider uppercase text-black">
-                  Introduction
-                </h2>
-                <p className="mt-3 text-sm">
-                  This Privacy Policy describes how we collect, use, and
-                  disclose information when you use our website and services.
-                  This is placeholder content for demonstration purposes.
-                </p>
-              </section>
+          <div
+            className="mt-12 p-8 sm:p-12 space-y-10 border"
+            style={{
+              backgroundColor: "rgba(255,255,255,0.55)",
+              borderColor: "rgba(67,23,23,0.12)",
+              color: "#431717",
+            }}
+            data-reveal="slideUp"
+            data-stagger="0.1"
+            data-delay="0.2"
+          >
+            <section>
+              <h2 className="font-le-grand text-lg uppercase tracking-wider font-normal mb-3" style={{ color: "#431717" }}>
+                1. Introduction
+              </h2>
+              <p className="text-xs sm:text-sm leading-relaxed opacity-80">
+                This Privacy Policy describes how D&apos; Lavén collects, uses, and safeguards information when you visit our site or use our client services. We treat your personal details with the utmost confidentiality.
+              </p>
+            </section>
 
-              <section>
-                <h2 className="text-lg font-semibold tracking-wider uppercase text-black">
-                  Information We Collect
-                </h2>
-                <ul className="mt-3 text-sm list-disc pl-5 space-y-2">
-                  <li>Contact details (e.g., name, email, phone).</li>
-                  <li>Order and payment information.</li>
-                  <li>Usage data and cookies for analytics and performance.</li>
-                </ul>
-              </section>
+            <section className="pt-6 border-t border-[#431717]/10">
+              <h2 className="font-le-grand text-lg uppercase tracking-wider font-normal mb-3" style={{ color: "#431717" }}>
+                2. Information We Collect
+              </h2>
+              <ul className="text-xs sm:text-sm leading-relaxed space-y-2 opacity-80 list-disc pl-5">
+                <li>Client advisory details (e.g. name, contact email, telephone, delivery address).</li>
+                <li>Secure order details and transaction reference records.</li>
+                <li>Encrypted authentication credentials and preference choices.</li>
+              </ul>
+            </section>
 
-              <section>
-                <h2 className="text-lg font-semibold tracking-wider uppercase text-black">
-                  How We Use Information
-                </h2>
-                <p className="mt-3 text-sm">
-                  We use your information to provide and improve our services,
-                  process orders, communicate with you, and for security,
-                  compliance, and analytics.
-                </p>
-              </section>
+            <section className="pt-6 border-t border-[#431717]/10">
+              <h2 className="font-le-grand text-lg uppercase tracking-wider font-normal mb-3" style={{ color: "#431717" }}>
+                3. How We Use Information
+              </h2>
+              <p className="text-xs sm:text-sm leading-relaxed opacity-80">
+                We utilize your information solely to fulfill orders, facilitate private consultations, communicate order status updates, and provide personalized luxury experiences.
+              </p>
+            </section>
 
-              <section>
-                <h2 className="text-lg font-semibold tracking-wider uppercase text-black">
-                  Your Choices
-                </h2>
-                <p className="mt-3 text-sm">
-                  You can update your preferences or request access/deletion of
-                  your data by contacting us. Some features may require certain
-                  information to function.
-                </p>
-              </section>
-
-              <section>
-                <h2 className="text-lg font-semibold tracking-wider uppercase text-black">
-                  Contact
-                </h2>
-                <p className="mt-3 text-sm">
-                  For any questions about this policy, please reach out via our{" "}
-                  <Link href="/contact" className="underline">
-                    Contact page
-                  </Link>
-                  .
-                </p>
-              </section>
+            <section className="pt-6 border-t border-[#431717]/10">
+              <h2 className="font-le-grand text-lg uppercase tracking-wider font-normal mb-3" style={{ color: "#431717" }}>
+                4. Your Rights & Contacts
+              </h2>
+              <p className="text-xs sm:text-sm leading-relaxed opacity-80">
+                You may request access to, correction of, or deletion of your personal advisory profile at any time by reaching out via our{" "}
+                <Link href="/contact" className="underline font-medium hover:opacity-75">
+                  Contact Advisory page
+                </Link>
+                .
+              </p>
+            </section>
           </div>
         </div>
       </Container>
