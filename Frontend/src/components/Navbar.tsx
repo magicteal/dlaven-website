@@ -1,11 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-// import Link from "next/link";
-// import Image from "next/image";
-// import { Button } from "@/components/ui/button";
 import MenuDrawer from "@/components/MenuDrawer";
-import SearchOverlay from "@/components/SearchOverlay"; // Import the overlay
+import SearchOverlay from "@/components/SearchOverlay";
 import {
   Heart,
   Search,
@@ -14,11 +11,11 @@ import {
   ShoppingBag,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-
 import { useAuth } from "@/components/providers/AuthProvider";
 import { useCart } from "@/components/providers/CartProvider";
-import { useRouter } from "next/navigation";
-// wishlist navigates to saved items; no cart provider needed here
+import { useRouter, usePathname } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
 
 function safeNextPath(next: string) {
   if (!next.startsWith("/")) return "/account";
@@ -26,29 +23,6 @@ function safeNextPath(next: string) {
   return next;
 }
 
-// --- Atoms ---
-// function IconButton({
-//   children,
-//   className,
-//   ...props
-// }: React.ButtonHTMLAttributes<HTMLButtonElement> & { className?: string }) {
-//   return (
-//     <Button
-//       variant="ghost"
-//       size="icon"
-//       className={cn("rounded-none", className)}
-//       {...props}
-//     >
-//       {children}
-//     </Button>
-//   );
-// }
-
-// (Avatar removed — we use the human icon for the dropdown trigger)
-
-// Brand removed from center per requirement
-
-// --- Molecules ---
 function LeftMenuTrigger({
   onMenuOpenChange,
   isOpen,
@@ -64,7 +38,7 @@ function LeftMenuTrigger({
         <button
           type="button"
           aria-label="Open menu"
-          className="inline-flex h-8 items-center justify-center w-8 md:w-auto md:px-2 transition-transform duration-200 hover:scale-110"
+          className="inline-flex h-8 items-center justify-center w-8 md:w-auto md:px-2 transition-transform duration-200 hover:scale-105"
           data-state={isOpen ? "open" : "closed"}
         >
           <MenuIcon
@@ -72,7 +46,7 @@ function LeftMenuTrigger({
               isOpen ? "rotate-90" : "rotate-0"
             }`}
           />
-          <span className="cursor-pointer text-sm hidden md:ml-2 md:inline">
+          <span className="cursor-pointer text-sm hidden md:ml-2 md:inline font-medium uppercase tracking-wider">
             Menu
           </span>
         </button>
@@ -106,7 +80,7 @@ function RightControls() {
   };
 
   return (
-    <>
+    <div className="flex items-center gap-1 sm:gap-3">
       <button
         aria-label="Account"
         className="inline-flex items-center justify-center h-8 w-8 rounded-none transition-transform duration-200 hover:scale-110"
@@ -129,25 +103,25 @@ function RightControls() {
         <ShoppingBag className="h-4 w-4" />
         {count > 0 ? (
           <span
-            className="absolute -top-1 -right-1 min-w-[16px] h-4 px-1 rounded-full bg-black text-white text-[10px] leading-4 text-center"
+            className="absolute -top-1 -right-1 min-w-[16px] h-4 px-1 rounded-full bg-[#431717] text-white text-[10px] leading-4 text-center font-medium"
             aria-hidden
           >
             {count > 99 ? "99+" : count}
           </span>
         ) : null}
       </button>
-    </>
+    </div>
   );
 }
 
-// --- Organism: Navbar ---
 export default function Navbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+  const isHome = pathname === "/";
 
   useEffect(() => {
-    // Make navbar background change after a small scroll distance
     const onScroll = () => setScrolled(window.scrollY > 40);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -158,10 +132,14 @@ export default function Navbar() {
     <>
       <header
         className={cn(
-          "fixed top-0 left-0 right-0 z-[40] w-full transition-colors duration-200 [font-family:var(--font-manrope)]",
-          scrolled
-            ? "bg-white shadow-sm text-black"
-            : "bg-transparent text-white"
+          "fixed top-0 left-0 right-0 z-[40] w-full transition-all duration-300 [font-family:var(--font-manrope)]",
+          isHome
+            ? scrolled
+              ? "bg-[#F6F4E6]/90 backdrop-blur-md shadow-sm text-[#431717]"
+              : "bg-transparent text-white"
+            : scrolled
+            ? "bg-[#F6F4E6]/90 backdrop-blur-md shadow-sm text-[#431717]"
+            : "bg-transparent text-[#431717]"
         )}
       >
         <div className="px-4 md:px-8">
@@ -178,17 +156,16 @@ export default function Navbar() {
                     aria-label="Search"
                     onClick={() => setIsSearchOpen((open) => !open)}
                     data-state={isSearchOpen ? "open" : "closed"}
-                    className={`inline-flex h-8 items-center justify-center w-8 sm:w-auto sm:px-2 transition-all duration-200 hover:scale-110 ${isMenuOpen
-                      ? "inline-flex"
-                      : "hidden min-[425px]:inline-flex"
-                      }`}
+                    className={`inline-flex h-8 items-center justify-center w-8 sm:w-auto sm:px-2 transition-all duration-200 hover:scale-105 ${
+                      isMenuOpen ? "inline-flex" : "hidden min-[425px]:inline-flex"
+                    }`}
                   >
                     <Search
                       className={`h-4 w-4 transition-transform duration-300 ${
                         isSearchOpen ? "rotate-90 scale-110" : "rotate-0 scale-100"
                       }`}
                     />
-                    <span className="uppercase text-sm hidden sm:ml-2 sm:inline">
+                    <span className="uppercase text-sm font-medium tracking-wider hidden sm:ml-2 sm:inline">
                       Search
                     </span>
                   </button>
@@ -196,18 +173,28 @@ export default function Navbar() {
               </div>
 
               <div className="justify-self-center">
-                <div
-                  id="navbar-logo-target"
-                  aria-hidden
-                  className="h-6 sm:h-7 md:h-8 w-[100px] sm:w-[120px] md:w-[140px] lg:w-[160px]"
-                />
+                {isHome ? (
+                  <div
+                    id="navbar-logo-target"
+                    aria-hidden
+                    className="h-6 sm:h-7 md:h-8 w-[100px] sm:w-[120px] md:w-[140px] lg:w-[160px]"
+                  />
+                ) : (
+                  <Link href="/" className="block">
+                    <Image
+                      src="/logos/logo.svg"
+                      alt="D' LAVÉN"
+                      width={160}
+                      height={32}
+                      priority
+                      className="h-6 sm:h-7 md:h-8 w-auto"
+                    />
+                  </Link>
+                )}
               </div>
 
               <div className="justify-self-end">
-                <div className="flex items-center gap-1 sm:gap-2">
-                  {/* Login/Register replaced by AccountMenu above */}
-                  <RightControls />
-                </div>
+                <RightControls />
               </div>
             </div>
           </nav>

@@ -5,7 +5,7 @@ export default function Page() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-[calc(100vh-160px)] pt-32 pb-12 sm:pt-36 sm:pb-16" />
+        <div className="min-h-screen" style={{ backgroundColor: "#F6F4E6" }} />
       }
     >
       <RegisterClient />

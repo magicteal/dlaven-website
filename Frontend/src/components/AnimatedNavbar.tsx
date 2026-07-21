@@ -71,16 +71,18 @@ function SearchTrigger({
       type="button"
       aria-label="Search"
       onClick={onToggle}
-      className="group inline-flex h-7 items-center justify-center gap-2 border-b border-black/40 pb-0.5 transition-colors duration-200 hover:text-black/60 hover:border-black/70"
+      className="group inline-flex items-center gap-2 transition-colors duration-200 hover:text-black/60"
       data-state={isOpen ? "open" : "closed"}
     >
       <Search
         strokeWidth={1.25}
-        className={`h-[18px] w-[18px] transition-transform duration-300 ${
+        className={`h-[17px] w-[17px] shrink-0 transition-transform duration-300 ${
           isOpen ? "rotate-90 scale-110" : "rotate-0 scale-100"
         }`}
       />
-      <span className="text-sm tracking-wide leading-5">Search</span>
+      <span className="text-sm tracking-wide leading-tight border-b border-black/40 group-hover:border-black/70 pb-0.5 font-normal">
+        Search
+      </span>
     </button>
   );
 }
