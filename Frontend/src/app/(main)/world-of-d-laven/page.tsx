@@ -15,9 +15,9 @@ export default function WorldOfDlavenPage() {
         />
       </Head>
 
-      <main className="min-h-screen pt-28 sm:pt-32 pb-24" style={{ backgroundColor: "#F6F4E6" }}>
+      <main className="min-h-screen pb-24" style={{ backgroundColor: "#F6F4E6" }}>
         {/* Hero */}
-        <section className="relative h-[65vh] min-h-[440px] w-full flex items-center justify-center text-center text-white overflow-hidden mb-16">
+        <section className="relative h-[75vh] sm:h-[85vh] min-h-[500px] w-full flex items-center justify-center text-center text-white overflow-hidden mb-16">
           <div className="absolute inset-0">
             <Image
               src="/images/dl-service-bg.jpg"

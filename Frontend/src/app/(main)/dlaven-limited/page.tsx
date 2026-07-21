@@ -28,9 +28,9 @@ export default function DlavenLimitedPage() {
   }, []);
 
   return (
-    <main className="min-h-screen pt-28 sm:pt-32 pb-24" style={{ backgroundColor: "#F6F4E6" }}>
+    <main className="min-h-screen pb-24" style={{ backgroundColor: "#F6F4E6" }}>
       {/* Hero Section */}
-      <section className="relative w-full h-[50vh] min-h-[380px] flex items-center justify-center text-center text-white mb-16">
+      <section className="relative w-full h-[75vh] sm:h-[85vh] min-h-[500px] flex items-center justify-center text-center text-white mb-16">
         <div className="absolute inset-0">
           <Image
             src="/images/dl-service-bg.jpg"

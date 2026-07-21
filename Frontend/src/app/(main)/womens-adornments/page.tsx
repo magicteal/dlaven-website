@@ -12,10 +12,10 @@ const BG = "#F6F4E6";
 
 export default function WomensAdornmentsPage() {
   return (
-    <main className="min-h-screen pt-28 sm:pt-32 pb-24" style={{ background: BG }}>
+    <main className="min-h-screen pb-24" style={{ background: BG }}>
 
       {/* Hero: two large images + label centered */}
-      <section className="relative w-full grid grid-cols-2 mb-12" style={{ height: "65vh", minHeight: "400px" }}>
+      <section className="relative w-full grid grid-cols-2 mb-12" style={{ height: "75vh", minHeight: "500px" }}>
         <div className="relative overflow-hidden">
           <Image
             src="/images/heritage/womens_heritage.jpg"

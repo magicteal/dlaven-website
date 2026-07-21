@@ -77,9 +77,9 @@ export default function DlavenPrivePage() {
   };
 
   return (
-    <main className="min-h-screen pt-24 sm:pt-28 pb-24" style={{ backgroundColor: "#F6F4E6" }}>
+    <main className="min-h-screen pb-24" style={{ backgroundColor: "#F6F4E6" }}>
       {/* Hero */}
-      <section className="relative w-full h-[65vh] min-h-[440px] flex items-center justify-center overflow-hidden mb-16">
+      <section className="relative w-full h-[75vh] sm:h-[85vh] min-h-[500px] flex items-center justify-center overflow-hidden mb-16">
         <div className="absolute inset-0">
           <Image
             src="/images/prive-hero.jpg"

@@ -7,10 +7,10 @@ import Link from "next/link";
 
 export default function DestinationsPage() {
   return (
-    <main className="min-h-screen pt-32 sm:pt-36 pb-24" style={{ backgroundColor: "#F6F4E6" }}>
+    <main className="min-h-screen pb-24" style={{ backgroundColor: "#F6F4E6" }}>
       {/* Hero Section */}
       <section className="relative w-full flex items-center justify-center text-center text-white mb-16">
-        <div className="absolute inset-0 grid grid-cols-1 md:grid-cols-2 h-[55vh] min-h-[380px]">
+        <div className="absolute inset-0 grid grid-cols-1 md:grid-cols-2 h-[75vh] sm:h-[85vh] min-h-[500px]">
           <div className="relative h-full w-full">
             <Image
               src="/images/DPrimeOne.jpg"
@@ -32,8 +32,8 @@ export default function DestinationsPage() {
             />
           </div>
         </div>
-        <div className="absolute inset-0 h-[55vh] min-h-[380px] bg-gradient-to-t from-black/80 via-black/40 to-black/30" />
-        <div className="relative z-10 p-6 h-[55vh] min-h-[380px] flex flex-col items-center justify-center">
+        <div className="absolute inset-0 h-[75vh] sm:h-[85vh] min-h-[500px] bg-gradient-to-t from-black/80 via-black/40 to-black/30" />
+        <div className="relative z-10 p-6 h-[75vh] sm:h-[85vh] min-h-[500px] flex flex-col items-center justify-center">
           <p className="text-[10px] sm:text-xs uppercase tracking-[0.35em] text-[#E2DDD7] mb-2 font-medium">
             Flagship Boutiques & Salons
           </p>
