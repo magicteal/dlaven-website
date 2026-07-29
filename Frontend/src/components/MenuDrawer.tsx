@@ -131,46 +131,63 @@ function PanelView({
           </button>
         </div>
         <div className="p-6 pt-4 space-y-4">
-          <h2 className="text-2xl">Men</h2>
-          <div className="space-y-3">
+          <h2 className="text-2xl font-light uppercase tracking-wider">MENS</h2>
+          <div className="space-y-2.5">
             <DrawerLink
-              href="/prive"
+              href="/dlaven-limited"
               onNavigate={onNavigate}
-              onOpenPanel={onOpenPanel}
-              panelId="men-prive"
-              className="block font-normal uppercase no-underline hover:no-underline"
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
             >
-              DL PRIVÉ EDITION
+              DL LIMITED
             </DrawerLink>
-
             <DrawerLink
-              href="/products"
+              href="/dl-prive"
               onNavigate={onNavigate}
-              className="block font-normal uppercase no-underline hover:no-underline"
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
             >
-              NEW IN MEN
+              DL PRIVÉ
             </DrawerLink>
-
+            <DrawerLink
+              href="/dl-barry"
+              onNavigate={onNavigate}
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
+            >
+              DL BÉRRY
+            </DrawerLink>
             <DrawerLink
               href="/mens-ready-to-wear"
               onNavigate={onNavigate}
-              onOpenPanel={onOpenPanel}
-              panelId="men-ready"
-              className="block font-normal uppercase no-underline hover:no-underline"
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
             >
-              READY
-              <Dash />
-              TO
-              <Dash />
-              WEAR
+              READY TO WEAR
             </DrawerLink>
-
             <DrawerLink
-              href="/heritage-jewelry"
+              href="/prive-mens-adornments"
               onNavigate={onNavigate}
-              className="block font-normal uppercase no-underline hover:no-underline"
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
             >
-              HERITAGE JEWELERY
+              DL PRIVE ADORNMENTS
+            </DrawerLink>
+            <DrawerLink
+              href="/adornments-prive"
+              onNavigate={onNavigate}
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
+            >
+              DL BÉRRY ADORNMENTS
+            </DrawerLink>
+            <DrawerLink
+              href="/fragrances?collection=prive"
+              onNavigate={onNavigate}
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
+            >
+              DL PRIVE FRAGRANCE
+            </DrawerLink>
+            <DrawerLink
+              href="/fragrances?collection=berry"
+              onNavigate={onNavigate}
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
+            >
+              DL BÉRRY FRAGRANCE
             </DrawerLink>
           </div>
         </div>
@@ -191,44 +208,63 @@ function PanelView({
           </button>
         </div>
         <div className="p-6 pt-4 space-y-4">
-          <h2 className="text-2xl">Women</h2>
-          <div className="space-y-3">
+          <h2 className="text-2xl font-light uppercase tracking-wider">WOMENS</h2>
+          <div className="space-y-2.5">
             <DrawerLink
-              href="/prive"
+              href="/dlaven-limited"
               onNavigate={onNavigate}
-              onOpenPanel={onOpenPanel}
-              panelId="women-prive"
-              className="block font-normal uppercase no-underline hover:no-underline"
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
             >
-              DL PRIVÉ EDITION
+              DL LIMITED
             </DrawerLink>
-
             <DrawerLink
-              href="/products"
+              href="/dl-prive"
               onNavigate={onNavigate}
-              className="block font-normal uppercase no-underline hover:no-underline"
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
             >
-              NEW IN WOMEN
+              DL PRIVÉ
             </DrawerLink>
-
+            <DrawerLink
+              href="/dl-barry"
+              onNavigate={onNavigate}
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
+            >
+              DL BÉRRY
+            </DrawerLink>
             <DrawerLink
               href="/womens-ready-to-wear"
               onNavigate={onNavigate}
-              className="block font-normal uppercase no-underline hover:no-underline"
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
             >
-              READY
-              <Dash />
-              TO
-              <Dash />
-              WEAR
+              READY TO WEAR
             </DrawerLink>
-
             <DrawerLink
-              href="/heritage-jewelry"
+              href="/prive-womens-adornments"
               onNavigate={onNavigate}
-              className="block font-normal uppercase no-underline hover:no-underline"
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
             >
-              HERITAGE JEWELERY
+              DL PRIVE ADORNMENTS
+            </DrawerLink>
+            <DrawerLink
+              href="/adornments-prive"
+              onNavigate={onNavigate}
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
+            >
+              DL BÉRRY ADORNMENTS
+            </DrawerLink>
+            <DrawerLink
+              href="/fragrances?collection=prive"
+              onNavigate={onNavigate}
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
+            >
+              DL PRIVE FRAGRANCE
+            </DrawerLink>
+            <DrawerLink
+              href="/fragrances?collection=berry"
+              onNavigate={onNavigate}
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
+            >
+              DL BÉRRY FRAGRANCE
             </DrawerLink>
           </div>
         </div>
@@ -249,14 +285,63 @@ function PanelView({
           </button>
         </div>
         <div className="p-6 pt-4 space-y-4">
-          <h2 className="text-2xl">Heritage Jewelry</h2>
-          <div className="space-y-3">
+          <h2 className="text-2xl font-light uppercase tracking-wider">HERITAGE JEWELLERY</h2>
+          <div className="space-y-2.5">
             <DrawerLink
-              href="/heritage-jewelry"
+              href="/heritage-jewelry?type=prive-heritage-womens"
               onNavigate={onNavigate}
-              className="block font-normal uppercase no-underline hover:no-underline"
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
             >
-              View All
+              PRIVE HERITAGE WOMENS JEWELLERY
+            </DrawerLink>
+            <DrawerLink
+              href="/heritage-jewelry?type=prive-heritage-mens"
+              onNavigate={onNavigate}
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
+            >
+              PRIVE HERITAGE MENS JEWELLERY
+            </DrawerLink>
+            <DrawerLink
+              href="/heritage-prive?type=prive-international-womens"
+              onNavigate={onNavigate}
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
+            >
+              PRIVE INTERNATIONAL WOMENS JEWELLERY
+            </DrawerLink>
+            <DrawerLink
+              href="/heritage-prive?type=prive-international-mens"
+              onNavigate={onNavigate}
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
+            >
+              PRIVE INTERNATIONAL MENS JEWELLERY
+            </DrawerLink>
+            <DrawerLink
+              href="/heritage-jewelry?type=berry-heritage-womens"
+              onNavigate={onNavigate}
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
+            >
+              BERRY HERITAGE WOMENS JEWELLERY
+            </DrawerLink>
+            <DrawerLink
+              href="/heritage-jewelry?type=berry-heritage-mens"
+              onNavigate={onNavigate}
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
+            >
+              BERRY HERITAGE MENS JEWELLERY
+            </DrawerLink>
+            <DrawerLink
+              href="/prive-jewellery?type=berry-international-womens"
+              onNavigate={onNavigate}
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
+            >
+              BERRY INTERNATIONAL WOMENS JEWELLERY
+            </DrawerLink>
+            <DrawerLink
+              href="/prive-jewellery?type=berry-international-mens"
+              onNavigate={onNavigate}
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
+            >
+              BERRY INTERNATIONAL MENS JEWELLERY
             </DrawerLink>
           </div>
         </div>
@@ -277,14 +362,49 @@ function PanelView({
           </button>
         </div>
         <div className="p-6 pt-4 space-y-4">
-          <h2 className="text-2xl">Fragrances</h2>
-          <div className="space-y-3">
+          <h2 className="text-2xl font-light uppercase tracking-wider">FRAGRANCE</h2>
+          <div className="space-y-2.5">
             <DrawerLink
-              href="/fragrances"
+              href="/fragrances?gender=women"
               onNavigate={onNavigate}
-              className="block font-normal uppercase no-underline hover:no-underline"
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
             >
-              View All
+              WOMENS FRAGRANCE
+            </DrawerLink>
+            <DrawerLink
+              href="/fragrances?gender=men"
+              onNavigate={onNavigate}
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
+            >
+              MENS FRAGRANCE
+            </DrawerLink>
+            <DrawerLink
+              href="/fragrances?collection=prive&gender=women"
+              onNavigate={onNavigate}
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
+            >
+              DL PRIVÉ WOMENS FRAGRANCE
+            </DrawerLink>
+            <DrawerLink
+              href="/fragrances?collection=prive&gender=men"
+              onNavigate={onNavigate}
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
+            >
+              DL PRIVÉ MENS FRAGRANCE
+            </DrawerLink>
+            <DrawerLink
+              href="/fragrances?collection=berry&gender=women"
+              onNavigate={onNavigate}
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
+            >
+              DL BÉRRY WOMENS FRAGRANCE
+            </DrawerLink>
+            <DrawerLink
+              href="/fragrances?collection=berry&gender=men"
+              onNavigate={onNavigate}
+              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
+            >
+              DL BÉRRY MENS FRAGRANCE
             </DrawerLink>
           </div>
         </div>

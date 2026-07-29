@@ -75,17 +75,21 @@ export default function DemoProductPage() {
 
   return (
     <main className="min-h-screen pb-24" style={{ backgroundColor: "#F6F4E6" }}>
-      
-      {/* ── Top Hero Product Banner ── */}
-      <section className="relative w-full h-[55vh] sm:h-[65vh] min-h-[420px] bg-[#3B2219] overflow-hidden flex items-center justify-center">
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 z-10" />
-        <div className="relative w-full h-full max-w-[1200px] mx-auto px-4 flex items-center justify-center">
+
+      {/* ── Top Hero Product Banner (Full Width, Pushed Down Below Dedicated Navbar Area) ── */}
+      <section className="relative w-full h-[70vh] sm:h-[85vh] min-h-[540px] bg-[#141414] overflow-hidden flex flex-col justify-end">
+        {/* Dedicated top background area for navbar */}
+        <div className="absolute top-0 inset-x-0 h-32 sm:h-40 bg-gradient-to-b from-black/95 via-black/70 to-transparent pointer-events-none z-10" />
+        
+        {/* Pushed-down full image container starting below the navbar */}
+        <div className="relative w-full h-[calc(100%-4rem)] sm:h-[calc(100%-5rem)] mt-16 sm:mt-20 overflow-hidden">
           <Image
-            src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=1200&auto=format&fit=crop"
+            src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=1920&auto=format&fit=crop"
             alt="Women's Bangles Featured Jewelry"
             fill
-            className="object-contain object-center p-6 sm:p-12 transition-transform duration-700 hover:scale-105"
+            className="object-cover object-center transition-transform duration-700 hover:scale-105"
             priority
+            sizes="100vw"
           />
         </div>
       </section>
@@ -93,7 +97,7 @@ export default function DemoProductPage() {
       {/* ── Main Details Showcase ── */}
       <Container className="pt-12 sm:pt-16 pb-20">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          
+
           {/* LEFT COLUMN: Title, Swatches, Accordions */}
           <div className="lg:col-span-7 space-y-8">
             <div>
@@ -119,11 +123,10 @@ export default function DemoProductPage() {
                     key={swatchId}
                     type="button"
                     onClick={() => setSelectedSwatch(swatchId)}
-                    className={`relative w-11 h-11 border transition-all duration-300 overflow-hidden ${
-                      selectedSwatch === swatchId
+                    className={`relative w-11 h-11 border transition-all duration-300 overflow-hidden ${selectedSwatch === swatchId
                         ? "border-[#431717] ring-1 ring-[#431717] scale-105"
                         : "border-[#431717]/20 hover:border-[#431717]/60"
-                    }`}
+                      }`}
                     aria-label={`Select variation ${swatchId}`}
                   >
                     <Image
@@ -158,11 +161,10 @@ export default function DemoProductPage() {
                         setSelectedSize(sz);
                         setIsSizeOpen(false);
                       }}
-                      className={`py-2.5 text-xs tracking-widest uppercase transition-all duration-200 border ${
-                        selectedSize === sz
+                      className={`py-2.5 text-xs tracking-widest uppercase transition-all duration-200 border ${selectedSize === sz
                           ? "bg-[#431717] text-white border-[#431717]"
                           : "bg-transparent text-[#431717] border-[#431717]/30 hover:border-[#431717]"
-                      }`}
+                        }`}
                     >
                       {sz}
                     </button>
@@ -186,7 +188,7 @@ export default function DemoProductPage() {
 
             {/* ACCORDION SECTIONS */}
             <div className="space-y-3 pt-4 border-t border-[#431717]/15">
-              
+
               {/* Product Details */}
               <div className="border-b border-[#431717]/15 pb-4">
                 <button
@@ -248,7 +250,7 @@ export default function DemoProductPage() {
           {/* RIGHT COLUMN: Stock Status, Select Size CTA & Assistance */}
           <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-36">
             <div className="p-8 border border-[#431717]/15 space-y-6" style={{ backgroundColor: "rgba(255, 255, 255, 0.45)" }}>
-              
+
               {/* Stock Indicator */}
               <div className="text-right">
                 <span className="text-[10px] sm:text-xs uppercase tracking-[0.25em] font-semibold text-[#6F3D24]">
@@ -313,12 +315,12 @@ export default function DemoProductPage() {
       {/* ── YOU MAY ALSO LIKE Section (Clean Cream Background - No White Boxes!) ── */}
       <section className="w-full pt-16 pb-20 border-t border-[#431717]/15" style={{ backgroundColor: "#F6F4E6" }}>
         <Container>
-          
+
           <div className="flex items-center justify-between mb-10">
             <h2 className="font-le-grand text-2xl sm:text-3xl uppercase tracking-widest text-[#431717]">
               YOU MAY ALSO LIKE
             </h2>
-            
+
             {/* Controls */}
             <div className="flex items-center gap-2">
               <button

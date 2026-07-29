@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import SearchOverlay from "@/components/SearchOverlay";
 import MenuDrawer from "@/components/MenuDrawer";
+import MegaMenu, { MegaMenuCategoryKey } from "@/components/MegaMenu";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -10,6 +11,7 @@ import {
   User as UserIcon,
   ShoppingBag,
   Menu as MenuIcon,
+  ChevronDown,
 } from "lucide-react";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { useCart } from "@/components/providers/CartProvider";
@@ -121,12 +123,12 @@ function MenuTrigger({
   );
 }
 
-const CATEGORY_LINKS = [
+const CATEGORY_LINKS: { label: MegaMenuCategoryKey & string; href: string }[] = [
   { label: "WOMENS", href: "/womens-adornments" },
   { label: "MENS", href: "/mens-adornments" },
   { label: "JEWELLERY", href: "/heritage-jewelry" },
   { label: "DL PRIVE", href: "/dl-prive" },
-  { label: "DL BERRY", href: "/dl-berry" },
+  { label: "DL BERRY", href: "/dl-barry" },
   { label: "FRAGRANCE", href: "/fragrances" },
   { label: "NEW IN", href: "/products" },
 ];
@@ -134,16 +136,35 @@ const CATEGORY_LINKS = [
 export default function AnimatedNavbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeMegaCategory, setActiveMegaCategory] = useState<MegaMenuCategoryKey>(null);
 
-  // Menu and search are mutually exclusive — opening one closes the other.
+  // Menu, search, and mega-menu are mutually exclusive — opening one closes others.
   const handleMenuOpenChange = (open: boolean) => {
     setIsMenuOpen(open);
-    if (open) setIsSearchOpen(false);
+    if (open) {
+      setIsSearchOpen(false);
+      setActiveMegaCategory(null);
+    }
   };
+
   const handleSearchToggle = () => {
     setIsSearchOpen((prev) => {
       const next = !prev;
-      if (next) setIsMenuOpen(false);
+      if (next) {
+        setIsMenuOpen(false);
+        setActiveMegaCategory(null);
+      }
+      return next;
+    });
+  };
+
+  const toggleMegaCategory = (cat: MegaMenuCategoryKey) => {
+    setActiveMegaCategory((prev) => {
+      const next = prev === cat ? null : cat;
+      if (next) {
+        setIsMenuOpen(false);
+        setIsSearchOpen(false);
+      }
       return next;
     });
   };
@@ -151,8 +172,10 @@ export default function AnimatedNavbar() {
   return (
     <>
       <header
-        className={`absolute top-4 left-4 right-4 z-[40] rounded-none backdrop-blur-md text-black [font-family:var(--font-manrope)] shadow-sm md:top-6 md:left-6 md:right-6 transition-colors duration-200 ${
-          isMenuOpen || isSearchOpen ? "bg-[#e2ddd7]" : "bg-[#e2ddd7]/40"
+        className={`absolute top-4 left-4 right-4 z-[40] rounded-none backdrop-blur-md text-black [font-family:var(--font-manrope)] shadow-sm md:top-6 md:left-6 md:right-6 transition-all duration-300 ${
+          isMenuOpen || isSearchOpen || activeMegaCategory
+            ? "bg-[#e2ddd7] shadow-md border border-black/10"
+            : "bg-[#e2ddd7]/70 border border-transparent"
         }`}
       >
         <div className="px-5 py-3 md:px-8">
@@ -173,7 +196,7 @@ export default function AnimatedNavbar() {
               </div>
 
               <div className="flex justify-center">
-                <Link href="/" className="block">
+                <Link href="/" className="block" onClick={() => setActiveMegaCategory(null)}>
                   <Image
                     src="/logos/logo.svg"
                     alt="D' LAVÉN"
@@ -190,20 +213,39 @@ export default function AnimatedNavbar() {
               </div>
             </div>
 
-            {/* Bottom Row - Links */}
-            <div className="hidden md:flex items-center justify-center gap-8 lg:gap-12">
-              {CATEGORY_LINKS.map((link) => (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  className="text-xs uppercase tracking-[0.15em] text-black/80 hover:text-black/50 transition-colors"
-                >
-                  {link.label}
-                </Link>
-              ))}
+            {/* Bottom Row - Hermès-style Menu Categories */}
+            <div className="hidden md:flex items-center justify-center gap-6 lg:gap-10">
+              {CATEGORY_LINKS.map((link) => {
+                const isActive = activeMegaCategory === link.label;
+                return (
+                  <button
+                    key={link.label}
+                    type="button"
+                    onClick={() => toggleMegaCategory(link.label)}
+                    className={`inline-flex items-center gap-1 text-xs uppercase tracking-[0.15em] transition-all duration-300 py-1 border-b ${
+                      isActive
+                        ? "text-[#431717] border-[#431717] font-semibold"
+                        : "text-black/80 border-transparent hover:text-black hover:border-black/40 font-normal"
+                    }`}
+                  >
+                    <span>{link.label}</span>
+                    <ChevronDown
+                      className={`w-3 h-3 transition-transform duration-300 ${
+                        isActive ? "rotate-180 text-[#431717]" : "rotate-0 text-black/50"
+                      }`}
+                    />
+                  </button>
+                );
+              })}
             </div>
           </nav>
         </div>
+
+        {/* Hermès Dropdown Mega Menu */}
+        <MegaMenu
+          activeCategory={activeMegaCategory}
+          onClose={() => setActiveMegaCategory(null)}
+        />
       </header>
 
       <SearchOverlay

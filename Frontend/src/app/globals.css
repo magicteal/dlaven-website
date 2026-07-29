@@ -303,6 +303,21 @@
   /* slowed down so the dropdown is clearly visible */
   animation: dropdown-in 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
+@keyframes megaMenuIn {
+  from {
+    opacity: 0;
+    transform: translateY(-16px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-megaMenuIn {
+  animation: megaMenuIn 450ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .zoom-reveal {
     transition: none;
