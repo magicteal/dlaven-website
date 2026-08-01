@@ -1,4 +1,5 @@
 import Hero from "@/components/Hero";
+import DlLimitedBanner from "@/components/DlLimitedBanner";
 import CategoryGrid from "@/components/CategoryGrid";
 import FeaturedContent from "@/components/FeaturedContent";
 import WorldOfSection from "@/components/WorldOfSection";
@@ -9,6 +10,7 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <DlLimitedBanner />
       <CategoryGrid />
       <FeaturedContent />
       <WorldOfSection />

@@ -22,18 +22,18 @@ function CategoryItem({
     <Link href={`/categories/${slug}`} className="group block">
       <div className="overflow-hidden rounded-none">
         <div className="relative w-full aspect-[4/5] bg-gray-100">
-            <Image
-              src={imageSrc}
-              alt={imageAlt}
-              fill
-              sizes="(max-width: 768px) 50vw, 25vw"
-              className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
-              loading="lazy"
-              placeholder="blur"
-              blurDataURL={shimmerBase64(10, 12)}
-            />
-          </div>
+          <Image
+            src={imageSrc}
+            alt={imageAlt}
+            fill
+            sizes="(max-width: 768px) 50vw, 25vw"
+            className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+            placeholder="blur"
+            blurDataURL={shimmerBase64(10, 12)}
+          />
         </div>
+      </div>
       <p className="mt-4 sm:mt-6 text-center text-sm sm:text-base font-medium tracking-wide" style={{ color: "#431717" }}>
         {name}
       </p>
@@ -43,10 +43,6 @@ function CategoryItem({
 
 /**
  * Main Category Grid Component (Server Component / async)
- *
- * - Validates/builds the URL
- * - Catches network or JSON errors and renders a helpful fallback UI
- * - Logs the real error to the server console for debugging
  */
 export default async function CategoryGrid({
   title = "Explore The Latest Styles",
@@ -61,7 +57,6 @@ export default async function CategoryGrid({
     imageAlt?: string;
   }> = [];
   try {
-    // Use no-store so category updates reflect immediately on home/category pages.
     const res = await fetch(`${API_BASE}/api/categories`, { cache: "no-store" });
     if (res.ok) {
       const j = await res.json();
@@ -71,7 +66,7 @@ export default async function CategoryGrid({
     console.error("[CategoryGrid] Failed to load categories", e);
   }
   return (
-    <section className="py-16 sm:py-20 md:py-24" style={{ backgroundColor: "#F6F4E6" }}>
+    <section className="py-12 sm:py-16 md:py-20 bg-white">
       <div className="text-center max-w-[95%] mx-auto">
         <h2
           className="font-le-grand text-4xl sm:text-5xl md:text-6xl font-normal tracking-wide mb-12 sm:mb-16"
@@ -82,6 +77,7 @@ export default async function CategoryGrid({
           {title}
         </h2>
 
+        {/* 4 Category Items Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 md:gap-10 lg:gap-12" data-reveal="slideUp" data-stagger="0.15" data-delay="0.2">
           {data.slice(0, 4).map((category) => (
             <CategoryItem

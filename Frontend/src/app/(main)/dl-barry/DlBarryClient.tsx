@@ -5,13 +5,32 @@ import { Play } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import HeritageCarouselSection from "@/components/HeritageCarouselSection";
+import { api } from "@/lib/api";
+import type { Product } from "@/types/product";
 
 const LE_GRAND = `var(--font-le-grand), serif`;
 const MANROPE = `var(--font-manrope), sans-serif`;
 const BG_CREAM = "#F6F4E6";
 const BRAND_DARK = "#431717";
 
-export default function DlPriveClient() {
+export default function DlBarryClient() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchBarryProducts() {
+      try {
+        const productResponse = await api.listProducts({ tag: "dl-barry" });
+        setProducts(productResponse.items as Product[]);
+      } catch (err: unknown) {
+        console.error("[DlBarryClient] Failed to load products", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchBarryProducts();
+  }, []);
+
   return (
     <main style={{ background: BG_CREAM, fontFamily: MANROPE }}>
       
@@ -24,7 +43,7 @@ export default function DlPriveClient() {
           className="uppercase tracking-[0.25em] text-xs md:text-sm mb-4 md:mb-6 text-[#E2DDD7]/80"
           style={{ fontFamily: MANROPE }}
         >
-          D&apos; LAVÉN PRIVÉ
+          D&apos; LAVÉN BÉRRY
         </p>
         <h1
           className="font-le-grand uppercase leading-tight max-w-4xl text-[#F6F4E6]"
@@ -34,15 +53,15 @@ export default function DlPriveClient() {
             letterSpacing: "0.08em",
           }}
         >
-          D&apos; LAVÉN &nbsp;&nbsp; X &nbsp;&nbsp; DL PRIVÉ L&apos;ORDONNANCE
+          D&apos; LAVÉN &nbsp;&nbsp; X &nbsp;&nbsp; DL BÉRRY CREATIONS
         </h1>
         <div className="mt-6 flex justify-center">
           <Link
-            href="#prive-categories"
+            href="#berry-categories"
             className="inline-flex items-center justify-center px-8 py-3 border border-[#F6F4E6]/60 text-xs tracking-[0.25em] font-semibold uppercase text-[#F6F4E6] hover:bg-[#F6F4E6] hover:text-[#431717] transition-all duration-300 shadow-sm"
             style={{ fontFamily: LE_GRAND }}
           >
-            DISCOVER PRIVÉ SELECTIONS
+            DISCOVER BÉRRY CREATIONS
           </Link>
         </div>
       </section>
@@ -60,17 +79,12 @@ export default function DlPriveClient() {
           style={{ fontFamily: MANROPE, fontSize: "clamp(13px, 1.5vw, 16px)", color: BRAND_DARK }}
         >
           &ldquo;&nbsp;
-          <span style={{ fontFamily: LE_GRAND, color: BRAND_DARK, fontWeight: 700 }}>DL PRIVÉ L&apos; ACCÈS</span>{" "}
-          has been a key supporter and partner of our brand for many years. It is a privilege to now
-          bring the entire world of{" "}
-          <span style={{ fontFamily: LE_GRAND, color: BRAND_DARK, fontWeight: 700 }}>D&apos; LAVÉN</span> to a dedicated
-          space encompassing clothing, accessories and jewelry. This presentation marks a special
-          moment where the best of{" "}
-          <span style={{ fontFamily: LE_GRAND, color: BRAND_DARK, fontWeight: 700 }}>INDIA MEETS</span> &ldquo;{" "}
-          <span style={{ fontFamily: LE_GRAND, color: BRAND_DARK, fontWeight: 700 }}>
-            L&apos;INDE RENCONTRE L&apos;AUTORITÉ
-          </span>{" "}
-          &rdquo;&nbsp;&rdquo;
+          <span style={{ fontFamily: LE_GRAND, color: BRAND_DARK, fontWeight: 700 }}>DL BÉRRY CREATIONS</span>{" "}
+          presents bold contemporary expressions of modern luxury. Access is allocated through PRIVÉ
+          classification for selective connoisseurs of{" "}
+          <span style={{ fontFamily: LE_GRAND, color: BRAND_DARK, fontWeight: 700 }}>D&apos; LAVÉN</span>. This presentation marks a
+          special moment where{" "}
+          <span style={{ fontFamily: LE_GRAND, color: BRAND_DARK, fontWeight: 700 }}>INNOVATION MEETS HERITAGE</span>. &rdquo;&nbsp;&rdquo;
         </p>
       </section>
 
@@ -85,8 +99,8 @@ export default function DlPriveClient() {
             style={{ width: "clamp(220px, 30vw, 420px)", aspectRatio: "3/4" }}
           >
             <Image
-              src="/images/dlprive_2.jpg"
-              alt="DL Privé video editorial"
+              src="/images/twoImg.png"
+              alt="DL Berry video editorial"
               fill
               className="object-cover object-top group-hover:scale-105 transition-transform duration-700"
               sizes="(max-width:768px) 85vw, 35vw"
@@ -104,9 +118,9 @@ export default function DlPriveClient() {
         {/* Balanced 3-Image Responsive Grid */}
         <div className="w-full max-w-5xl grid grid-cols-3 gap-3 md:gap-6 justify-center">
           {[
-            { src: "/images/dlprive_2.jpg", alt: "DL Privé Gold Editorial" },
-            { src: "/images/dlprive_1.jpg", alt: "DL Privé Tiger Editorial" },
-            { src: "/images/dlprive_3.jpg", alt: "DL Privé White Editorial" },
+            { src: "/images/marquee_1.jpg", alt: "DL Berry Editorial 1" },
+            { src: "/images/twoImg.png", alt: "DL Berry Editorial 2" },
+            { src: "/images/marquee_2.jpg", alt: "DL Berry Editorial 3" },
           ].map((img, idx) => (
             <div
               key={`${img.src}-${idx}`}
@@ -126,32 +140,32 @@ export default function DlPriveClient() {
       </section>
 
       {/* ══════════════════════════════════════════
-          2. PRODUCT CATEGORY 1: DL PRIVÉ JEWELLERY
+          2. PRODUCT CATEGORY 1: DL BÉRRY JEWELLERY
       ══════════════════════════════════════════ */}
-      <div id="prive-categories">
+      <div id="berry-categories">
         <HeritageCarouselSection
-          categoryTitle="DL PRIVÉ JEWELLERY"
-          categorySubtitle="HIGH JEWELLERY & EXCLUSIVE PRIVÉ SELECTIONS"
+          categoryTitle="DL BÉRRY JEWELLERY"
+          categorySubtitle="CONTEMPORARY FINE JEWELLERY & MODERNIST FILIGREE"
           heritageBlock={{
-            title: "DL PRIVÉ HERITAGE",
-            modelImage: "/images/dlprive_1.jpg",
-            exploreHref: "/dl-prive/heritage/jewellery",
+            title: "DL BÉRRY HERITAGE",
+            modelImage: "/images/prive_jewellery_cover.png",
+            exploreHref: "/dl-barry/heritage/jewellery",
             carouselImages: [
-              "/images/dlprive_1.jpg",
-              "/images/dlprive_2.jpg",
-              "/images/dlprive_3.jpg",
               "/images/prive_jewellery_cover.png",
+              "/images/womenswear/adornments_2.jpg",
+              "/images/womens_heritage.jpg",
+              "/images/DPrimeOne.jpg",
             ],
           }}
           internationalBlock={{
-            title: "DL PRIVÉ INTERNATIONAL",
-            modelImage: "/images/dlprive_3.jpg",
-            exploreHref: "/dl-prive/international/jewellery",
+            title: "DL BÉRRY INTERNATIONAL",
+            modelImage: "/images/womenswear/adornments_2.jpg",
+            exploreHref: "/dl-barry/international/jewellery",
             carouselImages: [
-              "/images/dlprive_2.jpg",
-              "/images/womenswear/adornments_2.jpg",
-              "/images/womens_heritage.jpg",
+              "/images/womenswear/adornments_1.png",
               "/images/oneImg.png",
+              "/images/twoImg.png",
+              "/images/marquee_1.jpg",
             ],
           }}
         />
@@ -160,31 +174,31 @@ export default function DlPriveClient() {
       <div className="w-full max-w-7xl mx-auto border-t border-[#431717]/15" />
 
       {/* ══════════════════════════════════════════
-          3. PRODUCT CATEGORY 2: DL PRIVÉ CLOTHES
+          3. PRODUCT CATEGORY 2: DL BÉRRY CLOTHES
       ══════════════════════════════════════════ */}
       <HeritageCarouselSection
-        categoryTitle="DL PRIVÉ CLOTHES"
-        categorySubtitle="HIGH COUTURE & CONTROLLED PRIVÉ ATTIRE"
+        categoryTitle="DL BÉRRY CLOTHES"
+        categorySubtitle="AVANT-GARDE SARTORIAL ATTIRE & TAILORED CUTS"
         heritageBlock={{
-          title: "DL PRIVÉ HERITAGE",
-          modelImage: "/images/leftVisual.png",
-          exploreHref: "/dl-prive/heritage/clothes",
+          title: "DL BÉRRY HERITAGE",
+          modelImage: "/images/fashion_hero.png",
+          exploreHref: "/dl-barry/heritage/clothes",
           carouselImages: [
-            "/images/leftVisual.png",
-            "/images/rightVisual.png",
-            "/images/hero_bg.png",
+            "/images/fashion_hero.png",
             "/images/mensReady.png",
+            "/images/oneImg.png",
+            "/images/twoImg.png",
           ],
         }}
         internationalBlock={{
-          title: "DL PRIVÉ INTERNATIONAL",
-          modelImage: "/images/rightVisual.png",
-          exploreHref: "/dl-prive/international/clothes",
+          title: "DL BÉRRY INTERNATIONAL",
+          modelImage: "/images/mensReady.png",
+          exploreHref: "/dl-barry/international/clothes",
           carouselImages: [
-            "/images/fashion_hero.png",
-            "/images/oneImg.png",
-            "/images/twoImg.png",
-            "/images/marquee_1.jpg",
+            "/images/marquee_2.jpg",
+            "/images/marquee_3.jpg",
+            "/images/marquee_4.jpg",
+            "/images/DPrimeTwo.jpg",
           ],
         }}
       />
@@ -192,30 +206,30 @@ export default function DlPriveClient() {
       <div className="w-full max-w-7xl mx-auto border-t border-[#431717]/15" />
 
       {/* ══════════════════════════════════════════
-          4. PRODUCT CATEGORY 3: DL PRIVÉ FRAGRANCE
+          4. PRODUCT CATEGORY 3: DL BÉRRY FRAGRANCE
       ══════════════════════════════════════════ */}
       <HeritageCarouselSection
-        categoryTitle="DL PRIVÉ FRAGRANCE"
-        categorySubtitle="PRIVÉ HAUTE PARFUMERIE & RESTRICTED ELIXIRS"
+        categoryTitle="DL BÉRRY FRAGRANCE"
+        categorySubtitle="SELECTIVE HAUTE PARFUMERIE & BÉRRY ACCORDS"
         heritageBlock={{
-          title: "DL PRIVÉ HERITAGE",
-          modelImage: "/images/dlprive_end.png",
-          exploreHref: "/dl-prive/heritage/fragrances",
+          title: "DL BÉRRY HERITAGE",
+          modelImage: "/images/frangrence.png",
+          exploreHref: "/dl-barry/heritage/fragrances",
           carouselImages: [
-            "/images/dlprive_end.png",
-            "/images/fragrance_hero.png",
             "/images/frangrence.png",
-            "/images/marquee_3.jpg",
+            "/images/fragrance_hero.png",
+            "/images/dlprive_end.png",
+            "/images/oneImg.png",
           ],
         }}
         internationalBlock={{
-          title: "DL PRIVÉ INTERNATIONAL",
+          title: "DL BÉRRY INTERNATIONAL",
           modelImage: "/images/fragrance_hero.png",
-          exploreHref: "/dl-prive/international/fragrances",
+          exploreHref: "/dl-barry/international/fragrances",
           carouselImages: [
+            "/images/fragrance_hero.png",
             "/images/frangrence.png",
-            "/images/dlprive_end.png",
-            "/images/marquee_4.jpg",
+            "/images/marquee_1.jpg",
             "/images/twoImg.png",
           ],
         }}

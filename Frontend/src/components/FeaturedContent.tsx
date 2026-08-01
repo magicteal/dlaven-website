@@ -8,16 +8,16 @@ export default function FeaturedContent() {
   return (
     <section className="relative w-full text-white" style={{ backgroundColor: "#6F3D24" }}>
       {/* Inset padded grid — background shows as frame */}
-      <div className="px-[2.5%] pt-10 pb-10 grid grid-cols-2 gap-1" style={{ height: "80vh" }}>
+      <div className="px-[2.5%] pt-10 pb-10 grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-3" style={{ height: "80vh" }}>
 
         {/* Left — DL PRIVÉ */}
-        <Link href="/dl-prive" className="relative group overflow-hidden" aria-label="Go to DL Privé">
+        <Link href="/dl-prive" className="relative group overflow-hidden h-full block" aria-label="Go to DL Privé">
           <Image
             src={BG_IMAGE_LEFT}
             alt="DL Privé"
             fill
-            sizes="50vw"
-            className="object-cover object-center"
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
             priority
           />
           <div className="absolute inset-0 bg-black/50 group-hover:bg-black/40 transition-colors" />
@@ -34,13 +34,13 @@ export default function FeaturedContent() {
         </Link>
 
         {/* Right — DL BÉRRY */}
-        <Link href="/dl-barry" className="relative group overflow-hidden" aria-label="Go to DL Barry">
+        <Link href="/dl-barry" className="relative group overflow-hidden h-full block" aria-label="Go to DL Barry">
           <Image
             src={BG_IMAGE_RIGHT}
             alt="DL Barry"
             fill
-            sizes="50vw"
-            className="object-cover object-center"
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
             priority
           />
           <div className="absolute inset-0 bg-black/50 group-hover:bg-black/40 transition-colors" />
