@@ -29,6 +29,51 @@ function formatSlugToTitle(slug: string): string {
 function createFallbackProduct(slug: string): ClientProduct {
   // Custom fallback definitions for known showcase items
   const knownFallbacks: Record<string, Partial<ClientProduct>> = {
+    // Showcase creations from the DL collection pages (CollectionProductsView).
+    // Kept in sync so clicking EXPLORE opens the SAME product that is shown.
+    "la-voie-lactee": {
+      name: "LA VOIE LACTÉE",
+      price: 16000,
+      // Product hero uses a near-black backdrop, so lead with the real model/lifestyle
+      // photos of the same dress (the transparent cutout is only used on the white
+      // collection page). Same product, shown on-model here.
+      images: [
+        "/images/voie_lactee_full_model.png",
+        "/images/voie_lactee_outdoor_selfie.png",
+        "/images/voie_lactee_lounge_selfie.png",
+        "/images/voie_lactee_resort_shot.png",
+      ],
+      description:
+        "Inspired by the iconic Calcutta promenade where the decorative coexists with the pragmatic. A sequinned drape couture edition from the D'LAVÉN × Stella Élégance atelier.",
+      categorySlug: "womens-ready-to-wear",
+      sizeOptions: ["XS", "S", "M", "L"],
+      details: [
+        "Hand-embellished iridescent sequin drape",
+        "Signature D'LAVÉN × Stella Élégance atelier piece",
+        "Draped silhouette with structured bodice",
+        "Includes certificate of authenticity",
+      ],
+    },
+    "royal-heritage-couture": {
+      name: "L'ÉDITION COUTURE HERITAGE",
+      price: 24500,
+      images: [
+        "/images/menswear/IMG_9691.PNG",
+        "/images/menswear/IMG_9340.PNG",
+        "/images/menswear/adornments_main.png",
+        "/images/heritage/mens_heritage.jpg",
+      ],
+      description:
+        "Crafted with archival zardozi threadwork and precious hand-loomed silk, embodying sovereign authority.",
+      categorySlug: "mens-ready-to-wear",
+      sizeOptions: ["S", "M", "L", "XL"],
+      details: [
+        "Archival zardozi hand threadwork",
+        "Precious hand-loomed silk",
+        "Tailored by master heritage artisans",
+        "Includes certificate of authenticity",
+      ],
+    },
     "womens-bangles": {
       name: "Women's Bangles",
       price: 560,

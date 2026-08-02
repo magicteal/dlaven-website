@@ -140,32 +140,21 @@ export default function DlBarryClient() {
       </section>
 
       {/* ══════════════════════════════════════════
-          2. PRODUCT CATEGORY 1: DL BÉRRY JEWELLERY
+          1. CATEGORY 1: DL BÉRRY CLOTHES (First)
       ══════════════════════════════════════════ */}
       <div id="berry-categories">
         <HeritageCarouselSection
-          categoryTitle="DL BÉRRY JEWELLERY"
-          categorySubtitle="CONTEMPORARY FINE JEWELLERY & MODERNIST FILIGREE"
-          heritageBlock={{
-            title: "DL BÉRRY HERITAGE",
-            modelImage: "/images/prive_jewellery_cover.png",
-            exploreHref: "/dl-barry/heritage/jewellery",
+          categoryTitle="DL BÉRRY CLOTHES"
+          categorySubtitle="AVANT-GARDE SARTORIAL ATTIRE & TAILORED CUTS"
+          block={{
+            title: "DL BÉRRY CLOTHES",
+            modelImage: "/images/fashion_hero.png",
+            exploreHref: "/dl-barry/clothes",
             carouselImages: [
-              "/images/prive_jewellery_cover.png",
-              "/images/womenswear/adornments_2.jpg",
-              "/images/womens_heritage.jpg",
-              "/images/DPrimeOne.jpg",
-            ],
-          }}
-          internationalBlock={{
-            title: "DL BÉRRY INTERNATIONAL",
-            modelImage: "/images/womenswear/adornments_2.jpg",
-            exploreHref: "/dl-barry/international/jewellery",
-            carouselImages: [
-              "/images/womenswear/adornments_1.png",
+              "/images/fashion_hero.png",
+              "/images/mensReady.png",
               "/images/oneImg.png",
               "/images/twoImg.png",
-              "/images/marquee_1.jpg",
             ],
           }}
         />
@@ -174,63 +163,41 @@ export default function DlBarryClient() {
       <div className="w-full max-w-7xl mx-auto border-t border-[#431717]/15" />
 
       {/* ══════════════════════════════════════════
-          3. PRODUCT CATEGORY 2: DL BÉRRY CLOTHES
+          2. CATEGORY 2: DL BÉRRY JEWELLERY (Second)
       ══════════════════════════════════════════ */}
       <HeritageCarouselSection
-        categoryTitle="DL BÉRRY CLOTHES"
-        categorySubtitle="AVANT-GARDE SARTORIAL ATTIRE & TAILORED CUTS"
-        heritageBlock={{
-          title: "DL BÉRRY HERITAGE",
-          modelImage: "/images/fashion_hero.png",
-          exploreHref: "/dl-barry/heritage/clothes",
+        categoryTitle="DL BÉRRY JEWELLERY"
+        categorySubtitle="CONTEMPORARY FINE JEWELLERY & MODERNIST FILIGREE"
+        block={{
+          title: "DL BÉRRY JEWELLERY",
+          modelImage: "/images/prive_jewellery_cover.png",
+          exploreHref: "/dl-barry/jewellery",
           carouselImages: [
-            "/images/fashion_hero.png",
-            "/images/mensReady.png",
-            "/images/oneImg.png",
-            "/images/twoImg.png",
-          ],
-        }}
-        internationalBlock={{
-          title: "DL BÉRRY INTERNATIONAL",
-          modelImage: "/images/mensReady.png",
-          exploreHref: "/dl-barry/international/clothes",
-          carouselImages: [
-            "/images/marquee_2.jpg",
-            "/images/marquee_3.jpg",
-            "/images/marquee_4.jpg",
-            "/images/DPrimeTwo.jpg",
+            "/images/prive_jewellery_cover.png",
+            "/images/womenswear/adornments_2.jpg",
+            "/images/womens_heritage.jpg",
+            "/images/DPrimeOne.jpg",
           ],
         }}
       />
 
-      <div className="w-full max-w-7xl mx-auto border-t border-[#431717]/15" />
+      <div className="w-full max-w-5xl mx-auto border-t border-[#431717]/20 my-6 md:my-10" />
 
       {/* ══════════════════════════════════════════
-          4. PRODUCT CATEGORY 3: DL BÉRRY FRAGRANCE
+          3. CATEGORY 3: DL BÉRRY FRAGRANCE (Third)
       ══════════════════════════════════════════ */}
       <HeritageCarouselSection
         categoryTitle="DL BÉRRY FRAGRANCE"
         categorySubtitle="SELECTIVE HAUTE PARFUMERIE & BÉRRY ACCORDS"
-        heritageBlock={{
-          title: "DL BÉRRY HERITAGE",
+        block={{
+          title: "DL BÉRRY FRAGRANCE",
           modelImage: "/images/frangrence.png",
-          exploreHref: "/dl-barry/heritage/fragrances",
+          exploreHref: "/dl-barry/fragrances",
           carouselImages: [
             "/images/frangrence.png",
             "/images/fragrance_hero.png",
             "/images/dlprive_end.png",
             "/images/oneImg.png",
-          ],
-        }}
-        internationalBlock={{
-          title: "DL BÉRRY INTERNATIONAL",
-          modelImage: "/images/fragrance_hero.png",
-          exploreHref: "/dl-barry/international/fragrances",
-          carouselImages: [
-            "/images/fragrance_hero.png",
-            "/images/frangrence.png",
-            "/images/marquee_1.jpg",
-            "/images/twoImg.png",
           ],
         }}
       />

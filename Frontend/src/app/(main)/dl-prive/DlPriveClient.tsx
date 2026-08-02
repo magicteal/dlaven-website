@@ -126,32 +126,21 @@ export default function DlPriveClient() {
       </section>
 
       {/* ══════════════════════════════════════════
-          2. PRODUCT CATEGORY 1: DL PRIVÉ JEWELLERY
+          1. CATEGORY 1: DL PRIVÉ CLOTHES (First)
       ══════════════════════════════════════════ */}
       <div id="prive-categories">
         <HeritageCarouselSection
-          categoryTitle="DL PRIVÉ JEWELLERY"
-          categorySubtitle="HIGH JEWELLERY & EXCLUSIVE PRIVÉ SELECTIONS"
-          heritageBlock={{
-            title: "DL PRIVÉ HERITAGE",
-            modelImage: "/images/dlprive_1.jpg",
-            exploreHref: "/dl-prive/heritage/jewellery",
+          categoryTitle="DL PRIVÉ CLOTHES"
+          categorySubtitle="HIGH COUTURE & CONTROLLED PRIVÉ ATTIRE"
+          block={{
+            title: "DL PRIVÉ CLOTHES",
+            modelImage: "/images/leftVisual.png",
+            exploreHref: "/dl-prive/clothes",
             carouselImages: [
-              "/images/dlprive_1.jpg",
-              "/images/dlprive_2.jpg",
-              "/images/dlprive_3.jpg",
-              "/images/prive_jewellery_cover.png",
-            ],
-          }}
-          internationalBlock={{
-            title: "DL PRIVÉ INTERNATIONAL",
-            modelImage: "/images/dlprive_3.jpg",
-            exploreHref: "/dl-prive/international/jewellery",
-            carouselImages: [
-              "/images/dlprive_2.jpg",
-              "/images/womenswear/adornments_2.jpg",
-              "/images/womens_heritage.jpg",
-              "/images/oneImg.png",
+              "/images/leftVisual.png",
+              "/images/rightVisual.png",
+              "/images/hero_bg.png",
+              "/images/mensReady.png",
             ],
           }}
         />
@@ -160,63 +149,41 @@ export default function DlPriveClient() {
       <div className="w-full max-w-7xl mx-auto border-t border-[#431717]/15" />
 
       {/* ══════════════════════════════════════════
-          3. PRODUCT CATEGORY 2: DL PRIVÉ CLOTHES
+          2. CATEGORY 2: DL PRIVÉ JEWELLERY (Second)
       ══════════════════════════════════════════ */}
       <HeritageCarouselSection
-        categoryTitle="DL PRIVÉ CLOTHES"
-        categorySubtitle="HIGH COUTURE & CONTROLLED PRIVÉ ATTIRE"
-        heritageBlock={{
-          title: "DL PRIVÉ HERITAGE",
-          modelImage: "/images/leftVisual.png",
-          exploreHref: "/dl-prive/heritage/clothes",
+        categoryTitle="DL PRIVÉ JEWELLERY"
+        categorySubtitle="HIGH JEWELLERY & EXCLUSIVE PRIVÉ SELECTIONS"
+        block={{
+          title: "DL PRIVÉ JEWELLERY",
+          modelImage: "/images/dlprive_1.jpg",
+          exploreHref: "/dl-prive/jewellery",
           carouselImages: [
-            "/images/leftVisual.png",
-            "/images/rightVisual.png",
-            "/images/hero_bg.png",
-            "/images/mensReady.png",
-          ],
-        }}
-        internationalBlock={{
-          title: "DL PRIVÉ INTERNATIONAL",
-          modelImage: "/images/rightVisual.png",
-          exploreHref: "/dl-prive/international/clothes",
-          carouselImages: [
-            "/images/fashion_hero.png",
-            "/images/oneImg.png",
-            "/images/twoImg.png",
-            "/images/marquee_1.jpg",
+            "/images/dlprive_1.jpg",
+            "/images/dlprive_2.jpg",
+            "/images/dlprive_3.jpg",
+            "/images/prive_jewellery_cover.png",
           ],
         }}
       />
 
-      <div className="w-full max-w-7xl mx-auto border-t border-[#431717]/15" />
+      <div className="w-full max-w-5xl mx-auto border-t border-[#431717]/20 my-6 md:my-10" />
 
       {/* ══════════════════════════════════════════
-          4. PRODUCT CATEGORY 3: DL PRIVÉ FRAGRANCE
+          3. CATEGORY 3: DL PRIVÉ FRAGRANCE (Third)
       ══════════════════════════════════════════ */}
       <HeritageCarouselSection
         categoryTitle="DL PRIVÉ FRAGRANCE"
         categorySubtitle="PRIVÉ HAUTE PARFUMERIE & RESTRICTED ELIXIRS"
-        heritageBlock={{
-          title: "DL PRIVÉ HERITAGE",
+        block={{
+          title: "DL PRIVÉ FRAGRANCE",
           modelImage: "/images/dlprive_end.png",
-          exploreHref: "/dl-prive/heritage/fragrances",
+          exploreHref: "/dl-prive/fragrances",
           carouselImages: [
             "/images/dlprive_end.png",
             "/images/fragrance_hero.png",
             "/images/frangrence.png",
             "/images/marquee_3.jpg",
-          ],
-        }}
-        internationalBlock={{
-          title: "DL PRIVÉ INTERNATIONAL",
-          modelImage: "/images/fragrance_hero.png",
-          exploreHref: "/dl-prive/international/fragrances",
-          carouselImages: [
-            "/images/frangrence.png",
-            "/images/dlprive_end.png",
-            "/images/marquee_4.jpg",
-            "/images/twoImg.png",
           ],
         }}
       />

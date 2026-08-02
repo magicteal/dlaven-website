@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import SubCategoryExploreView from "@/components/SubCategoryExploreView";
+import GenderCategoryView from "@/components/GenderCategoryView";
+import CollectionProductsView from "@/components/CollectionProductsView";
 
 interface Props {
   params: Promise<{ slug: string[] }>;
@@ -15,8 +17,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 function parseSlugParams(slugs: string[]) {
-  let collection: "heritage" | "international" | "all" = "heritage";
-  let category: "jewellery" | "clothes" | "fragrances" | "all" = "jewellery";
+  let collection: "heritage" | "international" | null = null;
+  let category: "jewellery" | "clothes" | "fragrances" | "all" = "clothes";
+  let gender: "mens" | "womens" | null = null;
 
   for (const part of slugs) {
     const s = part.toLowerCase();
@@ -28,21 +31,49 @@ function parseSlugParams(slugs: string[]) {
       category = "jewellery";
     } else if (s === "fragrance" || s === "fragrances" || s === "parfum") {
       category = "fragrances";
+    } else if (s === "mens" || s === "men") {
+      gender = "mens";
+    } else if (s === "womens" || s === "women") {
+      gender = "womens";
     }
   }
 
-  return { collection, category };
+  return { collection, category, gender };
 }
 
 export default async function DlBarrySubRoutePage({ params }: Props) {
   const resolved = await params;
-  const { collection, category } = parseSlugParams(resolved.slug || []);
+  const { collection, category, gender } = parseSlugParams(resolved.slug || []);
+
+  if (collection && gender) {
+    return (
+      <CollectionProductsView
+        pillarName="DL BÉRRY"
+        pillarSlug="dl-barry"
+        collection={collection}
+        category={category}
+        gender={gender}
+      />
+    );
+  }
+
+  if (gender) {
+    return (
+      <GenderCategoryView
+        pillarName="DL BÉRRY"
+        pillarSlug="dl-barry"
+        collection={collection || "all"}
+        category={category}
+        gender={gender}
+      />
+    );
+  }
 
   return (
     <SubCategoryExploreView
       pillarName="DL BÉRRY"
       pillarSlug="dl-barry"
-      collection={collection}
+      collection={collection || "all"}
       category={category}
     />
   );

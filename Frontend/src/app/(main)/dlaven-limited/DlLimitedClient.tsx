@@ -5,8 +5,6 @@ import gsap from "gsap";
 import { Play } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import ProductCard from "@/components/ProductCard";
-import CollectionExplorerView from "@/components/CollectionExplorerView";
 import HeritageCarouselSection from "@/components/HeritageCarouselSection";
 import { api } from "@/lib/api";
 import type { Product } from "@/types/product";
@@ -80,7 +78,7 @@ export default function DlLimitedClient() {
         </h1>
         <div className="mt-6 flex justify-center">
           <Link
-            href="#limited-products"
+            href="#limited-categories"
             className="inline-flex items-center justify-center px-8 py-3 border border-[#F6F4E6]/60 text-xs tracking-[0.25em] font-semibold uppercase text-[#F6F4E6] hover:bg-[#F6F4E6] hover:text-[#431717] transition-all duration-300 shadow-sm"
             style={{ fontFamily: LE_GRAND }}
           >
@@ -163,19 +161,38 @@ export default function DlLimitedClient() {
       </section>
 
       {/* ══════════════════════════════════════════
-          PRODUCT CATEGORY 1: DL LIMITED JEWELLERY
+          1. CATEGORY 1: DL LIMITED CLOTHES (First)
       ══════════════════════════════════════════ */}
+      <div id="limited-categories">
+        <HeritageCarouselSection
+          categoryTitle="DL LIMITED CLOTHES"
+          categorySubtitle="REFINED SARTORIAL ATTIRE & COUTURE CUTS"
+          block={{
+            title: "DL LIMITED CLOTHES",
+            modelImage: "/images/fashion_hero.png",
+            exploreHref: "/dlaven-limited/clothes",
+            carouselImages: [
+              "/images/oneImg.png",
+              "/images/twoImg.png",
+              "/images/fashion_hero.png",
+              "/images/mensReady.png",
+            ],
+          }}
+        />
+      </div>
+
+      <div className="w-full max-w-5xl mx-auto border-t border-[#431717]/20 my-6 md:my-10" />
 
       {/* ══════════════════════════════════════════
-          3. PRODUCT CATEGORY 1: DL LIMITED JEWELLERY
+          2. CATEGORY 2: DL LIMITED JEWELLERY (Second)
       ══════════════════════════════════════════ */}
       <HeritageCarouselSection
         categoryTitle="DL LIMITED JEWELLERY"
         categorySubtitle="FINE HANDCRAFTED ADORNMENTS & ARCHIVAL FILIGREE"
-        heritageBlock={{
-          title: "DL LIMITED HERITAGE",
-          modelImage: "/images/womens_heritage.jpg",
-          exploreHref: "/dlaven-limited/heritage/jewellery",
+        block={{
+          title: "DL LIMITED JEWELLERY",
+          modelImage: "/images/prive_jewellery_cover.png",
+          exploreHref: "/dlaven-limited/jewellery",
           carouselImages: [
             "/images/womenswear/adornments_1.png",
             "/images/womenswear/adornments_2.jpg",
@@ -183,79 +200,25 @@ export default function DlLimitedClient() {
             "/images/heritage_hero.png",
           ],
         }}
-        internationalBlock={{
-          title: "DL LIMITED INTERNATIONAL",
-          modelImage: "/images/prive_jewellery_cover.png",
-          exploreHref: "/dlaven-limited/international/jewellery",
-          carouselImages: [
-            "/images/womenswear/adornments_2.jpg",
-            "/images/oneImg.png",
-            "/images/twoImg.png",
-            "/images/DPrimeOne.jpg",
-          ],
-        }}
       />
 
-      <div className="w-full max-w-7xl mx-auto border-t border-[#431717]/15" />
+      <div className="w-full max-w-5xl mx-auto border-t border-[#431717]/20 my-6 md:my-10" />
 
       {/* ══════════════════════════════════════════
-          4. PRODUCT CATEGORY 2: DL LIMITED CLOTHES
-      ══════════════════════════════════════════ */}
-      <HeritageCarouselSection
-        categoryTitle="DL LIMITED CLOTHES"
-        categorySubtitle="REFINED SARTORIAL ATTIRE & COUTURE CUTS"
-        heritageBlock={{
-          title: "DL LIMITED HERITAGE",
-          modelImage: "/images/mensReady.png",
-          exploreHref: "/dlaven-limited/heritage/clothes",
-          carouselImages: [
-            "/images/oneImg.png",
-            "/images/twoImg.png",
-            "/images/fashion_hero.png",
-            "/images/mensReady.png",
-          ],
-        }}
-        internationalBlock={{
-          title: "DL LIMITED INTERNATIONAL",
-          modelImage: "/images/fashion_hero.png",
-          exploreHref: "/dlaven-limited/international/clothes",
-          carouselImages: [
-            "/images/marquee_1.jpg",
-            "/images/marquee_2.jpg",
-            "/images/marquee_3.jpg",
-            "/images/marquee_4.jpg",
-          ],
-        }}
-      />
-
-      <div className="w-full max-w-7xl mx-auto border-t border-[#431717]/15" />
-
-      {/* ══════════════════════════════════════════
-          5. PRODUCT CATEGORY 3: DL LIMITED FRAGRANCE
+          3. CATEGORY 3: DL LIMITED FRAGRANCE (Third)
       ══════════════════════════════════════════ */}
       <HeritageCarouselSection
         categoryTitle="DL LIMITED FRAGRANCE"
         categorySubtitle="HAUTE PARFUMERIE & RARE ELIXIRS"
-        heritageBlock={{
-          title: "DL LIMITED HERITAGE",
+        block={{
+          title: "DL LIMITED FRAGRANCE",
           modelImage: "/images/fragrance_hero.png",
-          exploreHref: "/dlaven-limited/heritage/fragrances",
+          exploreHref: "/dlaven-limited/fragrances",
           carouselImages: [
             "/images/frangrence.png",
             "/images/fragrance_hero.png",
             "/images/dlprive_end.png",
             "/images/oneImg.png",
-          ],
-        }}
-        internationalBlock={{
-          title: "DL LIMITED INTERNATIONAL",
-          modelImage: "/images/frangrence.png",
-          exploreHref: "/dlaven-limited/international/fragrances",
-          carouselImages: [
-            "/images/fragrance_hero.png",
-            "/images/frangrence.png",
-            "/images/marquee_1.jpg",
-            "/images/twoImg.png",
           ],
         }}
       />

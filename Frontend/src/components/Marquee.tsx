@@ -35,25 +35,26 @@ export default function Marquee({ images, speed = 40, direction = "right" }: Mar
   }, [direction, speed]);
 
   return (
-    <div className="relative w-full overflow-hidden py-10">
+    <div className="relative w-full overflow-hidden py-6 md:py-8">
       <div 
         ref={marqueeRef}
-        className="flex gap-4 md:gap-8 min-w-max"
+        className="flex gap-4 md:gap-6 min-w-max"
       >
         {[...Array(3)].map((_, setIdx) => (
           images.map((img, idx) => (
             <div 
               key={`${img}-${setIdx}-${idx}`} 
-              className="relative flex-shrink-0" 
-              style={{ width: "clamp(250px, 30vw, 450px)", aspectRatio: "3/4" }}
+              className="relative flex-shrink-0 shadow-sm overflow-hidden group cursor-pointer" 
+              style={{ width: "clamp(220px, 28vw, 360px)", aspectRatio: "16/9" }}
             >
               <Image
                 src={img}
                 alt={`Marquee image ${idx}`}
                 fill
-                className="object-cover object-center grayscale-[20%] hover:grayscale-0 transition-all duration-700 hover:scale-[1.02]"
-                sizes="(max-width:768px) 60vw, 30vw"
+                className="object-cover object-center group-hover:scale-105 transition-all duration-700"
+                sizes="(max-width:768px) 60vw, 28vw"
               />
+              <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
             </div>
           ))
         ))}

@@ -171,10 +171,9 @@ export default function SubCategoryExploreView({
       <section className="w-full grid grid-cols-1 md:grid-cols-2" style={{ minHeight: "80vh" }}>
 
         {/* LEFT COLUMN: MEN'S SELECTION FOR THIS CATEGORY */}
-        <div
-          onClick={() => setActiveGender(activeGender === "mens" ? "all" : "mens")}
-          className={`relative overflow-hidden group cursor-pointer border-r border-[#431717]/10 ${activeGender === "mens" ? "ring-4 ring-inset ring-[#431717]" : ""
-            }`}
+        <Link
+          href={`/${pillarSlug}/${category}/mens`}
+          className="relative overflow-hidden group cursor-pointer border-r border-[#431717]/10 block"
           style={{ minHeight: "450px" }}
         >
           <Image
@@ -198,17 +197,16 @@ export default function SubCategoryExploreView({
                 className="uppercase tracking-[0.2em] text-xs opacity-90 border-b border-white/40 group-hover:border-white transition-all pb-0.5"
                 style={{ fontFamily: POPPINS }}
               >
-                {activeGender === "mens" ? "FILTERING MEN'S CREATIONS" : "EXPLORE SELECTION"}
+                EXPLORE SELECTION
               </span>
             </div>
           </div>
-        </div>
+        </Link>
 
         {/* RIGHT COLUMN: WOMEN'S SELECTION FOR THIS CATEGORY */}
-        <div
-          onClick={() => setActiveGender(activeGender === "womens" ? "all" : "womens")}
-          className={`relative overflow-hidden group cursor-pointer ${activeGender === "womens" ? "ring-4 ring-inset ring-[#431717]" : ""
-            }`}
+        <Link
+          href={`/${pillarSlug}/${category}/womens`}
+          className="relative overflow-hidden group cursor-pointer block"
           style={{ minHeight: "450px" }}
         >
           <Image
@@ -232,11 +230,11 @@ export default function SubCategoryExploreView({
                 className="uppercase tracking-[0.2em] text-xs opacity-90 border-b border-white/40 group-hover:border-white transition-all pb-0.5"
                 style={{ fontFamily: POPPINS }}
               >
-                {activeGender === "womens" ? "FILTERING WOMEN'S CREATIONS" : "EXPLORE SELECTION"}
+                EXPLORE SELECTION
               </span>
             </div>
           </div>
-        </div>
+        </Link>
 
       </section>
 
