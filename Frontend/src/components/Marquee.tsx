@@ -45,7 +45,7 @@ export default function Marquee({ images, speed = 40, direction = "right" }: Mar
             <div 
               key={`${img}-${setIdx}-${idx}`} 
               className="relative flex-shrink-0 shadow-sm overflow-hidden group cursor-pointer" 
-              style={{ width: "clamp(220px, 28vw, 360px)", aspectRatio: "16/9" }}
+              style={{ width: "clamp(240px, 30vw, 380px)", aspectRatio: "3/4" }}
             >
               <Image
                 src={img}

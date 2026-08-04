@@ -76,13 +76,9 @@ export default function DemoProductPage() {
   return (
     <main className="min-h-screen pb-24" style={{ backgroundColor: "#F6F4E6" }}>
 
-      {/* ── Top Hero Product Banner (Full Width, Pushed Down Below Dedicated Navbar Area) ── */}
-      <section className="relative w-full h-[70vh] sm:h-[85vh] min-h-[540px] bg-[#141414] overflow-hidden flex flex-col justify-end">
-        {/* Dedicated top background area for navbar */}
-        <div className="absolute top-0 inset-x-0 h-32 sm:h-40 bg-gradient-to-b from-black/95 via-black/70 to-transparent pointer-events-none z-10" />
-        
-        {/* Pushed-down full image container starting below the navbar */}
-        <div className="relative w-full h-[calc(100%-4rem)] sm:h-[calc(100%-5rem)] mt-16 sm:mt-20 overflow-hidden">
+      {/* ── Top Hero Product Banner (Full Width Starting from Top y=0 Under Floating Navbar) ── */}
+      <section className="relative w-full h-[70vh] sm:h-[85vh] min-h-[540px] overflow-hidden">
+        <div className="absolute inset-0 w-full h-full overflow-hidden">
           <Image
             src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=1920&auto=format&fit=crop"
             alt="Women's Bangles Featured Jewelry"
@@ -91,6 +87,7 @@ export default function DemoProductPage() {
             priority
             sizes="100vw"
           />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/20 pointer-events-none" />
         </div>
       </section>
 

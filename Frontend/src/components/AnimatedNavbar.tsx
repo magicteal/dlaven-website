@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SearchOverlay from "@/components/SearchOverlay";
 import MenuDrawer from "@/components/MenuDrawer";
 import MegaMenu, { MegaMenuCategoryKey } from "@/components/MegaMenu";
@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { useCart } from "@/components/providers/CartProvider";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 function RightControls() {
   const { user, loading } = useAuth();
@@ -137,6 +137,28 @@ export default function AnimatedNavbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeMegaCategory, setActiveMegaCategory] = useState<MegaMenuCategoryKey>(null);
+  const pathname = usePathname();
+
+  // Close drop-down mega menu, drawer, and search overlay when page route changes
+  useEffect(() => {
+    setActiveMegaCategory(null);
+    setIsMenuOpen(false);
+    setIsSearchOpen(false);
+  }, [pathname]);
+
+  // Close drop-down mega menu automatically when user scrolls down
+  useEffect(() => {
+    if (!activeMegaCategory) return;
+
+    const handleScroll = () => {
+      setActiveMegaCategory(null);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [activeMegaCategory]);
 
   // Menu, search, and mega-menu are mutually exclusive — opening one closes others.
   const handleMenuOpenChange = (open: boolean) => {

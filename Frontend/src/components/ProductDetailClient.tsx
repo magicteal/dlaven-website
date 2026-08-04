@@ -92,13 +92,10 @@ export default function ProductDetailClient({ product, related }: Props) {
   return (
     <main className="min-h-screen pb-24" style={{ backgroundColor: "#F6F4E6" }}>
       
-      {/* ── 1. TOP HERO PRODUCT BANNER (Full Width, Pushed Down Below Navbar) ── */}
-      <section className="relative w-full h-[70vh] sm:h-[85vh] min-h-[540px] bg-[#141414] overflow-hidden flex flex-col justify-end">
-        {/* Dedicated top gradient overlay for navbar clearance */}
-        <div className="absolute top-0 inset-x-0 h-32 sm:h-40 bg-gradient-to-b from-black/95 via-black/70 to-transparent pointer-events-none z-10" />
-
-        {/* Hero image container shifted down below top navbar */}
-        <div className="relative w-full h-[calc(100%-4rem)] sm:h-[calc(100%-5rem)] mt-16 sm:mt-20 overflow-hidden">
+      {/* ── 1. TOP HERO PRODUCT BANNER (Full Width Starting from Top y=0 Under Floating Navbar) ── */}
+      <section className="relative w-full h-[70vh] sm:h-[85vh] min-h-[540px] overflow-hidden">
+        {/* Hero image filling full container starting from y=0 under navbar */}
+        <div className="absolute inset-0 w-full h-full overflow-hidden">
           <Image
             src={selectedImage}
             alt={product.name}
@@ -107,6 +104,8 @@ export default function ProductDetailClient({ product, related }: Props) {
             priority
             sizes="100vw"
           />
+          {/* Subtle top vignette overlay for floating navbar legibility */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/20 pointer-events-none" />
         </div>
       </section>
 

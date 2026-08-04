@@ -74,14 +74,14 @@ export default function HeritageCarouselSection({
         <div className="flex justify-center">
           <div
             className="relative overflow-hidden cursor-pointer group shadow-sm"
-            style={{ width: "clamp(260px, 34vw, 480px)", aspectRatio: "16/9" }}
+            style={{ width: "clamp(280px, 36vw, 480px)", aspectRatio: "16/9" }}
           >
             <Image
               src={block.modelImage}
               alt={block.title}
               fill
               className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
-              sizes="(max-width: 768px) 80vw, 34vw"
+              sizes="(max-width: 768px) 85vw, 36vw"
             />
           </div>
         </div>
@@ -97,7 +97,7 @@ export default function HeritageCarouselSection({
           </Link>
         </div>
 
-        {/* GSAP Auto-Moving Infinite Marquee Carousel (Landscape Format 16/9) */}
+        {/* GSAP Auto-Moving Infinite Marquee Carousel (Portrait Format 3/4) */}
         <div className="relative w-screen -mx-4 overflow-hidden py-4">
           <div ref={marqueeRef} className="flex gap-4 md:gap-6" style={{ width: "fit-content" }}>
             {[...Array(3)].map((_, setIdx) =>
@@ -106,14 +106,14 @@ export default function HeritageCarouselSection({
                   key={`${imgSrc}-${setIdx}-${idx}`}
                   href={block.exploreHref}
                   className="relative flex-shrink-0 shadow-sm group overflow-hidden"
-                  style={{ width: "clamp(220px, 28vw, 360px)", aspectRatio: "16/9" }}
+                  style={{ width: "clamp(240px, 30vw, 380px)", aspectRatio: "3/4" }}
                 >
                   <Image
                     src={imgSrc}
                     alt={`${block.title} Image ${idx + 1}`}
                     fill
                     className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
-                    sizes="(max-width: 768px) 60vw, 25vw"
+                    sizes="(max-width: 768px) 65vw, 30vw"
                   />
                   <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
                 </Link>

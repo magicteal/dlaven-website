@@ -118,8 +118,8 @@ export default function CollectionProductsView({
   return (
     <main style={{ background: BG_CREAM, fontFamily: MANROPE, scrollBehavior: "smooth" }}>
 
-      {/* 1. TOP 2-IMAGE SPLIT BANNER */}
-      <section className="relative w-full grid grid-cols-2" style={{ height: "45vh", minHeight: "320px" }}>
+      {/* 1. TOP 2-IMAGE SPLIT BANNER — Tall Portrait Hero Banner (Sabyasachi Editorial Style) */}
+      <section className="relative w-full grid grid-cols-2" style={{ height: "65vh", minHeight: "480px" }}>
         <div className="relative overflow-hidden">
           <Image src={headerInfo.leftBanner} alt={`${headerInfo.title} Left`} fill className="object-cover object-center" sizes="50vw" priority />
         </div>
@@ -146,14 +146,14 @@ export default function CollectionProductsView({
         {SHOWCASE_CREATIONS.map((item, index) => (
           <div
             key={item.slug}
-            className="w-full min-h-screen flex flex-col items-center pt-20 pb-14 px-4 md:px-8"
+            className="w-full min-h-screen flex flex-col items-center pt-16 pb-16 px-4 md:px-8"
             style={{ borderTop: index > 0 ? `1px solid ${BRAND_DARK}20` : "none" }}
           >
 
-              {/* Upper: Main Cutout Image + Title + Explore */}
+              {/* Upper: Main Cutout Image (Tall Portrait Cutout) + Title + Explore */}
               <div className="flex flex-col items-center text-center w-full">
-                <div className="relative w-full h-[36vh] max-h-[320px] flex items-center justify-center mb-6">
-                  <Image src={item.mainImage} alt={item.name} fill className="object-contain object-center hover:scale-105 transition-transform duration-700" sizes="400px" priority={index === 0} />
+                <div className="relative w-full h-[42vh] max-h-[380px] flex items-center justify-center mb-6">
+                  <Image src={item.mainImage} alt={item.name} fill className="object-contain object-center hover:scale-105 transition-transform duration-700" sizes="400px" priority={index === 0} style={{ mixBlendMode: "multiply" }} />
                 </div>
                 <h2 className="font-le-grand text-xl sm:text-2xl uppercase tracking-[0.2em] font-normal mb-2" style={{ fontFamily: LE_GRAND, color: BRAND_DARK }}>
                   {item.name}
@@ -172,21 +172,21 @@ export default function CollectionProductsView({
                 </Link>
               </div>
 
-              {/* Divider between upper and lower — padded, not full width */}
+              {/* Divider between upper and lower — padded */}
               <div className="w-full my-8 px-16 md:px-24 lg:px-32">
                 <div style={{ height: "1px", backgroundColor: `${BRAND_DARK}20` }} />
               </div>
 
-              {/* Lower: 6-Card Gallery Row */}
+              {/* Lower: 6-Card Gallery Row (All Portrait 3:4 Cards - Sabyasachi Style) */}
               <div className="w-full max-w-7xl mx-auto px-2 sm:px-4 md:px-6">
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 items-stretch w-full">
 
-                  {/* Card 1: Full Body Studio Model */}
+                  {/* Card 1: Full Body Studio Model (Portrait 3:4) */}
                   <div className="relative overflow-hidden w-full rounded-2xl md:rounded-3xl shadow-sm border border-[#431717]/10 bg-white" style={{ aspectRatio: "3/4" }}>
                     <Image src={item.cards.modelFull} alt={`${item.name} Model`} fill className="object-cover object-center hover:scale-105 transition-transform duration-500" sizes="18vw" />
                   </div>
 
-                  {/* Card 2: 2x2 Thumbnail Grid + Watermark */}
+                  {/* Card 2: 2x2 Thumbnail Grid + Watermark (Portrait 3:4) */}
                   <div className="w-full rounded-2xl md:rounded-3xl shadow-sm border border-[#431717]/10 bg-white p-1.5 sm:p-2 flex flex-col justify-between" style={{ aspectRatio: "3/4" }}>
                     <div className="grid grid-cols-2 gap-1 sm:gap-1.5 w-full h-[80%]">
                       {item.cards.gridThumbnails.slice(0, 4).map((gImg, gIdx) => (
@@ -200,7 +200,7 @@ export default function CollectionProductsView({
                     </div>
                   </div>
 
-                  {/* Card 3: Cutout + Title + Watermark */}
+                  {/* Card 3: Cutout + Title + Watermark (Portrait 3:4) */}
                   <div className="relative w-full rounded-2xl md:rounded-3xl shadow-sm border border-[#431717]/10 bg-white flex flex-col items-center justify-between p-2.5 sm:p-3 text-center" style={{ aspectRatio: "3/4" }}>
                     <div className="relative w-full h-[65%]">
                       <Image src={item.cards.cutoutWithWatermark} alt={`${item.name} Cutout`} fill className="object-contain object-center" sizes="18vw" />
@@ -213,25 +213,28 @@ export default function CollectionProductsView({
                     </div>
                   </div>
 
-                  {/* Card 4: Outdoor Lifestyle */}
+                  {/* Card 4: Outdoor Lifestyle (Portrait 3:4) */}
                   <div className="relative overflow-hidden w-full rounded-2xl md:rounded-3xl shadow-sm border border-[#431717]/10" style={{ aspectRatio: "3/4" }}>
                     <Image src={item.cards.outdoorLifestyle} alt={`${item.name} Outdoor`} fill className="object-cover object-center hover:scale-105 transition-transform duration-500" sizes="18vw" />
                   </div>
 
-                  {/* Card 5: Lounge Selfie */}
+                  {/* Card 5: Lounge Selfie (Portrait 3:4) */}
                   <div className="relative overflow-hidden w-full rounded-2xl md:rounded-3xl shadow-sm border border-[#431717]/10" style={{ aspectRatio: "3/4" }}>
                     <Image src={item.cards.detailCloseup} alt={`${item.name} Lounge`} fill className="object-cover object-center hover:scale-105 transition-transform duration-500" sizes="18vw" />
                   </div>
 
-                  {/* Card 6: TWO separate rectangles — rounded landscape photo above, square terracotta text block below */}
-                  <div className="w-full flex flex-col gap-2" style={{ aspectRatio: "3/4" }}>
-                    {/* Top — rounded landscape resort photo */}
-                    <div className="relative w-full overflow-hidden rounded-2xl md:rounded-3xl shadow-sm" style={{ height: "38%", flexShrink: 0 }}>
-                      <Image src={item.cards.resortShot} alt={`${item.name} Resort`} fill className="object-cover object-center" sizes="18vw" />
+                  {/* Card 6: Unified Portrait Card (3:4 aspect) — Top 58% Portrait Resort Photo + Bottom 42% Terracotta Price Card */}
+                  <div
+                    className="w-full rounded-2xl md:rounded-3xl shadow-sm overflow-hidden flex flex-col border border-[#431717]/10"
+                    style={{ aspectRatio: "3/4" }}
+                  >
+                    {/* Top 58%: Vertical Portrait Resort Shot */}
+                    <div className="relative w-full overflow-hidden" style={{ height: "58%", flexShrink: 0 }}>
+                      <Image src={item.cards.resortShot} alt={`${item.name} Resort`} fill className="object-cover object-center hover:scale-105 transition-transform duration-500" sizes="18vw" />
                     </div>
-                    {/* Bottom — square terracotta price/text block (no rounded borders) */}
+                    {/* Bottom 42%: Terracotta Price Card Section */}
                     <div
-                      className="flex-1 flex flex-col justify-between items-center text-center text-[#F6F4E6] p-2 sm:p-2.5 shadow-sm"
+                      className="w-full flex-1 flex flex-col justify-between items-center text-center text-[#F6F4E6] p-2 sm:p-2.5"
                       style={{ backgroundColor: BRAND_TERRACOTTA }}
                     >
                       <p className="text-[8px] sm:text-[9px] uppercase tracking-[0.18em] italic font-light pt-0.5" style={{ fontFamily: LE_GRAND }}>

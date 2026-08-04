@@ -39,9 +39,11 @@ function VideoCard({ name, videoUrl }: { name: string; videoUrl: string }) {
       <video
         ref={videoRef}
         src={videoUrl}
+        autoPlay
         loop
         muted
         playsInline
+        preload="auto"
         className="absolute inset-0 w-full h-full object-cover"
       />
       <div

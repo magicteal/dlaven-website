@@ -148,7 +148,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom: large logo */}
-        <div className="border-t border-white/10 py-10 flex flex-col items-center gap-2">
+        <div className="py-10 flex flex-col items-center gap-2">
           <Image
             src="/logos/logo.svg"
             alt="D' LAVÉN"
@@ -157,9 +157,6 @@ export default function Footer() {
             className="w-[280px] sm:w-[380px] md:w-[480px] brightness-0 invert"
             priority
           />
-          <p className="text-xs tracking-[0.3em] uppercase" style={{ color: "#F6F4E6", opacity: 0.7 }}>
-            Estd. 2026
-          </p>
         </div>
       </div>
     </footer>

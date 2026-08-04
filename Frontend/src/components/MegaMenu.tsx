@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, X } from "lucide-react";
@@ -147,6 +147,28 @@ export default function MegaMenu({
   activeCategory,
   onClose,
 }: MegaMenuProps) {
+  const [displayCategory, setDisplayCategory] = useState<MegaMenuCategoryKey>(activeCategory);
+  const [isClosing, setIsClosing] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    if (activeCategory) {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      setDisplayCategory(activeCategory);
+      setIsClosing(false);
+    } else if (displayCategory && !isClosing) {
+      setIsClosing(true);
+      timeoutRef.current = setTimeout(() => {
+        setDisplayCategory(null);
+        setIsClosing(false);
+      }, 300);
+    }
+
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [activeCategory, displayCategory, isClosing]);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -157,20 +179,26 @@ export default function MegaMenu({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [activeCategory, onClose]);
 
-  if (!activeCategory || !MEGA_MENU_DATA[activeCategory]) return null;
+  if (!displayCategory || !MEGA_MENU_DATA[displayCategory]) return null;
 
-  const data = MEGA_MENU_DATA[activeCategory];
+  const data = MEGA_MENU_DATA[displayCategory];
 
   return (
     <>
       {/* Backdrop tint - positioned below the header so the navbar above remains unblurred */}
       <div
-        className="fixed inset-0 top-[110px] md:top-[130px] bg-black/35 z-[30] transition-opacity duration-500 animate-fadeIn"
+        className={`fixed inset-0 top-[110px] md:top-[130px] bg-black/35 z-[30] transition-opacity ${
+          isClosing ? "animate-fadeOut" : "animate-fadeIn"
+        }`}
         onClick={onClose}
       />
 
-      {/* Mega Menu Card Container - Compact height layout */}
-      <div className="absolute top-[calc(100%+16px)] left-0 right-0 w-full z-[50] bg-[#e2ddd7] text-[#14161f] shadow-2xl rounded-none border border-[#14161f]/15 overflow-hidden transition-all duration-500 ease-out animate-megaMenuIn [font-family:var(--font-manrope)]">
+      {/* Mega Menu Card Container - Compact height layout with smooth enter and exit animation */}
+      <div
+        className={`absolute top-[calc(100%+16px)] left-0 right-0 w-full z-[50] bg-[#e2ddd7] text-[#14161f] shadow-2xl rounded-none border border-[#14161f]/15 overflow-hidden transition-all [font-family:var(--font-manrope)] ${
+          isClosing ? "animate-megaMenuOut" : "animate-megaMenuIn"
+        }`}
+      >
         <div className="w-full px-5 py-4 md:px-8 md:py-5">
           {/* Header Bar inside Mega Menu Card: Path & Close button */}
           <div className="flex items-center justify-between border-b border-[#14161f]/15 pb-2.5 mb-4">
@@ -197,7 +225,7 @@ export default function MegaMenu({
 
           {/* Grid Layout: Main sub-menu items + Featured Visual Callout */}
           <div
-            key={activeCategory}
+            key={displayCategory}
             className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start transition-all duration-300 animate-fadeIn"
           >
             {/* Left 7 Columns: Items List in 2 Clean Sub-columns */}
