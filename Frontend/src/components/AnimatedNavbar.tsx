@@ -197,7 +197,7 @@ export default function AnimatedNavbar() {
         className={`absolute top-4 left-4 right-4 z-[40] rounded-none backdrop-blur-md text-black [font-family:var(--font-manrope)] shadow-sm md:top-6 md:left-6 md:right-6 transition-all duration-300 ${
           isMenuOpen || isSearchOpen || activeMegaCategory
             ? "bg-[#e2ddd7] shadow-md border border-black/10"
-            : "bg-[#e2ddd7]/70 border border-transparent"
+            : "bg-[#e2ddd7]/20 backdrop-blur-md border border-transparent"
         }`}
       >
         <div className="px-5 py-3 md:px-8">
