@@ -47,6 +47,21 @@ function signToken(payload: object) {
   return jwt.sign(payload as jwt.JwtPayload, secret, { expiresIn } as jwt.SignOptions);
 }
 
+function getCookieOptions(req: Request) {
+  const isHttps = req.secure || req.headers["x-forwarded-proto"] === "https";
+  const secure = process.env.COOKIE_SECURE
+    ? process.env.COOKIE_SECURE === "true"
+    : isHttps;
+  const sameSite = process.env.COOKIE_SAMESITE || (secure ? "none" : "lax");
+  return {
+    httpOnly: true,
+    sameSite: sameSite as any,
+    secure,
+    path: "/",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  };
+}
+
 export async function register(req: Request, res: Response) {
   try {
     const { email, password, firstName, lastName, title, phone, areaCode, dob, marketingConsent } = req.body as {
@@ -66,32 +81,17 @@ export async function register(req: Request, res: Response) {
     const passwordHash = await bcrypt.hash(password, 10);
     const name = [firstName, lastName].filter(Boolean).join(" ") || undefined;
     const fullPhone = areaCode && phone ? `${areaCode}${phone}` : phone;
-  const created = await User.create({
-    email,
-    passwordHash,
-    name,
-    title,
-    phone: fullPhone,
-    dob,
-    marketingConsent: !!marketingConsent,
-  });
-  const token = signToken({ sub: created.id, email: created.email, role: created.role });
-    // Cookie options: allow configuring secure/sameSite via env for production
-    const secure = process.env.COOKIE_SECURE
-      ? process.env.COOKIE_SECURE === "true"
-      : process.env.NODE_ENV === "production";
-    const sameSite = process.env.COOKIE_SAMESITE || (secure ? "none" : "lax");
-    res.cookie("token", token, {
-      httpOnly: true,
-      sameSite: sameSite as any,
-      secure,
-      path: "/",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+    const created = await User.create({
+      email,
+      passwordHash,
+      name,
+      title,
+      phone: fullPhone,
+      dob,
+      marketingConsent: !!marketingConsent,
     });
-    if (process.env.NODE_ENV !== "production") {
-      const header = res.getHeader("Set-Cookie");
-      console.log("[auth] Set-Cookie header (register):", header);
-    }
+    const token = signToken({ sub: created.id, email: created.email, role: created.role });
+    res.cookie("token", token, getCookieOptions(req));
     try {
       await sendEmail({
         to: created.email,
@@ -99,7 +99,10 @@ export async function register(req: Request, res: Response) {
         text: `Hi${created.name ? " " + created.name : ""}, your account has been created.`,
       });
     } catch {}
-    return res.status(201).json({ user: { id: created.id, email: created.email, name: created.name, role: created.role } });
+    return res.status(201).json({
+      user: { id: created.id, email: created.email, name: created.name, role: created.role },
+      token,
+    });
   } catch (err) {
     return res.status(500).json({ error: "Registration failed" });
   }
@@ -113,23 +116,12 @@ export async function login(req: Request, res: Response) {
     if (!user) return res.status(401).json({ error: "Invalid credentials" });
     const ok = await bcrypt.compare(password, user.passwordHash);
     if (!ok) return res.status(401).json({ error: "Invalid credentials" });
-  const token = signToken({ sub: user.id, email: user.email, role: user.role });
-    const secure = process.env.COOKIE_SECURE
-      ? process.env.COOKIE_SECURE === "true"
-      : process.env.NODE_ENV === "production";
-    const sameSite = process.env.COOKIE_SAMESITE || (secure ? "none" : "lax");
-    res.cookie("token", token, {
-      httpOnly: true,
-      sameSite: sameSite as any,
-      secure,
-      path: "/",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+    const token = signToken({ sub: user.id, email: user.email, role: user.role });
+    res.cookie("token", token, getCookieOptions(req));
+    return res.json({
+      user: { id: user.id, email: user.email, name: user.name, role: user.role },
+      token,
     });
-    if (process.env.NODE_ENV !== "production") {
-      const header = res.getHeader("Set-Cookie");
-      console.log("[auth] Set-Cookie header (login):", header);
-    }
-  return res.json({ user: { id: user.id, email: user.email, name: user.name, role: user.role } });
   } catch (err) {
     return res.status(500).json({ error: "Login failed" });
   }

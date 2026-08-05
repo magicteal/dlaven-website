@@ -92,6 +92,10 @@ function isOriginAllowed(origin: string, rules: AllowedOriginRule[]): boolean {
     return false;
   }
   const normalizedOrigin = url.origin;
+  const hostname = url.hostname.toLowerCase();
+
+  // Allow all IP address origins (e.g. 72.60.221.173, 127.0.0.1, etc.)
+  if (/^(\d{1,3}\.){3}\d{1,3}$/.test(hostname)) return true;
 
   // Exact match
   for (const rule of rules) {
@@ -99,7 +103,6 @@ function isOriginAllowed(origin: string, rules: AllowedOriginRule[]): boolean {
   }
 
   // Host suffix match (wildcards / hostname-only entries)
-  const hostname = url.hostname.toLowerCase();
   const protocol = url.protocol.replace(":", "") as "http" | "https";
   for (const rule of rules) {
     if (rule.kind !== "hostSuffix") continue;

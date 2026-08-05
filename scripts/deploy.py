@@ -60,6 +60,9 @@ run(f"su - deploy -c 'cd /home/deploy/myapp && git remote set-url origin {authen
 # 2. Build Backend
 print("\n2. Building Backend...")
 run("su - deploy -c 'cd /home/deploy/myapp/Backend && npm install && npm run build'")
+print("\n2b. Ensuring Admin Account on VPS DB...")
+run("su - deploy -c 'cd /home/deploy/myapp/Backend && npx ts-node src/makeAdmin.ts'")
+run("su - deploy -c 'cd /home/deploy/myapp/Backend && npx ts-node src/makeAdminAtlas.ts'")
 
 # 3. Build Frontend
 print("\n3. Building Frontend...")

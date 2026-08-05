@@ -7,9 +7,18 @@ export interface AuthPayload {
   role?: "user" | "admin";
 }
 
+function getToken(req: Request): string | undefined {
+  if (req.cookies?.token) return req.cookies.token;
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.toLowerCase().startsWith("bearer ")) {
+    return authHeader.slice(7).trim();
+  }
+  return undefined;
+}
+
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
   try {
-    const token = req.cookies?.token as string | undefined;
+    const token = getToken(req);
     if (!token) return res.status(401).json({ error: "Unauthorized" });
     const secret = process.env.JWT_SECRET || "dev-secret";
     const payload = jwt.verify(token, secret) as AuthPayload;
@@ -28,10 +37,10 @@ export function requireAdmin(req: Request, res: Response, next: NextFunction) {
   return next();
 }
 
-// Optional auth: if a token cookie exists, decode it and set req.user; do not fail when missing/invalid.
+// Optional auth: if a token exists in cookie or Authorization header, decode it and set req.user
 export function optionalAuth(req: Request, _res: Response, next: NextFunction) {
   try {
-    const token = req.cookies?.token as string | undefined;
+    const token = getToken(req);
     if (!token) return next();
     const secret = process.env.JWT_SECRET || "dev-secret";
     const payload = jwt.verify(token, secret) as AuthPayload;
@@ -39,6 +48,5 @@ export function optionalAuth(req: Request, _res: Response, next: NextFunction) {
   } catch {
     // ignore token errors for optional auth
   }
-  // Call next once after processing optional auth
   return next();
 }

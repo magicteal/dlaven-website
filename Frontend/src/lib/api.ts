@@ -1,8 +1,20 @@
-export const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
+export function getApiBaseUrl(): string {
+  if (process.env.NEXT_PUBLIC_API_BASE_URL) {
+    return process.env.NEXT_PUBLIC_API_BASE_URL;
+  }
+  if (typeof window !== "undefined") {
+    const host = window.location.hostname;
+    if (host && host !== "localhost" && host !== "127.0.0.1") {
+      return `${window.location.protocol}//${host}:4000`;
+    }
+  }
+  return "http://localhost:4000";
+}
+
+export const API_BASE = getApiBaseUrl();
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const url = `${API_BASE}${path}`;
+  const url = `${getApiBaseUrl()}${path}`;
   const start = Date.now();
   const safeBody = (() => {
     try {
@@ -22,15 +34,22 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     url,
     safeBody ? { body: safeBody } : ""
   );
+
+  const token = typeof window !== "undefined" ? localStorage.getItem("dlaven_token") : null;
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    ...(options.headers as Record<string, string> || {}),
+  };
+  if (token && !headers["Authorization"]) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
   let res: Response;
   try {
     res = await fetch(url, {
       ...options,
       cache: "no-store",
-      headers: {
-        "Content-Type": "application/json",
-        ...(options.headers || {}),
-      },
+      headers,
       credentials: "include",
     });
   } catch (networkErr: unknown) {
@@ -135,7 +154,7 @@ export const api = {
       body: JSON.stringify({ email }),
     });
   },
-  register(data: {
+  async register(data: {
     email: string;
     password: string;
     firstName?: string;
@@ -146,30 +165,40 @@ export const api = {
     dob?: string;
     marketingConsent?: boolean;
   }) {
-    return request<{
+    const res = await request<{
       user: {
         id: string;
         email: string;
         name?: string;
         role?: "user" | "admin";
       };
+      token?: string;
     }>("/api/auth/register", {
       method: "POST",
       body: JSON.stringify(data),
     });
+    if (res.token && typeof window !== "undefined") {
+      localStorage.setItem("dlaven_token", res.token);
+    }
+    return res;
   },
-  login(data: { email: string; password: string }) {
-    return request<{
+  async login(data: { email: string; password: string }) {
+    const res = await request<{
       user: {
         id: string;
         email: string;
         name?: string;
         role?: "user" | "admin";
       };
+      token?: string;
     }>("/api/auth/login", {
       method: "POST",
       body: JSON.stringify(data),
     });
+    if (res.token && typeof window !== "undefined") {
+      localStorage.setItem("dlaven_token", res.token);
+    }
+    return res;
   },
   me() {
     return request<{
@@ -191,7 +220,10 @@ export const api = {
       };
     }>("/api/auth/me");
   },
-  logout() {
+  async logout() {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("dlaven_token");
+    }
     return request<{ ok: boolean }>("/api/auth/logout", { method: "POST" });
   },
   forgotPassword(data: { email: string }) {
