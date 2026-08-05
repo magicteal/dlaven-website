@@ -183,6 +183,14 @@ function AccountPageContent() {
                     {item.label}
                   </button>
                 ))}
+                {user.role === "admin" && (
+                  <Link
+                    href="/admin"
+                    className="block w-full text-left py-3 text-sm uppercase tracking-[0.1em] font-semibold text-[#431717] hover:underline pt-2"
+                  >
+                    ✦ Admin Dashboard
+                  </Link>
+                )}
               </nav>
 
               <div className="border-t border-[#ddd] mt-6 pt-6">

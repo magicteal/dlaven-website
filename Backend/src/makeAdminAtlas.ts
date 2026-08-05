@@ -17,7 +17,7 @@ async function makeAdminAtlas() {
     await mongoose.connect(uri);
 
     const email = "marshadkhn89@gmail.com";
-    const password = "PDumb@1122";
+    const password = "Dlaven@1122";
     const passwordHash = await bcrypt.hash(password, 10);
 
     let user = await User.findOne({ email });
