@@ -139,8 +139,18 @@ export default function AnimatedNavbar() {
   const [activeMegaCategory, setActiveMegaCategory] = useState<MegaMenuCategoryKey>(null);
   const pathname = usePathname();
 
+  const closeTimerRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  // Clear timer when unmounting
+  useEffect(() => {
+    return () => {
+      if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    };
+  }, []);
+
   // Close drop-down mega menu, drawer, and search overlay when page route changes
   useEffect(() => {
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
     setActiveMegaCategory(null);
     setIsMenuOpen(false);
     setIsSearchOpen(false);
@@ -151,6 +161,7 @@ export default function AnimatedNavbar() {
     if (!activeMegaCategory) return;
 
     const handleScroll = () => {
+      if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
       setActiveMegaCategory(null);
     };
 
@@ -164,6 +175,7 @@ export default function AnimatedNavbar() {
   const handleMenuOpenChange = (open: boolean) => {
     setIsMenuOpen(open);
     if (open) {
+      if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
       setIsSearchOpen(false);
       setActiveMegaCategory(null);
     }
@@ -173,11 +185,38 @@ export default function AnimatedNavbar() {
     setIsSearchOpen((prev) => {
       const next = !prev;
       if (next) {
+        if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
         setIsMenuOpen(false);
         setActiveMegaCategory(null);
       }
       return next;
     });
+  };
+
+  const handleCategoryMouseEnter = (cat: MegaMenuCategoryKey) => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+    setActiveMegaCategory(cat);
+    setIsMenuOpen(false);
+    setIsSearchOpen(false);
+  };
+
+  const handleHeaderMouseEnter = () => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  };
+
+  const handleHeaderMouseLeave = () => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+    }
+    closeTimerRef.current = setTimeout(() => {
+      setActiveMegaCategory(null);
+    }, 200);
   };
 
   const toggleMegaCategory = (cat: MegaMenuCategoryKey) => {
@@ -194,6 +233,8 @@ export default function AnimatedNavbar() {
   return (
     <>
       <header
+        onMouseEnter={handleHeaderMouseEnter}
+        onMouseLeave={handleHeaderMouseLeave}
         className={`absolute top-4 left-4 right-4 z-[40] rounded-none backdrop-blur-md text-black [font-family:var(--font-manrope)] shadow-sm md:top-6 md:left-6 md:right-6 transition-all duration-300 ${
           isMenuOpen || isSearchOpen || activeMegaCategory
             ? "bg-[#e2ddd7] shadow-md border border-black/10"
@@ -243,6 +284,7 @@ export default function AnimatedNavbar() {
                   <button
                     key={link.label}
                     type="button"
+                    onMouseEnter={() => handleCategoryMouseEnter(link.label)}
                     onClick={() => toggleMegaCategory(link.label)}
                     className={`inline-flex items-center gap-1 text-xs uppercase tracking-[0.15em] transition-all duration-300 py-1 border-b ${
                       isActive

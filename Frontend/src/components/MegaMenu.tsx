@@ -195,7 +195,7 @@ export default function MegaMenu({
 
       {/* Mega Menu Card Container - Compact height layout with smooth enter and exit animation */}
       <div
-        className={`absolute top-[calc(100%+16px)] left-0 right-0 w-full z-[50] bg-[#e2ddd7] text-[#14161f] shadow-2xl rounded-none border border-[#14161f]/15 overflow-hidden transition-all [font-family:var(--font-manrope)] ${
+        className={`absolute top-[calc(100%+16px)] left-0 right-0 w-full z-[50] bg-[#e2ddd7] text-[#14161f] shadow-2xl rounded-none border border-[#14161f]/15 overflow-hidden transition-all [font-family:var(--font-manrope)] before:content-[''] before:absolute before:-top-5 before:left-0 before:right-0 before:h-5 before:z-[-1] ${
           isClosing ? "animate-megaMenuOut" : "animate-megaMenuIn"
         }`}
       >
