@@ -11,8 +11,8 @@ export default function Home() {
     <>
       <Hero />
       <DlLimitedBanner />
-      <CategoryGrid />
       <FeaturedContent />
+      <CategoryGrid />
       <WorldOfSection />
       <UniqueDesign />
     </>

@@ -8,7 +8,7 @@ import {
   SheetContent,
   SheetClose,
 } from "@/components/ui/sheet";
-import { X } from "lucide-react";
+import { X, ChevronLeft } from "lucide-react";
 import { useAuth } from "@/components/providers/AuthProvider";
 import PersonalizationModal from "@/components/PersonalizationModal";
 import { useRouter } from "next/navigation";
@@ -30,9 +30,6 @@ function DrawerLink({
   onOpenPanel?: (panelId: string) => void;
   panelId?: string;
 }) {
-  // If this link opens an in-drawer panel, render a plain button so it
-  // never triggers navigation. Otherwise render a Next.js Link that
-  // closes the drawer then navigates.
   if (panelId && onOpenPanel) {
     return (
       <button
@@ -40,13 +37,13 @@ function DrawerLink({
         onClick={() => onOpenPanel(panelId)}
         className={`${
           className ?? ""
-        } group flex items-center justify-between text-left w-full`}
+        } group flex items-center justify-between text-left w-full transition-colors duration-200`}
       >
         <span className="flex items-center gap-2">
           <span>{children}</span>
         </span>
         <span
-          className="ml-0 opacity-0 translate-x-0.5 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0"
+          className="text-xs text-[#14161f]/40 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-[#431717]"
           aria-hidden
         >
           ›
@@ -62,18 +59,54 @@ function DrawerLink({
         e.preventDefault();
         onNavigate(href);
       }}
-      className={`${className ?? ""} group flex items-center justify-between`}
+      className={`${className ?? ""} group flex items-center justify-between transition-colors duration-200`}
     >
       <span className="flex items-center gap-2">
         <span>{children}</span>
       </span>
       <span
-        className="ml-0 opacity-0 translate-x-0.5 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0"
+        className="text-xs opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-[#431717]"
         aria-hidden
       >
         ›
       </span>
     </Link>
+  );
+}
+
+function PanelWrapper({
+  title,
+  onBack,
+  children,
+}: {
+  title: string;
+  onBack: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex flex-col min-h-full animate-in fade-in-50 slide-in-from-right-4 duration-300 ease-out">
+      {/* Panel header: Back button */}
+      <div className="flex items-center gap-2 pt-6 px-6 pb-2">
+        <button
+          onClick={onBack}
+          className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.18em] text-[#14161f]/75 hover:text-[#431717] transition-colors py-1 group font-medium"
+          aria-label="Back to main menu"
+        >
+          <ChevronLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-0.5" />
+          <span>Back</span>
+        </button>
+      </div>
+
+      <div className="px-6 pt-3 pb-8 space-y-4">
+        {/* Title */}
+        <h2 className="font-le-grand text-lg sm:text-xl uppercase tracking-[0.14em] text-[#431717] font-normal border-b border-[#14161f]/10 pb-2.5">
+          {title}
+        </h2>
+
+        {/* Links */}
+        <div className="space-y-2.5 pt-0.5">{children}</div>
+      </div>
+    </div>
   );
 }
 
@@ -88,577 +121,212 @@ function PanelView({
   onNavigate: (href: string) => void;
   onOpenPanel?: (panelId: string) => void;
 }) {
-  // Minimal demo content; extend per panel id
+  const linkClass =
+    "block font-normal uppercase tracking-[0.06em] text-[0.8rem] text-[#14161f]/90 hover:text-[#000000] no-underline hover:no-underline py-0.5";
+
   if (id === "new-in") {
     return (
-      <div className="flex flex-col h-full">
-        {/* Panel header */}
-        <div className="flex items-center gap-2 p-6 pb-2">
-          <button
-            onClick={onBack}
-            className="text-sm uppercase underline decoration-1 underline-offset-4 hover:no-underline"
-            aria-label="Back"
-          >
-            ‹ Back
-          </button>
-        </div>
-        <div className="p-6 pt-4 space-y-4">
-          <h2 className="text-3xl">New In</h2>
-          <div className="space-y-3">
-            <DrawerLink
-              href="/products"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase no-underline hover:no-underline"
-            >
-              View All
-            </DrawerLink>
-          </div>
-        </div>
-      </div>
+      <PanelWrapper title="New In" onBack={onBack}>
+        <DrawerLink href="/products" onNavigate={onNavigate} className={linkClass}>
+          View All New Arrivals
+        </DrawerLink>
+        <DrawerLink href="/dlaven-limited" onNavigate={onNavigate} className={linkClass}>
+          DL Limited Editions
+        </DrawerLink>
+        <DrawerLink href="/dl-prive" onNavigate={onNavigate} className={linkClass}>
+          DL Privé Exclusives
+        </DrawerLink>
+        <DrawerLink href="/dl-barry" onNavigate={onNavigate} className={linkClass}>
+          DL Bérry Creations
+        </DrawerLink>
+      </PanelWrapper>
     );
   }
 
   if (id === "men") {
     return (
-      <div className="flex flex-col h-full">
-        <div className="flex items-center gap-2 p-6 pb-2">
-          <button
-            onClick={onBack}
-            className="text-sm uppercase underline decoration-1 underline-offset-4 hover:no-underline"
-            aria-label="Back"
-          >
-            ‹ Back
-          </button>
-        </div>
-        <div className="p-6 pt-4 space-y-4">
-          <h2 className="text-2xl font-light uppercase tracking-wider">MENS</h2>
-          <div className="space-y-2.5">
-            <DrawerLink
-              href="/dlaven-limited"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              DL LIMITED
-            </DrawerLink>
-            <DrawerLink
-              href="/dl-prive"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              DL PRIVÉ
-            </DrawerLink>
-            <DrawerLink
-              href="/dl-barry"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              DL BÉRRY
-            </DrawerLink>
-            <DrawerLink
-              href="/mens-ready-to-wear"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              READY TO WEAR
-            </DrawerLink>
-            <DrawerLink
-              href="/prive-mens-adornments"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              DL PRIVE ADORNMENTS
-            </DrawerLink>
-            <DrawerLink
-              href="/adornments-prive"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              DL BÉRRY ADORNMENTS
-            </DrawerLink>
-            <DrawerLink
-              href="/fragrances?collection=prive"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              DL PRIVE FRAGRANCE
-            </DrawerLink>
-            <DrawerLink
-              href="/fragrances?collection=berry"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              DL BÉRRY FRAGRANCE
-            </DrawerLink>
-          </div>
-        </div>
-      </div>
+      <PanelWrapper title="Mens Collection" onBack={onBack}>
+        <DrawerLink href="/dlaven-limited" onNavigate={onNavigate} className={linkClass}>
+          DL Limited
+        </DrawerLink>
+        <DrawerLink href="/dl-prive" onNavigate={onNavigate} className={linkClass}>
+          DL Privé
+        </DrawerLink>
+        <DrawerLink href="/dl-barry" onNavigate={onNavigate} className={linkClass}>
+          DL Bérry
+        </DrawerLink>
+        <DrawerLink href="/mens-ready-to-wear" onNavigate={onNavigate} className={linkClass}>
+          Ready to Wear
+        </DrawerLink>
+        <DrawerLink href="/prive-mens-adornments" onNavigate={onNavigate} className={linkClass}>
+          DL Privé Adornments
+        </DrawerLink>
+        <DrawerLink href="/adornments-prive" onNavigate={onNavigate} className={linkClass}>
+          DL Bérry Adornments
+        </DrawerLink>
+        <DrawerLink href="/fragrances?collection=prive&gender=men" onNavigate={onNavigate} className={linkClass}>
+          DL Privé Fragrance
+        </DrawerLink>
+        <DrawerLink href="/fragrances?collection=berry&gender=men" onNavigate={onNavigate} className={linkClass}>
+          DL Bérry Fragrance
+        </DrawerLink>
+      </PanelWrapper>
     );
   }
 
   if (id === "women") {
     return (
-      <div className="flex flex-col h-full">
-        <div className="flex items-center gap-2 p-6 pb-2">
-          <button
-            onClick={onBack}
-            className="text-sm uppercase underline decoration-1 underline-offset-4 hover:no-underline"
-            aria-label="Back"
-          >
-            ‹ Back
-          </button>
-        </div>
-        <div className="p-6 pt-4 space-y-4">
-          <h2 className="text-2xl font-light uppercase tracking-wider">WOMENS</h2>
-          <div className="space-y-2.5">
-            <DrawerLink
-              href="/dlaven-limited"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              DL LIMITED
-            </DrawerLink>
-            <DrawerLink
-              href="/dl-prive"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              DL PRIVÉ
-            </DrawerLink>
-            <DrawerLink
-              href="/dl-barry"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              DL BÉRRY
-            </DrawerLink>
-            <DrawerLink
-              href="/womens-ready-to-wear"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              READY TO WEAR
-            </DrawerLink>
-            <DrawerLink
-              href="/prive-womens-adornments"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              DL PRIVE ADORNMENTS
-            </DrawerLink>
-            <DrawerLink
-              href="/adornments-prive"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              DL BÉRRY ADORNMENTS
-            </DrawerLink>
-            <DrawerLink
-              href="/fragrances?collection=prive"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              DL PRIVE FRAGRANCE
-            </DrawerLink>
-            <DrawerLink
-              href="/fragrances?collection=berry"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              DL BÉRRY FRAGRANCE
-            </DrawerLink>
-          </div>
-        </div>
-      </div>
+      <PanelWrapper title="Womens Collection" onBack={onBack}>
+        <DrawerLink href="/dlaven-limited" onNavigate={onNavigate} className={linkClass}>
+          DL Limited
+        </DrawerLink>
+        <DrawerLink href="/dl-prive" onNavigate={onNavigate} className={linkClass}>
+          DL Privé
+        </DrawerLink>
+        <DrawerLink href="/dl-barry" onNavigate={onNavigate} className={linkClass}>
+          DL Bérry
+        </DrawerLink>
+        <DrawerLink href="/womens-ready-to-wear" onNavigate={onNavigate} className={linkClass}>
+          Ready to Wear
+        </DrawerLink>
+        <DrawerLink href="/prive-womens-adornments" onNavigate={onNavigate} className={linkClass}>
+          DL Privé Adornments
+        </DrawerLink>
+        <DrawerLink href="/adornments-prive" onNavigate={onNavigate} className={linkClass}>
+          DL Bérry Adornments
+        </DrawerLink>
+        <DrawerLink href="/fragrances?collection=prive&gender=women" onNavigate={onNavigate} className={linkClass}>
+          DL Privé Fragrance
+        </DrawerLink>
+        <DrawerLink href="/fragrances?collection=berry&gender=women" onNavigate={onNavigate} className={linkClass}>
+          DL Bérry Fragrance
+        </DrawerLink>
+      </PanelWrapper>
     );
   }
 
   if (id === "heritage") {
     return (
-      <div className="flex flex-col h-full">
-        <div className="flex items-center gap-2 p-6 pb-2">
-          <button
-            onClick={onBack}
-            className="text-sm uppercase underline decoration-1 underline-offset-4 hover:no-underline"
-            aria-label="Back"
-          >
-            ‹ Back
-          </button>
-        </div>
-        <div className="p-6 pt-4 space-y-4">
-          <h2 className="text-2xl font-light uppercase tracking-wider">HERITAGE JEWELLERY</h2>
-          <div className="space-y-2.5">
-            <DrawerLink
-              href="/heritage-jewelry?type=prive-heritage-womens"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              PRIVE HERITAGE WOMENS JEWELLERY
-            </DrawerLink>
-            <DrawerLink
-              href="/heritage-jewelry?type=prive-heritage-mens"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              PRIVE HERITAGE MENS JEWELLERY
-            </DrawerLink>
-            <DrawerLink
-              href="/heritage-prive?type=prive-international-womens"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              PRIVE INTERNATIONAL WOMENS JEWELLERY
-            </DrawerLink>
-            <DrawerLink
-              href="/heritage-prive?type=prive-international-mens"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              PRIVE INTERNATIONAL MENS JEWELLERY
-            </DrawerLink>
-            <DrawerLink
-              href="/heritage-jewelry?type=berry-heritage-womens"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              BERRY HERITAGE WOMENS JEWELLERY
-            </DrawerLink>
-            <DrawerLink
-              href="/heritage-jewelry?type=berry-heritage-mens"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              BERRY HERITAGE MENS JEWELLERY
-            </DrawerLink>
-            <DrawerLink
-              href="/prive-jewellery?type=berry-international-womens"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              BERRY INTERNATIONAL WOMENS JEWELLERY
-            </DrawerLink>
-            <DrawerLink
-              href="/prive-jewellery?type=berry-international-mens"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              BERRY INTERNATIONAL MENS JEWELLERY
-            </DrawerLink>
-          </div>
-        </div>
-      </div>
+      <PanelWrapper title="Heritage Jewellery" onBack={onBack}>
+        <DrawerLink href="/heritage-jewelry?type=prive-heritage-womens" onNavigate={onNavigate} className={linkClass}>
+          Privé Heritage Womens Jewellery
+        </DrawerLink>
+        <DrawerLink href="/heritage-jewelry?type=prive-heritage-mens" onNavigate={onNavigate} className={linkClass}>
+          Privé Heritage Mens Jewellery
+        </DrawerLink>
+        <DrawerLink href="/heritage-prive?type=prive-international-womens" onNavigate={onNavigate} className={linkClass}>
+          Privé International Womens Jewellery
+        </DrawerLink>
+        <DrawerLink href="/heritage-prive?type=prive-international-mens" onNavigate={onNavigate} className={linkClass}>
+          Privé International Mens Jewellery
+        </DrawerLink>
+        <DrawerLink href="/heritage-jewelry?type=berry-heritage-womens" onNavigate={onNavigate} className={linkClass}>
+          Bérry Heritage Womens Jewellery
+        </DrawerLink>
+        <DrawerLink href="/heritage-jewelry?type=berry-heritage-mens" onNavigate={onNavigate} className={linkClass}>
+          Bérry Heritage Mens Jewellery
+        </DrawerLink>
+        <DrawerLink href="/prive-jewellery?type=berry-international-womens" onNavigate={onNavigate} className={linkClass}>
+          Bérry International Womens Jewellery
+        </DrawerLink>
+        <DrawerLink href="/prive-jewellery?type=berry-international-mens" onNavigate={onNavigate} className={linkClass}>
+          Bérry International Mens Jewellery
+        </DrawerLink>
+      </PanelWrapper>
     );
   }
 
   if (id === "fragrances") {
     return (
-      <div className="flex flex-col h-full">
-        <div className="flex items-center gap-2 p-6 pb-2">
-          <button
-            onClick={onBack}
-            className="text-sm uppercase underline decoration-1 underline-offset-4 hover:no-underline"
-            aria-label="Back"
-          >
-            ‹ Back
-          </button>
-        </div>
-        <div className="p-6 pt-4 space-y-4">
-          <h2 className="text-2xl font-light uppercase tracking-wider">FRAGRANCE</h2>
-          <div className="space-y-2.5">
-            <DrawerLink
-              href="/fragrances?gender=women"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              WOMENS FRAGRANCE
-            </DrawerLink>
-            <DrawerLink
-              href="/fragrances?gender=men"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              MENS FRAGRANCE
-            </DrawerLink>
-            <DrawerLink
-              href="/fragrances?collection=prive&gender=women"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              DL PRIVÉ WOMENS FRAGRANCE
-            </DrawerLink>
-            <DrawerLink
-              href="/fragrances?collection=prive&gender=men"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              DL PRIVÉ MENS FRAGRANCE
-            </DrawerLink>
-            <DrawerLink
-              href="/fragrances?collection=berry&gender=women"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              DL BÉRRY WOMENS FRAGRANCE
-            </DrawerLink>
-            <DrawerLink
-              href="/fragrances?collection=berry&gender=men"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase tracking-wider text-xs no-underline hover:no-underline hover:text-[#000000]"
-            >
-              DL BÉRRY MENS FRAGRANCE
-            </DrawerLink>
-          </div>
-        </div>
-      </div>
+      <PanelWrapper title="Haute Parfumerie" onBack={onBack}>
+        <DrawerLink href="/fragrances?gender=women" onNavigate={onNavigate} className={linkClass}>
+          Womens Fragrance
+        </DrawerLink>
+        <DrawerLink href="/fragrances?gender=men" onNavigate={onNavigate} className={linkClass}>
+          Mens Fragrance
+        </DrawerLink>
+        <DrawerLink href="/fragrances?collection=prive&gender=women" onNavigate={onNavigate} className={linkClass}>
+          DL Privé Womens Fragrance
+        </DrawerLink>
+        <DrawerLink href="/fragrances?collection=prive&gender=men" onNavigate={onNavigate} className={linkClass}>
+          DL Privé Mens Fragrance
+        </DrawerLink>
+        <DrawerLink href="/fragrances?collection=berry&gender=women" onNavigate={onNavigate} className={linkClass}>
+          DL Bérry Womens Fragrance
+        </DrawerLink>
+        <DrawerLink href="/fragrances?collection=berry&gender=men" onNavigate={onNavigate} className={linkClass}>
+          DL Bérry Mens Fragrance
+        </DrawerLink>
+      </PanelWrapper>
     );
   }
 
-  // Men -> Ready-to-wear panel
   if (id === "men-ready") {
     return (
-      <div className="flex flex-col h-full">
-        <div className="flex items-center gap-2 p-6 pb-2">
-          <button
-            onClick={onBack}
-            className="text-sm uppercase underline decoration-1 underline-offset-4 hover:no-underline"
-            aria-label="Back"
-          >
-            ‹ Back
-          </button>
-        </div>
-        <div className="p-6 pt-4 space-y-4">
-          <h2 className="text-2xl">
-            Ready
-            <Dash />
-            to
-            <Dash />
-            wear
-          </h2>
-          <div className="space-y-3">
-            <DrawerLink
-              href="/mens-ready-to-wear/t-shirts-polo"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase no-underline hover:no-underline"
-            >
-              T<Dash />
-              SHIRTS & POLO
-            </DrawerLink>
-
-            <DrawerLink
-              href="/mens-ready-to-wear/shirts"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase no-underline hover:no-underline"
-            >
-              SHIRTS
-            </DrawerLink>
-
-            <DrawerLink
-              href="/mens-ready-to-wear/pants-shorts"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase no-underline hover:no-underline"
-            >
-              PANTS & SHORTS
-            </DrawerLink>
-
-            <DrawerLink
-              href="/mens-ready-to-wear/knitwear"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase no-underline hover:no-underline"
-            >
-              KNITWEAR
-            </DrawerLink>
-
-            <DrawerLink
-              href="/mens-ready-to-wear/jackets"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase no-underline hover:no-underline"
-            >
-              JACKETS
-            </DrawerLink>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Men -> DL Privé panel (view all)
-  if (id === "men-prive") {
-    return (
-      <div className="flex flex-col h-full">
-        <div className="flex items-center gap-2 p-6 pb-2">
-          <button
-            onClick={onBack}
-            className="text-sm uppercase underline decoration-1 underline-offset-4 hover:no-underline"
-            aria-label="Back"
-          >
-            ‹ Back
-          </button>
-        </div>
-        <div className="p-6 pt-4 space-y-4">
-          <h2 className="text-2xl">DL PRIVÉ EDITION</h2>
-          <div className="space-y-3">
-            <DrawerLink
-              href="/prive"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase no-underline hover:no-underline"
-            >
-              VIEW ALL
-            </DrawerLink>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (id === "women-prive") {
-    return (
-      <div className="flex flex-col h-full">
-        <div className="flex items-center gap-2 p-6 pb-2">
-          <button
-            onClick={onBack}
-            className="text-sm uppercase underline decoration-1 underline-offset-4 hover:no-underline"
-            aria-label="Back"
-          >
-            ‹ Back
-          </button>
-        </div>
-        <div className="p-6 pt-4 space-y-4">
-          <h2 className="text-2xl">DL PRIVÉ EDITION</h2>
-          <div className="space-y-3">
-            <DrawerLink
-              href="/prive"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase no-underline hover:no-underline"
-            >
-              VIEW ALL
-            </DrawerLink>
-          </div>
-        </div>
-      </div>
+      <PanelWrapper title="Ready to Wear" onBack={onBack}>
+        <DrawerLink href="/mens-ready-to-wear/t-shirts-polo" onNavigate={onNavigate} className={linkClass}>
+          T-Shirts & Polo
+        </DrawerLink>
+        <DrawerLink href="/mens-ready-to-wear/shirts" onNavigate={onNavigate} className={linkClass}>
+          Shirts
+        </DrawerLink>
+        <DrawerLink href="/mens-ready-to-wear/pants-shorts" onNavigate={onNavigate} className={linkClass}>
+          Pants & Shorts
+        </DrawerLink>
+        <DrawerLink href="/mens-ready-to-wear/knitwear" onNavigate={onNavigate} className={linkClass}>
+          Knitwear
+        </DrawerLink>
+        <DrawerLink href="/mens-ready-to-wear/jackets" onNavigate={onNavigate} className={linkClass}>
+          Jackets
+        </DrawerLink>
+      </PanelWrapper>
     );
   }
 
   if (id === "services") {
     return (
-      <div className="flex flex-col h-full">
-        <div className="flex items-center gap-2 p-6 pb-2">
-          <button
-            onClick={onBack}
-            className="text-sm uppercase underline decoration-1 underline-offset-4 hover:no-underline"
-            aria-label="Back"
-          >
-            ‹ Back
-          </button>
-        </div>
-        <div className="p-6 pt-4 space-y-4">
-          <h2 className="text-2xl">DL Services</h2>
-          <div className="space-y-3">
-            <DrawerLink
-              href="/world-of-d-laven/sealed-in-heritage"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase no-underline hover:no-underline"
-            >
-              SEALED IN HERITAGE & SENT WITH LUXURY PACKAGING
-            </DrawerLink>
-
-            <DrawerLink
-              href="/world-of-d-laven/packaging"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase no-underline hover:no-underline"
-            >
-              PACKAGING
-            </DrawerLink>
-
-            <DrawerLink
-              href="/me"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase no-underline hover:no-underline"
-            >
-              MY D’LAVÉN ACCOUNT
-            </DrawerLink>
-          </div>
-        </div>
-      </div>
+      <PanelWrapper title="DL Services" onBack={onBack}>
+        <DrawerLink href="/world-of-d-laven/sealed-in-heritage" onNavigate={onNavigate} className={linkClass}>
+          Sealed in Heritage & Luxury Packaging
+        </DrawerLink>
+        <DrawerLink href="/world-of-d-laven/packaging" onNavigate={onNavigate} className={linkClass}>
+          Packaging Craftsmanship
+        </DrawerLink>
+        <DrawerLink href="/me" onNavigate={onNavigate} className={linkClass}>
+          My D’Lavén Account
+        </DrawerLink>
+      </PanelWrapper>
     );
   }
 
   if (id === "world") {
     return (
-      <div className="flex flex-col h-full">
-        <div className="flex items-center gap-2 p-6 pb-2">
-          <button
-            onClick={onBack}
-            className="text-sm uppercase underline decoration-1 underline-offset-4 hover:no-underline"
-            aria-label="Back"
-          >
-            ‹ Back
-          </button>
-        </div>
-        <div className="p-6 pt-4 space-y-4">
-          <h2 className="text-2xl">
-            World of D<Apostrophe /> L Avén
-          </h2>
-          <div className="space-y-3">
-            <DrawerLink
-              href="/world-of-d-laven/house-of-dl-creation"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase no-underline hover:no-underline"
-            >
-              HOUSE OF D’L CREATIONS
-            </DrawerLink>
-
-            <DrawerLink
-              href="/world-of-d-laven/future-of-dlaven"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase no-underline hover:no-underline"
-            >
-              FUTURE OF D’LAVÉN
-            </DrawerLink>
-          </div>
-        </div>
-      </div>
+      <PanelWrapper title="World of D’ Lavén" onBack={onBack}>
+        <DrawerLink href="/world-of-d-laven/house-of-dl-creation" onNavigate={onNavigate} className={linkClass}>
+          House of D’L Creations
+        </DrawerLink>
+        <DrawerLink href="/world-of-d-laven/future-of-dlaven" onNavigate={onNavigate} className={linkClass}>
+          Future of D’Lavén
+        </DrawerLink>
+      </PanelWrapper>
     );
   }
 
   if (id === "destinations") {
     return (
-      <div className="flex flex-col h-full">
-        <div className="flex items-center gap-2 p-6 pb-2">
-          <button
-            onClick={onBack}
-            className="text-sm uppercase underline decoration-1 underline-offset-4 hover:no-underline"
-            aria-label="Back"
-          >
-            ‹ Back
-          </button>
-        </div>
-        <div className="p-6 pt-4 space-y-4">
-          <h2 className="text-2xl">DL Destinations</h2>
-          <div className="space-y-3">
-            <DrawerLink
-              href="/destinations"
-              onNavigate={onNavigate}
-              className="block font-normal uppercase no-underline hover:no-underline"
-            >
-              Explore Destinations
-            </DrawerLink>
-          </div>
-        </div>
-      </div>
+      <PanelWrapper title="DL Destinations" onBack={onBack}>
+        <DrawerLink href="/destinations" onNavigate={onNavigate} className={linkClass}>
+          Explore Destinations
+        </DrawerLink>
+      </PanelWrapper>
     );
   }
 
-  // Fallback for unknown panels
+  // Fallback
   return (
-    <div className="p-6">
-      <button
-        onClick={onBack}
-        className="text-sm uppercase underline decoration-1 underline-offset-4 hover:no-underline"
-        aria-label="Back"
-      >
-        ‹ Back
-      </button>
-      <div className="mt-4">Section coming soon.</div>
-    </div>
+    <PanelWrapper title="Section" onBack={onBack}>
+      <p className="text-xs text-[#14161f]/70">Section coming soon.</p>
+    </PanelWrapper>
   );
 }
 
@@ -695,25 +363,16 @@ export default function MenuDrawer({
     if (!open) setActivePanel(null);
   }, [open]);
 
-  // Close with animation then navigate. We wait until the close animation
-  // finishes so Radix's dialog/focus-trap and overlay are fully removed
-  // before client navigation — this prevents the menu trigger from being
-  // blocked after navigation.
+  // Close drawer and navigate immediately
   const navigateWithClose = React.useCallback(
     (href: string) => {
-      // First reset the active panel immediately
       setActivePanel(null);
-      // Then close the drawer
       setOpen(false);
-      // clear any previous timeout
       if (navTimeout.current) {
         window.clearTimeout(navTimeout.current);
-      }
-      // Wait for close animation to complete before navigating
-      navTimeout.current = window.setTimeout(() => {
-        router.push(href);
         navTimeout.current = null;
-      }, 450); // slightly longer than Sheet animationDuration to ensure full cleanup
+      }
+      router.push(href);
     },
     [router, setOpen]
   );
@@ -732,16 +391,15 @@ export default function MenuDrawer({
     <>
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>{trigger}</SheetTrigger>
-        {/* Removed padding from SheetContent to handle scroll layout better */}
         <SheetContent
           side={side}
           data-drawer={side}
-          className={`w-[290px] sm:w-[320px] max-w-[calc(100vw-2rem)] flex flex-col p-0 top-28 md:top-32 bottom-auto h-fit max-h-[calc(100dvh-9rem)] overflow-hidden rounded-none border-none bg-[#e2ddd7] text-[#14161f] [font-family:var(--font-manrope)] backdrop-blur-md shadow-2xl ${
+          className={`w-[290px] sm:w-[320px] max-w-[calc(100vw-2rem)] flex flex-col p-0 top-24 sm:top-28 md:top-32 bottom-auto h-fit max-h-[calc(100dvh-7rem)] sm:max-h-[calc(100dvh-8.5rem)] rounded-none border-none bg-[#e2ddd7] text-[#14161f] [font-family:var(--font-manrope)] backdrop-blur-md shadow-2xl overflow-y-auto overflow-x-hidden ${
             side === "left" ? "left-4 md:left-6" : "right-4 md:right-6"
           }`}
         >
-          {/* Navigation Area — height follows the nav content */}
-          <div className="relative">
+          {/* Navigation Area — scrollable and fits all screen heights */}
+          <div className="relative w-full min-h-full">
             {/* Both root nav and panels are rendered and animated between using
                 translate + opacity transitions. This avoids unmount/mount
                 jank and gives a smooth panel slide-in effect. */}
@@ -749,7 +407,7 @@ export default function MenuDrawer({
               className={`relative pt-9 px-7 pb-7 sm:pt-10 sm:px-8 flex flex-col text-left text-[0.8rem] [font-family:var(--font-manrope)] transform transition-all duration-300 ease-out will-change-transform
                 ${
                   activePanel
-                    ? "opacity-0 -translate-x-4 pointer-events-none"
+                    ? "opacity-0 -translate-x-4 pointer-events-none hidden"
                     : "opacity-100 translate-x-0"
                 }
               `}
@@ -886,31 +544,26 @@ export default function MenuDrawer({
               </div>
             </nav>
 
-            {/* Panel area (placed after nav so it appears above when active) */}
-            <div
-              className={`absolute inset-0 overflow-hidden bg-[#e2ddd7] backdrop-blur-md transform transition-all duration-300 ease-out will-change-transform
-                ${
-                  activePanel
-                    ? "opacity-100 translate-x-0"
-                    : "opacity-0 translate-x-4 pointer-events-none"
-                }
-              `}
-            >
-              {activePanel && (
+            {/* Panel area (rendered when activePanel is set) */}
+            {activePanel && (
+              <div
+                className="w-full bg-[#e2ddd7] backdrop-blur-md transform transition-all duration-300 ease-out will-change-transform opacity-100 translate-x-0"
+              >
                 <PanelView
                   id={activePanel}
                   onBack={() => setActivePanel(null)}
                   onNavigate={navigateWithClose}
                   onOpenPanel={(id) => setActivePanel(id)}
                 />
-              )}
-            </div>
+              </div>
+            )}
           </div>
           {/* In-sheet close button (visible, top-right, above all content) */}
           <SheetClose asChild>
             <button
               type="button"
               aria-label="Close menu"
+              onClick={() => setActivePanel(null)}
               className="absolute right-4 top-4 h-8 w-8 grid place-items-center rounded-full border border-[#14161f]/20 bg-transparent text-[#14161f]/70 hover:text-[#000000] hover:border-[#14161f]/45 transition-colors duration-200 z-[60] pointer-events-auto"
             >
               <X className="h-4 w-4" />

@@ -34,7 +34,7 @@ function CategoryItem({
           />
         </div>
       </div>
-      <p className="mt-4 sm:mt-6 text-center text-sm sm:text-base font-medium tracking-wide" style={{ color: "#431717" }}>
+      <p className="mt-4 sm:mt-6 text-center text-sm sm:text-base font-medium tracking-wide" style={{ color: "#F6F4E6" }}>
         {name}
       </p>
     </Link>
@@ -66,19 +66,22 @@ export default async function CategoryGrid({
     console.error("[CategoryGrid] Failed to load categories", e);
   }
   return (
-    <section className="py-12 sm:py-16 md:py-20 bg-white">
+    <section
+      className="py-14 sm:py-18 md:py-24 px-4 md:px-8 w-full"
+      style={{ backgroundColor: "#6F3D24" }}
+      data-reveal="slideUp"
+      data-duration="0.9"
+    >
       <div className="text-center max-w-[95%] mx-auto">
         <h2
           className="font-le-grand text-4xl sm:text-5xl md:text-6xl font-normal tracking-wide mb-12 sm:mb-16"
-          style={{ color: "#431717" }}
-          data-reveal="slideUp"
-          data-duration="0.8"
+          style={{ color: "#F6F4E6" }}
         >
           {title}
         </h2>
 
         {/* 4 Category Items Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 md:gap-10 lg:gap-12" data-reveal="slideUp" data-stagger="0.15" data-delay="0.2">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 md:gap-10 lg:gap-12">
           {data.slice(0, 4).map((category) => (
             <CategoryItem
               key={category.slug}
