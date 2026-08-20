@@ -8,7 +8,7 @@ import type { Product } from "@/types/product";
 
 const MANROPE = `var(--font-manrope), sans-serif`;
 const LE_GRAND = `var(--font-le-grand), serif`;
-const BG_CREAM = "#FFFFFF";
+const BG_CREAM = "#F6F4E6";
 const BRAND_DARK = "#431717";
 const BRAND_BODY = "#4a3f35";
 const BRAND_TERRACOTTA = "#854A2D";

@@ -143,7 +143,7 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
       <div
         data-state={state}
         data-search-panel=""
-        className="absolute left-4 right-4 top-28 z-[36] bg-[#e2ddd7] text-[#14161f] [font-family:var(--font-manrope)] backdrop-blur-md shadow-2xl border-none md:left-6 md:right-6 md:top-32"
+        className="absolute left-4 right-4 top-28 z-[36] bg-[#F6F4E6] text-[#14161f] [font-family:var(--font-manrope)] backdrop-blur-md shadow-2xl border border-black/10 md:left-6 md:right-6 md:top-32"
       >
         {/* Search field */}
         <div className="px-6 sm:px-10 lg:px-12 pt-8 sm:pt-10 pb-6">

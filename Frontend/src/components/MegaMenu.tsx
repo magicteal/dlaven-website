@@ -195,7 +195,7 @@ export default function MegaMenu({
 
       {/* Mega Menu Card Container - Compact height layout with smooth enter and exit animation */}
       <div
-        className={`absolute top-[calc(100%+16px)] left-0 right-0 w-full z-[50] bg-[#e2ddd7] text-[#14161f] shadow-2xl rounded-none border border-[#14161f]/15 overflow-hidden transition-all [font-family:var(--font-manrope)] before:content-[''] before:absolute before:-top-5 before:left-0 before:right-0 before:h-5 before:z-[-1] ${
+        className={`absolute top-[calc(100%+16px)] left-0 right-0 w-full z-[50] bg-[#F6F4E6] text-[#14161f] shadow-2xl rounded-none border border-[#14161f]/15 overflow-hidden transition-all [font-family:var(--font-manrope)] before:content-[''] before:absolute before:-top-5 before:left-0 before:right-0 before:h-5 before:z-[-1] ${
           isClosing ? "animate-megaMenuOut" : "animate-megaMenuIn"
         }`}
       >
@@ -226,10 +226,10 @@ export default function MegaMenu({
           {/* Grid Layout: Main sub-menu items + Featured Visual Callout */}
           <div
             key={displayCategory}
-            className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start transition-all duration-300 animate-fadeIn"
+            className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch transition-all duration-300 animate-fadeIn"
           >
-            {/* Left 7 Columns: Items List in 2 Clean Sub-columns */}
-            <div className="lg:col-span-7 flex flex-col justify-between h-full">
+            {/* Left Columns: Items List in 2 Clean Sub-columns */}
+            <div className="lg:col-span-7 flex flex-col justify-between">
               <div>
                 <div className="mb-3">
                   <h3 className="text-[9px] md:text-[10px] uppercase tracking-[0.25em] text-[#431717] font-semibold mb-0.5">
@@ -278,28 +278,28 @@ export default function MegaMenu({
               </div>
             </div>
 
-            {/* Right 5 Columns: Compact Visual Showcase Banner */}
-            <div className="lg:col-span-5 relative group overflow-hidden rounded-none bg-[#d8d2cb] aspect-[16/9] max-h-[230px] flex flex-col justify-end p-4 shadow-sm">
+            {/* Right Columns: Visual Showcase Banner stretching to right edge */}
+            <div className="lg:col-span-5 relative group overflow-hidden rounded-none bg-[#d8d2cb] w-full h-full min-h-[220px] md:min-h-[240px] flex flex-col justify-end p-5 shadow-sm">
               <Image
                 src={data.image}
                 alt={data.title}
                 fill
                 className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
-                sizes="(max-width: 1024px) 100vw, 35vw"
+                sizes="(max-width: 1024px) 100vw, 40vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent" />
 
               <div className="relative z-10 text-white">
                 <span className="text-[9px] uppercase tracking-[0.25em] font-medium text-white/80 block mb-0.5">
                   HOUSE OF D’LAVÉN
                 </span>
-                <h4 className="text-base font-light tracking-wide uppercase mb-1.5">
+                <h4 className="text-base font-light tracking-wide uppercase mb-2">
                   {data.title}
                 </h4>
                 <Link
                   href={data.ctaHref}
                   onClick={onClose}
-                  className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/90 text-black text-[11px] font-medium uppercase tracking-[0.15em] hover:bg-white transition-colors rounded-none"
+                  className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-white/90 text-black text-[11px] font-medium uppercase tracking-[0.15em] hover:bg-white transition-colors rounded-none shadow-sm"
                 >
                   <span>DISCOVER</span>
                   <ArrowRight className="w-2.5 h-2.5" />

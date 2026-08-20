@@ -394,7 +394,7 @@ export default function MenuDrawer({
         <SheetContent
           side={side}
           data-drawer={side}
-          className={`w-[290px] sm:w-[320px] max-w-[calc(100vw-2rem)] flex flex-col p-0 top-24 sm:top-28 md:top-32 bottom-auto h-fit max-h-[calc(100dvh-7rem)] sm:max-h-[calc(100dvh-8.5rem)] rounded-none border-none bg-[#e2ddd7] text-[#14161f] [font-family:var(--font-manrope)] backdrop-blur-md shadow-2xl overflow-y-auto overflow-x-hidden ${
+          className={`w-[290px] sm:w-[320px] max-w-[calc(100vw-2rem)] flex flex-col p-0 top-24 sm:top-28 md:top-32 bottom-auto h-fit max-h-[calc(100dvh-7rem)] sm:max-h-[calc(100dvh-8.5rem)] rounded-none border border-black/10 bg-[#F6F4E6] text-[#14161f] [font-family:var(--font-manrope)] backdrop-blur-md shadow-2xl overflow-y-auto overflow-x-hidden ${
             side === "left" ? "left-4 md:left-6" : "right-4 md:right-6"
           }`}
         >
@@ -547,7 +547,7 @@ export default function MenuDrawer({
             {/* Panel area (rendered when activePanel is set) */}
             {activePanel && (
               <div
-                className="w-full bg-[#e2ddd7] backdrop-blur-md transform transition-all duration-300 ease-out will-change-transform opacity-100 translate-x-0"
+                className="w-full bg-[#F6F4E6] backdrop-blur-md transform transition-all duration-300 ease-out will-change-transform opacity-100 translate-x-0"
               >
                 <PanelView
                   id={activePanel}

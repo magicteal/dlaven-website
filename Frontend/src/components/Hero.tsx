@@ -19,9 +19,10 @@ export default function Hero() {
       {/* Single Full Width Pristine Hero Image */}
       <div className="relative h-full w-full group">
         <Image
-          src="/images/hero_bg.png"
+          src="/images/hero_boutique.jpg"
           alt="D' LAVÉN House of Luxury"
           fill
+          quality={95}
           className="object-cover object-center group-hover:scale-105 transition-transform duration-1000 ease-out"
           priority
           sizes="100vw"

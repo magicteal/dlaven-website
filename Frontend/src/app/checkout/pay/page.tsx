@@ -105,7 +105,7 @@ export default function CheckoutPayPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#faf7f2] pt-24 pb-20">
+    <main className="min-h-screen bg-[#F6F4E6] pt-24 pb-20">
       <Container>
         <button
           type="button"
