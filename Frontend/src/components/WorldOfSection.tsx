@@ -2,61 +2,29 @@
 
 import Container from "@/components/Container";
 import Link from "next/link";
+import Image from "next/image";
 import Apostrophe from "@/components/Apostrophe";
-import { useRef, useState } from "react";
 
 const cities = [
-  { name: "Mumbai", videoUrl: "/videos/location.mp4" },
-  { name: "Delhi", videoUrl: "/videos/location.mp4" },
-  { name: "Varanasi", videoUrl: "/videos/location.mp4" },
+  { name: "Mumbai", imageSrc: "/images/mumbai.svg" },
+  { name: "Delhi", imageSrc: "/images/delhi.svg" },
+  { name: "Varanasi", imageSrc: "/images/varanasi.svg" },
 ];
 
-function VideoCard({ name, videoUrl }: { name: string; videoUrl: string }) {
-  const [isHovered, setIsHovered] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-    if (videoRef.current) {
-      videoRef.current.play();
-    }
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-    if (videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
-    }
-  };
-
+function CityCard({ name, imageSrc }: { name: string; imageSrc: string }) {
   return (
-    <div
-      className="relative w-full h-52 sm:h-64 md:h-full overflow-hidden cursor-pointer group"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <video
-        ref={videoRef}
-        src={videoUrl}
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="auto"
-        className="absolute inset-0 w-full h-full object-cover"
+    <div className="relative w-full h-64 sm:h-80 md:h-full overflow-hidden cursor-pointer group">
+      <Image
+        src={imageSrc}
+        alt={`${name} Destination`}
+        fill
+        unoptimized
+        className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+        sizes="(max-width: 768px) 100vw, 33vw"
       />
-      <div
-        className={`absolute inset-0 bg-black transition-opacity duration-500 ${
-          isHovered ? "opacity-0" : "opacity-70"
-        }`}
-      />
+      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500" />
       <div className="absolute inset-0 flex items-center justify-center">
-        <h3
-          className={`font-le-grand text-white text-3xl md:text-5xl font-normal tracking-wider uppercase transition-opacity duration-500 ${
-            isHovered ? "opacity-0" : "opacity-100"
-          }`}
-        >
+        <h3 className="font-le-grand text-white text-3xl md:text-5xl font-normal tracking-wider uppercase transition-transform duration-500 group-hover:scale-105">
           {name}
         </h3>
       </div>
@@ -67,12 +35,12 @@ function VideoCard({ name, videoUrl }: { name: string; videoUrl: string }) {
 export default function WorldOfSection() {
   return (
     <section className="pb-16 sm:pb-20" style={{ backgroundColor: "#6F3D24" }}>
-      {/* Inset padded videos — background shows as frame */}
+      {/* Inset padded images — background shows as frame */}
       <div className="px-[2.5%] pt-10">
         <div className="w-full flex flex-col md:flex-row gap-1 md:h-[640px] lg:h-[780px]">
           {cities.map((city) => (
             <div key={city.name} className="w-full md:flex-1 min-w-0 overflow-hidden">
-              <VideoCard name={city.name} videoUrl={city.videoUrl} />
+              <CityCard name={city.name} imageSrc={city.imageSrc} />
             </div>
           ))}
         </div>

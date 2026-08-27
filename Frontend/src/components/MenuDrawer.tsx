@@ -394,7 +394,7 @@ export default function MenuDrawer({
         <SheetContent
           side={side}
           data-drawer={side}
-          className={`w-[290px] sm:w-[320px] max-w-[calc(100vw-2rem)] flex flex-col p-0 top-24 sm:top-28 md:top-32 bottom-auto h-fit max-h-[calc(100dvh-7rem)] sm:max-h-[calc(100dvh-8.5rem)] rounded-none border border-black/10 bg-[#F6F4E6] text-[#14161f] [font-family:var(--font-manrope)] backdrop-blur-md shadow-2xl overflow-y-auto overflow-x-hidden ${
+          className={`w-[290px] sm:w-[320px] max-w-[calc(100vw-2rem)] flex flex-col p-0 top-[82px] sm:top-[92px] md:top-[140px] bottom-auto h-fit max-h-[calc(100dvh-6rem)] sm:max-h-[calc(100dvh-7rem)] md:max-h-[calc(100dvh-10rem)] rounded-none border border-black/10 bg-[#F6F4E6] text-[#14161f] [font-family:var(--font-manrope)] backdrop-blur-md shadow-2xl overflow-y-auto overflow-x-hidden ${
             side === "left" ? "left-4 md:left-6" : "right-4 md:right-6"
           }`}
         >

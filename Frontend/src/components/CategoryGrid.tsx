@@ -41,6 +41,44 @@ function CategoryItem({
   );
 }
 
+const DEFAULT_CATEGORY_IMAGES: Record<string, string> = {
+  prive: "/images/dlprive_1.jpg",
+  "dl-prive": "/images/dlprive_1.jpg",
+  fragrances: "/images/frangrence.png",
+  "heritage-jewelry": "/images/heritage.png",
+  "mens-ready-to-wear": "/images/mensReady.png",
+  "womens-ready-to-wear": "/images/couture_sequin_dress.png",
+  "womens-adornments": "/images/womenswear/adornments_1.png",
+  "mens-adornments": "/images/menswear/adornments_main.png",
+};
+
+const FALLBACK_CATEGORIES = [
+  {
+    name: "DL PRIVE",
+    slug: "dl-prive",
+    imageSrc: "/images/dlprive_1.jpg",
+    imageAlt: "DL PRIVE Haute Couture & High Jewelry",
+  },
+  {
+    name: "Fragrances",
+    slug: "fragrances",
+    imageSrc: "/images/frangrence.png",
+    imageAlt: "D' LAVÉN Artisanal Fragrance & Haute Parfumerie",
+  },
+  {
+    name: "Heritage Jewelry",
+    slug: "heritage-jewelry",
+    imageSrc: "/images/heritage.png",
+    imageAlt: "D' LAVÉN Heritage Jewelry Collection",
+  },
+  {
+    name: "Mens Ready To Wear",
+    slug: "mens-ready-to-wear",
+    imageSrc: "/images/mensReady.png",
+    imageAlt: "D' LAVÉN Mens Ready To Wear & Tailoring",
+  },
+];
+
 /**
  * Main Category Grid Component (Server Component / async)
  */
@@ -56,6 +94,7 @@ export default async function CategoryGrid({
     imageSrc?: string;
     imageAlt?: string;
   }> = [];
+
   try {
     const res = await fetch(`${API_BASE}/api/categories`, { cache: "no-store" });
     if (res.ok) {
@@ -65,6 +104,10 @@ export default async function CategoryGrid({
   } catch (e) {
     console.error("[CategoryGrid] Failed to load categories", e);
   }
+
+  // Use fallback categories if API data is empty
+  const displayCategories = data.length >= 4 ? data.slice(0, 4) : FALLBACK_CATEGORIES;
+
   return (
     <section
       className="py-14 sm:py-18 md:py-24 px-4 md:px-8 w-full"
@@ -82,15 +125,24 @@ export default async function CategoryGrid({
 
         {/* 4 Category Items Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 md:gap-10 lg:gap-12">
-          {data.slice(0, 4).map((category) => (
-            <CategoryItem
-              key={category.slug}
-              name={category.name}
-              slug={category.slug}
-              imageSrc={category.imageSrc || "/images/placeholder.png"}
-              imageAlt={category.imageAlt || ""}
-            />
-          ))}
+          {displayCategories.map((category) => {
+            const resolvedImage =
+              category.imageSrc &&
+              !category.imageSrc.includes("Screenshot_2025") &&
+              !category.imageSrc.includes("nappy-dcBO4nt4MRE")
+                ? category.imageSrc
+                : DEFAULT_CATEGORY_IMAGES[category.slug] || "/images/placeholder.png";
+
+            return (
+              <CategoryItem
+                key={category.slug}
+                name={category.name}
+                slug={category.slug === "prive" ? "dl-prive" : category.slug}
+                imageSrc={resolvedImage}
+                imageAlt={category.imageAlt || category.name}
+              />
+            );
+          })}
         </div>
       </div>
     </section>
