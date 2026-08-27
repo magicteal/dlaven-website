@@ -207,56 +207,132 @@ function PanelView({
 
   if (id === "heritage") {
     return (
-      <PanelWrapper title="Heritage Jewellery" onBack={onBack}>
-        <DrawerLink href="/heritage-jewelry?type=prive-heritage-womens" onNavigate={onNavigate} className={linkClass}>
-          Privé Heritage Womens Jewellery
-        </DrawerLink>
-        <DrawerLink href="/heritage-jewelry?type=prive-heritage-mens" onNavigate={onNavigate} className={linkClass}>
-          Privé Heritage Mens Jewellery
-        </DrawerLink>
-        <DrawerLink href="/heritage-prive?type=prive-international-womens" onNavigate={onNavigate} className={linkClass}>
-          Privé International Womens Jewellery
-        </DrawerLink>
-        <DrawerLink href="/heritage-prive?type=prive-international-mens" onNavigate={onNavigate} className={linkClass}>
-          Privé International Mens Jewellery
-        </DrawerLink>
-        <DrawerLink href="/heritage-jewelry?type=berry-heritage-womens" onNavigate={onNavigate} className={linkClass}>
-          Bérry Heritage Womens Jewellery
-        </DrawerLink>
-        <DrawerLink href="/heritage-jewelry?type=berry-heritage-mens" onNavigate={onNavigate} className={linkClass}>
-          Bérry Heritage Mens Jewellery
-        </DrawerLink>
-        <DrawerLink href="/prive-jewellery?type=berry-international-womens" onNavigate={onNavigate} className={linkClass}>
-          Bérry International Womens Jewellery
-        </DrawerLink>
-        <DrawerLink href="/prive-jewellery?type=berry-international-mens" onNavigate={onNavigate} className={linkClass}>
-          Bérry International Mens Jewellery
-        </DrawerLink>
+      <PanelWrapper title="Jewellery" onBack={onBack}>
+        {/* PRIVE HERITAGE JEWELLERY */}
+        <div className="pt-1">
+          <span className="block font-bold text-[0.82rem] tracking-[0.06em] text-[#000000] uppercase pb-0.5">
+            PRIVE HERITAGE JEWELLERY
+          </span>
+          <div className="space-y-0.5">
+            <DrawerLink href="/heritage-jewelry?type=prive-heritage-womens" onNavigate={onNavigate} className={linkClass}>
+              WOMENS JEWELLERY
+            </DrawerLink>
+            <DrawerLink href="/heritage-jewelry?type=prive-heritage-mens" onNavigate={onNavigate} className={linkClass}>
+              MEN&apos;S JEWELLERY
+            </DrawerLink>
+          </div>
+        </div>
+
+        {/* PRIVE INTERNATIONAL JEWELLERY */}
+        <div className="pt-3.5">
+          <span className="block font-bold text-[0.82rem] tracking-[0.06em] text-[#000000] uppercase pb-0.5">
+            PRIVE INTERNATIONAL JEWELLERY
+          </span>
+          <div className="space-y-0.5">
+            <DrawerLink href="/heritage-prive?type=prive-international-womens" onNavigate={onNavigate} className={linkClass}>
+              WOMENS JEWELLERY
+            </DrawerLink>
+            <DrawerLink href="/heritage-prive?type=prive-international-mens" onNavigate={onNavigate} className={linkClass}>
+              MEN&apos;S JEWELLERY
+            </DrawerLink>
+          </div>
+        </div>
+
+        {/* BERRY HERITAGE JEWELLERY */}
+        <div className="pt-3.5">
+          <span className="block font-bold text-[0.82rem] tracking-[0.06em] text-[#000000] uppercase pb-0.5">
+            BERRY HERITAGE JEWELLERY
+          </span>
+          <div className="space-y-0.5">
+            <DrawerLink href="/heritage-jewelry?type=berry-heritage-womens" onNavigate={onNavigate} className={linkClass}>
+              WOMENS JEWELLERY
+            </DrawerLink>
+            <DrawerLink href="/heritage-jewelry?type=berry-heritage-mens" onNavigate={onNavigate} className={linkClass}>
+              MEN&apos;S JEWELLERY
+            </DrawerLink>
+          </div>
+        </div>
+
+        {/* BERRY INTERNATIONAL JEWELLERY */}
+        <div className="pt-3.5">
+          <span className="block font-bold text-[0.82rem] tracking-[0.06em] text-[#000000] uppercase pb-0.5">
+            BERRY INTERNATIONAL JEWELLERY
+          </span>
+          <div className="space-y-0.5">
+            <DrawerLink href="/prive-jewellery?type=berry-international-womens" onNavigate={onNavigate} className={linkClass}>
+              WOMENS JEWELLERY
+            </DrawerLink>
+            <DrawerLink href="/prive-jewellery?type=berry-international-mens" onNavigate={onNavigate} className={linkClass}>
+              MEN&apos;S JEWELLERY
+            </DrawerLink>
+          </div>
+        </div>
       </PanelWrapper>
     );
   }
 
   if (id === "fragrances") {
     return (
-      <PanelWrapper title="Haute Parfumerie" onBack={onBack}>
-        <DrawerLink href="/fragrances?gender=women" onNavigate={onNavigate} className={linkClass}>
-          Womens Fragrance
-        </DrawerLink>
-        <DrawerLink href="/fragrances?gender=men" onNavigate={onNavigate} className={linkClass}>
-          Mens Fragrance
-        </DrawerLink>
-        <DrawerLink href="/fragrances?collection=prive&gender=women" onNavigate={onNavigate} className={linkClass}>
-          DL Privé Womens Fragrance
-        </DrawerLink>
-        <DrawerLink href="/fragrances?collection=prive&gender=men" onNavigate={onNavigate} className={linkClass}>
-          DL Privé Mens Fragrance
-        </DrawerLink>
-        <DrawerLink href="/fragrances?collection=berry&gender=women" onNavigate={onNavigate} className={linkClass}>
-          DL Bérry Womens Fragrance
-        </DrawerLink>
-        <DrawerLink href="/fragrances?collection=berry&gender=men" onNavigate={onNavigate} className={linkClass}>
-          DL Bérry Mens Fragrance
-        </DrawerLink>
+      <PanelWrapper title="Fragrance" onBack={onBack}>
+        {/* PRIVE HERITAGE FRAGRANCES */}
+        <div className="pt-1">
+          <span className="block font-bold text-[0.82rem] tracking-[0.06em] text-[#000000] uppercase pb-0.5">
+            PRIVE HERITAGE FRAGRANCE
+          </span>
+          <div className="space-y-0.5">
+            <DrawerLink href="/fragrances?collection=prive&type=heritage&gender=women" onNavigate={onNavigate} className={linkClass}>
+              WOMENS FRAGRANCE
+            </DrawerLink>
+            <DrawerLink href="/fragrances?collection=prive&type=heritage&gender=men" onNavigate={onNavigate} className={linkClass}>
+              MEN&apos;S FRAGRANCE
+            </DrawerLink>
+          </div>
+        </div>
+
+        {/* PRIVE INTERNATIONAL FRAGRANCES */}
+        <div className="pt-3.5">
+          <span className="block font-bold text-[0.82rem] tracking-[0.06em] text-[#000000] uppercase pb-0.5">
+            PRIVE INTERNATIONAL FRAGRANCE
+          </span>
+          <div className="space-y-0.5">
+            <DrawerLink href="/fragrances?collection=prive&type=international&gender=women" onNavigate={onNavigate} className={linkClass}>
+              WOMENS FRAGRANCE
+            </DrawerLink>
+            <DrawerLink href="/fragrances?collection=prive&type=international&gender=men" onNavigate={onNavigate} className={linkClass}>
+              MEN&apos;S FRAGRANCE
+            </DrawerLink>
+          </div>
+        </div>
+
+        {/* BERRY HERITAGE FRAGRANCES */}
+        <div className="pt-3.5">
+          <span className="block font-bold text-[0.82rem] tracking-[0.06em] text-[#000000] uppercase pb-0.5">
+            BERRY HERITAGE FRAGRANCE
+          </span>
+          <div className="space-y-0.5">
+            <DrawerLink href="/fragrances?collection=berry&type=heritage&gender=women" onNavigate={onNavigate} className={linkClass}>
+              WOMENS FRAGRANCE
+            </DrawerLink>
+            <DrawerLink href="/fragrances?collection=berry&type=heritage&gender=men" onNavigate={onNavigate} className={linkClass}>
+              MEN&apos;S FRAGRANCE
+            </DrawerLink>
+          </div>
+        </div>
+
+        {/* BERRY INTERNATIONAL FRAGRANCES */}
+        <div className="pt-3.5">
+          <span className="block font-bold text-[0.82rem] tracking-[0.06em] text-[#000000] uppercase pb-0.5">
+            BERRY INTERNATIONAL FRAGRANCE
+          </span>
+          <div className="space-y-0.5">
+            <DrawerLink href="/fragrances?collection=berry&type=international&gender=women" onNavigate={onNavigate} className={linkClass}>
+              WOMENS FRAGRANCE
+            </DrawerLink>
+            <DrawerLink href="/fragrances?collection=berry&type=international&gender=men" onNavigate={onNavigate} className={linkClass}>
+              MEN&apos;S FRAGRANCE
+            </DrawerLink>
+          </div>
+        </div>
       </PanelWrapper>
     );
   }
@@ -448,7 +524,7 @@ export default function MenuDrawer({
                   panelId="heritage"
                   className="block font-normal uppercase tracking-[0.06em] text-[#14161f] no-underline hover:no-underline hover:text-[#000000] transition-colors duration-200"
                 >
-                  Heritage Jewelery
+                  Jewellery
                 </DrawerLink>
                 <DrawerLink
                   href="/fragrances"
