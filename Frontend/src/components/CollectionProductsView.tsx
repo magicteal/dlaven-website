@@ -186,18 +186,13 @@ export default function CollectionProductsView({
                     <Image src={item.cards.modelFull} alt={`${item.name} Model`} fill className="object-cover object-center hover:scale-105 transition-transform duration-500" sizes="18vw" />
                   </div>
 
-                  {/* Card 2: 2x2 Thumbnail Grid + Watermark (Portrait 3:4) */}
-                  <div className="w-full rounded-2xl md:rounded-3xl shadow-sm border border-[#431717]/10 bg-white p-1.5 sm:p-2 flex flex-col justify-between" style={{ aspectRatio: "3/4" }}>
-                    <div className="grid grid-cols-2 gap-1 sm:gap-1.5 w-full h-[80%]">
-                      {item.cards.gridThumbnails.slice(0, 4).map((gImg, gIdx) => (
-                        <div key={gIdx} className="relative overflow-hidden rounded-lg w-full h-full">
-                          <Image src={gImg} alt={`${item.name} Detail ${gIdx + 1}`} fill className="object-cover object-center" sizes="100px" />
-                        </div>
-                      ))}
-                    </div>
-                    <div className="flex justify-center pt-1">
-                      <Image src="/logos/logo.svg" alt="D'LAVÉN" width={45} height={14} className="h-3 sm:h-3.5 w-auto object-contain opacity-75" style={{ filter: "brightness(0.2)" }} />
-                    </div>
+                  {/* Card 2: 4 Individual Distinct Image Boxes (2x2 Grid, No Outer Box, No Logo) */}
+                  <div className="w-full grid grid-cols-2 grid-rows-2 gap-1.5 sm:gap-2" style={{ aspectRatio: "3/4" }}>
+                    {item.cards.gridThumbnails.slice(0, 4).map((gImg, gIdx) => (
+                      <div key={gIdx} className="relative overflow-hidden rounded-xl md:rounded-2xl w-full h-full shadow-sm border border-[#431717]/10 bg-white">
+                        <Image src={gImg} alt={`${item.name} Detail ${gIdx + 1}`} fill className="object-cover object-center hover:scale-105 transition-transform duration-500" sizes="100px" />
+                      </div>
+                    ))}
                   </div>
 
                   {/* Card 3: Cutout + Title + Watermark (Portrait 3:4) */}
@@ -223,32 +218,57 @@ export default function CollectionProductsView({
                     <Image src={item.cards.detailCloseup} alt={`${item.name} Lounge`} fill className="object-cover object-center hover:scale-105 transition-transform duration-500" sizes="18vw" />
                   </div>
 
-                  {/* Card 6: Unified Portrait Card (3:4 aspect) — Top 58% Portrait Resort Photo + Bottom 42% Terracotta Price Card */}
-                  <div
-                    className="w-full rounded-2xl md:rounded-3xl shadow-sm overflow-hidden flex flex-col border border-[#431717]/10"
-                    style={{ aspectRatio: "3/4" }}
-                  >
-                    {/* Top 58%: Vertical Portrait Resort Shot */}
-                    <div className="relative w-full overflow-hidden" style={{ height: "58%", flexShrink: 0 }}>
-                      <Image src={item.cards.resortShot} alt={`${item.name} Resort`} fill className="object-cover object-center hover:scale-105 transition-transform duration-500" sizes="18vw" />
+                  {/* Card 6: Top 2 Side-by-Side Image Boxes + Bottom Terracotta Price Card (Matching User Design) */}
+                  <div className="w-full flex flex-col gap-1.5 sm:gap-2" style={{ aspectRatio: "3/4" }}>
+                    {/* Top Row: 2 Side-by-Side Image Boxes */}
+                    <div className="grid grid-cols-2 gap-1.5 sm:gap-2 w-full h-[52%] flex-shrink-0">
+                      {/* Box 1 (Left): Model Portrait */}
+                      <div className="relative overflow-hidden rounded-xl md:rounded-2xl shadow-sm border border-[#431717]/10 bg-white">
+                        <Image
+                          src={item.cards.outdoorLifestyle}
+                          alt={`${item.name} Model Crop`}
+                          fill
+                          className="object-cover object-center hover:scale-105 transition-transform duration-500"
+                          sizes="10vw"
+                        />
+                      </div>
+
+                      {/* Box 2 (Right): Flatlay / Cutout */}
+                      <div className="relative overflow-hidden rounded-xl md:rounded-2xl shadow-sm border border-[#431717]/10 bg-white p-1">
+                        <Image
+                          src={item.cards.cutoutWithWatermark}
+                          alt={`${item.name} Flatlay`}
+                          fill
+                          className="object-contain object-center hover:scale-105 transition-transform duration-500"
+                          sizes="10vw"
+                        />
+                      </div>
                     </div>
-                    {/* Bottom 42%: Terracotta Price Card Section */}
+
+                    {/* Bottom Row: Terracotta Price & Description Card */}
                     <div
-                      className="w-full flex-1 flex flex-col justify-between items-center text-center text-[#F6F4E6] p-2 sm:p-2.5"
+                      className="w-full flex-1 overflow-hidden shadow-sm flex flex-col justify-center items-center text-center text-[#F6F4E6] p-2.5 sm:p-3"
                       style={{ backgroundColor: BRAND_TERRACOTTA }}
                     >
-                      <p className="text-[8px] sm:text-[9px] uppercase tracking-[0.18em] italic font-light pt-0.5" style={{ fontFamily: LE_GRAND }}>
-                        D&apos; LAVÉN &nbsp;×&nbsp; Stella Élégance
+                      <p
+                        className="text-[9px] sm:text-[10.5px] tracking-wider italic font-normal mb-1"
+                        style={{ fontFamily: LE_GRAND }}
+                      >
+                        D&apos;LAVÉN &nbsp;×&nbsp; Stella Élégance
                       </p>
-                      <div>
-                        <h3 className="text-[10px] sm:text-[11px] uppercase tracking-[0.12em] font-medium mb-0.5 text-[#F6F4E6] line-clamp-1" style={{ fontFamily: LE_GRAND }}>
-                          {item.name}
-                        </h3>
-                        <p className="text-[9px] sm:text-[10px] font-semibold tracking-wider text-[#F6F4E6]">
-                          Price ₹{item.price.toLocaleString("en-IN")}.00
-                        </p>
-                      </div>
-                      <p className="text-[7.5px] sm:text-[8.5px] leading-tight opacity-85 line-clamp-2 font-light px-0.5 pb-0.5" style={{ fontFamily: MANROPE }}>
+                      <h3
+                        className="text-[10px] sm:text-[11.5px] uppercase tracking-[0.14em] font-normal mb-0.5 text-[#F6F4E6] line-clamp-1"
+                        style={{ fontFamily: LE_GRAND }}
+                      >
+                        {item.name}
+                      </h3>
+                      <p className="text-[9px] sm:text-[10px] font-semibold tracking-wider text-[#F6F4E6] mb-1">
+                        Price ₹{item.price.toLocaleString("en-IN")}.00
+                      </p>
+                      <p
+                        className="text-[7.5px] sm:text-[8px] leading-tight opacity-90 line-clamp-2 font-light max-w-[95%]"
+                        style={{ fontFamily: MANROPE }}
+                      >
                         {item.description}
                       </p>
                     </div>

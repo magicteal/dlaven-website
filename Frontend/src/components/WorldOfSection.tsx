@@ -13,21 +13,16 @@ const cities = [
 
 function CityCard({ name, imageSrc }: { name: string; imageSrc: string }) {
   return (
-    <div className="relative w-full h-64 sm:h-80 md:h-full overflow-hidden cursor-pointer group">
+    <div className="relative w-full aspect-[1874/3356] overflow-hidden cursor-pointer group">
       <Image
         src={imageSrc}
         alt={`${name} Destination`}
         fill
         unoptimized
-        className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+        priority
+        className="object-contain w-full h-full group-hover:scale-105 transition-transform duration-700 ease-out"
         sizes="(max-width: 768px) 100vw, 33vw"
       />
-      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500" />
-      <div className="absolute inset-0 flex items-center justify-center">
-        <h3 className="font-le-grand text-white text-3xl md:text-5xl font-normal tracking-wider uppercase transition-transform duration-500 group-hover:scale-105">
-          {name}
-        </h3>
-      </div>
     </div>
   );
 }
@@ -35,11 +30,11 @@ function CityCard({ name, imageSrc }: { name: string; imageSrc: string }) {
 export default function WorldOfSection() {
   return (
     <section className="pb-16 sm:pb-20" style={{ backgroundColor: "#6F3D24" }}>
-      {/* Inset padded images — background shows as frame */}
-      <div className="px-[2.5%] pt-10">
-        <div className="w-full flex flex-col md:flex-row gap-1 md:h-[640px] lg:h-[780px]">
+      {/* Inset padded images — full aspect ratio with no cropping */}
+      <div className="px-[2.5%] pt-8 sm:pt-10">
+        <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-2 sm:gap-3 md:gap-4 max-w-[95%] mx-auto">
           {cities.map((city) => (
-            <div key={city.name} className="w-full md:flex-1 min-w-0 overflow-hidden">
+            <div key={city.name} className="w-full min-w-0 overflow-hidden">
               <CityCard name={city.name} imageSrc={city.imageSrc} />
             </div>
           ))}
