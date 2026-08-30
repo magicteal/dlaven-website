@@ -41,7 +41,7 @@ ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 print(f"Connecting to VPS ({host})...")
 ssh.connect(host, username=user, password=password, timeout=30)
 
-def run(cmd, timeout=300):
+def run(cmd, timeout=900):
     print(f"\n=================== [ {cmd} ] ===================")
     stdin, stdout, stderr = ssh.exec_command(cmd, timeout=timeout)
     out = stdout.read().decode('utf-8', errors='replace')
