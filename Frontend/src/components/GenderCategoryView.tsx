@@ -15,7 +15,7 @@ const BRAND_DARK = "#431717";
 const BRAND_GOLD = "#A47E53";
 
 interface Props {
-  pillarName: "DL LIMITED" | "DL BÉRRY" | "DL PRIVÉ";
+  pillarName: "DL FANTOME" | "DL LIMITED" | "DL BÉRRY" | "DL PRIVÉ";
   pillarSlug: "dlaven-limited" | "dl-barry" | "dl-prive";
   collection?: "heritage" | "international" | "all";
   category: "jewellery" | "clothes" | "fragrances" | "all";

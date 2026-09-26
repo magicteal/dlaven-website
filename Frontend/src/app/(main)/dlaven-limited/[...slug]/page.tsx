@@ -11,8 +11,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const resolved = await params;
   const parts = resolved.slug.map((s) => s.toUpperCase()).join(" — ");
   return {
-    title: `DL LIMITED | ${parts} | D' LAVÉN`,
-    description: `Explore DL LIMITED ${parts} collections, fine jewellery, sartorial attire, and haute parfumerie.`,
+    title: `DL FANTOME | ${parts} | D' LAVÉN`,
+    description: `Explore DL FANTOME ${parts} collections, fine jewellery, sartorial attire, and haute parfumerie.`,
   };
 }
 
@@ -48,7 +48,7 @@ export default async function DlLimitedSubRoutePage({ params }: Props) {
   if (collection && gender) {
     return (
       <CollectionProductsView
-        pillarName="DL LIMITED"
+        pillarName="DL FANTOME"
         pillarSlug="dlaven-limited"
         collection={collection}
         category={category}
@@ -60,7 +60,7 @@ export default async function DlLimitedSubRoutePage({ params }: Props) {
   if (gender) {
     return (
       <GenderCategoryView
-        pillarName="DL LIMITED"
+        pillarName="DL FANTOME"
         pillarSlug="dlaven-limited"
         collection={collection || "all"}
         category={category}
@@ -71,7 +71,7 @@ export default async function DlLimitedSubRoutePage({ params }: Props) {
 
   return (
     <SubCategoryExploreView
-      pillarName="DL LIMITED"
+      pillarName="DL FANTOME"
       pillarSlug="dlaven-limited"
       collection={collection || "all"}
       category={category}

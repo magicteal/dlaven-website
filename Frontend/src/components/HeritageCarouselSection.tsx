@@ -19,12 +19,14 @@ export interface CategorySectionBlock {
 interface HeritageCarouselSectionProps {
   categoryTitle?: string;
   categorySubtitle?: string;
+  buttonText?: string;
   block: CategorySectionBlock;
 }
 
 export default function HeritageCarouselSection({
   categoryTitle,
   categorySubtitle,
+  buttonText = "EXPLORE",
   block,
 }: HeritageCarouselSectionProps) {
   const marqueeRef = useRef<HTMLDivElement>(null);
@@ -93,7 +95,7 @@ export default function HeritageCarouselSection({
             className="inline-flex items-center justify-center px-12 py-3.5 border border-[#431717] text-xs tracking-[0.3em] font-semibold uppercase text-[#431717] bg-transparent hover:bg-[#431717] hover:text-[#F6F4E6] hover:scale-105 active:scale-95 transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer"
             style={{ fontFamily: LE_GRAND }}
           >
-            EXPLORE
+            {buttonText}
           </Link>
         </div>
 

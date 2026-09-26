@@ -64,7 +64,7 @@ export default function DlLimitedClient() {
           className="uppercase tracking-[0.25em] text-xs md:text-sm mb-4 md:mb-6 text-[#E2DDD7]/80"
           style={{ fontFamily: MANROPE }}
         >
-          D&apos; LAVÉN LIMITED
+          DL FANTOME CREATION
         </p>
         <h1
           className="font-le-grand uppercase leading-tight max-w-4xl text-[#F6F4E6]"
@@ -74,7 +74,7 @@ export default function DlLimitedClient() {
             letterSpacing: "0.08em",
           }}
         >
-          D&apos; LAVÉN &nbsp;&nbsp; X &nbsp;&nbsp; DL LIMITED L&apos;ÉDITION
+          D&apos; LAVEN &nbsp;&nbsp; x &nbsp;&nbsp; DL FANTOME
         </h1>
         <div className="mt-6 flex justify-center">
           <Link
@@ -82,7 +82,7 @@ export default function DlLimitedClient() {
             className="inline-flex items-center justify-center px-8 py-3 border border-[#F6F4E6]/60 text-xs tracking-[0.25em] font-semibold uppercase text-[#F6F4E6] hover:bg-[#F6F4E6] hover:text-[#431717] transition-all duration-300 shadow-sm"
             style={{ fontFamily: LE_GRAND }}
           >
-            EXPLORE LIMITED CREATIONS
+            DISCOVER THE WORLD
           </Link>
         </div>
       </section>
@@ -90,29 +90,34 @@ export default function DlLimitedClient() {
       {/* ── Divider ── */}
       <div className="w-full border-t border-[#6F3D24]/20" />
 
-      {/* ── Quote ── */}
+      {/* ── Quote / Philosophy Section (Page 1) ── */}
       <section
-        className="w-full flex items-center justify-center px-6 py-8 md:py-10"
+        className="w-full flex flex-col items-center justify-center px-6 py-10 md:py-14 text-center"
         style={{ background: BG_CREAM }}
       >
-        <p
-          className="max-w-3xl text-center leading-relaxed font-light"
+        <h2
+          className="font-le-grand text-2xl sm:text-3xl md:text-4xl uppercase tracking-[0.2em] font-normal mb-6 text-[#431717]"
+          style={{ fontFamily: LE_GRAND }}
+        >
+          DL FANTÔME
+        </h2>
+        <div
+          className="max-w-3xl leading-relaxed font-light space-y-4"
           style={{ fontFamily: MANROPE, fontSize: "clamp(13px, 1.5vw, 16px)", color: BRAND_DARK }}
         >
-          &ldquo;&nbsp;
-          <span style={{ fontFamily: LE_GRAND, color: BRAND_DARK, fontWeight: 700 }}>DL LIMITED L&apos; Édition</span>{" "}
-          represents the pinnacle of rare craftsmanship and limited quantity releases. Each creation is
-          individually numbered and crafted for distinguished collectors of{" "}
-          <span style={{ fontFamily: LE_GRAND, color: BRAND_DARK, fontWeight: 700 }}>D&apos; LAVÉN</span>. This collection celebrates
-          exclusive artistry where{" "}
-          <span style={{ fontFamily: LE_GRAND, color: BRAND_DARK, fontWeight: 700 }}>PRECISION MEETS EXCLUSIVITY</span>. &rdquo;&nbsp;&rdquo;
-        </p>
+          <p>
+            True distinction is never measured by what is seen, but by what is understood. Inspired by the elusive Snow Leopard of Spiti DL FANTÔME embodies a world where rarity speaks quietly, craftsmanship reveals itself through detail, and exclusivity is never defined by numbers alone.
+          </p>
+          <p className="font-normal text-[#431717]">
+            Each creation is individually numbered, conceived for those who recognise the value of what cannot be recreated.
+          </p>
+        </div>
       </section>
 
       {/* ══════════════════════════════════════════
           SECTION 1 — Top Center Video + Balanced 3-Image Grid
       ══════════════════════════════════════════ */}
-      <section className="w-full pt-8 pb-2 md:pt-10 md:pb-4 px-4 md:px-8 flex flex-col items-center" style={{ background: BG_CREAM }}>
+      <section className="w-full pt-4 pb-4 md:pb-8 px-4 md:px-8 flex flex-col items-center" style={{ background: BG_CREAM }}>
         {/* Top center video container */}
         <div className="flex justify-center mb-6 w-full">
           <div
@@ -121,7 +126,7 @@ export default function DlLimitedClient() {
           >
             <Image
               src="/images/fashion_hero.png"
-              alt="DL Limited video editorial"
+              alt="DL FANTOME editorial"
               fill
               className="object-cover object-top group-hover:scale-105 transition-transform duration-700"
               sizes="(max-width:768px) 85vw, 35vw"
@@ -139,9 +144,9 @@ export default function DlLimitedClient() {
         {/* Balanced 3-Image Responsive Grid */}
         <div className="w-full max-w-5xl grid grid-cols-3 gap-3 md:gap-6 justify-center">
           {[
-            { src: "/images/DPrimeOne.jpg", alt: "DL Limited Showcase 1" },
-            { src: "/images/DPrimeTwo.jpg", alt: "DL Limited Showcase 2" },
-            { src: "/images/fashion_hero.png", alt: "DL Limited Showcase 3" },
+            { src: "/images/DPrimeOne.jpg", alt: "DL FANTOME Showcase 1" },
+            { src: "/images/DPrimeTwo.jpg", alt: "DL FANTOME Showcase 2" },
+            { src: "/images/fashion_hero.png", alt: "DL FANTOME Showcase 3" },
           ].map((img, idx) => (
             <div
               key={`${img.src}-${idx}`}
@@ -161,14 +166,15 @@ export default function DlLimitedClient() {
       </section>
 
       {/* ══════════════════════════════════════════
-          1. CATEGORY 1: DL LIMITED CLOTHES (First)
+          1. CATEGORY 1: DL FANTOME CLOTHING (Page 2)
       ══════════════════════════════════════════ */}
       <div id="limited-categories">
         <HeritageCarouselSection
-          categoryTitle="DL LIMITED CLOTHES"
-          categorySubtitle="REFINED SARTORIAL ATTIRE & COUTURE CUTS"
+          categoryTitle="DL FANTOME CLOTHING"
+          categorySubtitle="DL FANTOME CREATION"
+          buttonText="DISCOVER"
           block={{
-            title: "DL LIMITED CLOTHES",
+            title: "DL FANTOME CLOTHING",
             modelImage: "/images/fashion_hero.png",
             exploreHref: "/dlaven-limited/clothes",
             carouselImages: [
@@ -184,13 +190,14 @@ export default function DlLimitedClient() {
       <div className="w-full max-w-5xl mx-auto border-t border-[#431717]/20 my-6 md:my-10" />
 
       {/* ══════════════════════════════════════════
-          2. CATEGORY 2: DL LIMITED JEWELLERY (Second)
+          2. CATEGORY 2: DL FANTOME JEWELRY (Page 3)
       ══════════════════════════════════════════ */}
       <HeritageCarouselSection
-        categoryTitle="DL LIMITED JEWELLERY"
-        categorySubtitle="FINE HANDCRAFTED ADORNMENTS & ARCHIVAL FILIGREE"
+        categoryTitle="DL FANTOME JEWELRY"
+        categorySubtitle="DL FANTOME CREATION"
+        buttonText="DISCOVER"
         block={{
-          title: "DL LIMITED JEWELLERY",
+          title: "DL FANTOME JEWELRY",
           modelImage: "/images/prive_jewellery_cover.png",
           exploreHref: "/dlaven-limited/jewellery",
           carouselImages: [
@@ -205,13 +212,14 @@ export default function DlLimitedClient() {
       <div className="w-full max-w-5xl mx-auto border-t border-[#431717]/20 my-6 md:my-10" />
 
       {/* ══════════════════════════════════════════
-          3. CATEGORY 3: DL LIMITED FRAGRANCE (Third)
+          3. CATEGORY 3: DL FANTOME FRAGRANCE (Page 4)
       ══════════════════════════════════════════ */}
       <HeritageCarouselSection
-        categoryTitle="DL LIMITED FRAGRANCE"
-        categorySubtitle="HAUTE PARFUMERIE & RARE ELIXIRS"
+        categoryTitle="DL FANTOME FRAGRANCE"
+        categorySubtitle="DL FANTOME CREATION"
+        buttonText="DISCOVER"
         block={{
-          title: "DL LIMITED FRAGRANCE",
+          title: "DL FANTOME FRAGRANCE",
           modelImage: "/images/fragrance_hero.png",
           exploreHref: "/dlaven-limited/fragrances",
           carouselImages: [
@@ -222,6 +230,213 @@ export default function DlLimitedClient() {
           ],
         }}
       />
+
+      <div className="w-full max-w-5xl mx-auto border-t border-[#431717]/20 my-6 md:my-10" />
+
+      {/* ══════════════════════════════════════════
+          4. CATEGORY 4: MEN & WOMEN SPLIT + ALL CREATION CREED (Page 5)
+      ══════════════════════════════════════════ */}
+      <section className="w-full border-b border-[#431717]/15">
+        {/* Top 2-Column Split: MEN & WOMEN */}
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 border-b border-[#431717]/20">
+          
+          {/* Left Column: MEN */}
+          <div className="relative flex flex-col items-center justify-center py-16 md:py-24 px-8 text-center border-b md:border-b-0 md:border-r border-[#431717]/20 group overflow-hidden">
+            <div className="relative w-full max-w-md h-72 sm:h-80 md:h-96 mb-8 overflow-hidden shadow-sm border border-[#431717]/15">
+              <Image
+                src="/images/menswear/IMG_9691.PNG"
+                alt="MEN"
+                fill
+                className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                sizes="(max-width: 768px) 90vw, 45vw"
+              />
+            </div>
+            <h3
+              className="font-le-grand text-3xl sm:text-4xl md:text-5xl uppercase tracking-[0.2em] font-normal mb-6 text-[#431717]"
+              style={{ fontFamily: LE_GRAND }}
+            >
+              MEN
+            </h3>
+            <Link
+              href="/dlaven-limited/heritage/mens"
+              className="inline-flex items-center justify-center px-12 py-3.5 border border-[#431717] text-xs sm:text-[13px] tracking-[0.3em] font-medium uppercase text-[#431717] hover:bg-[#431717] hover:text-[#F6F4E6] active:scale-95 transition-all duration-300"
+              style={{ fontFamily: LE_GRAND }}
+            >
+              DISCOVER
+            </Link>
+          </div>
+
+          {/* Right Column: WOMEN */}
+          <div className="relative flex flex-col items-center justify-center py-16 md:py-24 px-8 text-center group overflow-hidden">
+            <div className="relative w-full max-w-md h-72 sm:h-80 md:h-96 mb-8 overflow-hidden shadow-sm border border-[#431717]/15">
+              <Image
+                src="/images/heritage/womens_heritage.jpg"
+                alt="WOMEN"
+                fill
+                className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                sizes="(max-width: 768px) 90vw, 45vw"
+              />
+            </div>
+            <h3
+              className="font-le-grand text-3xl sm:text-4xl md:text-5xl uppercase tracking-[0.2em] font-normal mb-6 text-[#431717]"
+              style={{ fontFamily: LE_GRAND }}
+            >
+              WOMEN
+            </h3>
+            <Link
+              href="/dlaven-limited/heritage/womens"
+              className="inline-flex items-center justify-center px-12 py-3.5 border border-[#431717] text-xs sm:text-[13px] tracking-[0.3em] font-medium uppercase text-[#431717] hover:bg-[#431717] hover:text-[#F6F4E6] active:scale-95 transition-all duration-300"
+              style={{ fontFamily: LE_GRAND }}
+            >
+              DISCOVER
+            </Link>
+          </div>
+
+        </div>
+
+        {/* Bottom Section: DISCOVER ALL CREATION & CREED */}
+        <div className="w-full py-16 md:py-20 px-6 text-center">
+          <div className="max-w-3xl mx-auto flex flex-col items-center">
+            <p
+              className="uppercase tracking-[0.3em] text-xs sm:text-sm mb-3 text-[#6F3D24] font-medium"
+              style={{ fontFamily: MANROPE }}
+            >
+              DL FANTOME CREATION
+            </p>
+
+            <Link
+              href="/dlaven-limited/heritage"
+              className="font-le-grand text-2xl sm:text-3xl md:text-4xl uppercase tracking-[0.18em] font-normal text-[#431717] hover:opacity-80 transition-opacity"
+              style={{ fontFamily: LE_GRAND }}
+            >
+              DISCOVER ALL CREATION
+            </Link>
+
+            {/* Divider Line */}
+            <div className="w-48 sm:w-64 h-px bg-[#431717]/35 my-8" />
+
+            <p
+              className="uppercase tracking-[0.35em] text-xs sm:text-sm md:text-base font-semibold text-[#431717]"
+              style={{ fontFamily: LE_GRAND }}
+            >
+              NE DU ELUSIVE PREDATOR
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════
+          5. CATEGORY 5: MENSWEAR (Page 6)
+      ══════════════════════════════════════════ */}
+      <section className="w-full py-20 md:py-24 px-6 text-center border-b border-[#431717]/15">
+        <div className="max-w-4xl mx-auto flex flex-col items-center">
+          <h2
+            className="font-le-grand text-3xl sm:text-4xl md:text-6xl uppercase tracking-[0.2em] font-normal mb-4 text-[#431717]"
+            style={{ fontFamily: LE_GRAND }}
+          >
+            MENSWEAR
+          </h2>
+          <p
+            className="uppercase tracking-[0.3em] text-xs sm:text-sm text-[#6F3D24] font-medium"
+            style={{ fontFamily: MANROPE }}
+          >
+            DL FANTOME CREATION
+          </p>
+
+          <div className="w-full max-w-4xl mt-12 overflow-hidden shadow-lg border border-[#431717]/15">
+            <div
+              className="relative w-full overflow-hidden group cursor-pointer"
+              style={{ aspectRatio: "16/9" }}
+            >
+              <Image
+                src="/images/luxury_mens_sherwani.png"
+                alt="MENSWEAR DL FANTOME CREATION"
+                fill
+                className="object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out"
+                sizes="(max-width: 1024px) 95vw, 1100px"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════
+          6. CATEGORY 6: L' HERITAGE & L' FANTOME (Page 7)
+      ══════════════════════════════════════════ */}
+      <section className="w-full py-20 md:py-28 px-6 text-center">
+        <div className="max-w-4xl mx-auto flex flex-col items-center space-y-16 md:space-y-24">
+          
+          {/* Card 1: L' HERITAGE */}
+          <div className="w-full flex flex-col items-center">
+            <div
+              className="relative overflow-hidden group cursor-pointer shadow-md rounded-none border border-[#431717]/15 mb-8"
+              style={{ width: "clamp(280px, 48vw, 620px)", aspectRatio: "16/10" }}
+            >
+              <Image
+                src="/images/heritage/mens_heritage.jpg"
+                alt="L' HERITAGE"
+                fill
+                className="object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out"
+                sizes="(max-width: 768px) 90vw, 55vw"
+              />
+            </div>
+
+            <h3
+              className="font-le-grand text-2xl sm:text-3xl md:text-4xl uppercase tracking-[0.2em] font-normal mb-6 text-[#431717]"
+              style={{ fontFamily: LE_GRAND }}
+            >
+              L&apos; HERITAGE
+            </h3>
+
+            <Link
+              href="/dlaven-limited/heritage"
+              className="inline-flex items-center justify-center px-12 py-3.5 border border-[#431717] text-xs sm:text-[13px] tracking-[0.3em] font-medium uppercase text-[#431717] hover:bg-[#431717] hover:text-[#F6F4E6] active:scale-95 transition-all duration-300"
+              style={{ fontFamily: LE_GRAND }}
+            >
+              DISCOVER
+            </Link>
+          </div>
+
+          {/* Card 2: L' FANTOME */}
+          <div className="w-full flex flex-col items-center">
+            <div
+              className="relative overflow-hidden group cursor-pointer shadow-md rounded-none border border-[#431717]/15 mb-8"
+              style={{ width: "clamp(280px, 48vw, 620px)", aspectRatio: "16/10" }}
+            >
+              <Image
+                src="/images/DPrimeOne.jpg"
+                alt="L' FANTOME"
+                fill
+                className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                sizes="(max-width: 768px) 90vw, 55vw"
+              />
+            </div>
+
+            <h3
+              className="font-le-grand text-2xl sm:text-3xl md:text-4xl uppercase tracking-[0.2em] font-normal mb-3 text-[#431717]"
+              style={{ fontFamily: LE_GRAND }}
+            >
+              L&apos; FANTOME
+            </h3>
+
+            <p
+              className="uppercase tracking-[0.25em] text-xs sm:text-sm text-[#6F3D24] font-medium mb-6"
+              style={{ fontFamily: MANROPE }}
+            >
+              LE SOUVERAIN DES CIMES DE SPITI
+            </p>
+
+            <Link
+              href="/dlaven-limited/international"
+              className="inline-flex items-center justify-center px-12 py-3.5 border border-[#431717] text-xs sm:text-[13px] tracking-[0.3em] font-medium uppercase text-[#431717] hover:bg-[#431717] hover:text-[#F6F4E6] active:scale-95 transition-all duration-300"
+              style={{ fontFamily: LE_GRAND }}
+            >
+              DISCOVER
+            </Link>
+          </div>
+
+        </div>
+      </section>
 
     </main>
   );

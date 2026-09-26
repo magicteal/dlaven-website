@@ -14,7 +14,7 @@ const BRAND_BODY = "#4a3f35";
 const BRAND_TERRACOTTA = "#854A2D";
 
 interface Props {
-  pillarName: "DL LIMITED" | "DL BÉRRY" | "DL PRIVÉ";
+  pillarName: "DL FANTOME" | "DL LIMITED" | "DL BÉRRY" | "DL PRIVÉ";
   pillarSlug: "dlaven-limited" | "dl-barry" | "dl-prive";
   collection: "heritage" | "international";
   category: "jewellery" | "clothes" | "fragrances" | "all";

@@ -103,7 +103,7 @@ export default function HeritageJewelryPage() {
             </p>
 
             <p style={{ fontFamily: POPPINS, fontSize: "13px", color: "#2a2a2a", lineHeight: 1.8 }}>
-              DL LIMITED exists independently, defined by quantity and closure.
+              DL FANTÔME exists independently, defined by quantity and closure.
             </p>
           </div>
         </div>

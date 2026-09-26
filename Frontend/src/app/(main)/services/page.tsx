@@ -10,9 +10,9 @@ import { shimmerBase64 } from "@/lib/shimmer";
 export default function ServicesPage() {
   const ourCollections = [
     {
-      name: "DL Limited",
+      name: "DL Fantome",
       description:
-        "Discover exclusive, limited-edition pieces released in select quantities.",
+        "Discover exclusive, individually numbered creations inspired by the snow leopard of Spiti.",
       icon: <ShieldCheck className="h-7 w-7 text-[#431717]" />,
     },
     {
@@ -153,7 +153,7 @@ export default function ServicesPage() {
             <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8" data-reveal="slideUp" data-stagger="0.15" data-delay="0.2">
               {ourCollections.map((service) => {
                 const href =
-                  service.name === "DL Limited"
+                  service.name === "DL Fantome" || service.name === "DL Limited"
                     ? "/dlaven-limited"
                     : service.name === "DL Prive"
                     ? "/prive"
