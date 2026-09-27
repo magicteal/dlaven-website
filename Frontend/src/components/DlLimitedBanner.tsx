@@ -20,9 +20,6 @@ export default function DlLimitedBanner() {
           />
           <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors duration-500" />
           <div className="relative z-10 h-full flex flex-col items-center justify-end text-center px-4 pb-8 md:pb-12 text-white">
-            <span className="text-xs md:text-sm uppercase tracking-[0.35em] font-light text-white/90 mb-2">
-              DL FANTOME CREATION
-            </span>
             <h2 className="font-le-grand text-4xl sm:text-6xl md:text-7xl font-normal tracking-[0.15em] uppercase mb-4 sm:mb-6">
               DL FANTOME
             </h2>
