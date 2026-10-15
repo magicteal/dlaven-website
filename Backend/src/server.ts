@@ -2,6 +2,8 @@ import express, { type Request, type Response } from "express";
 import cors, { type CorsOptions } from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
+import fs from "fs";
+import path from "path";
 import { connectDB } from "./utils/db";
 import authRoutes from "./routes/auth";
 import adminRoutes from "./routes/admin";
@@ -134,6 +136,17 @@ app.options("*", cors(corsOptions));
 // Parsers
 app.use(express.json());
 app.use(cookieParser());
+
+// Static Media (30GB VPS mount or local directory fallback)
+const MEDIA_DIR =
+  process.env.MEDIA_DIR ||
+  (fs.existsSync("/var/www/media") ? "/var/www/media" : path.resolve(process.cwd(), "media"));
+if (!fs.existsSync(MEDIA_DIR)) {
+  try {
+    fs.mkdirSync(MEDIA_DIR, { recursive: true });
+  } catch {}
+}
+app.use("/media", express.static(MEDIA_DIR));
 
 // Routes
 app.use("/api/auth", authRoutes);
