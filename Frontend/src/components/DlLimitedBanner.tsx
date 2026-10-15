@@ -6,13 +6,13 @@ export default function DlLimitedBanner() {
     <section className="relative w-full bg-white py-12 sm:py-16 md:py-20 px-4 md:px-8">
       <div className="max-w-[95%] mx-auto">
         <Link
-          href="/dlaven-limited"
+          href="/dl-fantome"
           className="relative group overflow-hidden w-full h-[40vh] md:h-[50vh] min-h-[300px] block shadow-sm border border-gray-100"
-          aria-label="Go to DL Limited"
+          aria-label="Go to DL Fantome"
         >
           <Image
             src="/images/DPrimeOne.jpg"
-            alt="DL Limited"
+            alt="DL Fantome"
             fill
             sizes="100vw"
             className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"

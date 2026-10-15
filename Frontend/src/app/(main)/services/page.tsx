@@ -154,7 +154,7 @@ export default function ServicesPage() {
               {ourCollections.map((service) => {
                 const href =
                   service.name === "DL Fantome" || service.name === "DL Limited"
-                    ? "/dlaven-limited"
+                    ? "/dl-fantome"
                     : service.name === "DL Prive"
                     ? "/prive"
                     : "/dl-barry";

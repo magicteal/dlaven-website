@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const BG_IMAGE_LEFT = "/images/oneImg.png";
-const BG_IMAGE_RIGHT = "/images/twoImg.png";
+const BG_IMAGE_RIGHT = "/berry.svg";
 
 export default function FeaturedContent() {
   return (

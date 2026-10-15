@@ -36,8 +36,8 @@ export const MEGA_MENU_DATA: Record<string, CategoryData> = {
     image: "/images/womens_heritage.jpg",
     ctaHref: "/womens-adornments",
     items: [
-      { label: "DL LIMITED HERITAGE", href: "/dlaven-limited/heritage/womens", badge: "EXCLUSIVE" },
-      { label: "DL LIMITED INTERNATIONAL", href: "/dlaven-limited/international/womens", badge: "EXCLUSIVE" },
+      { label: "DL FANTÔME HERITAGE", href: "/dl-fantome/heritage/womens", badge: "EXCLUSIVE" },
+      { label: "DL FANTÔME INTERNATIONAL", href: "/dl-fantome/international/womens", badge: "EXCLUSIVE" },
       { label: "DL PRIVÉ HERITAGE", href: "/dl-prive/heritage/womens" },
       { label: "DL PRIVÉ INTERNATIONAL", href: "/dl-prive/international/womens" },
       { label: "DL BÉRRY HERITAGE", href: "/dl-barry/heritage/womens" },
@@ -52,8 +52,8 @@ export const MEGA_MENU_DATA: Record<string, CategoryData> = {
     image: "/images/mensReady.png",
     ctaHref: "/mens-adornments",
     items: [
-      { label: "DL LIMITED HERITAGE", href: "/dlaven-limited/heritage/mens", badge: "EXCLUSIVE" },
-      { label: "DL LIMITED INTERNATIONAL", href: "/dlaven-limited/international/mens", badge: "EXCLUSIVE" },
+      { label: "DL FANTÔME HERITAGE", href: "/dl-fantome/heritage/mens", badge: "EXCLUSIVE" },
+      { label: "DL FANTÔME INTERNATIONAL", href: "/dl-fantome/international/mens", badge: "EXCLUSIVE" },
       { label: "DL PRIVÉ HERITAGE", href: "/dl-prive/heritage/mens" },
       { label: "DL PRIVÉ INTERNATIONAL", href: "/dl-prive/international/mens" },
       { label: "DL BÉRRY HERITAGE", href: "/dl-barry/heritage/mens" },
@@ -68,8 +68,8 @@ export const MEGA_MENU_DATA: Record<string, CategoryData> = {
     image: "/images/heritage_hero.png",
     ctaHref: "/heritage-jewelry",
     items: [
-      { label: "DL LIMITED HERITAGE JEWELLERY", href: "/dlaven-limited/heritage/jewellery" },
-      { label: "DL LIMITED INTERNATIONAL JEWELLERY", href: "/dlaven-limited/international/jewellery" },
+      { label: "DL FANTÔME HERITAGE JEWELLERY", href: "/dl-fantome/heritage/jewellery" },
+      { label: "DL FANTÔME INTERNATIONAL JEWELLERY", href: "/dl-fantome/international/jewellery" },
       { label: "DL PRIVÉ HERITAGE JEWELLERY", href: "/dl-prive/heritage/jewellery" },
       { label: "DL PRIVÉ INTERNATIONAL JEWELLERY", href: "/dl-prive/international/jewellery" },
       { label: "DL BÉRRY HERITAGE JEWELLERY", href: "/dl-barry/heritage/jewellery" },
@@ -114,8 +114,8 @@ export const MEGA_MENU_DATA: Record<string, CategoryData> = {
     image: "/images/fragrance_hero.png",
     ctaHref: "/fragrances",
     items: [
-      { label: "DL LIMITED HERITAGE FRAGRANCE", href: "/dlaven-limited/heritage/fragrances" },
-      { label: "DL LIMITED INTERNATIONAL FRAGRANCE", href: "/dlaven-limited/international/fragrances" },
+      { label: "DL FANTÔME HERITAGE FRAGRANCE", href: "/dl-fantome/heritage/fragrances" },
+      { label: "DL FANTÔME INTERNATIONAL FRAGRANCE", href: "/dl-fantome/international/fragrances" },
       { label: "DL PRIVÉ HERITAGE FRAGRANCE", href: "/dl-prive/heritage/fragrances" },
       { label: "DL PRIVÉ INTERNATIONAL FRAGRANCE", href: "/dl-prive/international/fragrances" },
       { label: "DL BÉRRY HERITAGE FRAGRANCE", href: "/dl-barry/heritage/fragrances" },
@@ -131,7 +131,7 @@ export const MEGA_MENU_DATA: Record<string, CategoryData> = {
     ctaHref: "/products",
     items: [
       { label: "VIEW ALL NEW ARRIVALS", href: "/products", badge: "NEW" },
-      { label: "DL LIMITED EDITIONS", href: "/dlaven-limited" },
+      { label: "DL FANTÔME EDITIONS", href: "/dl-fantome" },
       { label: "DL PRIVÉ EXCLUSIVES", href: "/dl-prive" },
       { label: "DL BÉRRY CREATIONS", href: "/dl-barry" },
     ],

@@ -19,8 +19,8 @@ export type ProductCategoryType = "all" | "clothes" | "jewellery" | "fragrances"
 export type GenderType = "all" | "mens" | "womens";
 
 interface Props {
-  pillarName: "DL LIMITED" | "DL BÉRRY" | "DL PRIVÉ";
-  pillarSlug: "dlaven-limited" | "dl-barry" | "dl-prive";
+  pillarName: "DL FANTOME" | "DL LIMITED" | "DL BÉRRY" | "DL PRIVÉ";
+  pillarSlug: "dlaven-limited" | "dl-fantome" | "fantome" | "dl-barry" | "dl-prive";
   initialCollection?: CollectionType;
   initialCategory?: ProductCategoryType;
   initialGender?: GenderType;
@@ -109,6 +109,8 @@ export default function CollectionExplorerView({
       try {
         const tagMap: Record<string, "dl-limited" | "dl-barry" | "dl-prive"> = {
           "dlaven-limited": "dl-limited",
+          "dl-fantome": "dl-limited",
+          "fantome": "dl-limited",
           "dl-barry": "dl-barry",
           "dl-prive": "dl-prive",
         };

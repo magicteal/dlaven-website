@@ -174,3 +174,12 @@ connectDB()
     console.error("DB connection failed:", err);
     process.exit(1);
   });
+
+process.on("unhandledRejection", (reason) => {
+  console.error("[server] Unhandled Rejection:", reason);
+});
+
+process.on("uncaughtException", (error) => {
+  console.error("[server] Uncaught Exception:", error);
+});
+

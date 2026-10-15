@@ -130,8 +130,8 @@ function PanelView({
         <DrawerLink href="/products" onNavigate={onNavigate} className={linkClass}>
           View All New Arrivals
         </DrawerLink>
-        <DrawerLink href="/dlaven-limited" onNavigate={onNavigate} className={linkClass}>
-          DL Limited Editions
+        <DrawerLink href="/dl-fantome" onNavigate={onNavigate} className={linkClass}>
+          DL Fantôme Editions
         </DrawerLink>
         <DrawerLink href="/dl-prive" onNavigate={onNavigate} className={linkClass}>
           DL Privé Exclusives
@@ -146,8 +146,8 @@ function PanelView({
   if (id === "men") {
     return (
       <PanelWrapper title="Mens Collection" onBack={onBack}>
-        <DrawerLink href="/dlaven-limited" onNavigate={onNavigate} className={linkClass}>
-          DL Limited
+        <DrawerLink href="/dl-fantome" onNavigate={onNavigate} className={linkClass}>
+          DL Fantôme
         </DrawerLink>
         <DrawerLink href="/dl-prive" onNavigate={onNavigate} className={linkClass}>
           DL Privé
@@ -177,8 +177,8 @@ function PanelView({
   if (id === "women") {
     return (
       <PanelWrapper title="Womens Collection" onBack={onBack}>
-        <DrawerLink href="/dlaven-limited" onNavigate={onNavigate} className={linkClass}>
-          DL Limited
+        <DrawerLink href="/dl-fantome" onNavigate={onNavigate} className={linkClass}>
+          DL Fantôme
         </DrawerLink>
         <DrawerLink href="/dl-prive" onNavigate={onNavigate} className={linkClass}>
           DL Privé

@@ -19,8 +19,32 @@ const nextConfig: NextConfig = {
       },
     ],
     formats: ["image/avif", "image/webp"],
+    qualities: [75, 95],
     deviceSizes: [320, 420, 640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+  },
+  async redirects() {
+    return [
+      {
+        source: "/dlaven-limited",
+        destination: "/dl-fantome",
+        permanent: true,
+      },
+      {
+        source: "/dlaven-limited/:slug*",
+        destination: "/dl-fantome/:slug*",
+        permanent: true,
+      },
+      {
+        source: "/fantome",
+        destination: "/dl-fantome",
+        permanent: false,
+      },
+      {
+        source: "/fantome/:slug*",
+        destination: "/dl-fantome/:slug*",
+        permanent: false,
+      },
+    ];
   },
 };
 

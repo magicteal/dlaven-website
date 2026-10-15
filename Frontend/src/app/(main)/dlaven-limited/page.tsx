@@ -1,12 +1,5 @@
-import type { Metadata } from "next";
-import DlLimitedClient from "./DlLimitedClient";
-
-export const metadata: Metadata = {
-  title: "D' LAVÉN × DL FANTÔME",
-  description:
-    "DL FANTÔME — A rare, numbered collection of luxury clothing, accessories and jewelry.",
-};
+import { redirect } from "next/navigation";
 
 export default function DlavenLimitedPage() {
-  return <DlLimitedClient />;
+  redirect("/dl-fantome");
 }

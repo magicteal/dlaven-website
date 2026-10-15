@@ -101,8 +101,8 @@ export default async function CategoryGrid({
       const j = await res.json();
       data = (j.items || []) as typeof data;
     }
-  } catch (e) {
-    console.error("[CategoryGrid] Failed to load categories", e);
+  } catch (e: any) {
+    console.warn(`[CategoryGrid] Note: Using fallback categories (${e?.message || e})`);
   }
 
   // Use fallback categories if API data is empty

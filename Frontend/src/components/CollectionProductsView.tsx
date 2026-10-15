@@ -15,7 +15,7 @@ const BRAND_TERRACOTTA = "#854A2D";
 
 interface Props {
   pillarName: "DL FANTOME" | "DL LIMITED" | "DL BÉRRY" | "DL PRIVÉ";
-  pillarSlug: "dlaven-limited" | "dl-barry" | "dl-prive";
+  pillarSlug: "dlaven-limited" | "dl-fantome" | "fantome" | "dl-barry" | "dl-prive";
   collection: "heritage" | "international";
   category: "jewellery" | "clothes" | "fragrances" | "all";
   gender: "mens" | "womens";
@@ -100,6 +100,8 @@ export default function CollectionProductsView({
       try {
         const tagMap: Record<string, "dl-limited" | "dl-barry" | "dl-prive"> = {
           "dlaven-limited": "dl-limited",
+          "dl-fantome": "dl-limited",
+          "fantome": "dl-limited",
           "dl-barry": "dl-barry",
           "dl-prive": "dl-prive",
         };
