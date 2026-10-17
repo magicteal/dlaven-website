@@ -128,7 +128,7 @@ const CATEGORY_LINKS: { label: MegaMenuCategoryKey & string; href: string }[] = 
   { label: "MENS", href: "/mens-adornments" },
   { label: "JEWELLERY", href: "/heritage-jewelry" },
   { label: "DL PRIVE", href: "/dl-prive" },
-  { label: "DL BERRY", href: "/dl-barry" },
+  { label: "DL BERRY", href: "/dl-berry" },
   { label: "FRAGRANCE", href: "/fragrances" },
   { label: "NEW IN", href: "/products" },
 ];

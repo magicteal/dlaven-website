@@ -146,10 +146,11 @@ export default function DlBarryClient() {
         <HeritageCarouselSection
           categoryTitle="DL BÉRRY CLOTHES"
           categorySubtitle="AVANT-GARDE SARTORIAL ATTIRE & TAILORED CUTS"
+          buttonText="DISCOVER"
           block={{
             title: "DL BÉRRY CLOTHES",
             modelImage: "/images/fashion_hero.png",
-            exploreHref: "/dl-barry/clothes",
+            exploreHref: "/dl-berry/clothes",
             carouselImages: [
               "/images/fashion_hero.png",
               "/images/mensReady.png",
@@ -168,10 +169,11 @@ export default function DlBarryClient() {
       <HeritageCarouselSection
         categoryTitle="DL BÉRRY JEWELLERY"
         categorySubtitle="CONTEMPORARY FINE JEWELLERY & MODERNIST FILIGREE"
+        buttonText="DISCOVER"
         block={{
           title: "DL BÉRRY JEWELLERY",
           modelImage: "/images/prive_jewellery_cover.png",
-          exploreHref: "/dl-barry/jewellery",
+          exploreHref: "/dl-berry/jewellery",
           carouselImages: [
             "/images/prive_jewellery_cover.png",
             "/images/womenswear/adornments_2.jpg",
@@ -189,10 +191,11 @@ export default function DlBarryClient() {
       <HeritageCarouselSection
         categoryTitle="DL BÉRRY FRAGRANCE"
         categorySubtitle="SELECTIVE HAUTE PARFUMERIE & BÉRRY ACCORDS"
+        buttonText="DISCOVER"
         block={{
           title: "DL BÉRRY FRAGRANCE",
           modelImage: "/images/frangrence.png",
-          exploreHref: "/dl-barry/fragrances",
+          exploreHref: "/dl-berry/fragrances",
           carouselImages: [
             "/images/frangrence.png",
             "/images/fragrance_hero.png",

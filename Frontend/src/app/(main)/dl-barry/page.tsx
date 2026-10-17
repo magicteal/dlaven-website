@@ -1,12 +1,5 @@
-import type { Metadata } from "next";
-import DlBarryClient from "./DlBarryClient";
-
-export const metadata: Metadata = {
-  title: "D' LAVÉN BÉRRY | D' LAVÉN × DL BÉRRY CREATIONS",
-  description:
-    "DL BÉRRY CREATIONS — Bold, contemporary luxury creations encompassing clothing, accessories and jewelry.",
-};
+import { redirect } from "next/navigation";
 
 export default function DlBarryPage() {
-  return <DlBarryClient />;
+  redirect("/dl-berry");
 }

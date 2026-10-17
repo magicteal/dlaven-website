@@ -156,8 +156,8 @@ export default function ServicesPage() {
                   service.name === "DL Fantome" || service.name === "DL Limited"
                     ? "/dl-fantome"
                     : service.name === "DL Prive"
-                    ? "/prive"
-                    : "/dl-barry";
+                    ? "/dl-prive"
+                    : "/dl-berry";
 
                 return (
                   <Link key={service.name} href={href} className="block group">

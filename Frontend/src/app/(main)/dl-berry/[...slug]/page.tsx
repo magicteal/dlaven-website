@@ -23,8 +23,8 @@ function parseSlugParams(slugs: string[]) {
 
   for (const part of slugs) {
     const s = part.toLowerCase();
-    if (s === "heritage" || s === "international") {
-      collection = s;
+    if (s === "heritage" || s === "international" || s === "barry" || s === "berry" || s === "l-barry" || s === "l-berry") {
+      collection = s === "heritage" ? "heritage" : "international";
     } else if (s === "clothes" || s === "ready-to-wear" || s === "clothing") {
       category = "clothes";
     } else if (s === "jewellery" || s === "adornments" || s === "jewelry") {
@@ -49,7 +49,7 @@ export default async function DlBerrySubRoutePage({ params }: Props) {
     return (
       <CollectionProductsView
         pillarName="DL BÉRRY"
-        pillarSlug="dl-barry"
+        pillarSlug="dl-berry"
         collection={collection}
         category={category}
         gender={gender}
@@ -61,7 +61,7 @@ export default async function DlBerrySubRoutePage({ params }: Props) {
     return (
       <GenderCategoryView
         pillarName="DL BÉRRY"
-        pillarSlug="dl-barry"
+        pillarSlug="dl-berry"
         collection={collection || "all"}
         category={category}
         gender={gender}
@@ -72,7 +72,7 @@ export default async function DlBerrySubRoutePage({ params }: Props) {
   return (
     <SubCategoryExploreView
       pillarName="DL BÉRRY"
-      pillarSlug="dl-barry"
+      pillarSlug="dl-berry"
       collection={collection || "all"}
       category={category}
     />

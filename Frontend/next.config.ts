@@ -44,6 +44,36 @@ const nextConfig: NextConfig = {
         destination: "/dl-fantome/:slug*",
         permanent: false,
       },
+      {
+        source: "/dl-fantom",
+        destination: "/dl-fantome",
+        permanent: false,
+      },
+      {
+        source: "/dl-fantom/:slug*",
+        destination: "/dl-fantome/:slug*",
+        permanent: false,
+      },
+      {
+        source: "/dl-barry",
+        destination: "/dl-berry",
+        permanent: true,
+      },
+      {
+        source: "/dl-barry/:slug*",
+        destination: "/dl-berry/:slug*",
+        permanent: true,
+      },
+      {
+        source: "/barry",
+        destination: "/dl-berry",
+        permanent: false,
+      },
+      {
+        source: "/barry/:slug*",
+        destination: "/dl-berry/:slug*",
+        permanent: false,
+      },
     ];
   },
 };

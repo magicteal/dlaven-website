@@ -23,8 +23,8 @@ function parseSlugParams(slugs: string[]) {
 
   for (const part of slugs) {
     const s = part.toLowerCase();
-    if (s === "heritage" || s === "international") {
-      collection = s;
+    if (s === "heritage" || s === "international" || s === "prive" || s === "l-prive") {
+      collection = s === "heritage" ? "heritage" : "international";
     } else if (s === "clothes" || s === "ready-to-wear" || s === "clothing") {
       category = "clothes";
     } else if (s === "jewellery" || s === "adornments" || s === "jewelry") {

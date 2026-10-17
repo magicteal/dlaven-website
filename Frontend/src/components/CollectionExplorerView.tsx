@@ -20,7 +20,7 @@ export type GenderType = "all" | "mens" | "womens";
 
 interface Props {
   pillarName: "DL FANTOME" | "DL LIMITED" | "DL BÉRRY" | "DL PRIVÉ";
-  pillarSlug: "dlaven-limited" | "dl-fantome" | "fantome" | "dl-barry" | "dl-prive";
+  pillarSlug: "dlaven-limited" | "dl-fantome" | "fantome" | "dl-barry" | "dl-berry" | "dl-prive";
   initialCollection?: CollectionType;
   initialCategory?: ProductCategoryType;
   initialGender?: GenderType;
@@ -112,6 +112,7 @@ export default function CollectionExplorerView({
           "dl-fantome": "dl-limited",
           "fantome": "dl-limited",
           "dl-barry": "dl-barry",
+          "dl-berry": "dl-barry",
           "dl-prive": "dl-prive",
         };
         const tag = tagMap[pillarSlug];
@@ -130,6 +131,10 @@ export default function CollectionExplorerView({
       cancelled = true;
     };
   }, [pillarSlug]);
+
+  const isBarry = pillarSlug === "dl-barry" || pillarSlug === "dl-berry";
+  const isFantome = pillarSlug === "dl-fantome" || pillarSlug === "fantome" || pillarSlug === "dlaven-limited";
+  const baseSlug = isBarry ? "dl-berry" : isFantome ? "dl-fantome" : pillarSlug;
 
   // Combine DB products & curated showcase items filtered by criteria
   const filteredProducts = React.useMemo(() => {
@@ -179,7 +184,7 @@ export default function CollectionExplorerView({
         {/* ── Breadcrumb & Exploration Header ── */}
         <div className="text-center space-y-3">
           <div className="flex items-center justify-center gap-2 text-xs uppercase tracking-[0.25em] text-[#6F3D24]">
-            <Link href={`/${pillarSlug}`} className="hover:underline font-medium">
+            <Link href={`/${baseSlug}`} className="hover:underline font-medium">
               {pillarName}
             </Link>
             <span>/</span>

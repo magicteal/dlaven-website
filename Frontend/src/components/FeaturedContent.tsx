@@ -1,27 +1,31 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const BG_IMAGE_LEFT = "/images/oneImg.png";
-const BG_IMAGE_RIGHT = "/berry.svg";
+const BG_IMAGE_LEFT = "/images/prive.png";
+const BG_IMAGE_RIGHT = "/images/berry.png";
 
 export default function FeaturedContent() {
   return (
     <section className="relative w-full bg-white pb-12 sm:pb-16 md:pb-20 px-4 md:px-8 text-white">
       <div className="max-w-[95%] mx-auto">
         {/* Inset padded grid — width exactly matches DL Limited */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 h-[60vh] sm:h-[70vh] md:h-[80vh]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 min-h-[700px] md:min-h-0 md:h-[65vh] lg:h-[75vh]">
 
           {/* Left — DL PRIVÉ */}
-          <Link href="/dl-prive" className="relative group overflow-hidden h-full block shadow-sm border border-gray-100" aria-label="Go to DL Privé">
+          <Link
+            href="/dl-prive"
+            className="relative group overflow-hidden h-[360px] sm:h-[450px] md:h-full block shadow-sm border border-gray-100 bg-black"
+            aria-label="Go to DL Privé"
+          >
             <Image
               src={BG_IMAGE_LEFT}
               alt="DL Privé"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+              className="object-cover object-[center_60%] group-hover:scale-105 transition-transform duration-700 ease-out"
               priority
             />
-            <div className="absolute inset-0 bg-black/50 group-hover:bg-black/40 transition-colors duration-500" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/20 group-hover:from-black/70 group-hover:via-black/25 transition-colors duration-500" />
             <div className="relative z-10 h-full flex flex-col items-center justify-end text-center px-4 pb-8 md:pb-12 text-white">
               <h3 className="font-le-grand text-3xl sm:text-5xl md:text-6xl font-normal tracking-[0.15em] uppercase mb-4 sm:mb-6">
                 DL PRIVÉ
@@ -35,16 +39,20 @@ export default function FeaturedContent() {
           </Link>
 
           {/* Right — DL BÉRRY */}
-          <Link href="/dl-barry" className="relative group overflow-hidden h-full block shadow-sm border border-gray-100" aria-label="Go to DL Barry">
+          <Link
+            href="/dl-berry"
+            className="relative group overflow-hidden h-[360px] sm:h-[450px] md:h-full block shadow-sm border border-gray-100 bg-black"
+            aria-label="Go to DL Bérry"
+          >
             <Image
               src={BG_IMAGE_RIGHT}
-              alt="DL Barry"
+              alt="DL Bérry"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+              className="object-cover object-[center_60%] group-hover:scale-105 transition-transform duration-700 ease-out"
               priority
             />
-            <div className="absolute inset-0 bg-black/50 group-hover:bg-black/40 transition-colors duration-500" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/20 group-hover:from-black/70 group-hover:via-black/25 transition-colors duration-500" />
             <div className="relative z-10 h-full flex flex-col items-center justify-end text-center px-4 pb-8 md:pb-12 text-white">
               <h3 className="font-le-grand text-3xl sm:text-5xl md:text-6xl font-normal tracking-[0.15em] uppercase mb-4 sm:mb-6">
                 DL BÉRRY

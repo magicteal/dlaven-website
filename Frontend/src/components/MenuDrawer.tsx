@@ -136,7 +136,7 @@ function PanelView({
         <DrawerLink href="/dl-prive" onNavigate={onNavigate} className={linkClass}>
           DL Privé Exclusives
         </DrawerLink>
-        <DrawerLink href="/dl-barry" onNavigate={onNavigate} className={linkClass}>
+        <DrawerLink href="/dl-berry" onNavigate={onNavigate} className={linkClass}>
           DL Bérry Creations
         </DrawerLink>
       </PanelWrapper>
@@ -152,7 +152,7 @@ function PanelView({
         <DrawerLink href="/dl-prive" onNavigate={onNavigate} className={linkClass}>
           DL Privé
         </DrawerLink>
-        <DrawerLink href="/dl-barry" onNavigate={onNavigate} className={linkClass}>
+        <DrawerLink href="/dl-berry" onNavigate={onNavigate} className={linkClass}>
           DL Bérry
         </DrawerLink>
         <DrawerLink href="/mens-ready-to-wear" onNavigate={onNavigate} className={linkClass}>
@@ -183,7 +183,7 @@ function PanelView({
         <DrawerLink href="/dl-prive" onNavigate={onNavigate} className={linkClass}>
           DL Privé
         </DrawerLink>
-        <DrawerLink href="/dl-barry" onNavigate={onNavigate} className={linkClass}>
+        <DrawerLink href="/dl-berry" onNavigate={onNavigate} className={linkClass}>
           DL Bérry
         </DrawerLink>
         <DrawerLink href="/womens-ready-to-wear" onNavigate={onNavigate} className={linkClass}>

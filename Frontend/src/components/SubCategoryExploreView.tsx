@@ -11,8 +11,8 @@ const BRAND_DARK = "#431717";
 
 interface Props {
   pillarName: "DL FANTOME" | "DL LIMITED" | "DL BÉRRY" | "DL PRIVÉ";
-  pillarSlug: "dlaven-limited" | "dl-fantome" | "fantome" | "dl-barry" | "dl-prive";
-  collection: "heritage" | "international" | "all";
+  pillarSlug: "dlaven-limited" | "dl-fantome" | "dl-fantom" | "fantome" | "dl-barry" | "dl-berry" | "dl-prive";
+  collection?: "heritage" | "international" | "all";
   category: "jewellery" | "clothes" | "fragrances" | "all";
 }
 
@@ -171,9 +171,13 @@ export default function SubCategoryExploreView({
   const mensSubtitle = assetData.mensSubtitle || defaultMensSubtitle;
   const womensSubtitle = assetData.womensSubtitle || defaultWomensSubtitle;
 
+  const isBarry = pillarSlug === "dl-barry" || pillarSlug === "dl-berry";
+  const isFantome = pillarSlug === "dl-fantome" || pillarSlug === "dl-fantom" || pillarSlug === "fantome" || pillarSlug === "dlaven-limited";
+  const baseSlug = isBarry ? "dl-berry" : isFantome ? "dl-fantome" : pillarSlug;
+
   const isAll = collection === "all";
   const displayTitle = isAll
-    ? (pillarSlug === "dl-prive" ? "DL PRIVÉ CREATION" : "DL FANTOME CREATION")
+    ? (pillarSlug === "dl-prive" ? "DL PRIVÉ CREATION" : isBarry ? "DL BÉRRY CREATION" : "DL FANTOME CREATION")
     : `${pillarName} ${collection.toUpperCase()} ${category.toUpperCase()}`;
   const displaySubtitle = isAll ? "DISCOVER ALL CREATION" : assetData.subtitle;
   const displayTagline = assetData.description && assetData.description[0];
@@ -190,7 +194,7 @@ export default function SubCategoryExploreView({
 
         {/* LEFT COLUMN: MEN'S SELECTION FOR THIS CATEGORY */}
         <Link
-          href={`/${pillarSlug}/${category}/mens`}
+          href={`/${baseSlug}/${category}/mens`}
           className="relative overflow-hidden group cursor-pointer border-r border-[#431717]/10 block"
           style={{ minHeight: "450px" }}
         >
@@ -231,7 +235,7 @@ export default function SubCategoryExploreView({
 
         {/* RIGHT COLUMN: WOMEN'S SELECTION FOR THIS CATEGORY */}
         <Link
-          href={`/${pillarSlug}/${category}/womens`}
+          href={`/${baseSlug}/${category}/womens`}
           className="relative overflow-hidden group cursor-pointer block"
           style={{ minHeight: "450px" }}
         >
@@ -330,7 +334,7 @@ export default function SubCategoryExploreView({
         {/* Back Button */}
         <div className="mt-8">
           <Link
-            href={`/${pillarSlug}`}
+            href={`/${baseSlug}`}
             className="inline-flex items-center justify-center px-10 py-3 border border-[#1a1a1a] text-[10px] tracking-[0.25em] uppercase hover:bg-[#1a1a1a] hover:text-white transition-all duration-300 shadow-sm"
             style={{ fontFamily: POPPINS }}
           >

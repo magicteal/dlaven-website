@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
-import Marquee from "@/components/Marquee";
 import { api } from "@/lib/api";
 import type { Product } from "@/types/product";
 
@@ -16,7 +15,7 @@ const BRAND_GOLD = "#A47E53";
 
 interface Props {
   pillarName: "DL FANTOME" | "DL LIMITED" | "DL BÉRRY" | "DL PRIVÉ";
-  pillarSlug: "dlaven-limited" | "dl-fantome" | "fantome" | "dl-barry" | "dl-prive";
+  pillarSlug: "dlaven-limited" | "dl-fantome" | "dl-fantom" | "fantome" | "dl-barry" | "dl-berry" | "dl-prive";
   collection?: "heritage" | "international" | "all";
   category: "jewellery" | "clothes" | "fragrances" | "all";
   gender: "mens" | "womens";
@@ -26,9 +25,7 @@ interface Props {
 const GENDER_ASSETS: Record<
   string,
   {
-    heroLeft: string;
-    heroRight: string;
-    marqueeImgs: string[];
+    heroImage: string;
     heritageImg: string;
     heritageSubtitle: string;
     intlImg: string;
@@ -36,96 +33,42 @@ const GENDER_ASSETS: Record<
   }
 > = {
   "mens-clothes": {
-    heroLeft: "/images/heritage/mens_heritage.jpg",
-    heroRight: "/images/womenswear/adornments_2.jpg",
-    marqueeImgs: [
-      "/images/menswear/IMG_9691.PNG",
-      "/images/menswear/IMG_9340.PNG",
-      "/images/menswear/adornments_main.png",
-      "/images/heritage/mens_heritage.jpg",
-      "/images/oneImg.png",
-      "/images/twoImg.png",
-    ],
+    heroImage: "/images/fashion_hero.png",
     heritageImg: "/images/menswear/IMG_9340.PNG",
     heritageSubtitle: "L' INDE ENTRE HÉRITAGE ET AUTORITÉ",
     intlImg: "/images/menswear/adornments_main.png",
     intlSubtitle: "LA OU L'INDE D'HIER DIALOGUE AVEC L'INDE D'AUJOURD'HUI",
   },
   "womens-clothes": {
-    heroLeft: "/images/womens_heritage.jpg",
-    heroRight: "/images/womenswear/adornments_1.png",
-    marqueeImgs: [
-      "/images/womenswear/adornments_1.png",
-      "/images/womenswear/adornments_2.jpg",
-      "/images/oneImg.png",
-      "/images/twoImg.png",
-      "/images/marquee_2.jpg",
-      "/images/womens_heritage.jpg",
-    ],
+    heroImage: "/images/womens_heritage.jpg",
     heritageImg: "/images/womenswear/adornments_1.png",
     heritageSubtitle: "L' ELEGANCE SANS FRONTIERES",
     intlImg: "/images/oneImg.png",
     intlSubtitle: "LE DIALOGUE CONTEMPORAIN ET L'ART DU DRAPÉ",
   },
   "mens-jewellery": {
-    heroLeft: "/images/mens_heritage.jpg",
-    heroRight: "/images/prive_jewellery_cover.png",
-    marqueeImgs: [
-      "/images/mens_heritage.jpg",
-      "/images/prive_jewellery_cover.png",
-      "/images/DPrimeOne.jpg",
-      "/images/marquee_1.jpg",
-      "/images/mens_heritage.jpg",
-      "/images/prive_jewellery_cover.png",
-    ],
-    heritageImg: "/images/mens_heritage.jpg",
+    heroImage: "/images/prive_jewellery_cover.png",
+    heritageImg: "/images/heritage/mens_adornments.jpg",
     heritageSubtitle: "ADORNMENTS ARCHIVAUX & FILIGRANE ROYALE",
     intlImg: "/images/prive_jewellery_cover.png",
     intlSubtitle: "HIGH JEWELLERY & MODERNIST PRECISION",
   },
   "womens-jewellery": {
-    heroLeft: "/images/womens_heritage.jpg",
-    heroRight: "/images/womenswear/adornments_2.jpg",
-    marqueeImgs: [
-      "/images/womens_heritage.jpg",
-      "/images/womenswear/adornments_2.jpg",
-      "/images/womenswear/adornments_1.png",
-      "/images/marquee_2.jpg",
-      "/images/womens_heritage.jpg",
-      "/images/womenswear/adornments_2.jpg",
-    ],
-    heritageImg: "/images/womens_heritage.jpg",
+    heroImage: "/images/womenswear/adornments_2.jpg",
+    heritageImg: "/images/heritage/womens_adornments.jpg",
     heritageSubtitle: "L'ART DU BIJOU ET L'ÉCLAT ANCESTRAL",
-    intlImg: "/images/womenswear/adornments_2.jpg",
+    intlImg: "/images/womenswear/adornments_1.png",
     intlSubtitle: "PARURES CONTEMPORAINES ET CRÉATIONS PRIVÉES",
   },
   "mens-fragrances": {
-    heroLeft: "/images/fragrance_hero.png",
-    heroRight: "/images/frangrence.png",
-    marqueeImgs: [
-      "/images/fragrance_hero.png",
-      "/images/frangrence.png",
-      "/images/dlprive_end.png",
-      "/images/marquee_4.jpg",
-      "/images/fragrance_hero.png",
-      "/images/frangrence.png",
-    ],
+    heroImage: "/images/frangrence.png",
     heritageImg: "/images/fragrance_hero.png",
     heritageSubtitle: "HAUTE PARFUMERIE & ESSENCES RARES",
     intlImg: "/images/frangrence.png",
     intlSubtitle: "ELIXIRS CONTEMPORAINS ET NOTES IMMORTELLES",
   },
   "womens-fragrances": {
-    heroLeft: "/images/frangrence.png",
-    heroRight: "/images/fragrance_hero.png",
-    marqueeImgs: [
-      "/images/frangrence.png",
-      "/images/fragrance_hero.png",
-      "/images/dlprive_end.png",
-      "/images/marquee_1.jpg",
-      "/images/frangrence.png",
-      "/images/fragrance_hero.png",
-    ],
+    heroImage: "/images/fragrance_hero.png",
     heritageImg: "/images/frangrence.png",
     heritageSubtitle: "FLEURS NOBLES ET ACCORDS HERITAGE",
     intlImg: "/images/fragrance_hero.png",
@@ -149,9 +92,33 @@ export default function GenderCategoryView({
   const assetKey = `${gender}-${category}`;
   const assets = GENDER_ASSETS[assetKey] || GENDER_ASSETS["mens-clothes"];
 
-  const genderTitle = gender === "mens" ? "MENSWEAR" : "WOMENSWEAR";
-  const categoryTitle = category.toUpperCase();
-  const fullTitle = `${genderTitle} ${categoryTitle}`;
+  let displayCategory = "CLOTHES";
+  if (category === "jewellery") displayCategory = "JEWELLERY";
+  if (category === "fragrances") displayCategory = "FRAGRANCE";
+
+  const genderLabel = gender === "mens" ? "MENS" : "WOMENS";
+  const heroHeading = `${genderLabel} ${displayCategory}`;
+  const fullTitle = heroHeading;
+
+  const isFantome = pillarSlug === "dl-fantome" || pillarSlug === "dl-fantom" || pillarSlug === "fantome" || pillarSlug === "dlaven-limited";
+  const isBarry = pillarSlug === "dl-barry" || pillarSlug === "dl-berry";
+  const isPrive = pillarSlug === "dl-prive";
+
+  const baseSlug = isBarry ? "dl-berry" : isFantome ? "dl-fantome" : pillarSlug;
+
+  const card1Title = "L’ HERITAGE";
+  const card1Subtitle = null;
+
+  let card2Title = "L’ FANTOME";
+  let card2Subtitle = "LE SOUVERAIN DES CIMES DE SPITI";
+
+  if (isPrive) {
+    card2Title = "L’ PRIVÉ";
+    card2Subtitle = "L'INDE RENCONTRE L'AUTORITÉ";
+  } else if (isBarry) {
+    card2Title = "L’ BÉRRY";
+    card2Subtitle = "L'INNOVATION RENCONTRE L'HÉRITAGE";
+  }
 
   useEffect(() => {
     async function loadProducts() {
@@ -160,8 +127,10 @@ export default function GenderCategoryView({
         const tagMap: Record<string, "dl-limited" | "dl-barry" | "dl-prive"> = {
           "dlaven-limited": "dl-limited",
           "dl-fantome": "dl-limited",
+          "dl-fantom": "dl-limited",
           "fantome": "dl-limited",
           "dl-barry": "dl-barry",
+          "dl-berry": "dl-barry",
           "dl-prive": "dl-prive",
         };
         const tag = tagMap[pillarSlug];
@@ -216,151 +185,143 @@ export default function GenderCategoryView({
     <main style={{ background: BG_CREAM, fontFamily: POPPINS }}>
 
       {/* ══════════════════════════════════════════
-          SECTION 1: HERO — TWO LARGE IMAGES + CENTERED TITLE OVERLAY (Sleeker Height & Le Grand Typography)
+          SECTION 1: HERO — SINGLE FULL-WIDTH IMAGE + CENTERED TITLE OVERLAY
       ══════════════════════════════════════════ */}
-      <section className="relative w-full grid grid-cols-2" style={{ height: "52vh", minHeight: "360px" }}>
-        <div className="relative overflow-hidden">
-          <Image
-            src={assets.heroLeft}
-            alt={`${fullTitle} Left`}
-            fill
-            className="object-cover object-center"
-            sizes="50vw"
-            priority
-          />
-          <div className="absolute inset-0 bg-black/20" />
-        </div>
-        <div className="relative overflow-hidden">
-          <Image
-            src={assets.heroRight}
-            alt={`${fullTitle} Right`}
-            fill
-            className="object-cover object-center"
-            sizes="50vw"
-            priority
-          />
-          <div className="absolute inset-0 bg-black/20" />
-        </div>
+      <section className="relative w-full overflow-hidden" style={{ height: "55vh", minHeight: "380px" }}>
+        <Image
+          src={assets.heroImage}
+          alt={fullTitle}
+          fill
+          className="object-cover object-top"
+          sizes="100vw"
+          priority
+        />
+        <div className="absolute inset-0 bg-black/45" />
 
-        {/* Centered title spanning both columns */}
+        {/* Centered title overlay */}
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-4 text-center">
           <h1
-            className="text-white tracking-[0.12em] uppercase font-normal"
+            className="text-white tracking-[0.14em] uppercase font-normal"
             style={{
               fontFamily: LE_GRAND,
-              fontSize: "clamp(26px, 5vw, 60px)",
+              fontSize: "clamp(28px, 5.5vw, 64px)",
               textShadow: "0 2px 20px rgba(0,0,0,0.65)",
             }}
           >
-            {genderTitle}
+            {heroHeading}
           </h1>
           <p
             className="text-[#F6F4E6]/90 tracking-[0.25em] text-xs sm:text-sm mt-3 uppercase font-medium"
             style={{ fontFamily: POPPINS, textShadow: "0 2px 10px rgba(0,0,0,0.5)" }}
           >
-            {pillarName} — {categoryTitle} COLLECTION
+            {pillarName} — {displayCategory} COLLECTION
           </p>
         </div>
       </section>
 
       {/* ══════════════════════════════════════════
-          SECTION 2: AUTO-MOVING INFINITE MARQUEE CAROUSEL (Compact 16/9 Cards)
-      ══════════════════════════════════════════ */}
-      <section className="w-full py-8 md:py-10" style={{ background: BG_CREAM }}>
-        <Marquee images={assets.marqueeImgs} speed={45} direction="right" />
-      </section>
-
-      {/* ══════════════════════════════════════════
-          SECTION 3: FEATURED CARDS — THE HERITAGE & THE INTERNATIONAL (Compact Sleek 16/9 Cards & Theme Colors)
+          SECTION 3: FEATURED CARDS — L’ HERITAGE & L’ FANTOME (Centered Typography & DISCOVER Buttons)
       ══════════════════════════════════════════ */}
       <section className="w-full flex flex-col items-center py-12 md:py-16 px-6 gap-14" style={{ background: BG_CREAM }}>
 
-        {/* Block 1: THE HERITAGE */}
+        {/* Block 1: L’ HERITAGE */}
         <div ref={heritageRef} className="flex flex-col items-center text-center max-w-lg w-full">
-          <div className="relative overflow-hidden w-full shadow-sm group cursor-pointer" style={{ aspectRatio: "16/9" }}>
+          <Link
+            href={`/${baseSlug}/${category}/${gender}/heritage`}
+            className="relative overflow-hidden w-full shadow-sm group cursor-pointer block"
+            style={{ aspectRatio: "16/9" }}
+          >
             <Image
               src={assets.heritageImg}
-              alt="The Heritage"
+              alt={card1Title}
               fill
               className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
               sizes="(max-width:768px) 85vw, 480px"
             />
             <div className="absolute inset-0 bg-black/25 group-hover:bg-black/15 transition-colors" />
-            <div className="absolute inset-0 flex items-end justify-center pb-5 md:pb-6">
+            <div className="absolute inset-0 flex items-center justify-center p-4">
               <h2
-                className="text-white tracking-[0.25em] uppercase font-normal"
+                className="text-white tracking-[0.25em] uppercase font-normal text-center"
                 style={{
                   fontFamily: LE_GRAND,
-                  fontSize: "clamp(16px, 2.5vw, 26px)",
-                  textShadow: "0 2px 10px rgba(0,0,0,0.5)",
+                  fontSize: "clamp(18px, 2.5vw, 28px)",
+                  textShadow: "0 2px 12px rgba(0,0,0,0.6)",
                 }}
               >
-                THE HERITAGE
+                {card1Title}
               </h2>
             </div>
-          </div>
-          <p
-            className="mt-5 uppercase tracking-[0.2em] font-medium"
-            style={{
-              fontFamily: POPPINS,
-              fontSize: "clamp(10px, 1vw, 12px)",
-              color: "#4a3f35",
-            }}
-          >
-            {assets.heritageSubtitle}
-          </p>
-          <div className="mt-4">
+          </Link>
+          {card1Subtitle && (
+            <p
+              className="mt-5 uppercase tracking-[0.2em] font-medium text-center"
+              style={{
+                fontFamily: POPPINS,
+                fontSize: "clamp(10px, 1vw, 12px)",
+                color: "#4a3f35",
+              }}
+            >
+              {card1Subtitle}
+            </p>
+          )}
+          <div className="mt-5">
             <Link
-              href={`/${pillarSlug}/${category}/${gender}/heritage`}
+              href={`/${baseSlug}/${category}/${gender}/heritage`}
               className="inline-flex items-center justify-center px-9 py-2.5 border border-[#431717] text-xs tracking-[0.3em] font-medium uppercase text-[#431717] bg-transparent hover:bg-[#431717] hover:text-[#F6F4E6] hover:scale-105 active:scale-95 transition-all duration-300 shadow-sm cursor-pointer"
               style={{ fontFamily: LE_GRAND }}
             >
-              EXPLORE
+              DISCOVER
             </Link>
           </div>
         </div>
 
-        {/* Block 2: THE INTERNATIONAL */}
+        {/* Block 2: L’ FANTOME */}
         <div ref={intlRef} className="flex flex-col items-center text-center max-w-lg w-full">
-          <div className="relative overflow-hidden w-full shadow-sm group cursor-pointer" style={{ aspectRatio: "16/9" }}>
+          <Link
+            href={`/${baseSlug}/${category}/${gender}/international`}
+            className="relative overflow-hidden w-full shadow-sm group cursor-pointer block"
+            style={{ aspectRatio: "16/9" }}
+          >
             <Image
               src={assets.intlImg}
-              alt="The International"
+              alt={card2Title}
               fill
               className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
               sizes="(max-width:768px) 85vw, 480px"
             />
             <div className="absolute inset-0 bg-black/25 group-hover:bg-black/15 transition-colors" />
-            <div className="absolute inset-0 flex items-end justify-center pb-5 md:pb-6">
+            <div className="absolute inset-0 flex items-center justify-center p-4">
               <h2
-                className="text-white tracking-[0.25em] uppercase font-normal"
+                className="text-white tracking-[0.25em] uppercase font-normal text-center"
                 style={{
                   fontFamily: LE_GRAND,
-                  fontSize: "clamp(16px, 2.5vw, 26px)",
-                  textShadow: "0 2px 10px rgba(0,0,0,0.5)",
+                  fontSize: "clamp(18px, 2.5vw, 28px)",
+                  textShadow: "0 2px 12px rgba(0,0,0,0.6)",
                 }}
               >
-                THE INTERNATIONAL
+                {card2Title}
               </h2>
             </div>
-          </div>
-          <p
-            className="mt-5 uppercase tracking-[0.2em] font-medium"
-            style={{
-              fontFamily: POPPINS,
-              fontSize: "clamp(10px, 1vw, 12px)",
-              color: "#4a3f35",
-            }}
-          >
-            {assets.intlSubtitle}
-          </p>
+          </Link>
+          {card2Subtitle && (
+            <p
+              className="mt-5 uppercase tracking-[0.2em] font-medium text-center px-2"
+              style={{
+                fontFamily: POPPINS,
+                fontSize: "clamp(10px, 1vw, 12px)",
+                color: "#4a3f35",
+              }}
+            >
+              {card2Subtitle}
+            </p>
+          )}
           <div className="mt-4">
             <Link
-              href={`/${pillarSlug}/${category}/${gender}/international`}
+              href={`/${baseSlug}/${category}/${gender}/international`}
               className="inline-flex items-center justify-center px-9 py-2.5 border border-[#431717] text-xs tracking-[0.3em] font-medium uppercase text-[#431717] bg-transparent hover:bg-[#431717] hover:text-[#F6F4E6] hover:scale-105 active:scale-95 transition-all duration-300 shadow-sm cursor-pointer"
               style={{ fontFamily: LE_GRAND }}
             >
-              EXPLORE
+              DISCOVER
             </Link>
           </div>
         </div>
@@ -378,14 +339,14 @@ export default function GenderCategoryView({
               className="font-le-grand text-xl sm:text-2xl uppercase tracking-widest"
               style={{ fontFamily: LE_GRAND, color: BRAND_DARK }}
             >
-              {pillarName} {fullTitle} CREATIONS
+              {pillarName} {heroHeading} CREATIONS
             </h2>
             <Link
-              href={`/${pillarSlug}/${category}`}
+              href={`/${baseSlug}/${category}`}
               className="text-xs uppercase tracking-widest border-b border-[#431717] pb-0.5 text-[#431717] hover:opacity-75"
               style={{ fontFamily: POPPINS }}
             >
-              ← BACK TO {categoryTitle}
+              ← BACK TO {displayCategory}
             </Link>
           </div>
 

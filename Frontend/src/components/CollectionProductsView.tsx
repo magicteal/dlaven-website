@@ -15,7 +15,7 @@ const BRAND_TERRACOTTA = "#854A2D";
 
 interface Props {
   pillarName: "DL FANTOME" | "DL LIMITED" | "DL BÉRRY" | "DL PRIVÉ";
-  pillarSlug: "dlaven-limited" | "dl-fantome" | "fantome" | "dl-barry" | "dl-prive";
+  pillarSlug: "dlaven-limited" | "dl-fantome" | "dl-fantom" | "fantome" | "dl-barry" | "dl-berry" | "dl-prive";
   collection: "heritage" | "international";
   category: "jewellery" | "clothes" | "fragrances" | "all";
   gender: "mens" | "womens";
@@ -92,7 +92,35 @@ export default function CollectionProductsView({
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const headerInfo = COLLECTION_HEADER_DATA[collection] || COLLECTION_HEADER_DATA.heritage;
+  const isFantome = pillarSlug === "dl-fantome" || pillarSlug === "dl-fantom" || pillarSlug === "fantome" || pillarSlug === "dlaven-limited";
+  const isBarry = pillarSlug === "dl-barry" || pillarSlug === "dl-berry";
+  const isPrive = pillarSlug === "dl-prive";
+  const defaultHeader = COLLECTION_HEADER_DATA[collection] || COLLECTION_HEADER_DATA.heritage;
+
+  let dynamicTitle = defaultHeader.title;
+  let dynamicSubtitle = defaultHeader.subtitle;
+
+  if (collection === "heritage") {
+    dynamicTitle = "L’ HERITAGE";
+    dynamicSubtitle = "L' INDE ENTRE HÉRITAGE ET AUTORITÉ";
+  } else {
+    if (isPrive) {
+      dynamicTitle = "L’ PRIVÉ";
+      dynamicSubtitle = "L'INDE RENCONTRE L'AUTORITÉ";
+    } else if (isBarry) {
+      dynamicTitle = "L’ BÉRRY";
+      dynamicSubtitle = "L'INNOVATION RENCONTRE L'HÉRITAGE";
+    } else if (isFantome) {
+      dynamicTitle = "L’ FANTOME";
+      dynamicSubtitle = "LE SOUVERAIN DES CIMES DE SPITI";
+    }
+  }
+
+  const headerInfo = {
+    ...defaultHeader,
+    title: dynamicTitle,
+    subtitle: dynamicSubtitle,
+  };
 
   useEffect(() => {
     async function loadProducts() {
@@ -101,8 +129,10 @@ export default function CollectionProductsView({
         const tagMap: Record<string, "dl-limited" | "dl-barry" | "dl-prive"> = {
           "dlaven-limited": "dl-limited",
           "dl-fantome": "dl-limited",
+          "dl-fantom": "dl-limited",
           "fantome": "dl-limited",
           "dl-barry": "dl-barry",
+          "dl-berry": "dl-barry",
           "dl-prive": "dl-prive",
         };
         const tag = tagMap[pillarSlug];

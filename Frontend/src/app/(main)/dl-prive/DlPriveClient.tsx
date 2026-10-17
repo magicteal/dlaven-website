@@ -132,6 +132,7 @@ export default function DlPriveClient() {
         <HeritageCarouselSection
           categoryTitle="DL PRIVÉ CLOTHES"
           categorySubtitle="HIGH COUTURE & CONTROLLED PRIVÉ ATTIRE"
+          buttonText="DISCOVER"
           block={{
             title: "DL PRIVÉ CLOTHES",
             modelImage: "/images/leftVisual.png",
@@ -154,6 +155,7 @@ export default function DlPriveClient() {
       <HeritageCarouselSection
         categoryTitle="DL PRIVÉ JEWELLERY"
         categorySubtitle="HIGH JEWELLERY & EXCLUSIVE PRIVÉ SELECTIONS"
+        buttonText="DISCOVER"
         block={{
           title: "DL PRIVÉ JEWELLERY",
           modelImage: "/images/dlprive_1.jpg",
@@ -175,6 +177,7 @@ export default function DlPriveClient() {
       <HeritageCarouselSection
         categoryTitle="DL PRIVÉ FRAGRANCE"
         categorySubtitle="PRIVÉ HAUTE PARFUMERIE & RESTRICTED ELIXIRS"
+        buttonText="DISCOVER"
         block={{
           title: "DL PRIVÉ FRAGRANCE",
           modelImage: "/images/dlprive_end.png",
