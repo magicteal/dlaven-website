@@ -34,7 +34,7 @@ export default function DlPriveClient() {
             letterSpacing: "0.08em",
           }}
         >
-          D&apos; LAVÉN &nbsp;&nbsp; X &nbsp;&nbsp; DL PRIVÉ L&apos;ORDONNANCE
+          D&apos; LAVÉN &nbsp;&nbsp; X &nbsp;&nbsp; DL PRIVÉ
         </h1>
         <div className="mt-6 flex justify-center">
           <Link
@@ -131,7 +131,6 @@ export default function DlPriveClient() {
       <div id="prive-categories">
         <HeritageCarouselSection
           categoryTitle="DL PRIVÉ CLOTHES"
-          categorySubtitle="HIGH COUTURE & CONTROLLED PRIVÉ ATTIRE"
           buttonText="DISCOVER"
           block={{
             title: "DL PRIVÉ CLOTHES",
@@ -154,7 +153,6 @@ export default function DlPriveClient() {
       ══════════════════════════════════════════ */}
       <HeritageCarouselSection
         categoryTitle="DL PRIVÉ JEWELLERY"
-        categorySubtitle="HIGH JEWELLERY & EXCLUSIVE PRIVÉ SELECTIONS"
         buttonText="DISCOVER"
         block={{
           title: "DL PRIVÉ JEWELLERY",
@@ -176,7 +174,6 @@ export default function DlPriveClient() {
       ══════════════════════════════════════════ */}
       <HeritageCarouselSection
         categoryTitle="DL PRIVÉ FRAGRANCE"
-        categorySubtitle="PRIVÉ HAUTE PARFUMERIE & RESTRICTED ELIXIRS"
         buttonText="DISCOVER"
         block={{
           title: "DL PRIVÉ FRAGRANCE",

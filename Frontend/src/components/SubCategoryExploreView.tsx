@@ -207,29 +207,35 @@ export default function SubCategoryExploreView({
             priority
           />
           <div className="absolute inset-0 bg-black/55 group-hover:bg-black/45 transition-colors duration-500" />
-          <div className="absolute inset-0 flex flex-col items-center justify-end pb-12 sm:pb-20 text-white text-center px-4">
-            <div className="flex flex-col items-center gap-3 sm:gap-4">
-              <div className="flex flex-col items-center gap-1.5">
-                <span
-                  className="uppercase tracking-[0.25em] font-light text-white"
-                  style={{ fontFamily: POPPINS, fontSize: "clamp(20px, 3.2vw, 40px)" }}
-                >
-                  {assetData.mensTitle}
-                </span>
-                <span
-                  className="uppercase tracking-[0.22em] text-xs sm:text-sm font-light text-white/90"
-                  style={{ fontFamily: POPPINS }}
-                >
-                  {mensSubtitle}
-                </span>
-              </div>
-              <span
-                className="inline-block px-8 py-2.5 uppercase tracking-[0.2em] text-xs font-medium border border-white text-white group-hover:bg-white group-hover:text-black transition-all duration-300 shadow-sm"
-                style={{ fontFamily: POPPINS }}
-              >
-                DISCOVER
-              </span>
-            </div>
+          
+          {/* Centered Heading Only */}
+          <div className="absolute inset-0 flex items-center justify-center p-4">
+            <h2
+              className="font-le-grand uppercase tracking-[0.25em] font-normal text-white text-center"
+              style={{
+                fontFamily: LE_GRAND,
+                fontSize: "clamp(26px, 3.8vw, 48px)",
+                textShadow: "0 2px 20px rgba(0,0,0,0.5)",
+              }}
+            >
+              {assetData.mensTitle}
+            </h2>
+          </div>
+
+          {/* Bottom Subtitle & Discover Button */}
+          <div className="absolute inset-x-0 bottom-0 flex flex-col items-center justify-end pb-10 sm:pb-16 text-white text-center px-4 gap-3 sm:gap-4">
+            <span
+              className="uppercase tracking-[0.22em] text-xs sm:text-sm font-light text-white/90"
+              style={{ fontFamily: POPPINS }}
+            >
+              {mensSubtitle}
+            </span>
+            <span
+              className="inline-block px-8 py-2.5 uppercase tracking-[0.2em] text-xs font-medium border border-white text-white group-hover:bg-white group-hover:text-black transition-all duration-300 shadow-sm"
+              style={{ fontFamily: POPPINS }}
+            >
+              DISCOVER
+            </span>
           </div>
         </Link>
 
@@ -248,29 +254,35 @@ export default function SubCategoryExploreView({
             priority
           />
           <div className="absolute inset-0 bg-black/55 group-hover:bg-black/45 transition-colors duration-500" />
-          <div className="absolute inset-0 flex flex-col items-center justify-end pb-12 sm:pb-20 text-white text-center px-4">
-            <div className="flex flex-col items-center gap-3 sm:gap-4">
-              <div className="flex flex-col items-center gap-1.5">
-                <span
-                  className="uppercase tracking-[0.25em] font-light text-white"
-                  style={{ fontFamily: POPPINS, fontSize: "clamp(20px, 3.2vw, 40px)" }}
-                >
-                  {assetData.womensTitle}
-                </span>
-                <span
-                  className="uppercase tracking-[0.22em] text-xs sm:text-sm font-light text-white/90"
-                  style={{ fontFamily: POPPINS }}
-                >
-                  {womensSubtitle}
-                </span>
-              </div>
-              <span
-                className="inline-block px-8 py-2.5 uppercase tracking-[0.2em] text-xs font-medium border border-white text-white group-hover:bg-white group-hover:text-black transition-all duration-300 shadow-sm"
-                style={{ fontFamily: POPPINS }}
-              >
-                DISCOVER
-              </span>
-            </div>
+          
+          {/* Centered Heading Only */}
+          <div className="absolute inset-0 flex items-center justify-center p-4">
+            <h2
+              className="font-le-grand uppercase tracking-[0.25em] font-normal text-white text-center"
+              style={{
+                fontFamily: LE_GRAND,
+                fontSize: "clamp(26px, 3.8vw, 48px)",
+                textShadow: "0 2px 20px rgba(0,0,0,0.5)",
+              }}
+            >
+              {assetData.womensTitle}
+            </h2>
+          </div>
+
+          {/* Bottom Subtitle & Discover Button */}
+          <div className="absolute inset-x-0 bottom-0 flex flex-col items-center justify-end pb-10 sm:pb-16 text-white text-center px-4 gap-3 sm:gap-4">
+            <span
+              className="uppercase tracking-[0.22em] text-xs sm:text-sm font-light text-white/90"
+              style={{ fontFamily: POPPINS }}
+            >
+              {womensSubtitle}
+            </span>
+            <span
+              className="inline-block px-8 py-2.5 uppercase tracking-[0.2em] text-xs font-medium border border-white text-white group-hover:bg-white group-hover:text-black transition-all duration-300 shadow-sm"
+              style={{ fontFamily: POPPINS }}
+            >
+              DISCOVER
+            </span>
           </div>
         </Link>
 

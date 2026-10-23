@@ -53,7 +53,7 @@ export default function DlBarryClient() {
             letterSpacing: "0.08em",
           }}
         >
-          D&apos; LAVÉN &nbsp;&nbsp; X &nbsp;&nbsp; DL BÉRRY CREATIONS
+          D&apos; LAVÉN &nbsp;&nbsp; X &nbsp;&nbsp; DL BÉRRY
         </h1>
         <div className="mt-6 flex justify-center">
           <Link
@@ -61,7 +61,7 @@ export default function DlBarryClient() {
             className="inline-flex items-center justify-center px-8 py-3 border border-[#F6F4E6]/60 text-xs tracking-[0.25em] font-semibold uppercase text-[#F6F4E6] hover:bg-[#F6F4E6] hover:text-[#431717] transition-all duration-300 shadow-sm"
             style={{ fontFamily: LE_GRAND }}
           >
-            DISCOVER BÉRRY CREATIONS
+            DISCOVER BÉRRY SELECTIONS
           </Link>
         </div>
       </section>
@@ -145,7 +145,6 @@ export default function DlBarryClient() {
       <div id="berry-categories">
         <HeritageCarouselSection
           categoryTitle="DL BÉRRY CLOTHES"
-          categorySubtitle="AVANT-GARDE SARTORIAL ATTIRE & TAILORED CUTS"
           buttonText="DISCOVER"
           block={{
             title: "DL BÉRRY CLOTHES",
@@ -168,7 +167,6 @@ export default function DlBarryClient() {
       ══════════════════════════════════════════ */}
       <HeritageCarouselSection
         categoryTitle="DL BÉRRY JEWELLERY"
-        categorySubtitle="CONTEMPORARY FINE JEWELLERY & MODERNIST FILIGREE"
         buttonText="DISCOVER"
         block={{
           title: "DL BÉRRY JEWELLERY",
@@ -190,7 +188,6 @@ export default function DlBarryClient() {
       ══════════════════════════════════════════ */}
       <HeritageCarouselSection
         categoryTitle="DL BÉRRY FRAGRANCE"
-        categorySubtitle="SELECTIVE HAUTE PARFUMERIE & BÉRRY ACCORDS"
         buttonText="DISCOVER"
         block={{
           title: "DL BÉRRY FRAGRANCE",

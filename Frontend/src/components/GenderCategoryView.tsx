@@ -106,17 +106,17 @@ export default function GenderCategoryView({
 
   const baseSlug = isBarry ? "dl-berry" : isFantome ? "dl-fantome" : pillarSlug;
 
-  const card1Title = "L’ HERITAGE";
+  const card1Title = "LA HERITAGE";
   const card1Subtitle = null;
 
-  let card2Title = "L’ FANTOME";
+  let card2Title = "LA FANTOME";
   let card2Subtitle = "LE SOUVERAIN DES CIMES DE SPITI";
 
   if (isPrive) {
-    card2Title = "L’ PRIVÉ";
+    card2Title = "LA PRIVÉ";
     card2Subtitle = "L'INDE RENCONTRE L'AUTORITÉ";
   } else if (isBarry) {
-    card2Title = "L’ BÉRRY";
+    card2Title = "LA BÉRRY";
     card2Subtitle = "L'INNOVATION RENCONTRE L'HÉRITAGE";
   }
 
