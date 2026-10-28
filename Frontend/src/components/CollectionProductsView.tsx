@@ -101,17 +101,17 @@ export default function CollectionProductsView({
   let dynamicSubtitle = defaultHeader.subtitle;
 
   if (collection === "heritage") {
-    dynamicTitle = "LA HERITAGE";
+    dynamicTitle = "L’ HERITAGE";
     dynamicSubtitle = "L' INDE ENTRE HÉRITAGE ET AUTORITÉ";
   } else {
     if (isPrive) {
-      dynamicTitle = "LA PRIVÉ";
+      dynamicTitle = "LE’ PRIVÉ";
       dynamicSubtitle = "L'INDE RENCONTRE L'AUTORITÉ";
     } else if (isBarry) {
-      dynamicTitle = "LA BÉRRY";
+      dynamicTitle = "LE’ BÉRRY";
       dynamicSubtitle = "L'INNOVATION RENCONTRE L'HÉRITAGE";
     } else if (isFantome) {
-      dynamicTitle = "LA FANTOME";
+      dynamicTitle = "LE’ FANTÔME";
       dynamicSubtitle = "LE SOUVERAIN DES CIMES DE SPITI";
     }
   }

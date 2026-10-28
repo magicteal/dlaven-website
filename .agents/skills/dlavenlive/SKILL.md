@@ -41,7 +41,7 @@ When the user triggers `/dlavenlive` or asks to deploy/push to live, execute the
 ## Step 3: VPS Remote Pull & Build Deployment
 Execute the automated Python SSH deployment script from workspace root:
 ```powershell
-python scripts/deploy.py
+node scripts/deploy.mjs
 ```
 
 This script reads credentials from `.env.deploy` (gitignored), connects to VPS `72.60.221.173` via SSH, pulls latest `main` commit into `/home/deploy/myapp`, runs `npm run build` for both Backend and Frontend as user `deploy`, and restarts all PM2 processes.

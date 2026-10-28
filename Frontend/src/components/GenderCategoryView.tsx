@@ -106,17 +106,17 @@ export default function GenderCategoryView({
 
   const baseSlug = isBarry ? "dl-berry" : isFantome ? "dl-fantome" : pillarSlug;
 
-  const card1Title = "LA HERITAGE";
+  const card1Title = "L’ HERITAGE";
   const card1Subtitle = null;
 
-  let card2Title = "LA FANTOME";
+  let card2Title = "LE’ FANTÔME";
   let card2Subtitle = "LE SOUVERAIN DES CIMES DE SPITI";
 
   if (isPrive) {
-    card2Title = "LA PRIVÉ";
+    card2Title = "LE’ PRIVÉ";
     card2Subtitle = "L'INDE RENCONTRE L'AUTORITÉ";
   } else if (isBarry) {
-    card2Title = "LA BÉRRY";
+    card2Title = "LE’ BÉRRY";
     card2Subtitle = "L'INNOVATION RENCONTRE L'HÉRITAGE";
   }
 
@@ -220,7 +220,7 @@ export default function GenderCategoryView({
       </section>
 
       {/* ══════════════════════════════════════════
-          SECTION 3: FEATURED CARDS — L’ HERITAGE & L’ FANTOME (Centered Typography & DISCOVER Buttons)
+          SECTION 3: FEATURED CARDS — L’ HERITAGE & LE’ FANTÔME (Centered Typography & DISCOVER Buttons)
       ══════════════════════════════════════════ */}
       <section className="w-full flex flex-col items-center py-12 md:py-16 px-6 gap-14" style={{ background: BG_CREAM }}>
 
@@ -275,7 +275,7 @@ export default function GenderCategoryView({
           </div>
         </div>
 
-        {/* Block 2: L’ FANTOME */}
+        {/* Block 2: LE’ FANTÔME */}
         <div ref={intlRef} className="flex flex-col items-center text-center max-w-lg w-full">
           <Link
             href={`/${baseSlug}/${category}/${gender}/international`}
