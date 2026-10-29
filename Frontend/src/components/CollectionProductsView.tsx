@@ -8,10 +8,14 @@ import type { Product } from "@/types/product";
 
 const MANROPE = `var(--font-manrope), sans-serif`;
 const LE_GRAND = `var(--font-le-grand), serif`;
+const FONT_HOLIDAY = `var(--font-holiday), "Brush Script MT", cursive`;
+const FONT_LUSTRIA = `var(--font-lustria), serif`;
+const FONT_POPPINS = `var(--font-poppins), sans-serif`;
+const FONT_PLAYFAIR = `var(--font-playfair), serif`;
 const BG_CREAM = "#F6F4E6";
 const BRAND_DARK = "#431717";
 const BRAND_BODY = "#4a3f35";
-const BRAND_TERRACOTTA = "#854A2D";
+const BRAND_TERRACOTTA = "#9D6749";
 
 interface Props {
   pillarName: "DL FANTOME" | "DL LIMITED" | "DL BÉRRY" | "DL PRIVÉ";
@@ -253,7 +257,7 @@ export default function CollectionProductsView({
                   {/* Card 6: Top 2 Side-by-Side Image Boxes + Bottom Terracotta Price Card (Matching User Design) */}
                   <div className="w-full flex flex-col gap-1.5 sm:gap-2" style={{ aspectRatio: "3/4" }}>
                     {/* Top Row: 2 Side-by-Side Image Boxes */}
-                    <div className="grid grid-cols-2 gap-1.5 sm:gap-2 w-full h-[52%] flex-shrink-0">
+                    <div className="grid grid-cols-2 gap-1.5 sm:gap-2 w-full h-[47%] flex-shrink-0">
                       {/* Box 1 (Left): Model Portrait */}
                       <div className="relative overflow-hidden rounded-xl md:rounded-2xl shadow-sm border border-[#431717]/10 bg-white">
                         <Image
@@ -279,27 +283,40 @@ export default function CollectionProductsView({
 
                     {/* Bottom Row: Terracotta Price & Description Card */}
                     <div
-                      className="w-full flex-1 overflow-hidden shadow-sm flex flex-col justify-center items-center text-center text-[#F6F4E6] p-2.5 sm:p-3"
+                      className="w-full flex-1 overflow-hidden shadow-sm flex flex-col justify-between items-center text-center text-white px-2.5 sm:px-3 pt-3 pb-3"
                       style={{ backgroundColor: BRAND_TERRACOTTA }}
                     >
+                      {/* 1. Holiday Font */}
                       <p
-                        className="text-[9px] sm:text-[10.5px] tracking-wider italic font-normal mb-1"
-                        style={{ fontFamily: LE_GRAND }}
+                        className="text-[9.5px] sm:text-[10px] md:text-[10.5px] font-normal text-white leading-none whitespace-nowrap tracking-tight"
+                        style={{ fontFamily: FONT_HOLIDAY }}
                       >
-                        D&apos;LAVÉN &nbsp;×&nbsp; Stella Élégance
+                        D&apos; LAVÉN x Stella Élégance
                       </p>
-                      <h3
-                        className="text-[10px] sm:text-[11.5px] uppercase tracking-[0.14em] font-normal mb-0.5 text-[#F6F4E6] line-clamp-1"
-                        style={{ fontFamily: LE_GRAND }}
-                      >
-                        {item.name}
-                      </h3>
-                      <p className="text-[9px] sm:text-[10px] font-semibold tracking-wider text-[#F6F4E6] mb-1">
-                        Price ₹{item.price.toLocaleString("en-IN")}.00
-                      </p>
+
+                      {/* Middle: Title & Price grouped together */}
+                      <div className="flex flex-col items-center justify-center my-auto py-0.5">
+                        {/* 2. Lustria Font */}
+                        <h3
+                          className="text-[9.5px] sm:text-[10px] md:text-[10.5px] uppercase tracking-[0.14em] font-normal mb-1 text-white line-clamp-1"
+                          style={{ fontFamily: FONT_LUSTRIA }}
+                        >
+                          {item.name}
+                        </h3>
+
+                        {/* 3. Poppins Font */}
+                        <p
+                          className="text-[8.5px] sm:text-[9px] md:text-[9.5px] font-medium tracking-wide text-white"
+                          style={{ fontFamily: FONT_POPPINS }}
+                        >
+                          Price {item.price.toFixed(2)}
+                        </p>
+                      </div>
+
+                      {/* 4. Playfair Display Font */}
                       <p
-                        className="text-[7.5px] sm:text-[8px] leading-tight opacity-90 line-clamp-2 font-light max-w-[95%]"
-                        style={{ fontFamily: MANROPE }}
+                        className="text-[7.5px] sm:text-[8px] md:text-[8.5px] leading-[1.3] opacity-95 font-normal max-w-[95%] text-white"
+                        style={{ fontFamily: FONT_PLAYFAIR }}
                       >
                         {item.description}
                       </p>

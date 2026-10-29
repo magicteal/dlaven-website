@@ -11,6 +11,7 @@ export default function PageLoader() {
   React.useEffect(() => {
     // Only show once per session and never on admin
     if (pathname?.startsWith("/admin")) return;
+    if (typeof window !== "undefined" && window.location.search.includes("noloader")) return;
     const alreadyShown = sessionStorage.getItem("hasShownLoader") === "true";
     if (!alreadyShown) {
       setShow(true);

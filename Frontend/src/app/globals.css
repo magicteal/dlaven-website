@@ -14,6 +14,18 @@
   .font-le-grand {
     font-family: var(--font-le-grand), serif;
   }
+  .font-holiday {
+    font-family: var(--font-holiday), "Brush Script MT", cursive;
+  }
+  .font-lustria {
+    font-family: var(--font-lustria), serif;
+  }
+  .font-poppins {
+    font-family: var(--font-poppins), sans-serif;
+  }
+  .font-playfair {
+    font-family: var(--font-playfair), serif;
+  }
 }
 
 /* Simple animation utility fallbacks (Tailwind v4 provides these by default, but include minimal defs if needed) */

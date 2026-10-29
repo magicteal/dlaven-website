@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Manrope } from "next/font/google";
+import { Manrope, Lustria, Poppins, Playfair_Display } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { AuthProvider } from "@/components/providers/AuthProvider";
@@ -20,6 +20,33 @@ const leGrand = localFont({
   display: "swap",
 });
 
+const holiday = localFont({
+  src: "../../public/fonts/HolidayFree.otf",
+  variable: "--font-holiday",
+  display: "swap",
+});
+
+const lustria = Lustria({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-lustria",
+  display: "swap",
+});
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-poppins",
+  display: "swap",
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-playfair",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "D’ LAVÉN",
   description: "Heritage meets modern luxury.",
@@ -32,7 +59,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full">
-      <body className={`${manrope.variable} ${leGrand.variable} font-sans antialiased`} suppressHydrationWarning>
+      <body className={`${manrope.variable} ${leGrand.variable} ${holiday.variable} ${lustria.variable} ${poppins.variable} ${playfair.variable} font-sans antialiased`} suppressHydrationWarning>
         <AuthProvider>
           <CartProvider>
             <PageLoader />
